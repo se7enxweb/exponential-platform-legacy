@@ -67,10 +67,10 @@ export COMPOSE_FILE=doc/docker/base-prod.yml:doc/docker/create-dataset.yml:doc/d
 #export COMPOSE_FILE=doc/docker/base-prod.yml:doc/docker/create-dataset.yml:doc/docker/demo.yml:doc/docker/blackfire.yml BLACKFIRE_SERVER_ID=<id> BLACKFIRE_SERVER_TOKEN=<token>
 
 # First time: Install setup, and generate database dump:
-docker-compose -f doc/docker/install.yml up --abort-on-container-exit
+docker-compose -f doc/docker/install-dependencies.yml -f doc/docker/install-database.yml up --abort-on-container-exit
 
 # Optionally, build dbdump and vardir images.
-# The dbdump image is created based on doc/docker/entrypoint/mysql/2_dump.sql which is created by install.yml
+# The dbdump image is created based on doc/docker/entrypoint/mysql/2_dump.sql which is created by above command
 # The vardir image is created based on the content of web/var
 # If you don't build these image explicitly, they will automaticly be builded later when running `docker-compose up`
 docker-compose build dataset-vardir dataset-dbdump
@@ -95,7 +95,7 @@ From root of your projects clone of this distribution, [setup composer auth.json
 #export COMPOSE_DIR=/data/SOURCES/MYPROJECTS/ezplatform/doc/docker COMPOSER_HOME=/tmp
 
 # First time: Install setup, and generate database dump:
-docker-compose -f doc/docker/install.yml up --abort-on-container-exit
+docker-compose -f doc/docker/install-dependencies.yml -f doc/docker/install-database.yml up --abort-on-container-exit
 
 # Boot up full setup:
 docker-compose up -d --force-recreate
@@ -116,7 +116,7 @@ From root of your projects clone of this distribution, [setup composer auth.json
 export COMPOSE_FILE=doc/docker/base-prod.yml:doc/docker/selenium.yml
 
 # First time: Install setup, and generate database dump:
-docker-compose -f doc/docker/install.yml up --abort-on-container-exit
+docker-compose -f doc/docker/install-dependencies.yml -f doc/docker/install-database.yml up --abort-on-container-exit
 
 # Boot up full setup:
 docker-compose up -d --force-recreate
@@ -130,7 +130,7 @@ docker-compose exec --user www-data app sh -c "php /scripts/wait_for_db.php; php
 
 *Tip: You can typically re run the install command to get back to a clean installation in between behat runs using:*
 ```
-docker-compose exec --user www-data app app/console ezplatform:install clean
+docker-compose exec --user www-data app composer ezplatform-install
 ```
 
 ### DFS
@@ -171,7 +171,7 @@ All the commands below should be executed on your `swarmmanager`
 
 ```sh
 # If not already done, install setup, and generate database dump :
-docker-compose -f doc/docker/install.yml up --abort-on-container-exit
+docker-compose -f doc/docker/install-dependencies.yml -f doc/docker/install-database.yml up --abort-on-container-exit
 
 # Build docker_app and docker_web images ( php and nginx )
 docker-compose -f doc/docker/base-prod.yml build --no-cache app web
@@ -227,13 +227,10 @@ image. The downside of this approach is that all eZ Platform code is copied to a
 other containers. This means bigger disk space footprint and longer loading time of the containers.
 It is also more complicated to make this approach work with docker stack so only a docker-compose example is provided.
 
-Note that if you set the environment variable COMPOSE_PROJECT_NAME to a non-default value, you'll need to change the image name in
-doc/docker/Dockerfile-distribution accordingly.
-
 ```sh
 export COMPOSE_FILE=doc/docker/base-prod.yml:doc/docker/create-dataset.yml:doc/docker/distribution.yml
 # If not already done, install setup, and generate database dump :
-docker-compose -f doc/docker/install.yml up --abort-on-container-exit
+docker-compose -f doc/docker/install-dependencies.yml -f doc/docker/install-database.yml up --abort-on-container-exit
 
 # Build docker_app and docker_web images ( php and nginx )
 # The docker_app image (which contain both php and eZ Platform) will be used as base image when creating the image which
@@ -242,6 +239,10 @@ docker-compose -f doc/docker/base-prod.yml build --no-cache app
 
 # Optional, only build the images, do not create containers
 docker-compose build --no-cache distribution
+
+# Note that if you set the environment variable COMPOSE_PROJECT_NAME to a non-default value, you'll need to use set the
+# build argument DISTRIBUTION_IMAGE when building the distribution image
+docker-compose build --no-cache --build-arg DISTRIBUTION_IMAGE=customprojectname_app distribution
 
 # Build the "distribution" and dataset images, then start the containers
 docker-compose up -d

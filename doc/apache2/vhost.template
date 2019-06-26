@@ -53,11 +53,6 @@
     # Defaults to enabled if SYMFONY_ENV is set to "dev" if env value is omitted or empty
     #if[SYMFONY_DEBUG] SetEnv SYMFONY_DEBUG "%SYMFONY_DEBUG%"
 
-    # Optional: Whether to use custom ClassLoader (autoloader) file
-    # Needs to be a valid path relative to root web/ directory
-    # Defaults to bootstrap.php.cache, or autoload.php in debug if env value is omitted or empty
-    #if[SYMFONY_CLASSLOADER_FILE] SetEnv SYMFONY_CLASSLOADER_FILE "%SYMFONY_CLASSLOADER_FILE%"
-
     # Optional: Whether to use Symfony's builtin HTTP Caching Proxy.
     # Disable it if you are using an external reverse proxy (e.g. Varnish)
     # Possible values: 0, 1 or ""
@@ -65,22 +60,24 @@
     # and if this env value is omitted or empty
     #if[SYMFONY_HTTP_CACHE] SetEnv SYMFONY_HTTP_CACHE "%SYMFONY_HTTP_CACHE%"
 
-    # Optional: Whether to use custom HTTP Cache class if SYMFONY_HTTP_CACHE is enabled
-    # Value must be a autoloadable cache class
-    # Defaults to to use provided "AppCache" if env value is omitted or empty
-    #if[SYMFONY_HTTP_CACHE_CLASS] SetEnv SYMFONY_HTTP_CACHE_CLASS "%SYMFONY_HTTP_CACHE_CLASS%"
-
     # Optional: Defines the proxies to trust
     # Needed when using Varnish as proxy, if so disable SYMFONY_HTTP_CACHE.
-    # Separate entries by a comma, example: "proxy1.example.com,proxy2.example.org"
+    # Separate entries by a comma, example: "ip1,ip2"
     # Defaults to not be set if env value is omitted or empty
     #if[SYMFONY_TRUSTED_PROXIES] SetEnv SYMFONY_TRUSTED_PROXIES "%SYMFONY_TRUSTED_PROXIES%"
+
+    # TIP: There are many more environment variables supported by eZ Platform. However unlike those listed above
+    #      they should in most cases rather be set in the environment then in vhost config to make sure cronjobs
+    #      and cli command usage takes them into account as well.
 
     <IfModule mod_rewrite.c>
         RewriteEngine On
 
         # For FastCGI mode or when using PHP-FPM, to get basic auth working.
         RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+        # Disable .php(3) and other executable extensions in the var directory
+        RewriteRule ^var/.*(?i)\.(php3?|phar|phtml|sh|exe|pl|bin)$ - [F]
 
         # Cluster/streamed files rewrite rules. Enable on cluster with DFS as a binary data handler
         RewriteCond %{ENV:BINARY_DATA_HANDLER} "dfs"
@@ -125,5 +122,11 @@
             ExpiresActive on
             ExpiresDefault "now plus 10 years"
         </LocationMatch>
+    </IfModule>
+
+    # Enable gzip encoding
+    <IfModule mod_deflate.c>
+        AddOutputFilterByType DEFLATE text/plain text/css application/json text/javascript application/javascript text/xml application/xml application/xml+rss
+        # NOTE: Using gzip on text/html can be a security issue. See http://breachattack.com.
     </IfModule>
 </VirtualHost>
