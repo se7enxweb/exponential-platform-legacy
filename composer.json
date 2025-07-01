@@ -43,7 +43,7 @@
         "ezsystems/ezplatform-standard-design": "^0.2",
         "ezsystems/ezplatform-user": "^1.0",
         "ezsystems/ezpublish-kernel": "~7.5.0",
-        "ezsystems/ezpublish-legacy": ">=2019.03",
+        "se7enxweb/ezpublish": ">=6.0.9",
         "ezsystems/legacy-bridge": "^2.1",
         "ezsystems/repository-forms": "~2.5.0",
         "ezsystems/symfony-tools": "~1.0.0",
