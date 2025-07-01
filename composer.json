@@ -1,6 +1,6 @@
 {
-    "name": "emodric/ezplatform-legacy",
-    "description": "eZ Platform distribution",
+    "name": "se7enxweb/ezplatform-legacy",
+    "description": "eZ Platform (+Legacy) distribution",
     "homepage": "https://github.com/emodric/ezplatform-legacy",
     "license": "GPL-2.0-only",
     "type": "project",
