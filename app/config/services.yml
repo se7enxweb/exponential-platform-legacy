@@ -2,6 +2,10 @@
 # https://symfony.com/doc/current/service_container.html
 parameters:
     #parameter_name: value
+    ezrepoforms.user_register.registration_groups:
+        default: [12, 34]
+    ezrepoforms.user_register.registration_content_types:
+        default: ['user']
 
 services:
     # default configuration for services in *this* file
@@ -13,3 +17,15 @@ services:
         # this means you cannot fetch services directly from the container via $container->get()
         # if you need to do this, you can override this setting on individual services
         public: false
+    EzSystems\EzPlatformUser\ConfigResolver\RegistrationContentTypeLoader:
+        alias: ezrepoforms.user_register.registration_content_type_loader.configurable
+    EzSystems\EzPlatformUser\ConfigResolver\RegistrationGroupLoader:
+        alias: ezrepoforms.user_register.registration_group_loader.configurable
+    ezrepoforms.user_register.registration_group_loader.configurable:
+        class: EzSystems\RepositoryForms\User\ConfigurableRegistrationGroupLoader
+        arguments:
+            $params: '%ezrepoforms.user_register.registration_groups%'
+    ezrepoforms.user_register.registration_content_type_loader.configurable:
+        class: EzSystems\RepositoryForms\User\ConfigurableRegistrationContentTypeLoader
+        arguments:
+            $params: '%ezrepoforms.user_register.registration_content_types%'

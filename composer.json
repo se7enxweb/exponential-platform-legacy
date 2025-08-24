@@ -36,7 +36,7 @@
         "ezsystems/ezplatform-cron": "^2.0",
         "se7enxweb/ezplatform-design-engine": "^2.0",
         "se7enxweb/ezplatform-graphql": "^1.0",
-        "se7enxweb/ezplatform-http-cache": "^0.9",
+        "se7enxweb/ezplatform-http-cache": "^0.9.5",
         "ezsystems/ezplatform-matrix-fieldtype": "^1.0",
         "se7enxweb/ezplatform-richtext": "^1.1",
         "se7enxweb/ezplatform-solr-search-engine": "^1.6",

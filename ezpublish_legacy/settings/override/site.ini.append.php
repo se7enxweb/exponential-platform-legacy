@@ -35,8 +35,10 @@ AvailableSiteAccessList[]
 AvailableSiteAccessList[]=site
 AvailableSiteAccessList[]=admin
 AvailableSiteAccessList[]=legacy_admin
-MatchOrder=uri
+MatchOrder=host
 HostMatchMapItems[]
+HostMatchMapItems[]=platform.alpha.se7enx.com;site
+HostMatchMapItems[]=edit.platform.alpha.se7enx.com;admin
 
 [DesignSettings]
 DesignLocationCache=enabled
@@ -55,4 +57,5 @@ AvailableViewModes[]=embed
 AvailableViewModes[]=embed-inline
 InlineViewModes[]
 InlineViewModes[]=embed-inline
+
 */ ?>

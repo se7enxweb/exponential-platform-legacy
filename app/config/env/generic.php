@@ -50,7 +50,7 @@ if ($dfsNfsPath = getenv('DFS_NFS_PATH')) {
 
 // Cache settings
 // If CACHE_POOL env variable is set, check if there is a yml file that needs to be loaded for it
-if (($pool = getenv('CACHE_POOL')) && file_exists(__DIR__ . "/../cache_pool/${pool}.yml")) {
+if (($pool = getenv('CACHE_POOL')) && file_exists(__DIR__ . "/../cache_pool/$pool.yml")) {
     $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../cache_pool'));
     $loader->load($pool . '.yml');
 }

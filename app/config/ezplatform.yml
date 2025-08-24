@@ -15,7 +15,7 @@ ezpublish:
     siteaccess:
         list: [site, admin, legacy_admin]
         groups:
-            site_group: [site, legacy_admin]
+            site_group: [site legacy_admin]
 
             # WARNING: Do not remove or rename this group.
             # It's used to distinguish common siteaccesses from admin ones.
@@ -23,12 +23,16 @@ ezpublish:
             admin_group: [admin]
         default_siteaccess: site
         match:
-            URIElement: 1
+            Map\Host:
+                platform.alpha.se7enx.com: site
+                edit.platform.alpha.se7enx.com: admin
+            # URIElement: 1
 
     # System settings, read in following order: `default`, <siteaccess-group>, <siteacces>, and `global`
     # TIP: For multisite installations organize shared config into SiteAccess groups,
     #      on single-site you can place shared config under "default" for simplicity as shown below.
     system:
+        debug: []
         default:
             # Cache pool service, needs to be different per repository (database) on multi repository install.
             cache_service_name: '%cache_pool%'
@@ -45,9 +49,17 @@ ezpublish:
                 purge_servers: ['%purge_server%']
                 varnish_invalidate_token: '%varnish_invalidate_token%'
 
-        #site_group:
-        #    design: main
-
+        site_group:
+            design: standard
+            content_tree_module:
+                contextual_tree_root_location_ids:
+                    - 2 # Home (Content structure)
+                    - 5 # Users
+                    - 43 # Media
+                    - 48 # Setup
+            subtree_paths:
+                content: /1/2/
+                media: /1/43/
         admin_group:
             # System languages. Note that by default, content, content types, and other data are in eng-GB locale,
             # so removing eng-GB from this list may lead to errors or content not being shown, unless you change
@@ -63,9 +75,10 @@ ezpublish:
             subtree_paths:
                 content: /1/2/
                 media: /1/43/
-
         site:
             languages: [eng-GB]
+            default_page: "/test"
+            index_page: "/test"
 
     url_alias:
         slug_converter:
@@ -73,9 +86,13 @@ ezpublish:
 
 ez_platform_standard_design:
     # makes Kernel default templates (in EzPublishCoreBundle/Resources/views) part of standard Design
-    override_kernel_templates: true
+    override_kernel_templates: false
 
 ez_publish_legacy:
     system:
+        site:
+           templating:
+               view_layout: pagelayout.html.twig
+           legacy_mode: false
         legacy_admin:
            legacy_mode: true

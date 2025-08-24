@@ -1,5 +1,17 @@
 <?php
 
+// ##########
+// 7x Exponential Platform : app.php - Front Index
+// ##########
+
+ini_set('display_errors', 'On');
+ini_set('display_startup_errors', 1);
+ini_set('error_reporting', "E_COMPILE_ERROR|E_RECOVERABLE_ERROR|E_ERROR|E_CORE_ERROR" );
+
+// phpinfo();
+
+// ##########
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Debug\Debug;
 
@@ -10,7 +22,19 @@ if (in_array('phar', stream_get_wrappers())) {
 
 // Ensure UTF-8 is used in string operations
 setlocale(LC_CTYPE, 'C.UTF-8');
+
+// Autoloads
+
 require __DIR__ . '/../vendor/autoload.php';
+
+
+// Problematic Composer Based Package Autoloads Fail above to detect this class
+
+require_once __DIR__ . '/vendor/symfony/symfony/src/Symfony/Component/VarDumper/Cloner/Data.php';
+
+// var_dump(class_exists('Symfony\\Component\\VarDumper\\Cloner\\Data', true));
+
+// ##########
 
 // Environment is taken from "SYMFONY_ENV" variable, if not set, defaults to "prod"
 $environment = getenv('SYMFONY_ENV');
