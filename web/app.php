@@ -23,14 +23,15 @@ if (in_array('phar', stream_get_wrappers())) {
 // Ensure UTF-8 is used in string operations
 setlocale(LC_CTYPE, 'C.UTF-8');
 
+// ##########
 // Autoloads
 
 require __DIR__ . '/../vendor/autoload.php';
 
-
+// ##########
 // Problematic Composer Based Package Autoloads Fail above to detect this class
 
-require_once __DIR__ . '/vendor/symfony/symfony/src/Symfony/Component/VarDumper/Cloner/Data.php';
+require_once __DIR__ . '/../vendor/symfony/symfony/src/Symfony/Component/VarDumper/Cloner/Data.php';
 
 // var_dump(class_exists('Symfony\\Component\\VarDumper\\Cloner\\Data', true));
 
