@@ -92,7 +92,7 @@ ez_publish_legacy:
     system:
         site:
            templating:
-               view_layout: pagelayout.html.twig
+               view_layout: themes/standard/pagelayout.html.twig
            legacy_mode: false
         legacy_admin:
            legacy_mode: true
