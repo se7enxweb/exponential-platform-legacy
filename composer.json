@@ -44,7 +44,7 @@
         "se7enxweb/ezplatform-standard-design": "^0.2",
         "se7enxweb/ezplatform-user": "^1.0.12",
         "se7enxweb/ezpublish-kernel": "~7.5.33",
-        "se7enxweb/ezpublish": "dev-main",
+        "se7enxweb/exponential": "dev-main",
         "se7enxweb/legacy-bridge": "^2.1",
         "se7enxweb/repository-forms": "~2.5.16",
         "se7enxweb/richtext-datatype-bundle": "^2.0.1",
