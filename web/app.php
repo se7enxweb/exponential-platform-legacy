@@ -31,7 +31,7 @@ require __DIR__ . '/../vendor/autoload.php';
 // ##########
 // Problematic Composer Based Package Autoloads Fail above to detect this class
 
-require_once __DIR__ . '/../vendor/symfony/symfony/src/Symfony/Component/VarDumper/Cloner/Data.php';
+require_once __DIR__ . '/../vendor/se7enxweb/symfony/src/Symfony/Component/VarDumper/Cloner/Data.php';
 
 // var_dump(class_exists('Symfony\\Component\\VarDumper\\Cloner\\Data', true));
 

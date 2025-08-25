@@ -11,7 +11,8 @@
         }
     ],
     "replace": {
-        "ezsystems/ezpublish-community": "*"
+        "ezsystems/ezpublish-community": "*",
+        "ezsystems/ezpublish-kernel": "*"
     },
     "autoload": {
         "psr-4": {
@@ -21,19 +22,19 @@
     },
     "autoload-dev": {
         "psr-4": { "Tests\\": "tests/" },
-        "files": [ "vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php" ]
+        "files": [ "vendor/se7enxweb/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php" ]
     },
     "require": {
         "php": "^7.1.3 || ^8.1 || ^8.2",
         "doctrine/doctrine-bundle": "^1.9.1",
         "doctrine/orm": "^2.6.3",
         "se7enxweb/doctrine-dbal-schema": "^1.0.10",
-        "se7enxweb/ez-support-tools": "^1.0",
+        "se7enxweb/ez-support-tools": "1.0.15",
         "se7enxweb/ezplatform-admin-ui": "~1.5.31",
-        "ezsystems/ezplatform-admin-ui-assets": "^4.1.0",
-        "ezsystems/ezplatform-admin-ui-modules": "~1.5.0",
-        "se7enxweb/ezplatform-core": "^1.0",
-        "ezsystems/ezplatform-cron": "^2.0",
+        "se7enxweb/ezplatform-admin-ui-assets": "^4.1.1",
+        "se7enxweb/ezplatform-admin-ui-modules": "~1.5.0",
+        "se7enxweb/ezplatform-core": "^1.0.8",
+        "se7enxweb/ezplatform-cron": "^2.0.8",
         "se7enxweb/ezplatform-design-engine": "^2.0",
         "se7enxweb/ezplatform-graphql": "^1.0",
         "se7enxweb/ezplatform-http-cache": "^0.9.5",
@@ -41,13 +42,15 @@
         "se7enxweb/ezplatform-richtext": "^1.1",
         "se7enxweb/ezplatform-solr-search-engine": "^1.6",
         "se7enxweb/ezplatform-standard-design": "^0.2",
-        "se7enxweb/ezplatform-user": "^1.0",
-        "se7enxweb/ezpublish-kernel": "~7.5.0",
+        "se7enxweb/ezplatform-user": "^1.0.12",
+        "se7enxweb/ezpublish-kernel": "~7.5.33",
         "se7enxweb/ezpublish": ">=6.0.9",
         "se7enxweb/legacy-bridge": "^2.1",
-        "se7enxweb/repository-forms": "~2.5.0",
-        "ezsystems/symfony-tools": "~1.0.0",
+        "se7enxweb/repository-forms": "~2.5.16",
         "se7enxweb/richtext-datatype-bundle": "^2.0.1",
+        "se7enxweb/symfony": "^3.4.50",
+	"se7enxweb/symfony-tools": "1.0.5",
+        "se7enxweb/symfony-cache": "3.4.48",
         "netgen/ezplatformsearch": "^1.2.2",
         "friendsofsymfony/jsrouting-bundle": "^1.6.3",
         "incenteev/composer-parameter-handler": "^2.1.3",
@@ -59,11 +62,10 @@
         "symfony/assetic-bundle": "^2.8.2",
         "symfony/monolog-bundle": "^3.3.1",
         "symfony/swiftmailer-bundle": "^3.2.4",
-        "symfony/symfony": "^3.4.18",
         "symfony/thanks": "^1.1.0",
         "symfony/webpack-encore-bundle": "^1.0.0",
         "twig/extensions": "^1.5.3",
-        "twig/twig": "^2.5",
+        "se7enxweb/twig": "^2.5",
         "white-october/pagerfanta-bundle": "^1.2.2",
         "willdurand/js-translation-bundle": "^2.6.6",
         "symfony/http-client": "*"
@@ -83,7 +85,6 @@
         "liuggio/fastest": "^1.6"
     },
     "conflict": {
-        "symfony/symfony": "3.4.9||3.4.12||3.4.16",
         "doctrine/dbal": "2.7.0",
         "twig/twig": "2.6.1",
         "symfony/webpack-encore-bundle": "1.2.0||1.2.1"
