@@ -49,7 +49,7 @@
         "se7enxweb/repository-forms": "~2.5.16",
         "se7enxweb/richtext-datatype-bundle": "^2.0.1",
         "se7enxweb/symfony": "^3.4.50",
-	"se7enxweb/symfony-tools": "1.0.5",
+	    "se7enxweb/symfony-tools": "1.0.5",
         "se7enxweb/symfony-cache": "3.4.48",
         "netgen/ezplatformsearch": "^1.2.2",
         "friendsofsymfony/jsrouting-bundle": "^1.6.3",
@@ -120,6 +120,8 @@
             "@php bin/console ezplatform:install clean"
         ]
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "config": {
         "bin-dir": "bin",
         "preferred-install": "dist",
