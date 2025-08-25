@@ -1,13 +1,13 @@
 {
-    "name": "se7enxweb/ezplatform-legacy",
+    "name": "se7enxweb/exponential-platform-legacy",
     "description": "eZ Platform (+Legacy) distribution",
-    "homepage": "https://github.com/se7enxweb/ezplatform-legacy",
+    "homepage": "https://github.com/se7enxweb/exponential-platform-legacy",
     "license": "GPL-2.0-or-later",
     "type": "project",
     "authors": [
         {
             "name": "eZ dev-team & eZ Community",
-            "homepage": "https://github.com/emodric/ezplatform-legacy/contributors"
+            "homepage": "https://github.com/se7enxweb/exponential-platform-legacy/contributors"
         }
     ],
     "replace": {
