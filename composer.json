@@ -129,6 +129,7 @@
             "ezsystems/ezpublish-legacy-installer": true,
             "php-http/discovery": true,
             "se7enxweb/ezpublish-legacy-installer": true,
+            "se7enxweb/exponential-legacy-installer": true,
             "symfony/thanks": true
         }
     },
