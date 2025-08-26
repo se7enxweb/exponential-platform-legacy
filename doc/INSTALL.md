@@ -43,9 +43,14 @@ GitHub Installation Guide
 
 - Install Exponential Platform required PHP libraries like Zeta Components and Exponential Platform extensions as specified in this project's composer.json.
 
-`cd exponentialplatformlegacy; composer install --ignore-platform-reqs;`
+`cd exponentialplatformlegacy; composer install --keep-vcs --ignore-platform-reqs;`
 
 Note: For the short term future the composer argument '--ignore-platform-reqs' is required to install the software via composer package dependencies successfully. This limitation will soon be removed in the future as we continue to update requirements within the composer package definition files for each package repostiory (tedious detail oriented work).
+
+- Run Exponential Platform Console Installation of Default Database Content Packages
+
+`php app/console ezplatform:install clean;`
+
 
 For the rest of the installation steps you will find the installation guide at https://exponential.doc.exponential.earth/display/DEVELOPER/Step%2b1_%2bInstallation.html
 
@@ -64,6 +69,11 @@ Composer Installation Guide
 `cd exponentialplatformlegacy; composer require se7enxweb/exponentialplatformlegacy:v2.5.0.0 --ignore-platform-reqs;`
 
 Note: For the short term future the composer argument '--ignore-platform-reqs' is required to install the software via composer package dependencies successfully. This limitation will soon be removed in the future as we continue to update requirements within the composer package definition files for each package repostiory (tedious detail oriented work).
+
+- Run Exponential Platform Console Installation of Default Database Content Packages
+
+`php app/console ezplatform:install clean;`
+
 
 For the rest of the installation steps you will find the installation guide at https://exponential.doc.exponential.earth/display/DEVELOPER/Step%2b1_%2bInstallation.html
 
