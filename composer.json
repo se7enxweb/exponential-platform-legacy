@@ -1,13 +1,13 @@
 {
-    "name": "se7enxweb/ezplatform-legacy",
+    "name": "se7enxweb/exponential-platform-legacy",
     "description": "eZ Platform (+Legacy) distribution",
-    "homepage": "https://github.com/se7enxweb/ezplatform-legacy",
+    "homepage": "https://github.com/se7enxweb/exponential-platform-legacy",
     "license": "GPL-2.0-or-later",
     "type": "project",
     "authors": [
         {
             "name": "eZ dev-team & eZ Community",
-            "homepage": "https://github.com/emodric/ezplatform-legacy/contributors"
+            "homepage": "https://github.com/se7enxweb/exponential-platform-legacy/contributors"
         }
     ],
     "replace": {
@@ -31,7 +31,7 @@
         "se7enxweb/doctrine-dbal-schema": "^1.0.10",
         "se7enxweb/ez-support-tools": "1.0.15",
         "se7enxweb/ezplatform-admin-ui": "~1.5.31",
-        "se7enxweb/ezplatform-admin-ui-assets": "^4.1.1",
+        "se7enxweb/ezplatform-admin-ui-assets": "^v4.2.3",
         "se7enxweb/ezplatform-admin-ui-modules": "~1.5.0",
         "se7enxweb/ezplatform-core": "^1.0.8",
         "se7enxweb/ezplatform-cron": "^2.0.8",
@@ -44,12 +44,12 @@
         "se7enxweb/ezplatform-standard-design": "^0.2",
         "se7enxweb/ezplatform-user": "^1.0.12",
         "se7enxweb/ezpublish-kernel": "~7.5.33",
-        "se7enxweb/ezpublish": ">=6.0.9",
+        "se7enxweb/exponential": "^6.0.10",
         "se7enxweb/legacy-bridge": "^2.1",
         "se7enxweb/repository-forms": "~2.5.16",
         "se7enxweb/richtext-datatype-bundle": "^2.0.1",
         "se7enxweb/symfony": "^3.4.50",
-	"se7enxweb/symfony-tools": "1.0.5",
+	    "se7enxweb/symfony-tools": "1.0.5",
         "se7enxweb/symfony-cache": "3.4.48",
         "netgen/ezplatformsearch": "^1.2.2",
         "friendsofsymfony/jsrouting-bundle": "^1.6.3",
@@ -120,6 +120,8 @@
             "@php bin/console ezplatform:install clean"
         ]
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "config": {
         "bin-dir": "bin",
         "preferred-install": "dist",
@@ -127,6 +129,7 @@
             "ezsystems/ezpublish-legacy-installer": true,
             "php-http/discovery": true,
             "se7enxweb/ezpublish-legacy-installer": true,
+            "se7enxweb/exponential-legacy-installer": true,
             "symfony/thanks": true
         }
     },
