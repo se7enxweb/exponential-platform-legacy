@@ -56,6 +56,8 @@ For the rest of the installation steps you will find the installation guide at h
 
 And at: https://exponential.doc.exponential.earth/display/DEVELOPER/Installation%2bUsing%2bComposer.html
 
+And at: https://exponential.doc.exponential.earth/display/DEVELOPER/Installation%2bGuide%2bfor%2bUnix-Based%2bSystems.html
+
 
 Composer Installation Guide
 ------------------
@@ -78,3 +80,5 @@ Note: For the short term future the composer argument '--ignore-platform-reqs' i
 For the rest of the installation steps you will find the installation guide at https://exponential.doc.exponential.earth/display/DEVELOPER/Step%2b1_%2bInstallation.html
 
 And at: https://exponential.doc.exponential.earth/display/DEVELOPER/Installation%2bUsing%2bComposer.html
+
+And at: https://exponential.doc.exponential.earth/display/DEVELOPER/Installation%2bGuide%2bfor%2bUnix-Based%2bSystems.html
