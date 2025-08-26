@@ -1,82 +1,173 @@
-# eZ Platform
-
-[![Build Status](https://img.shields.io/travis/ezsystems/ezplatform.svg?style=flat-square)](https://travis-ci.org/ezsystems/ezplatform)
-[![Downloads](https://img.shields.io/packagist/dt/ezsystems/ezplatform.svg?style=flat-square)](https://packagist.org/packages/ezsystems/ezplatform)
-[![Latest release](https://img.shields.io/github/release/ezsystems/ezplatform.svg?style=flat-square)](https://github.com/ezsystems/ezplatform/releases)
-[![License](https://img.shields.io/packagist/l/ezsystems/ezplatform.svg?style=flat-square)](LICENSE)
-
-## What is eZ Platform ?
-*eZ Platform* is a 100% open source professional CMS (Content Management System) developed by eZ Systems and the eZ Community.
-
-Current *eZ Platform v2* is the 7th generation of *eZ Publish*, it is built on top of the Symfony 3.4LTS framework (Full Stack).
-It has been in development since 2011, and integral part of the *eZ Publish Platform 5.x* as "Platform stack" since 2012.
-
-#### Abstract:
-- **Very extensible** *You can extend the application and the content model in many ways*
-- **Future & backwards compatible** *Strong BC policy on data as well as code*
-- **Multi channel by design** *Strong focus on separation between <sup>semantic</sup> content & design*
-- **Scalable** *Easily scale across multiple servers out of the box*
-- **Future proof** *Architecture designed to allow even more content scalability and performance in the future*
-- **Stable** *Built on experience building CMS since early 2000*
-- **Integration friendly** *Numerous events and signals to hook into for advanced needs*
-
-#### Further information:
-eZ Platform is 100% open source and is the foundation for the commercial *eZ Platform Enterprise Edition* software which adds advanced features for editorial teams, 100% built on top of *eZ Platform* APIs.
-
-- eZ Platform Developer Hub: [ezplatform.com](https://ezplatform.com/)
-- [eZ Platform Open Source and Enterprise Edition roadmap](http://doc.ez.no/roadmap)
-- eZ Systems (commercial products and services): [ez.no](https://ez.no/)
+# Exponential 6.0.x
+![Exponential - Powered by SQLite Logo](https://github.com/user-attachments/assets/b16a5e96-7483-4e83-b658-ac4fe92e84b8)
 
 
-## Installation
-
-NOTE: *For simplified installation, consider using [eZ Launchpad](https://ezsystems.github.io/launchpad/) which takes care of the whole server setup for you.*
-
-Installation instructions below are for installing a clean installation of eZ Platform in latest version with _no_ demo content or demo website.
-Full installation documentation is kept current [in the online docs](https://doc.ezplatform.com/en/latest/getting_started/install_using_composer/), and includes
-instructions on installing other distributions _(like [ezplatform-demo](https://github.com/ezsystems/ezplatform-demo) and [ezplatform-ee](https://github.com/ezsystems/ezplatform-ee) enterprise edition)_, or other versions.
-
-#### Prerequisites
-
-These instructions assume you have already installed:
-- PHP _(7.1 or higher)_
-- Web Server _(Recommeneded: Apache / Nginx. Use of php's built in development server is also possible)_
-- Database server _(MySQL 5.5+ or MariaDB 10.0+)_
-- [Composer](https://doc.ezplatform.com/en/latest/getting_started/about_composer/)
-- Git _(for development)_
-
-For further information [on requirements see online doc](https://doc.ezplatform.com/en/latest/getting_started/requirements_and_system_configuration/).
+![Exponential - Project Logo](https://github.com/user-attachments/assets/c2f9e973-0b4f-4e58-ac76-f0308775e3c1)
 
 
-#### Install eZ Platform _(clean distribution)_
+# Exponential Project Notice : 2025.08.12
 
-Assuming you have prerequisites sorted out, you can get the install up and running with the following commands in your terminal:
+"Please Note: This project is not associated with the original eZ Publish software or its original developer, eZ Systems or Ibexa".
 
-``` bash
-composer create-project --keep-vcs ezsystems/ezplatform ezplatform ^2
-cd ezplatform
-```
+# Exponential Project Status
 
-_Note: If  composer is installed localy instead of globally, the first command will start with `php composer.phar`._
+**Exponential has made it beyond it's end of life in 2021 and survived. Current releases are primarily aimed at easing the requirements to support current versions of the PHP language like PHP 8.2, 8.3, 8.4 and beyond php9**
 
-During the installation process you will be asked to input things like database host name, login, password, etc.
-They will be placed in `<ezplatform>/app/config/parameters.yml`.
+# Who is 7x
 
-Next you will receive instructions on how to install data into the database, and how to run a simplified dev server using the `bin/console server:run` command.
-_Tip: For a more complete and better performing setup using Apache or Nginx, read up on how to [install eZ Platform manually](https://doc.ezplatform.com/en/latest/getting_started/install_manually/)._
+[7x](https://se7enx.com) is the North American corporation driving The Continued General Use, Support, Development, Hosting, Design of Exponential Enterprise Open Source Content Management System in 2025.
 
-## Issue tracker
-Submitting bugs, improvements and stories is possible on https://jira.ez.no/browse/EZP.
-If you discover a security issue, please see how to responsibly report such issues on https://doc.ez.no/Security.
+7x has been in busines supporting Exponential Website Customers and Projects for over 24 years. 7x took over leadership of the project and it's development, support, adoption and community growth in 2023.
 
-## Backwards compatibility
-eZ Platform aims to be **100% content compatible** with eZ Publish 5.x, 4.x and 3.x *(introduced in 2002)*, meaning that content in those versions of the CMS can be upgraded using
-[online documentation](http://doc.ez.no/eZ-Publish/Upgrading) to eZ Platform.
+7x represents a serious company leading the open source community based effort to improve Exponential and it's available community resources to help users continue to adopt and use the platform to deliver the very best in web applications websites and headless applications in the cloud.
 
-Unlike eZ Publish Platform 5.x, eZ Platform does not ship with eZ Publish Legacy (4.x). But this is available by optional installing [LegacyBridge](https://github.com/ezsystems/LegacyBridge/releases/) to allow eZ Platform and eZ Publish Legacy to run together, this is only recommended for migration use cases and not for new installations.
+Previously before 2022, 7x was called Brookins Consulting who was the outspoken leader in the active Exponential Community and it's Portals for the past 24 years.
 
-## COPYRIGHT
-Copyright (C) 1999-2018 eZ Systems AS. All rights reserved.
+# What is Exponential?
 
-## LICENSE
-http://www.gnu.org/licenses/gpl-2.0.txt GNU General Public License v2
+## Recent improvements to Exponential
+Exponential (the application of interest) delivered to users worldwide by a web server (PHP built-in, Apache, Nginx, lighttpd, Among others).
+
+Exponential with a full complement of all popular and available php extensions installed like SQLite3 users no longer require a dedicated database server anymore with Exponential 6.
+
+With PHP we require composer to install Exponential software and no other software required to run
+the application. This is an incredible improvement to the kernel (core) of Exponential.
+
+## What does Exponential provide for end users building websites?
+
+Exponential is a professional PHP application framework with advanced CMS (content management system) functionality. As a CMS its most notable feature
+is its fully customizable and extendable content model.
+It is also suitable as a platform for general PHP development, allowing
+you to develop professional Internet applications, fast.
+
+Standard CMS functionality, like news publishing, e-commerce and forums is
+built in and ready for you to use. Its stand-alone libraries can be
+used for cross-platform, secure, database independent PHP projects.
+
+Exponential is database, platform and browser independent. Because it is
+browser based it can be used and updated from anywhere as long as you have
+access to the Internet.
+
+(Referred to as `legacy` in Exponential Platform 5.x and Ibexa OSS)
+
+# Requirements
+- PHP
+- (Optional) Web server. Used to deliver the website to the end user.
+- (Optional) Database server. Used to store website content (and application information)
+- Composer. Used to download Exponential software packages for installation, also notebly installs the required Zeta Components php libraries.
+- Computer to run the PHP website application.
+
+## What version of PHP is required
+
+Exponential Legacy supports PHP 8.1 -> 8.4 please use the latest version of PHP available on your OS.
+
+PHP 7 Support is deprecated but still available from our older stable and usable past releases up to version 6.0.7.
+
+# Main Exponential features
+
+- User defined content classes and objects
+- Version control
+- Advanced multi-lingual support
+- Built in search engine
+- Separation of content and presentation layer
+- Fine grained role based permissions system
+- Content approval and scheduled publication
+- Multi-site support
+- Multimedia support with automatic image conversion and scaling
+- RSS feeds
+- Contact forms
+- Built in webshop
+- Flexible workflow management system
+- Full support for Unicode
+- Template engine
+- A headless CRUD REST API
+- Database abstraction layer supporting MySQL, SQLite, Postgres and Oracle
+- MVC architecture
+- Support for the latest Image and Video File Formats (webp, webm, png, jpeg, etc)
+- Support for highly available and scalable configurations (multi-server clusters)
+- XML handling and parsing library
+- SOAP communication library
+- Localisation and internationalisation libraries
+- Several other reusable libraries
+- SDK (software development kit)
+  and full documentation
+- Support for the latest Image and Video File Formats (webp, webm, png, jpeg, etc)
+- plugin API with thousands of open-source extensions available, including:
+    - content rating and commenting
+    - landing page management
+    - advanced search engine
+    - wysiwyg rich-text editor
+    - in-site content editing
+    - content geolocation
+
+# Installation
+
+Read [doc/INSTALL.md](doc/INSTALL.md) or go to [exponential.doc.exponential.one/eZ-Publish/Technical-manual/6.x/Installation.html](https://exponential.doc.exponential.one/eZ-Publish/Technical-manual/6.x/Installation.html)
+
+# Issue tracker
+
+Submitting bugs, improvements and stories is possible on [https://github.com/se7enxweb/exponential/issues](https://github.com/se7enxweb/exponential/issues)
+
+If you discover a [security issue](SECURITY.md), please responsibly report such issues via email to security@exponential.one
+
+# Where to get more help
+
+Exponential documentation: [exponential.doc.exponential.one/eZ-Publish](https://exponential.doc.exponential.one/eZ-Publish)
+
+Exponential Community forums: [share.exponential.one/forums](https://share.exponential.one/forums)
+
+Exponential Project Website: [exponential.one](https://exponential.one)
+
+Support Exponential! Project extension support Website: [support.exponential.one](https://support.exponential.one)
+
+Share Exponential! Telegram Community Support Chat
+[https://t.me/exponential](https://t.me/exponential)
+
+# How to contribute new features and bugfixes into Exponential
+
+Everyone is encouraged to [contribute](CONTRIBUTING.md) to the development of new features and bugfixes for Exponential 6.
+
+# Donate and make a support subscription. 
+## Help fund Exponential!
+
+You can support this project and it's community by making a donation of what ever size donation you feel willing to give to the project.
+
+If we have helped you and you would like to support the project with a subscription of financial support you may. This is what helps us deliver more new features and improvements to the software. Support Exponential with a subscription today!
+
+A wide range of donation options avaialble at [sponsor.se7enx.com](https://sponsor.se7enx.com), [paypal.com/paypalme/7xweb](https://www.paypal.com/paypalme/7xweb) and [github.com/sponsors/se7enxweb](https://github.com/sponsors/se7enxweb)
+
+# What is eZ Platform?
+
+Exponential's technological successor, eZ Platform, is a highly extensible, pure Content Managment Platform built upon the ideals core to Symfony. It provides the same flexible content model at it's core like Exponential, and has a growing amount of additional features outside the traditional CMS scope provided by means of "Bundles"
+extending it.
+
+It is built on top of the full Symfony Framework, giving developers access to "standard" tools for rapid web & application development.
+
+eZ Platform in some users view suffered a slow road to a stable datatype compatability with existing custom implementations of Exponential. Today all of these conserns are now gone with a solid choice left leaving both Exponential Platform and eZ Platform as serious contenders to be carefully considered. [Netgen's Media Website Core software](https://github.com/netgen/media-site) represents a much more modern eZ Platform core powered by Ibexa OSS. If your going to choose; Choose wisely.
+
+Further reading on: [https://ezplatform.com/](http://web.archive.org/web/20200328165348/https://ezplatform.com/)
+
+# What is Ibexa DXP OSS?
+
+Ibexa DXP OSS, the rebranded and evolved successor of eZ Platform, is a modern and highly extensible Digital Experience Platform built on the robust Symfony framework. Staying true to the foundational principles of Exponential, it retains the flexible content model at its core while expanding its capabilities to include a broad spectrum of features that go beyond traditional CMS functionality. These features are delivered through "Bundles," providing developers with powerful tools for creating advanced web and digital solutions.
+
+Built on top of Symfony, Ibexa DXP OSS offers developers access to standardized tools for efficient and scalable web and application development. Its architecture supports rapid innovation while ensuring compatibility with modern development standards.
+
+Ibexa DXP OSS has matured into a robust and versatile platform, serving as a serious option for organizations seeking a cutting-edge CMS solution. For those looking to build modern web experiences, tools like Netgen's Media Website Core further enhance Ibexa OSS, showcasing its potential as a flexible and future-ready platform.
+
+If you're making a choice, choose with care—and consider the power and flexibility of Ibexa DXP OSS.
+
+Further reading: [ibexa.co](https://ibexa.co/)
+
+Documentation for Ibexa DXP: [doc.ibexa.co/en/latest/](https://doc.ibexa.co/en/latest/)
+
+Ibexa DXP Developer Portal: [developers.ibexa.co](https://developers.ibexa.co/)
+
+
+# License
+
+Exponential is GNU GPL licensed. You can no longer choose between the GNU GPL and the Exponential Professional License. The GNU GPL gives you the right to use, modify and redistribute Exponential under certain conditions. The GNU GPL license is distributed with the software, see the file LICENSE. It is also available at http://www.gnu.org/licenses/gpl.txt
+
+Using Exponential under the terms of the GNU GPL is free of charge.
+
+The Professional License is no longer available. This effectively makes Exponential GNU GPL ONLY. 
