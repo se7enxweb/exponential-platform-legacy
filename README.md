@@ -1,8 +1,5 @@
 # Exponential Platform 2.5.0.x
 
-![Exponential Platform - Powered by SQLite Logo](https://github.com/user-attachments/assets/b16a5e96-7483-4e83-b658-ac4fe92e84b8)
-![Exponential Platform - Project Logo](https://github.com/user-attachments/assets/c2f9e973-0b4f-4e58-ac76-f0308775e3c1)
-
 # Exponential Platform Project Notice : 2025.08.12
 
 "Please Note: This project is not associated with the original eZ Publish software or its original developer, eZ Systems or Ibexa".
