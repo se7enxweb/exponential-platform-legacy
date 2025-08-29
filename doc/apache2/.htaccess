@@ -1,0 +1,55 @@
+#########################################
+# Exponential Platform Legacy .htaccess
+#########################################
+
+##
+
+# Rewrite engine for front controllers
+RewriteEngine On
+
+# Don't rewrite existing files or directories
+#RewriteCond %{REQUEST_FILENAME} -f [OR]
+# RewriteCond %{REQUEST_FILENAME} -d
+# RewriteRule ^ - [L]
+
+## RewriteRule ^api/ index_rest.php [L]
+## RewriteRule ^index_rest\.php - [L]
+RewriteRule ^([^/]+/)?content/treemenu.* index_treemenu.php [L]
+RewriteRule ^var/([^/]+/)?storage/images(-versioned)?/.* - [L]
+RewriteRule ^var/([^/]+/)?cache/(texttoimage|public)/.* - [L]
+RewriteRule ^design/[^/]+/(stylesheets|images|javascript|fonts)/.* - [L]
+RewriteRule ^share/icons/.* - [L]
+RewriteRule ^extension/[^/]+/design/[^/]+/(stylesheets|flash|images|lib|javascripts?)/.* - [L]
+RewriteRule ^packages/styles/.+/(stylesheets|images|javascript)/[^/]+/.* - [L]
+RewriteRule ^packages/styles/.+/thumbnail/.* - [L]
+RewriteRule ^var/storage/packages/.* - [L]
+
+#  Makes it possible to placed your favicon at the root of your
+#  eZ Publish instance. It will then be served directly.
+RewriteRule ^favicon\.ico - [L]
+#  Uncomment the line below if you want you favicon be served from the standard design.
+#  You can customize the path to favicon.ico by replacing design/standard/images/favicon.ico
+#  by the adequate path.
+#RewriteRule ^favicon\.ico /design/standard/images/favicon.ico [L]
+RewriteRule ^design/standard/images/favicon\.ico - [L]
+
+# Give direct access to robots.txt for use by crawlers (Google, Bing, Spammers..)
+RewriteRule ^robots\.txt - [L]
+
+# Allow direct access to legacy assets and design folders
+RewriteCond %{REQUEST_URI} ^/(assets|bundles|design|extension)/
+RewriteRule ^ - [L]
+
+#
+#####
+#
+
+# Route everything else to app.php (prod)
+# RewriteRule ^(.*)$ app.php [QSA,L]
+
+# Optional: enable dev front controller if needed
+RewriteRule ^(.*)$ app_dev.php [QSA,L]
+
+###
+# Fin
+#
