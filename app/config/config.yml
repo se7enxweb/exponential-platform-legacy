@@ -166,4 +166,4 @@ jms_translation:
             output_format: "xliff"
 
 fos_js_routing:
-    routes_to_expose: [ez_location_view, ez_urlalias]
+    routes_to_expose: ['_ezpublishLocation', 'ez_location_view', 'ez_urlalias']
