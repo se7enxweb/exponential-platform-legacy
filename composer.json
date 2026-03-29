@@ -30,7 +30,7 @@
         "se7enxweb/oss": "~3.3.0",
         "se7enxweb/legacy-bridge": "^3.0",
         "se7enxweb/symfony": "5.4.x-dev",
-        "symfony/flex": "^1.17|^2",
+        "se7enxweb/symfony-flex": "^1.0|^2.0",
         "symfony/console": "5.4.*",
         "symfony/dotenv": "5.4.*",
         "symfony/framework-bundle": "5.4.*",
@@ -72,7 +72,7 @@
         "allow-plugins": {
             "composer/package-versions-deprecated": true,
             "ibexa/post-install": true,
-            "symfony/flex": true,
+            "se7enxweb/symfony-flex": true,
             "symfony/runtime": true,
             "phpstan/extension-installer": true,
             "se7enxweb/exponential-legacy-installer": true,
