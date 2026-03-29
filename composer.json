@@ -46,7 +46,8 @@
         "se7enxweb/ezplatform-richtext": "~2.3.28",
         "se7enxweb/mediata-ezpage-fieldtype-bundle": "~3.3",
         "se7enxweb/ezmigrationbundle": "^6.0",
-        "se7enxweb/ezseobundle": "~3.3"
+        "se7enxweb/ezseobundle": "~3.3",
+        "lolautruche/ez-core-extra-bundle": "^3.3"
     },
     "require-dev": {
         "symfony/debug-bundle": "5.4.*",
