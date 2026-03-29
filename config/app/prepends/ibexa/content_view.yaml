@@ -5,15 +5,6 @@ system:
                 ng_category:
                     template: "themes/app/content/views/full/ng_category.html.twig"
                     controller: ngsite.controller.check_redirect
-                    queries:
-                        subtree:
-                            query_type: "SiteAPI:Location/Subtree"
-                            max_per_page: "@=fieldValue('page_limit').value > 0 ? fieldValue('page_limit').value : 12"
-                            page: "@=queryParam('page', 1)"
-                            parameters:
-                                content_type: "@=split(fieldValue('children_class_filter_include').text)"
-                                relative_depth: "@=fieldValue('fetch_subtree').bool ? null : 1"
-                                sort: "@=location"
                     match:
                         Identifier\ContentType: ng_category
                 ng_landing_page:
@@ -41,11 +32,6 @@ system:
                     template: "@MediataEzpageFieldtype/flow_page.html.twig"
                     match:
                         Identifier\ContentType: flow_page
-                match_all:
-                    redirect:
-                        target: '@=namedLocation("homepage")'
-                        permanent: false
-                    match: ~
             payload:
                 common:
                     template: "themes/app/content/views/payload/{content_type}.html.twig"
@@ -144,9 +130,20 @@ system:
                     match: ~
             listitem_with_intro:
                 common:
-                    extends: listitem/common
+                    template: "themes/app/content/views/listitem/{content_type}.html.twig"
                     params:
                         with_intro: true
+                    match:
+                        Identifier\ContentType:
+                            - file
+                            - ng_article
+                            - ng_audio
+                            - ng_banner
+                            - ng_blog_post
+                            - ng_gallery
+                            - ng_news
+                            - ng_recipe
+                            - ng_video
                 match_all:
                     template: "themes/app/content/views/listitem.html.twig"
                     params:
@@ -181,9 +178,26 @@ system:
                     match: ~
             standard_with_intro:
                 common:
-                    extends: standard/common
+                    template: "themes/app/content/views/standard/{content_type}.html.twig"
                     params:
                         with_intro: true
+                    match:
+                        Identifier\ContentType:
+                            - file
+                            - image
+                            - ng_article
+                            - ng_audio
+                            - ng_banner
+                            - ng_blog_post
+                            - ng_category
+                            - ng_contact_form
+                            - ng_frontpage
+                            - ng_gallery
+                            - ng_htmlbox
+                            - ng_landing_page
+                            - ng_news
+                            - ng_recipe
+                            - ng_video
                 match_all:
                     template: "themes/app/content/views/standard.html.twig"
                     params:
@@ -204,9 +218,12 @@ system:
                     match: ~
             card_with_intro:
                 common:
-                    extends: card/common
+                    template: "themes/app/content/views/card/{content_type}.html.twig"
                     params:
                         with_intro: true
+                    match:
+                        Identifier\ContentType:
+                            - ng_job_position
                 match_all:
                     template: "themes/app/content/views/card.html.twig"
                     params:
