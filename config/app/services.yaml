@@ -1,0 +1,57 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../../src/'
+        exclude:
+            - '../../src/ezpublish_legacy/'
+            - '../../src/DependencyInjection/'
+            - '../../src/Entity/'
+            - '../../src/Kernel.php'
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+
+    ezpublish.siteaccess:
+        class: eZ\Publish\Core\MVC\Symfony\SiteAccess
+        arguments: ['%ezpublish.siteaccess.default.name%', 'uninitialized']
+        public: true
+
+    # Public aliases for legacy search plugin (ezplatformsearch) which uses direct container->get() calls
+    ezpublish.spi.search:
+        alias: ezpublish.spi.search_engine
+        public: true
+
+    ezpublish.api.persistence_handler:
+        alias: ezpublish.spi.persistence.cache
+        public: true
+
+    netgen_site_installer.media_site:
+        class: App\Installer\NetgenSiteInstaller
+        calls:
+            - [setInstallerDataPath, ['%kernel.project_dir%/vendor/se7enxweb/media-site-data/netgen-media']]
+            - [setStoragePath, ['public/var/site/storage']]
+        parent: EzSystems\PlatformInstallerBundle\Installer\DbBasedInstaller
+        tags:
+            - { name: ezplatform.installer, type: netgen-media }
+
+    netgen_site_installer.media_site_clean:
+        class: App\Installer\NetgenSiteInstaller
+        calls:
+            - [setInstallerDataPath, ['%kernel.project_dir%/vendor/se7enxweb/media-site-data/netgen-media-clean']]
+            - [setStoragePath, ['public/var/site/storage']]
+        parent: EzSystems\PlatformInstallerBundle\Installer\DbBasedInstaller
+        tags:
+            - { name: ezplatform.installer, type: netgen-media-clean }

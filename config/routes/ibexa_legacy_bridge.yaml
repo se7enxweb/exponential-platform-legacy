@@ -1,0 +1,2 @@
+ibexa_legacy_bridge:
+    resource: '@EzPublishLegacyBundle/Resources/config/routing.yml'

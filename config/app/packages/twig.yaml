@@ -1,0 +1,5 @@
+twig:
+    globals:
+        # Backward-compat alias: legacy templates still use 'ezpublish' but
+        # the kernel CoreExtension now registers the GlobalHelper as 'ezplatform'.
+        ezpublish: '@ezpublish.templating.global_helper'

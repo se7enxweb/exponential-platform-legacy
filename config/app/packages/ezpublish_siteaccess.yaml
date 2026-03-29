@@ -1,0 +1,110 @@
+parameters:
+    ngsite.admin_siteaccess_name: adminui
+
+ezpublish:
+    siteaccess:
+        default_siteaccess: fh_eng
+        list:
+            - fh_eng
+            - bold_eng
+            - bold_ger
+            - '%ngsite.admin_siteaccess_name%'
+            - ngadminui
+            - legacy_admin
+        groups:
+            admin_group:
+                - '%ngsite.admin_siteaccess_name%'
+            ngadmin_group:
+                - ngadminui
+                - legacy_admin
+            frontend_group:
+                - fh_eng
+                - bold_eng
+                - bold_ger
+            fh_group:
+                - fh_eng
+            bold_group:
+                - bold_eng
+                - bold_ger
+    system:
+        admin_group:
+            design: ngadmin
+            languages:
+                - eng-GB
+            session:
+                name: eZSESSID
+        ngadmin_group:
+            design: ngadminui
+            languages:
+                - eng-GB
+            session:
+                name: eZSESSID
+        frontend_group:
+            page_layout: "themes/app/pagelayout.html.twig"
+        fh_group:
+            design: fh
+            translation_siteaccesses:
+                - fh_eng
+            content:
+                tree_root:
+                    location_id: '%ngsite.fh_group.locations.tree_root.id%'
+            session:
+                name: eZSESSID
+        bold_group:
+            design: bold
+            translation_siteaccesses:
+                - bold_eng
+                - bold_ger
+            content:
+                tree_root:
+                    location_id: '%ngsite.bold_group.locations.tree_root.id%'
+            session:
+                name: eZSESSID
+        fh_eng:
+            languages:
+                - eng-GB
+        bold_eng:
+            languages:
+                - eng-GB
+        bold_ger:
+            languages:
+                - ger-DE
+
+netgen_layouts:
+    design_list:
+        app:
+            - app
+    system:
+        frontend_group:
+            design: app
+
+ezdesign:
+    design_list:
+        bold:
+            - bold
+            - app
+            - common
+            - standard
+        fh:
+            - fh
+            - app
+            - common
+            - standard
+        app:
+            - app
+            - common
+            - standard
+        ngadmin:
+            - ngadmin
+            - admin
+            - common
+        admin:
+            - common
+        ngadminui:
+            - ngadminui
+            - common
+
+ez_publish_legacy:
+    system:
+        legacy_admin:
+            legacy_mode: true

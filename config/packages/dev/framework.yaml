@@ -1,0 +1,8 @@
+framework:
+    profiler:
+        collect: true
+
+ezpublish:
+    router:
+        default_router:
+            non_siteaccess_aware_routes: [_wdt, _profiler]

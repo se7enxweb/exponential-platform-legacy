@@ -1,0 +1,40 @@
+ezpublish:
+    repositories:
+        default:
+            fields_groups:
+                list:
+                    - content
+                    - meta
+                    - extras
+                    - link1
+                    - link2
+                    - item_1
+                    - item_2
+                    - item_3
+                    - item_4
+                    - item_5
+                    - item_6
+                    - item_7
+                    - item_8
+
+    system:
+        frontend_group:
+            page_layout: "@EzPublishCore/pagelayout.html.twig"
+            user:
+                login_template: "user/login_minimal.html.twig"
+            field_templates:
+                - { template: "themes/app/content/parts/content_fields.html.twig", priority: 5000 }
+            search_view:
+                full:
+                    default:
+                        template: "themes/app/pages/search.html.twig"
+                        match: []
+
+netgen_tags:
+    system:
+        frontend_group:
+            tag_view:
+                template: "themes/app/pages/tag.html.twig"
+                related_content_list:
+                    limit: 6
+                    return_content_info: false

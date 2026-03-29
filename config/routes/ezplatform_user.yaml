@@ -1,0 +1,2 @@
+ezplatform.user:
+    resource: '@EzPlatformUserBundle/Resources/config/routing.yaml'

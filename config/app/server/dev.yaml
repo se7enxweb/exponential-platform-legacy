@@ -1,0 +1,3 @@
+imports:
+    - { resource: dev/app.yaml }
+    - { resource: dev/ezpublish_siteaccess.yaml }

@@ -1,0 +1,18 @@
+parameters:
+    ngsite.default.search.content_types:
+        - ng_article
+        - ng_audio
+        - ng_blog_post
+        - ng_category
+        - ng_contact_form
+        - ng_job_position
+        - ng_landing_page
+        - ng_news
+        - ng_video
+        - file
+
+    ngsite.default.lazy_loading.enabled: true
+
+    ngsite.default.locations.site_info.id: 65
+
+    app.testing.site_domain: '%env(TEST_DOMAIN)%'

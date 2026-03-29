@@ -1,0 +1,41 @@
+parameters:
+    ngsite.default.template.user.activate: "@@ezdesign/user/activate.html.twig"
+    ngsite.default.template.user.activate_done: "@@ezdesign/user/activate_done.html.twig"
+    ngsite.default.template.user.activate_sent: "@@ezdesign/user/activate_sent.html.twig"
+    ngsite.default.template.user.activate_admin_activation_pending: "@@ezdesign/user/activate_admin_activation_pending.html.twig"
+
+    ngsite.default.template.user.forgot_password: "@@ezdesign/user/forgot_password.html.twig"
+    ngsite.default.template.user.forgot_password_sent: "@@ezdesign/user/forgot_password_sent.html.twig"
+
+    ngsite.default.template.user.register: "@@ezdesign/user/register.html.twig"
+    ngsite.default.template.user.register_success: "@@ezdesign/user/register_success.html.twig"
+
+    ngsite.default.template.user.reset_password: "@@ezdesign/user/reset_password.html.twig"
+    ngsite.default.template.user.reset_password_done: "@@ezdesign/user/reset_password_done.html.twig"
+
+    ngsite.default.template.user.mail.activate: "@@ezdesign/emails/user/activate.html.twig"
+    ngsite.default.template.user.mail.activate_already_active: "@@ezdesign/emails/user/activate_already_active.html.twig"
+    ngsite.default.template.user.mail.activate_disabled: "@@ezdesign/emails/user/activate_disabled.html.twig"
+    ngsite.default.template.user.mail.activate_not_registered: "@@ezdesign/emails/user/activate_not_registered.html.twig"
+    ngsite.default.template.user.mail.activate_admin_activation_pending: "@@ezdesign/emails/user/activate_admin_activation_pending.html.twig"
+    ngsite.default.template.user.mail.activate_admin_activation_required: "@@ezdesign/emails/user/activate_admin_activation_required.html.twig"
+
+    ngsite.default.template.user.mail.forgot_password: "@@ezdesign/emails/user/forgot_password.html.twig"
+    ngsite.default.template.user.mail.forgot_password_disabled: "@@ezdesign/emails/user/forgot_password_disabled.html.twig"
+    ngsite.default.template.user.mail.forgot_password_not_active: "@@ezdesign/emails/user/forgot_password_not_active.html.twig"
+    ngsite.default.template.user.mail.forgot_password_not_registered: "@@ezdesign/emails/user/forgot_password_not_registered.html.twig"
+    ngsite.default.template.user.mail.forgot_password_password_changed: "@@ezdesign/emails/user/forgot_password_password_changed.html.twig"
+
+    ngsite.default.template.user.mail.welcome: "@@ezdesign/emails/user/welcome.html.twig"
+
+    ngsite.default.template.errors.403: "@@ezdesign/errors/403.html.twig"
+    ngsite.default.template.errors.404: "@@ezdesign/errors/404.html.twig"
+    ngsite.default.template.errors.410: "@@ezdesign/errors/410.html.twig"
+    ngsite.default.template.errors.500: "@@ezdesign/errors/500.html.twig"
+    ngsite.default.template.errors.default: "@@ezdesign/errors/default.html.twig"
+
+    ngsite.default.template.pagerfanta.ngsite: "themes/app/modules/pagerfanta/ngsite.html.twig"
+    ngsite.default.template.menu: "themes/app/modules/knp_menu/menu.html.twig"
+
+    ngsite.default.template.search: "themes/app/pages/search.html.twig"
+    ngsite.adminui.template.search: "themes/admin/pages/search.html.twig"
