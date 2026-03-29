@@ -37,21 +37,3 @@ services:
     ezpublish.api.persistence_handler:
         alias: ezpublish.spi.persistence.cache
         public: true
-
-    netgen_site_installer.media_site:
-        class: App\Installer\NetgenSiteInstaller
-        calls:
-            - [setInstallerDataPath, ['%kernel.project_dir%/vendor/se7enxweb/media-site-data/netgen-media']]
-            - [setStoragePath, ['public/var/site/storage']]
-        parent: EzSystems\PlatformInstallerBundle\Installer\DbBasedInstaller
-        tags:
-            - { name: ezplatform.installer, type: netgen-media }
-
-    netgen_site_installer.media_site_clean:
-        class: App\Installer\NetgenSiteInstaller
-        calls:
-            - [setInstallerDataPath, ['%kernel.project_dir%/vendor/se7enxweb/media-site-data/netgen-media-clean']]
-            - [setStoragePath, ['public/var/site/storage']]
-        parent: EzSystems\PlatformInstallerBundle\Installer\DbBasedInstaller
-        tags:
-            - { name: ezplatform.installer, type: netgen-media-clean }
