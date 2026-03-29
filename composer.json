@@ -43,11 +43,11 @@
         "se7enxweb/ezplatform-rest": "~1.3.27",
         "se7enxweb/ezplatform-content-forms": "~1.3.19",
         "se7enxweb/ezplatform-http-cache": "~2.3.19",
-        "se7enxweb/ezplatform-richtext": "~2.3.28",
+        "se7enxweb/ezplatform-richtext": "~2.3.26",
         "se7enxweb/mediata-ezpage-fieldtype-bundle": "~3.3",
         "se7enxweb/ezmigrationbundle": "^6.0",
         "se7enxweb/ezseobundle": "~3.3",
-        "lolautruche/ez-core-extra-bundle": "^4.0",
+        "lolautruche/ez-core-extra-bundle": "^3.3",
         "contextualcode/ezplatform-alloyeditor-element-width": "^2.0"
     },
     "require-dev": {
