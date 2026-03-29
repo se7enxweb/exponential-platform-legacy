@@ -1,13 +1,8 @@
 # Upgrade instructions
 
 Please visit our online documentation for instructions:
-https://doc.ezplatform.com/en/latest/releases/updating_ez_platform/
+https://platform.doc.exponential.earth/update_and_migration/update_ibexa_dxp/
 
 For legacy upgrade procedures, please go to our legacy documentation:
-* Go to https://doc.ez.no/display/MAIN
-* Click on the version you have
-* Go to "Installation and Upgrade Guides"
-* Select "Upgrade"
+https://exponential.doc.exponential.earth
 
-For instance for 5.2 upgrade go to:
-https://doc.ez.no/display/EZP52/Upgrade

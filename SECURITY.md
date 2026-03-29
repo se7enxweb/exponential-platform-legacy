@@ -7,6 +7,9 @@ currently being supported with security updates.
 
 | Version | Supported          |
 | ------- | ------------------ |
+| 5.0.x   | :white_check_mark: |
+| 4.6.x   | :white_check_mark: |
+| 3.3.x   | :white_check_mark: |
 | 2.5.x   | :white_check_mark: |
 | 1.x.x   | :x:                |
 
@@ -14,7 +17,7 @@ currently being supported with security updates.
 
 Use this section to tell people how to report a vulnerability.
 
-Please responsibly report security issues to security@se7enx.com 
+Please responsibly report security issues to security@exponential.earth
 You can expect your contact to be returned within 1 business day.
 
 We rely on our users to responsibly submit a

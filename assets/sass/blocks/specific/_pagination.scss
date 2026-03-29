@@ -1,0 +1,57 @@
+.ajax-navigation.ajax-navigation, .page-navigation {
+    ul {
+        margin: 1rem 0;
+        display: flex;
+        padding-left: 0;
+        list-style: none;
+        border-radius: 0;
+        justify-content: center;
+        & > li {
+            margin: 0 1px 0 0;
+
+            &.current {
+                opacity: 1;
+                .page-link, .ajax-nav-link {
+                    background: $gray-87;
+                    color: $white;
+                }
+            }
+            .page-link, .ajax-nav-link, a {
+                @include text-button;
+                position: relative;
+                display: block;
+                border: 2px solid $gray-87;
+                margin-inline: -2px;
+                padding: .9em 1.2em .75em;
+            }
+            a.page-link, a.ajax-nav-link {
+                &:hover {
+                    background: $gray-87;
+                    color: $white;
+
+                    i {
+                        @include icon-color(white);
+                    }
+                }
+            }
+
+            i.icon-angles-left {
+                @extend %icon-angles-down;
+                width: 0.8rem;
+                height: 0.8rem;
+                transform: rotate(90deg);
+                position: relative;
+                top: 2px;
+            }
+
+            i.icon-angles-right {
+                @extend %icon-angles-down;
+                width: 0.8rem;
+                height: 0.8rem;
+                transform: rotate(-90deg);
+                position: relative;
+                top: 2px;
+            }
+        }
+    }
+}

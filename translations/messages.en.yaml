@@ -1,0 +1,65 @@
+ngsite.layout.search: "Search"
+ngsite.layout.search.button: "Go"
+ngsite.layout.search_site: "Search %site_name%"
+ngsite.layout.site_frontpage: "%site_name% front page"
+ngsite.layout.meta_generator: "Exponential Platform Nexus powered by 7x"
+ngsite.layout.powered_by: "Powered by"
+ngsite.layout.cookie_settings: "Cookie settings"
+ngsite.layout.cookie_settings.accepted: "Accepted"
+ngsite.layout.cookie_settings.not_accepted: "Not accepted"
+ngsite.layout.sponsored: 'Sponsored'
+
+ngsite.read_more_about: 'Read more about'
+
+ngsite.search.placeholder: 'Search'
+ngsite.search.button: 'Search'
+
+ngsite.tags.tag: 'Tag'
+ngsite.tags.related_tags: "Related tags"
+
+ngsite.search.results: 'Search for "%searchText%" returned %searchCount% matches'
+ngsite.search.no_results: 'No results were found when searching for "%searchText%".'
+ngsite.search.did_you_mean: 'Did you mean'
+ngsite.search.item.last_updated: 'Last updated'
+
+ngsite.search.no_results.check_spelling: 'Check spelling of keywords.'
+ngsite.search.no_results.change_keywords: 'Try changing some keywords (eg, "car" instead of "cars").'
+ngsite.search.no_results.less_specific_keywords: 'Try searching with less specific keywords.'
+ngsite.search.no_results.reduce_keywords: 'Reduce number of keywords to get more results.'
+
+ngsite.collected_info.success_text: 'Thank you for your feedback.'
+ngsite.collected_info.button.send: 'Send form'
+ngsite.collected_info.information_collected: 'The following information was collected'
+ngsite.collected_info.mandatory_field: 'Mandatory field'
+ngsite.collected_info.form_errors.enter_valid_value: 'Enter a valid'
+ngsite.collected_info.form_errors.not_checked: 'not checked'
+
+ngsite.layout.recipe.min: 'min'
+ngsite.layout.recipe.cal: 'cal'
+ngsite.layout.recipe.preparation_time: 'Preparation time'
+ngsite.layout.recipe.fat: 'fat'
+ngsite.layout.recipe.carbs: 'carbs'
+ngsite.layout.recipe.protein: 'protein'
+
+ngsite.card.apply_now: 'Apply now'
+ngsite.job_application.job_overview: 'Job overview'
+ngsite.job_application.requirements: 'Requirements'
+ngsite.job_application.responsibilities: 'Responsibilities'
+ngsite.job_application.deadline: 'Application deadline'
+
+ngsite.skip_to_main_content: 'Skip to main content'
+
+ngsite.visit_us_on_twitter: 'Visit us on Twitter'
+ngsite.visit_us_on_linkedin: 'Visit us on LinkedIn'
+ngsite.visit_us_on_facebook: 'Visit us on Facebook'
+ngsite.visit_us_on_instagram: 'Visit us on Instagram'
+
+ngsite.search.submit_search: 'Submit search'
+
+ngsite.share_on_twitter: 'Share on Twitter'
+ngsite.share_on_linkedin: 'Share on LinkedIn'
+ngsite.share_on_facebook: 'Share on Facebook'
+
+ngsite.change_language: 'Change language'
+
+ngsite.main_navigation: 'Main navigation'

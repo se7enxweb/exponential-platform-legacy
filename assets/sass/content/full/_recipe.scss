@@ -1,0 +1,64 @@
+/* recipe full view */
+.full-recipe-info {
+    .recipe-calories {
+        @include text-1_5;
+        text-align: center;
+    }
+
+    .recipe-serving-info {
+        list-style-type: none;
+        margin: 2rem 0 0;
+        padding: 0;
+        text-align: center;
+        display: flex;
+        justify-content: space-around;
+        li {
+            @include text-1_5;
+            display: inline-block;
+            margin: 0 .7em;
+            .tt {
+                display: block;
+                @include text-0_875;
+                color: $gray-64;
+            }
+        }
+    }
+
+    .recipe-time {
+        @include text-1_5;
+        margin: 2rem 0 0;
+        padding: 2rem 0 0;
+        border-top: 2px dashed rgba($black, .12);
+        text-align: center;
+    }
+
+    .social-share-wrapper {
+        .social-share {
+            display: block;
+            .social {
+                display: flex;
+                justify-content: center;
+                li {
+                    margin: 0;
+                }
+            }
+        }
+    }
+}
+
+.recipe-details {
+    i {
+        width: 0.75rem;
+        height: 0.75rem;
+        position: relative;
+        top: 3px;
+
+        &.icon-clock {
+            @extend %icon-clock;
+        }
+
+        &.icon-fire {
+            @extend %icon-fire;
+        }
+    }
+}

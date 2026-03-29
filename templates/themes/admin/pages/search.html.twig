@@ -1,0 +1,116 @@
+{% extends "@ezdesign/ui/layout.html.twig" %}
+
+{% block body_class %}ez-search-view{% endblock %}
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">Content Search</li>
+        </ol>
+    </nav>
+{% endblock %}
+
+{% block page_title %}
+    {% include '@ezdesign/ui/page_title.html.twig' ignore missing with {
+        title: 'Content Search',
+        icon_name: 'search'
+    } %}
+{% endblock %}
+
+{% block content %}
+    <div class="row align-items-stretch ez-main-row">
+        {% block left_sidebar %}
+            {{ parent() }}
+        {% endblock left_sidebar %}
+
+        <div class="container ez-content-container">
+            <div class="ez-header mt-5">
+                <div class="container">
+                    <form action="{{ path('ezplatform.search') }}" method="get" class="d-flex align-items-center">
+                        <div class="input-group">
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="searchText"
+                                value="{{ search_text }}"
+                                placeholder="Search content&hellip;"
+                                aria-label="Search content"
+                            />
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-primary">
+                                    <svg class="ez-icon ez-icon--small ez-icon--light">
+                                        <use xlink:href="{{ ez_icon_path('search') }}"></use>
+                                    </svg>
+                                    Search
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <section class="container ez-container mt-4">
+                {% if search_text is not empty %}
+                    {% if pager is not null and pager.nbResults > 0 %}
+                        <p class="text-muted mb-3">
+                            Found <strong>{{ pager.nbResults }}</strong> result(s) for &ldquo;{{ search_text }}&rdquo;
+                        </p>
+
+                        {% if pager.haveToPaginate() %}
+                            {{ pagerfanta(pager, 'ez') }}
+                        {% endif %}
+
+                        <div class="ez-scrollable-table-wrapper">
+                            <table class="ez-table table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="ez-table__header-cell ez-table__header-cell--has-icon"></th>
+                                        <th class="ez-table__header-cell">Name</th>
+                                        <th class="ez-table__header-cell">Modified</th>
+                                        <th class="ez-table__header-cell">Type</th>
+                                        <th class="ez-table__header-cell">URI</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for search_hit in pager.currentPageResults.searchHits %}
+                                        {% set item = search_hit.valueObject %}
+                                        {% set location = item %}
+                                        {% set content = item.content %}
+                                        <tr>
+                                            <td class="ez-table__cell ez-table__cell--has-icon">
+                                                <svg class="ez-icon ez-icon--small">
+                                                    <use xlink:href="{{ ez_content_type_icon(content.contentInfo.contentTypeIdentifier) }}"></use>
+                                                </svg>
+                                            </td>
+                                            <td class="ez-table__cell">
+                                                <a href="{{ path('_ez_content_view', { 'contentId': content.contentInfo.id, 'locationId': location.id }) }}">
+                                                    {{ content.name }}
+                                                </a>
+                                            </td>
+                                            <td class="ez-table__cell">
+                                                <time>{{ content.contentInfo.modificationDate|date('d M Y') }}</time>
+                                            </td>
+                                            <td class="ez-table__cell">{{ content.contentInfo.contentTypeIdentifier }}</td>
+                                            <td class="ez-table__cell">{{ ez_path(location.innerLocation) }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {% if pager.haveToPaginate() %}
+                            {{ pagerfanta(pager, 'ez') }}
+                        {% endif %}
+
+                    {% elseif search_text is not empty %}
+                        <div class="alert alert-info">
+                            No results found for &ldquo;{{ search_text }}&rdquo;.
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <p class="text-muted">Enter a search term above to find content.</p>
+                {% endif %}
+            </section>
+        </div>
+    </div>
+{% endblock %}

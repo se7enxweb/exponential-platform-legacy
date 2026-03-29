@@ -1,0 +1,39 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 2020
+  },
+  "extends": ["airbnb", "prettier"],
+  "rules": {
+    "indent":0,
+    "max-len": 0,
+    "no-plusplus": 0,
+    "no-console": "off",
+    "func-names": 0,
+    "no-unused-expressions": ["error", {
+        "allowShortCircuit": true,
+        "allowTernary": true
+      }
+    ],
+    "no-param-reassign": ["error", {
+        "props": false
+    }],
+    "comma-dangle": 0,
+    "react/require-default-props": 0,
+    "react/forbid-prop-types": 0,
+    "react/jsx-filename-extension": 0,
+    "react/jsx-indent": 0,
+    "react/jsx-no-bind": 0,
+    "react/jsx-wrap-multilines": 0,
+    "react/no-array-index-key": 0,
+    "jsx-a11y/href-no-hash": 0
+  },
+  "plugins": [
+    "react",
+    "jsx-a11y",
+    "import"
+  ],
+  "env": {
+    "browser": true,
+    "node": true
+  }
+}

@@ -1,0 +1,137 @@
+{# content \Netgen\IbexaSiteApi\API\Values\Content #}
+
+{% extends '@EzPublishCore/content_fields.html.twig' %}
+
+{% block ngenhancedlink_field %}
+{% apply spaceless %}
+    {% if not ez_field_is_empty(content, field) and parameters.available %}
+        {% set css_class = parameters.css_class|default('') %}
+        <div {{ block('field_attributes') }}>
+            {% if field.value.isTypeInternal %}
+                {% set label = fieldSettings.enableLabelInternal is defined and fieldSettings.enableLabelInternal and field.value.label ? field.value.label : ngsite_content_name(field.value.reference) %}
+                {% set suffix = field.value.suffix|default('') %}
+                {% if field.value.isTargetModal %}
+                    {{ ng_view_content_embedded(
+                        'modal_trigger',
+                        {
+                            'contentId': field.value.reference,
+                            'params': {
+                                'label': label,
+                                'suffix': suffix,
+                                'refererLocationId': app.request.attributes.get('locationId'),
+                                'css_class': css_class
+                            }
+                        })
+                    }}
+                {% elseif field.value.isTargetEmbed %}
+                    {{ ng_view_content_embedded(
+                        'link_embed',
+                        {
+                            'contentId': field.value.reference,
+                            'params': {
+                                'label': label,
+                                'suffix': suffix,
+                                'refererLocationId': app.request.attributes.get('locationId'),
+                            }
+                        })
+                    }}
+                {% else %}
+                    {% set href = path('ez_urlalias', { 'contentId': field.value.reference }) ~ suffix %}
+                    <a href="{{ href }}"{% if css_class is not empty %} class="{{ css_class }}"{% endif %}{% if field.value.isTargetLinkInNewTab %} target="_blank"{% endif %}>{{ label }}</a>
+                {% endif %}
+            {% elseif field.value.isTypeExternal %}
+                {% set label = fieldSettings.enableLabelExternal is defined and fieldSettings.enableLabelExternal and field.value.label ? field.value.label : field.value.reference %}
+
+                {% if field.value.isTargetModal %}
+                    <div>{{ label }}</div>
+                {% elseif field.value.isTargetEmbed %}
+                    <div>{{ label }}</div>
+                {% else %}
+                    <a href="{{ field.value.reference }}" {% if css_class is not empty %} class="{{ css_class }}"{% endif %}{% if field.value.isTargetLinkInNewTab %} target="_blank"{% endif %}>{{ label }}</a>
+                {% endif %}
+            {% endif %}
+        </div>
+    {% endif %}
+{% endapply %}
+{% endblock %}
+
+{% block ezimage_field %}
+{% apply spaceless %}
+    {% if not ez_field_is_empty(content, field) %}
+        {% set link_href = parameters.link_href|default('') %}
+        {% set link_target = parameters.link_target|default('') %}
+        {% set link_title = parameters.alt_text|default(field.value.alternativeText ?: ('ngsite.read_more_about'|trans ~ ' ' ~ content.name)) %}
+        {% set use_image_size = parameters.use_image_size|default(false) %}
+        {% set image_alias = ez_image_alias(field, versionInfo, parameters.alias|default('original')) %}
+        {% set alt_text = parameters.alt_text|default(field.value.alternativeText ?: '') %}
+        {% set lazy_loading = ezplatform.configResolver.getParameter('lazy_loading.enabled', 'ngsite') %}
+        {% if parameters.lazy_loading is defined %}
+            {% set lazy_loading = parameters.lazy_loading %}
+        {% endif %}
+
+        {% if link_href is not empty %}
+            <a href="{{ link_href }}"
+                {% if link_target is not empty %} target="{{ link_target }}" {% if link_target == '_blank' %}rel="nofollow noopener noreferrer"{% endif %} {% endif %}
+                {% if parameters.link_id|default('') is not empty %} id="{{ parameters.link_id }}" {% endif %}
+                {% if parameters.link_class|default('') is not empty %} class="{{ parameters.link_class }}" {% endif %}
+                {% if parameters.link_title|default('') is not empty %} title="{{ parameters.link_title }}" {% endif %}
+                title="{{ link_title }}"
+            >
+        {% elseif parameters.ezlink|default({}) is not empty %}
+            <a
+                href="{{ parameters.ezlink.href }}"
+                {% if parameters.ezlink.title is defined %} title="{{ parameters.ezlink.title|e('html_attr') }}"{% endif %}
+                {% if parameters.ezlink.target is defined %} target="{{ parameters.ezlink.target|e('html_attr') }}"{% endif %}
+            >
+        {% endif %}
+
+        <img
+            src="{% if image_alias %}{{ asset(image_alias.uri) }}{% else %}//:0{% endif %}"
+            {% if lazy_loading %}loading="lazy"{% endif %}
+            {% if parameters.image_class|default('') is not empty %} class="{{ parameters.image_class }}" {% endif %}
+            {% if use_image_size and image_alias.width|default('') is not empty %} width="{{ image_alias.width }}" {% endif %}
+            {% if use_image_size and image_alias.height|default('') is not empty %} height="{{ image_alias.height }}" {% endif %}
+            alt="{{ alt_text }}"
+            {{ block('field_attributes') }} />
+
+        {% if link_href is not empty or parameters.ezlink|default({}) is not empty %}
+            </a>
+        {% endif %}
+
+    {% elseif parameters.force_tag|default(false) %}
+        <img src="//:0" alt="" />
+    {% endif %}
+{% endapply %}
+{% endblock %}
+
+{% block ezgmaplocation_field %}
+{% apply spaceless %}
+    {% set map_height = map_height|default(500) %}
+    {% set zoom = zoom|default(false) %}
+    {% set map_type = map_type|default(false) %}
+
+    {% set latitude = field.value.latitude|default(false) %}
+    {% set longitude = field.value.longitude|default(false) %}
+
+    {% include
+        'themes/app/parts/google_maps.html.twig' with {
+            'container_id': field.id,
+            'latitude': latitude,
+            'longitude': longitude,
+            'map_height': map_height,
+            'zoom': zoom,
+            'map_type': map_type
+        }
+    %}
+{% endapply %}
+{% endblock %}
+
+{% block ezbinaryfile_field %}
+{% apply spaceless %}
+    {% if not ez_field_is_empty(content, field) %}
+        <a href="{{ path('ngsite_download', { contentId: contentInfo.id, fieldId: field.id }) }}" {{ block('field_attributes') }}>
+            {{ field.value.fileName }}
+        </a>&nbsp;({{ field.value.fileSize|ez_file_size(1) }})
+    {% endif %}
+{% endapply %}
+{% endblock %}

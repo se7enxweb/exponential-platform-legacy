@@ -1,16 +1,16 @@
-# Exponential Platform 2.5.0.x
+# Exponential Platform Nexus 1.2.0.x
 
-# Exponential Platform Project Notice : 2025.08.12
+# Exponential Platform Nexus Project Notice : 2025.08.12
 
 "Please Note: This project is not associated with the original eZ Publish software or its original developer, eZ Systems or Ibexa".
 
-# Exponential Platform Project Status
+# Exponential Platform Nexus Project Status
 
-**Exponential Platform has made it beyond it's end of life in 2021 and survived. Current releases are primarily aimed at easing the requirements to support current versions of the PHP language like PHP 8.2, 8.3, 8.4 and beyond php9**
+**Exponential Platform Nexus has made it beyond it's end of life in 2021 and survived. Current releases are primarily aimed at easing the requirements to support current versions of the PHP language like PHP 8.2, 8.3, 8.4 and beyond php9**
 
 # Who is 7x
 
-[7x](https://se7enx.com) is the North American corporation driving The Continued General Use, Support, Development, Hosting, Design of Exponential Platform Enterprise Open Source Content Management System in 2025.
+[7x](https://se7enx.com) is the North American corporation driving The Continued General Use, Support, Development, Hosting, Design of Exponential Platform Nexus Enterprise Open Source Content Management System in 2025.
 
 7x has been in busines supporting Exponential Platform Website Customers and Projects for over 24 years. 7x took over leadership of the project and it's development, support, adoption and community growth in 2023.
 
@@ -18,17 +18,19 @@
 
 Previously before 2022, 7x was called Brookins Consulting who was the outspoken leader in the active Exponential Platform Community and it's Portals for the past 24 years.
 
-# What is Exponential Platform?
+# What is Exponential Platform Nexus?
 
-## Recent improvements to Exponential Platform
-Exponential Platform (the application of interest) delivered to users worldwide by a web server (PHP built-in, Apache, Nginx, lighttpd, Among others).
+## Recent improvements to Exponential Platform Nexus
+Exponential Platform Nexus (the application of interest) delivered to users worldwide by a web server (PHP built-in, Apache, Nginx, lighttpd, Among others).
 
-With PHP we require composer to install Exponential Platform software and no other software required to run
-the application. This is an incredible improvement to the kernel (core) of Exponential Platform.
+With PHP we require composer to install Exponential Platform Nexus software and no other software required to run
+the application. This is an incredible improvement to the kernel (core) of Exponential Platform Nexus.
 
-## What does Exponential Platform provide for end users building websites?
+Exponential Platform Nexus 1.2.0.x Releases are 100% Compatible with Ibexa OSS v4 + Netgen Suite + Exponential 6.x + Symfony 5.4
 
-Exponential Platform is a professional PHP application framework with advanced CMS (content management system) functionality. As a CMS its most notable feature
+## What does Exponential Platform Nexus provide for end users building websites?
+
+Exponential Platform Nexus is a professional PHP application framework with advanced CMS (content management system) functionality. As a CMS its most notable feature
 is its fully customizable and extendable content model.
 It is also suitable as a platform for general PHP development, allowing
 you to develop professional Internet applications, fast.
@@ -37,7 +39,7 @@ Standard CMS functionality, like news publishing and forums is
 built in and ready for you to use. Its stand-alone libraries can be
 used for cross-platform, secure, database independent PHP projects.
 
-Exponential Platform is database, platform and browser independent. Because it is
+Exponential Platform Nexus is database, platform and browser independent. Because it is
 browser based it can be used and updated from anywhere as long as you have
 access to the Internet.
 
@@ -47,14 +49,14 @@ access to the Internet.
 - PHP
 - (Optional) Web server. Used to deliver the website to the end user.
 - (Required) Database server. Used to store website content (and application information)
-- Composer. Used to download Exponential Platform software packages for installation, also notebly installs the required Zeta Components php libraries.
+- Composer. Used to download Exponential Platform Nexus software packages for installation, also notebly installs the required Zeta Components php libraries.
 - Computer to run the PHP website application.
 
 ## What version of PHP is required
 
-Exponential Platform Legacy supports PHP 7.4 -> 8.4 please use the latest version of PHP available on your OS.
+Exponential Platform Nexus supports PHP 7.4 -> 8.4 please use the latest version of PHP available on your OS.
 
-# Main Exponential Platform features
+# Main Exponential Platform Nexus features
 
 - User defined content classes and objects
 - Version control
@@ -107,23 +109,23 @@ Exponential Platform documentation: [exponential.doc.exponential.one/display/DEV
 
 Exponential Platform Community forums: [share.exponential.one/forums](https://share.exponential.one/forums) and [share.exponential.one/forums/exponential-platform](https://share.se7enx.com/forums/exponential-platform)
 
-Exponential Platform Project Website: [exponential.one](https://platform.exponential.one)
+Exponential Platform Nexus Project Website: [exponential.one](https://platform.exponential.one)
 
 Support Exponential Platform! Project extension support Website: [support.exponential.one](https://support.exponential.one)
 
 Share Exponential! Telegram Community Support Chat
 [https://t.me/exponentialcms](https://t.me/exponentialcms)
 
-# How to contribute new features and bugfixes into Exponential Platform
+# How to contribute new features and bugfixes into Exponential Platform Nexus
 
-Everyone is encouraged to [contribute](CONTRIBUTING.md) to the development of new features and bugfixes for Exponential Platform 6.
+Everyone is encouraged to [contribute](CONTRIBUTING.md) to the development of new features and bugfixes for Exponential Platform Nexus 6.
 
 # Donate and make a support subscription. 
-## Help fund Exponential Platform!
+## Help fund Exponential Platform Nexus!
 
 You can support this project and it's community by making a donation of what ever size donation you feel willing to give to the project.
 
-If we have helped you and you would like to support the project with a subscription of financial support you may. This is what helps us deliver more new features and improvements to the software. Support Exponential Platform with a subscription today!
+If we have helped you and you would like to support the project with a subscription of financial support you may. This is what helps us deliver more new features and improvements to the software. Support Exponential Platform Nexus with a subscription today!
 
 A wide range of donation options avaialble at [sponsor.se7enx.com](https://sponsor.se7enx.com), [paypal.com/paypalme/7xweb](https://www.paypal.com/paypalme/7xweb) and [github.com/sponsors/se7enxweb](https://github.com/sponsors/se7enxweb)
 
@@ -157,10 +159,9 @@ Ibexa DXP Developer Portal: [developers.ibexa.co](https://developers.ibexa.co/)
 
 # License
 
-Exponential Platform is GNU GPL licensed.
+Exponential Platform Nexus is GNU GPL licensed.
 
-You can not choose between the GNU GPL and the Ibexa Professional License. The GNU GPL gives you the right to use, modify and redistribute Exponential Platform under certain conditions. The GNU GPL license is distributed with the software, see the file LICENSE. It is also available at http://www.gnu.org/licenses/gpl.txt
+You can choose between the GNU GPL and the Ibexa Professional License. The GNU GPL gives you the right to use, modify and redistribute Exponential Platform Nexus under certain conditions. The GNU GPL license is distributed with the software, see the file LICENSE. It is also available at http://www.gnu.org/licenses/gpl.txt
 
-Using Exponential Platform under the terms of the GNU GPL is free of charge.
+Using Exponential Platform Nexus under the terms of the GNU GPL is free of charge.
 
-This effectively makes Exponential Platform GNU GPL ONLY. 

@@ -1,0 +1,81 @@
+.features-style-3 {
+    .article-header {
+        .text {
+            width: calc((100% / 3) * 2);
+            @include media-breakpoint-down(md) {
+                width: 100%;
+            }
+            + * {
+                margin-top: 2.5rem;
+            }
+        }
+        .title {
+            @include text-3;
+            + .short {
+                margin-top: 2rem;
+            }
+        }
+        .short {
+            @include text-1_125;
+        }
+        .actions {
+            display: flex;
+            gap: 2rem;
+            @include media-breakpoint-down(sm) {
+                flex-direction: column;
+            }
+        }
+        .bg-color-black & {
+            .title {
+                color: $primary;
+            }
+        }
+        & + .features-grid {
+            margin-top: 4rem;
+        }
+    }
+
+    .features-grid {
+        .features-grid-item {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            .item-image {
+                border-top-left-radius: 1rem;
+                border-top-right-radius: 1rem;
+                overflow: hidden;
+                padding-bottom: 56.25%;
+                position: relative;
+                height: 0;
+                img {
+                    object-fit: cover;
+                    object-position: center;
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+            .item-content {
+                padding: 2rem;
+                background-color: $secondary;
+                flex: 1 1 auto;
+                border-bottom-left-radius: 1rem;
+                border-bottom-right-radius: 1rem;
+                color: $black;
+            }
+            .item-title {
+                @include text-1_5;
+                a {
+                    @extend %item-title-link;
+                }
+                & + .item-short {
+                    margin-top: 1rem;
+                }
+            }
+            * + .item-actions {
+                margin-top: 1rem;
+            }
+        }
+    }
+}
+

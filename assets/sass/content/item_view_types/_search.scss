@@ -1,0 +1,64 @@
+/* search result item */
+.vl7 {
+    background: $secondary;
+    padding: 1.5rem;
+    .article-content {
+        display: flex;
+        gap: 1.5rem;
+    }
+    .image {
+        width: 12.5rem;
+        + .article-content-text {
+            padding-left: $gap;
+            padding-right: 4rem;
+        }
+        @include media-breakpoint-down(lg) {
+            display: none;
+        }
+        a {
+            display: block;
+        }
+    }
+    .article-content-text {
+        position: relative;
+        flex: 1;
+    }
+    .title {
+        @include text-1_5;
+        font-weight: 900;
+        margin: 0 0 .25rem;
+        a {
+            @extend %item-title-link;
+        }
+    }
+    .short {
+        color: $gray-54;
+        .bg-color-black & {
+            color: $white;
+        }
+        p {
+            margin: 0;
+        }
+    }
+    .info {
+        @extend %item-header-info;
+    }
+    &.ng-video {
+        .image {
+            position: relative;
+            &::after {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: radial-gradient(ellipse at center, rgba(255, 255, 255, .75) 0%,rgba(255, 255, 255, 0) 25%);
+                pointer-events: none;
+            }
+            .article-icon {
+                @include absolute($top: 50%, $left: 50%);
+                transform: translate(-50%, -50%);
+                z-index: 1;
+                pointer-events: none;
+            }
+        }
+    }
+}

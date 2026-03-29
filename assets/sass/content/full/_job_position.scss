@@ -1,0 +1,11 @@
+.vf1.ng-job-position {
+    .full-page-intro {
+        & + .job-details {
+            margin-top: 4rem;
+        }
+    }
+    .job-details {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+}

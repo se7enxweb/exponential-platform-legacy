@@ -1,0 +1,24 @@
+{# content \Netgen\IbexaSiteApi\API\Values\Content #}
+{# location \Netgen\IbexaSiteApi\API\Values\Location #}
+
+{% import "themes/app/content/macros/links.html.twig" as links %}
+
+
+<article class="view-type view-type-{{ view_type }} ng-banner vl4">
+    {% if not content.fields.image.empty %}
+        <figure class="image">
+            {{ links.image_link(content, 'image', 'i480') }}
+        </figure>
+    {% endif %}
+
+    <div class="article-content">
+        <header class="article-header">
+            <h3 class="title">
+                {{ links.content_link(content, content.fields.title.value.text) }}
+            </h3>
+        </header>
+        <div class="short">
+            {{ ng_render_field(content.fields.description) }}
+        </div>
+    </div>
+</article>

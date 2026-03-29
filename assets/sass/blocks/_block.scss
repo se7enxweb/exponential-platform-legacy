@@ -1,0 +1,52 @@
+.ngl-block {
+    // whitespace sizes
+    $sizes: (
+        small: 2rem,
+        medium: 4rem,
+        large: 8rem,
+    );
+    $sm-sizes: (
+        small: 1rem,
+        medium: 2rem,
+        large: 4rem,
+    );
+    @each $keyMap, $valueMap in $sizes {
+        &.whitespace-top-#{$keyMap} {
+              padding-top: $valueMap;
+        }
+        &.whitespace-bottom-#{$keyMap} {
+              padding-bottom: $valueMap;
+        }
+    }
+    &.with-bg-image {
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+    }
+
+    /* background colors */
+    &.bg-color-primary {
+        background-color: $primary;
+    }
+    &.bg-color-secondary {
+        background-color: $secondary;
+    }
+    &.bg-color-white {
+        background-color: $white;
+    }
+    &.bg-color-black {
+        background-color: $black;
+        color: $white;
+    }
+
+    @include media-breakpoint-down(sm) {
+        @each $keyMap, $valueMap in $sm-sizes {
+            &.whitespace-top-#{$keyMap} {
+                  padding-top: $valueMap;
+            }
+            &.whitespace-bottom-#{$keyMap} {
+                  padding-bottom: $valueMap;
+            }
+        }
+    }
+}

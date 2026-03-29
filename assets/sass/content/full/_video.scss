@@ -1,0 +1,30 @@
+/* video full view */
+.vf3 {
+    .full-video-player {
+        margin: 0 0 2rem;
+        .video-js {
+            .vjs-control-bar {
+                top: auto;
+            }
+        }
+    }
+    .full-video-header {
+        .title {
+            @include text-2_5;
+            margin: 0 0 .25rem;
+        }
+        time {
+            @include text-0_75;
+            font-weight: 900;
+            margin: 0 0 .25rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        & + .body {
+            margin-top: 2rem;
+        }
+    }
+    .body {
+        @include text-base;
+    }
+}

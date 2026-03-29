@@ -1,0 +1,65 @@
+ngsite.layout.search: "Suche"
+ngsite.layout.search.button: "Los"
+ngsite.layout.search_site: "Suche %site_name%"
+ngsite.layout.site_frontpage: "%site_name% Titelseite"
+ngsite.layout.meta_generator: "Ibexa-Plattform, unterstützt von Netgen"
+ngsite.layout.powered_by: "Unterstützt durch"
+ngsite.layout.cookie_settings: "Cookie Einstellungen"
+ngsite.layout.cookie_settings.accepted: "Akzeptiert"
+ngsite.layout.cookie_settings.not_accepted: "Nicht akzeptiert"
+ngsite.layout.sponsored: 'Gesponsert'
+
+ngsite.read_more_about: 'Mehr erfahren über'
+
+ngsite.search.placeholder: 'Suche'
+ngsite.search.button: 'Suche'
+
+ngsite.tags.tag: 'Tag'
+ngsite.tags.related_tags: "Verwandte Tags"
+
+ngsite.search.results: 'Suche nach "%searchText%" ergab %searchCount% Treffer'
+ngsite.search.no_results: 'Es wurden keine Ergebnisse gefunden bei der Suche nach "%searchText%".'
+ngsite.search.did_you_mean: 'Meinten Sie'
+ngsite.search.item.last_updated: 'Zuletzt geändert'
+
+ngsite.search.no_results.check_spelling: 'Überprüfen Sie die Rechtschreibung der Keywords.'
+ngsite.search.no_results.change_keywords: 'Versuchen Sie, einige Keywords zu ändern (z. B. "Auto" anstelle von "Autos").'
+ngsite.search.no_results.less_specific_keywords: 'Versuchen Sie, mit weniger spezifischen Keywords zu suchen.'
+ngsite.search.no_results.reduce_keywords: 'Reduzieren Sie die Anzahl der Keywords, um mehr Ergebnisse zu erhalten.'
+
+ngsite.collected_info.success_text: 'Wir danken Ihnen für Ihr Feedback.'
+ngsite.collected_info.button.send: 'Formular senden'
+ngsite.collected_info.information_collected: 'Die folgenden Informationen wurden gesammelt'
+ngsite.collected_info.mandatory_field: 'Pflichtfeld'
+ngsite.collected_info.form_errors.enter_valid_value: 'Geben Sie einen gültigen Wert an'
+ngsite.collected_info.form_errors.not_checked: 'nicht ausgewählt'
+
+ngsite.layout.recipe.min: 'min'
+ngsite.layout.recipe.cal: 'kal'
+ngsite.layout.recipe.preparation_time: 'Preparation time'
+ngsite.layout.recipe.fat: 'Fett'
+ngsite.layout.recipe.carbs: 'Kohlenhydrate'
+ngsite.layout.recipe.protein: 'Protein'
+
+ngsite.card.apply_now: 'Jetzt bewerben'
+ngsite.job_application.job_overview: 'Jobübersicht'
+ngsite.job_application.requirements: 'Anforderungen'
+ngsite.job_application.responsibilities: 'Verantwortlichkeiten'
+ngsite.job_application.deadline: 'Bewerbungsschluss'
+
+ngsite.skip_to_main_content: 'Zum Hauptinhalt springen'
+
+ngsite.visit_us_on_twitter: 'Besuchen Sie uns auf Twitter'
+ngsite.visit_us_on_linkedin: 'Besuchen Sie uns auf LinkedIn'
+ngsite.visit_us_on_facebook: 'Besuchen Sie uns auf Facebook'
+ngsite.visit_us_on_instagram: 'Besuchen Sie uns auf Instagram'
+
+ngsite.search.submit_search: 'Suche abschicken'
+
+ngsite.share_on_twitter: 'Auf Twitter teilen'
+ngsite.share_on_linkedin: 'Auf LinkedIn teilen'
+ngsite.share_on_facebook: 'Auf Facebook teilen'
+
+ngsite.change_language: 'Sprache ändern'
+
+ngsite.main_navigation: 'Hauptnavigation'

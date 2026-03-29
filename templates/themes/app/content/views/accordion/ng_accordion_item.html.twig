@@ -1,0 +1,18 @@
+{# content \Netgen\IbexaSiteApi\API\Values\Content #}
+{# location \Netgen\IbexaSiteApi\API\Values\Location #}
+
+
+
+<article class="view-type view-type-{{ view_type }} ng-accordion-item vl10">
+    <h3 class="title">
+        <a role="button" href="#collapse-{{ location.id }}" role="button" class="collapsed" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapse-{{ location.id }}">
+            {{ ng_render_field(content.fields.title)}}
+        </a>
+    </h3>
+
+    <div id="collapse-{{ location.id }}" class="collapse" aria-labelledby="heading-{{ location.id }}" data-bs-parent=".list-accordion">
+        <div class="short">
+            {{ ng_render_field(content.fields.description) }}
+        </div>
+    </div>
+</article>

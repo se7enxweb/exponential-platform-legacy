@@ -1,0 +1,31 @@
+.section-title {
+    .title {
+        @include text-base;
+        text-transform: uppercase;
+        font-weight: 700;
+        position: relative;
+        &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            height: .625em;
+            background: rgba($black, .04);
+        }
+        .bg-color-black & {
+            &::before {
+                background: rgba($white, .2);
+            }
+        }
+    }
+
+    a {
+        position: relative;
+    }
+
+    &.section-title-centered {
+        text-align: center;
+    }
+}

@@ -1,15 +1,15 @@
-const path = require('path');
 const bundles = require('./var/encore/ez.config.js');
 const eZConfigManager = require('./ez.webpack.config.manager.js');
 const configManagers = require('./var/encore/ez.config.manager.js');
+const configSetups = require('./var/encore/ez.config.setup.js');
+const path = require('path');
 
 module.exports = (Encore) => {
-    Encore.setOutputPath('web/assets/ezplatform/build')
+    Encore.setOutputPath('public/assets/ezplatform/build')
         .setPublicPath('/assets/ezplatform/build')
         .addExternals({
             react: 'React',
             'react-dom': 'ReactDOM',
-            jquery: 'jQuery',
             moment: 'moment',
             'popper.js': 'Popper',
             alloyeditor: 'AlloyEditor',
@@ -17,10 +17,13 @@ module.exports = (Encore) => {
         })
         .enableSassLoader()
         .enableReactPreset()
-        .enableSingleRuntimeChunk()
-	.configureCssLoader(function(config) {
-	    config.url = false;
-	});
+        .enableSingleRuntimeChunk();
+
+    configSetups.forEach((configSetupPath) => {
+        const setupConfig = require(configSetupPath);
+
+        setupConfig(Encore);
+    });
 
     bundles.forEach((configPath) => {
         const addEntries = require(configPath);
@@ -32,11 +35,16 @@ module.exports = (Encore) => {
 
     eZConfig.name = 'ezplatform';
 
+    eZConfig.module.rules[4].oneOf[1].use[1].options.url = false;
+    eZConfig.module.rules[1].oneOf[1].use[1].options.url = false;
+
     configManagers.forEach((configManagerPath) => {
         const configManager = require(configManagerPath);
 
         configManager(eZConfig, eZConfigManager);
     });
+
+    Encore.reset();
 
     return eZConfig;
 };

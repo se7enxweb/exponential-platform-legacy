@@ -1,0 +1,41 @@
+.about-style-3 {
+    .eyebrow-title {
+        @include text-1_5;
+        margin-bottom: 1rem;
+    }
+
+    .title {
+        @include text-3;
+    }
+
+    .image {
+        overflow: hidden;
+        display: block;
+        position: relative;
+        width: 100%;
+        width: 13rem;
+
+        & + * {
+            margin-top: 2rem;
+        }
+    }
+    .article-info {
+        display: flex;
+        flex-direction: column;
+        .short {
+            @include text-1_125;
+            margin-bottom: auto;
+            & + .actions {
+                margin-top: 2.5rem;
+            }
+        }
+        .actions {
+            display: flex;
+            gap: 2rem;
+            @include media-breakpoint-down(sm) {
+                flex-direction: column;
+            }
+        }
+    }
+
+}

@@ -1,0 +1,31 @@
+.sticky-sidebar-wrapper {
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: -180px;
+    margin-top: 0;
+
+    @include media-breakpoint-down(xl) {
+        left: -90px;
+    }
+
+    @include media-breakpoint-down(lg) {
+        position: static;
+        margin-top: 0;
+    }
+}
+
+.sticky-sidebar {
+    position: sticky;
+    top: 100px;
+    margin-bottom: 100px;
+
+    @include media-breakpoint-down(lg) {
+        position: static;
+        text-align: center;
+        margin-bottom: 20px;
+        height: auto;
+    }
+}
+
+

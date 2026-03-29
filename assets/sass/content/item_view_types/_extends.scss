@@ -1,0 +1,84 @@
+%item-header-info {
+    @extend %clearfix;
+    margin: 0;
+    @include text-0_875;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    color: $gray-54;
+    gap: .25rem 1.25rem;
+    .bg-color-black & {
+        color: $white;
+    }
+    > span,
+    > time,
+    > a {
+        display: inline-block;
+        + span,
+        + time,
+        + a {
+            position: relative;
+            &::before {
+                content: '';
+                width: .25rem;
+                height: .25rem;
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                left: -.75rem;
+                background-color: $black;
+                .vl2 &,
+                .bg-color-black & {
+                    background-color: $white;
+                }
+            }
+        }
+        + .recipe-details {
+            margin-left: 0;
+        }
+    }
+    a {
+        transition: border-color .15s, color .15s;
+        border-bottom: .125rem solid transparent;
+        margin-top: .125rem;
+        &:hover {
+            border-bottom-color: currentColor;
+        }
+    }
+    .recipe-details {
+        display: flex;
+        color: $black;
+        width: 100%;
+        margin: .25rem 0 0 0;
+        i {
+            font-size: .8461538462em;
+            margin: 0 0 .1538461538em;
+        }
+        & > span {
+            padding: .125rem .25rem;
+            background-color: $primary;
+            border-radius: 2px;
+            .bg-color-primary & {
+                background-color: $white;
+            }
+        }
+        & > span + span {
+            margin-left: .5rem;
+        }
+        &::before {
+            display: none;
+        }
+    }
+    @include media-breakpoint-down(xl) {
+        @include text-0_75;
+    }
+}
+
+%item-title-link {
+    transition: border-color .15s;
+    border-bottom: 4px solid transparent;
+    &:hover {
+        color: inherit;
+        border-bottom-color: $primary;
+    }
+}

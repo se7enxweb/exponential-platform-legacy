@@ -1,0 +1,171 @@
+/* btn overrides */
+
+.btn {
+    border-width: 2px;
+    border-style: solid;
+    text-decoration: none;
+    @include media-breakpoint-down(sm) {
+        &:not(&.btn-link) {
+            width: 100%;
+        }
+    }
+    &.btn-primary {
+        background: $primary;
+        border-color: $primary;
+        color: $black;
+        &:active,
+        &.active,
+        &:not(:disabled):not(.disabled):active,
+        &:not(:disabled):not(.disabled).active,
+        &:hover,
+        &:focus-visible {
+            background: darken($primary, 10%);
+            border-color: darken($primary, 10%);
+            color: $black;
+        }
+        .bg-color-primary & {
+            background: $black;
+            border-color: $black;
+            color: $white;
+            &:active,
+            &.active,
+            &:not(:disabled):not(.disabled):active,
+            &:not(:disabled):not(.disabled).active,
+            &:hover,
+            &:focus-visible {
+                background: lighten($black, 20%);
+                border-color: lighten($black, 20%);
+                color: $white;
+            }
+        }
+    }
+    &.btn-secondary {
+        background: $black;
+        border-color: $black;
+        color: $white;
+        &:active,
+        &.active,
+        &:not(:disabled):not(.disabled):active,
+        &:not(:disabled):not(.disabled).active,
+        &:hover,
+        &:focus-visible {
+            background: lighten($black, 20%);
+            border-color: lighten($black, 20%);
+            color: $white;
+        }
+        .bg-color-black &,
+        .bg-with-media & {
+            background: $primary;
+            border-color: $primary;
+            color: $black;
+            &:active,
+            &.active,
+            &:not(:disabled):not(.disabled):active,
+            &:not(:disabled):not(.disabled).active,
+            &:hover,
+            &:focus-visible {
+                background: darken($primary, 10%);
+                border-color: darken($primary, 10%);
+                color: $black;
+            }
+        }
+    }
+    &.btn-default {
+        background: transparent;
+        border-color: $black;
+        color: $black;
+        &:active,
+        &.active,
+        &:not(:disabled):not(.disabled):active,
+        &:not(:disabled):not(.disabled).active,
+        &:hover,
+        &:focus-visible {
+            background: $gray-54;
+            border-color: $gray-54;
+            color: $white;
+        }
+        .bg-color-black &,
+        .bg-with-media & {
+            border-color: $white;
+            color: $white;
+            &:active,
+            &.active,
+            &:not(:disabled):not(.disabled):active,
+            &:not(:disabled):not(.disabled).active,
+            &:hover,
+            &:focus-visible {
+                background: $gray-54;
+                border-color: $gray-54;
+                color: $white;
+            }
+        }
+    }
+    &.btn-link {
+        border: none;
+        border-bottom: 2px solid $black;
+        color: $black;
+        padding: 0;
+        font-weight: 700;
+        &:hover,
+        &:focus-visible {
+            color: $gray-54;
+            text-decoration: none;
+        }
+        .bg-color-black & {
+            border-bottom-color: $primary;
+            color: $white;
+        }
+    }
+    &.btn-icon-right {
+        position: relative;
+        padding-right: 3rem;
+        text-align: left;
+        .icon {
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translate(0, -50%);
+        }
+    }
+}
+
+.container {
+    &-wide {
+        max-width: 1650px;
+        padding-right: calc(var(--bs-gutter-x) * 2);
+        padding-left: calc(var(--bs-gutter-x) * 2);
+    }
+    &-narrow {
+        max-width: 845px;
+    }
+    @include media-breakpoint-down(lg) {
+        &-narrow {
+            max-width: 600px;
+        }
+    }
+    @include media-breakpoint-down(md) {
+        &-narrow {
+            max-width: 460px;
+        }
+    }
+    @include media-breakpoint-down(sm) {
+        &-wide {
+            padding-right: calc(var(--bs-gutter-x) * .5);
+            padding-left: calc(var(--bs-gutter-x) * .5);
+        }
+    }
+}
+
+.bg-with-media {
+    background-color: $black;
+    color: $white;
+}
+
+.ratio {
+    display: block;
+}
+.ratio > img {
+    object-fit: cover;
+    object-position: center;
+}
+

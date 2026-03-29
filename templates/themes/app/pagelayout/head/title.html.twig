@@ -1,0 +1,37 @@
+{% apply spaceless %}
+    {% if site_title is not defined %}
+        {% set site_title = '' %}
+
+        {% if path_array is not empty %}
+            {% if not ezplatform.configResolver.getParameter('site_settings.show_path_in_title', 'ngsite') %}
+                {% set site_title = path_array[path_array|length - 1].text %}
+            {% elseif path_array|length > 1 %}
+                {% for path_item in path_array %}
+                    {% if not loop.first %}
+                        {% set site_title = path_item.text ~ (site_title is not empty ? ' - ' ~ site_title : '') %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endif %}
+    {% endif %}
+
+    {% if content is defined %}
+        {% if content.hasField('metadata') and not content.fields.metadata.empty %}
+            {% set content_meta_data = content.fields.metadata.value %}
+
+            {% if content_meta_data.metas['title'].content|default('') is not empty %}
+                {% set site_title = content_meta_data.metas['title'].content %}
+            {% endif %}
+        {% endif %}
+    {% endif %}
+
+    {% if content is not defined or content.contentInfo.contentTypeIdentifier != "ng_frontpage" %}
+        {% if site_title is not empty %}
+            {% set site_title = site_title ~ (site_name is not empty ? ' - ' ~ site_name : '') %}
+        {% else %}
+            {% set site_title = site_name|default('') %}
+        {% endif %}
+    {% endif %}
+{% endapply %}
+
+<title>{{ site_title }}</title>

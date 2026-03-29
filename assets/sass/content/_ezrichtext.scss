@@ -1,0 +1,178 @@
+/* EMBEDED OBJECTS ----------------------------------------------------- */
+
+.align-left {
+    float: left;
+    clear: left;
+    margin-right: 2.5%;
+}
+.align-right {
+    float: right;
+    clear: right;
+    margin-left: 2.5%;
+}
+.align-left,
+.align-right {
+    max-width: 47.5%;
+}
+.view-type-embed {
+    &.image,
+    &.ng-gallery,
+    &.ng-video {
+        margin-bottom: 2rem;
+    }
+    &:last-child {
+        &.image,
+        &.ng-gallery,
+        &.ng-video {
+            margin-bottom: 0;
+        }
+    }
+}
+
+.view-type-embed.ng-video,
+.view-type-embed.image {
+    margin-left: -4rem;
+    margin-right: -4rem;
+    .align-left & {
+        margin-right: 0;
+    }
+    .align-right & {
+        margin-left: 0;
+    }
+    .align-center & {
+        max-width: 75%;
+        margin: 0 auto;
+    }
+    @include media-breakpoint-down(xl) {
+        margin-left: 0;
+        margin-right: 0;
+        .align-left & {
+            margin-left: 0;
+        }
+        .align-right & {
+            margin-right: 0;
+        }
+        .align-center & {
+            max-width: 100%;
+        }
+    }
+    @include media-breakpoint-down(md) {
+        .align-left &,
+        .align-right & {
+            margin-left: 0;
+            margin-right: 0;
+            width: 100%;
+            max-width: 100%;
+        }
+    }
+}
+
+.clear {
+    clear: both;
+}
+
+/* /EMBEDED OBJECTS */
+
+/* ezrichtext elements */
+.ezrichtext-field {
+    & > *[style*="text-align:justify;"] {
+        text-align: inherit !important;
+    }
+    > * {
+        + * {
+            margin-top: 2rem;
+        }
+    }
+    a:not(.btn) {
+        border-bottom: .25rem solid $primary;
+        transition: border .3s;
+        &:hover {
+            color: inherit;
+            border-color: darken($primary, 15%);
+        }
+    }
+    p {
+        margin-bottom: 0;
+    }
+    ul {
+        list-style-type: none !important; //used to override ibexa's inline css
+        margin-bottom: 0;
+        padding: 0;
+        > li {
+            position: relative;
+            padding: 0 0 0 1em;
+            &::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                border-radius: 50%;
+                top: .5777777em;
+                width: .33333333em;
+                height: .33333333em;
+                background: $black;
+            }
+            + li {
+                margin-top: 1rem;
+            }
+        }
+    }
+    ol {
+        counter-reset: ol-counter;
+        list-style-type: none !important; //used to override ibexa's inline css
+        margin-bottom: 0;
+        padding: 0;
+        > li {
+            position: relative;
+            padding: 0 0 0 1.5em;
+            &::before {
+                counter-increment: ol-counter;
+                content: counter(ol-counter)'.';
+                position: absolute;
+                left: 0;
+                font-weight: 900;
+            }
+            + li {
+                margin-top: 1rem;
+            }
+        }
+    }
+    blockquote {
+        background-color: rgba($primary, .2);
+        border-bottom: .5rem solid $primary;
+        padding: 1.5rem;
+        margin-bottom: 0;
+        text-align: center;
+        @include text-1_5;
+        .blockquote-body {
+            &::before {
+                content: "";
+                @include icon-color(primary);
+                @extend %icon-quote-left;
+                width: 4.5rem;
+                height: 4.5rem;
+            }
+        }
+        p {
+            opacity: .87;
+        }
+    }
+    .factbox {
+        background-color: rgba($primary, .2);
+        border-bottom: .5rem solid $primary;
+        padding: 2rem;
+        .factbox-header {
+            h2 {
+                @include text-1_5;
+            }
+            & + .factbox-content {
+                margin-top: 1.5rem;
+            }
+        }
+    }
+    * + h1 {
+        margin-top: 3.75rem;
+    }
+    * + h2 {
+        margin-top: 3rem;
+    }
+}

@@ -1,0 +1,73 @@
+{% extends 'themes/app/pagelayout/variables.html.twig' %}
+
+{% block pagelayout_content %}
+<!DOCTYPE html>
+<html lang="{{ app.request.locale|replace({'_': '-'}) }}">
+<head>
+    <meta charset="utf-8">
+
+    {% block page_head_title %}
+        {% include 'themes/app/pagelayout/head/title.html.twig' %}
+    {% endblock %}
+
+    {% block page_head_meta %}
+        {% include 'themes/app/pagelayout/head/meta.html.twig' %}
+    {% endblock %}
+
+    {% block page_head_link %}
+        {% include 'themes/app/pagelayout/head/link.html.twig' %}
+    {% endblock %}
+
+    {% block page_head_style %}
+        {% include 'themes/app/pagelayout/head/style.html.twig' %}
+    {% endblock %}
+
+    {% block page_head_script %}
+        {% include 'themes/app/pagelayout/head/script.html.twig' %}
+    {% endblock %}
+
+    {% block open_graph %}
+        {% include 'themes/app/parts/opengraph.html.twig' %}
+    {% endblock %}
+
+    {% include 'themes/app/parts/google_tag_manager_code_script.html.twig' %}
+
+    {% block structuredData %}{% endblock %}
+</head>
+<body>
+
+{% include 'themes/app/pagelayout/accessibility_links.html.twig' %}
+{% include 'themes/app/parts/google_tag_manager_code_noscript.html.twig' %}
+{% include 'themes/app/parts/facebook_api.html.twig' %}
+{% include "@NetgenToolbar/ngtoolbar.html.twig" ignore missing %}
+
+<div id="page"{% if page_css_class|default is not empty %} class="{{ page_css_class }}"{% endif %}{% if location is defined and location is not empty %} data-path='["{{ location.path|join('","') }}"]'{% endif %}>
+    {% block layout %}
+        {% block header %}
+            {% include 'themes/app/pagelayout/header.html.twig' %}
+        {% endblock %}
+
+        {% block breadcrumb %}
+            {% include 'themes/app/pagelayout/breadcrumbs.html.twig' %}
+        {% endblock %}
+
+        <div id="main">
+            {% block content %}{% endblock %}
+        </div>
+
+        {% block footer %}
+            {% include 'themes/app/pagelayout/footer.html.twig' %}
+        {% endblock %}
+    {% endblock %}
+
+    {{ nglayouts_template_plugin('preview.body') }}
+</div>
+
+{% block page_footer_script %}
+    {% include 'themes/app/pagelayout/script_bottom.html.twig' %}
+{% endblock %}
+
+{% include 'themes/app/pagelayout/cookie_control.html.twig' %}
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,143 @@
+.full-page-header {
+    background: $primary;
+    padding: 2rem 0 8rem;
+    &.no-breadcrumbs {
+        padding: 8rem 0;
+        @include media-breakpoint-down(md) {
+            padding: 4rem 0;
+        }
+    }
+    .main-topic, .important-notice {
+        @include tag;
+        color: $white;
+    }
+    & + .full-page-image,
+    & + .full-page-audio {
+        margin-top: 4rem;
+        @include media-breakpoint-down(xxl) {
+            margin-top: 2rem;
+        }
+        @include media-breakpoint-down(sm) {
+            margin-top: 1rem;
+        }
+    }
+    & + .full-form-content {
+        margin-top: 4rem;
+    }
+}
+
+.full-page-eyebrow {
+    & + .full-page-title {
+        margin-top: 1.5rem;
+    }
+}
+
+.full-page-title {
+    @include text-4_5;
+    + .full-page-info {
+        margin-top: 1.5rem;
+    }
+    + .full-page-header-text {
+        margin-top: 1rem;
+    }
+}
+
+.full-page-info {
+    @include text-base;
+    margin: 0;
+    display: flex;
+    gap: 0.25rem 1.25rem;
+    flex-wrap: wrap;
+    > span,
+    > time,
+    > a {
+        display: inline-block;
+        position: relative;
+        div {
+            display: inline;
+        }
+        &::before {
+            content: '';
+            width: .25em;
+            height: .25em;
+            position: absolute;
+            top: .66666667em;
+            left: -.75em;
+            background-color: rgba($black, .37);
+        }
+    }
+    @include media-breakpoint-up(lg) {
+        > span,
+        > time,
+        > a {
+            &:first-child {
+                &::before {
+                    content: none;
+                }
+            }
+        }
+    }
+    @include media-breakpoint-down(lg) {
+        display: block;
+        padding-left: 1rem;
+        > span,
+        > time,
+        > a {
+            width: 100%;
+        }
+    }
+    a {
+        transition: border-color .15s;
+        border-bottom: .125rem solid transparent;
+        &:hover {
+            border-bottom-color: currentColor;
+        }
+    }
+}
+.full-page-image {
+    img {
+        width: 100%;
+    }
+}
+
+.full-page-intro {
+    @include text-1_5;
+    & + * {
+        margin-top: 3.75rem;
+    }
+}
+
+.full-page-body,
+.category-children {
+    margin-top: 8rem;
+    position: relative;
+    @include media-breakpoint-down(md) {
+        margin-top: 4rem;
+    }
+}
+
+.full-page-tags {
+    @extend %clearfix;
+    margin: 3rem 0 0;
+    a {
+        @include tag;
+        color: $primary;
+    }
+}
+
+.full-page-newsletter-box {
+    background: $primary;
+    padding: 2rem;
+    margin: 0 0 4rem;
+    text-align: center;
+    form {
+        display: flex;
+        justify-content: center;
+        max-width: 400px;
+        margin: 2rem auto 0;
+        .form-control {
+            border-color: $white;
+            background: $white;
+        }
+    }
+}

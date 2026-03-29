@@ -1,0 +1,39 @@
+.about-style-4 {
+    .title {
+        @include text-3;
+        & + .text {
+            margin-top: 4rem;
+        }
+        & + .actions {
+            margin-top: 2.5rem;
+        }
+        .bg-color-black & {
+            color: $primary;
+        }
+    }
+    .text {
+        display: flex;
+        gap: 2rem;
+        .short {
+            flex: 0 1 50%;
+            @include text-1_125;
+        }
+        & + .actions {
+            margin-top: 2.5rem;
+        }
+        @include media-breakpoint-down(sm) {
+            flex-direction: column;
+            .short {
+                flex: 0 1 100%;
+            }
+        }
+    }
+
+    .actions {
+        display: flex;
+        gap: 2rem;
+        @include media-breakpoint-down(sm) {
+            flex-direction: column;
+        }
+    }
+}
