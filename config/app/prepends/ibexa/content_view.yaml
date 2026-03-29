@@ -1,13 +1,6 @@
 system:
     frontend_group:
-        ng_site_api:
-            site_api_is_primary_content_view: true
-            fallback_to_secondary_content_view: false
-            fail_on_missing_field: "%kernel.debug%"
-            render_missing_field_info: false
-            named_objects: []
-            named_queries: []
-        ng_content_view:
+        content_view:
             full:
                 ng_category:
                     template: "themes/app/content/views/full/ng_category.html.twig"
@@ -350,7 +343,7 @@ system:
                     match: ~
 
     default:
-        ng_content_view:
+        content_view:
             search:
                 common:
                     template: "themes/app/content/views/search/{content_type}.html.twig"
