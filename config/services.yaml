@@ -1,5 +1,0 @@
-# This file is the entry point to configure your own services.
-# See config/app/services.yaml for application-specific service configuration.
-parameters:
-
-services:
