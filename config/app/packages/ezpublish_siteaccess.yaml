@@ -70,14 +70,6 @@ ezpublish:
             languages:
                 - ger-DE
 
-netgen_layouts:
-    design_list:
-        app:
-            - app
-    system:
-        frontend_group:
-            design: app
-
 ezdesign:
     design_list:
         bold:
