@@ -19,7 +19,10 @@ if (isset($_SERVER['HTTP_CLIENT_IP'])
 }
 */
 
-putenv('SYMFONY_ENV=dev');
-putenv('SYMFONY_DEBUG=true');
+use App\Kernel;
 
-require 'app.php';
+require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
+
+return function (array $context) {
+    return new Kernel('dev', true);
+};

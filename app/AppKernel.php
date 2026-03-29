@@ -14,7 +14,6 @@ class AppKernel extends Kernel
             new Symfony\Bundle\TwigBundle\TwigBundle(),
             new Symfony\Bundle\MonologBundle\MonologBundle(),
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
-            new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Symfony\WebpackEncoreBundle\WebpackEncoreBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
@@ -28,24 +27,22 @@ class AppKernel extends Kernel
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Bazinga\Bundle\JsTranslationBundle\BazingaJsTranslationBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
-            new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
             // eZ Systems
             new EzSystems\PlatformHttpCacheBundle\EzSystemsPlatformHttpCacheBundle(),
             new eZ\Bundle\EzPublishCoreBundle\EzPublishCoreBundle(),
             new eZ\Bundle\EzPublishLegacySearchEngineBundle\EzPublishLegacySearchEngineBundle(),
             new eZ\Bundle\EzPublishIOBundle\EzPublishIOBundle(),
-            new eZ\Bundle\EzPublishRestBundle\EzPublishRestBundle(),
+            new EzSystems\EzPlatformRestBundle\EzPlatformRestBundle(),
             new EzSystems\EzSupportToolsBundle\EzSystemsEzSupportToolsBundle(),
             new EzSystems\PlatformInstallerBundle\EzSystemsPlatformInstallerBundle(),
             new EzSystems\DoctrineSchemaBundle\DoctrineSchemaBundle(),
-            new EzSystems\RepositoryFormsBundle\EzSystemsRepositoryFormsBundle(),
+            new EzSystems\EzPlatformContentFormsBundle\EzPlatformContentFormsBundle(),
             new EzSystems\EzPlatformSolrSearchEngineBundle\EzSystemsEzPlatformSolrSearchEngineBundle(),
             new EzSystems\EzPlatformDesignEngineBundle\EzPlatformDesignEngineBundle(),
             new EzSystems\EzPlatformStandardDesignBundle\EzPlatformStandardDesignBundle(),
             new EzSystems\EzPlatformRichTextBundle\EzPlatformRichTextBundle(),
             new EzSystems\EzPlatformAdminUiBundle\EzPlatformAdminUiBundle(),
             new EzSystems\EzPlatformUserBundle\EzPlatformUserBundle(),
-            new EzSystems\EzPlatformAdminUiModulesBundle\EzPlatformAdminUiModulesBundle(),
             new EzSystems\EzPlatformAdminUiAssetsBundle\EzPlatformAdminUiAssetsBundle(),
             new EzSystems\EzPlatformCronBundle\EzPlatformCronBundle(),
             new EzSystems\EzPlatformEncoreBundle\EzSystemsEzPlatformEncoreBundle(),
@@ -56,7 +53,6 @@ class AppKernel extends Kernel
             // eZ Publish Legacy
             new eZ\Bundle\EzPublishLegacyBundle\EzPublishLegacyBundle($this),
             new EzSystems\EzPlatformXmlTextFieldTypeBundle\EzSystemsEzPlatformXmlTextFieldTypeBundle(),
-            new Netgen\Bundle\RichTextDataTypeBundle\NetgenRichTextDataTypeBundle(),
             // Application
             new AppBundle\AppBundle(),
         ];
@@ -71,9 +67,6 @@ class AppKernel extends Kernel
                 $bundles[] = new eZ\Bundle\EzPublishDebugBundle\EzPublishDebugBundle();
                 $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
                 $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
-                $bundles[] = new Symfony\Bundle\WebServerBundle\WebServerBundle();
-                $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
-                $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
                 $bundles[] = new Overblog\GraphiQLBundle\OverblogGraphiQLBundle();
         }
 

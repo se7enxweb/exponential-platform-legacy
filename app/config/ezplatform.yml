@@ -25,6 +25,7 @@ ezpublish:
         match:
             Map\Host:
                 platform.alpha.se7enx.com: site
+                platformlegacy.alpha.se7enx.com: site
                 edit.platform.alpha.se7enx.com: admin
             # URIElement: 1
 
@@ -77,8 +78,8 @@ ezpublish:
                 media: /1/43/
         site:
             languages: [eng-GB]
-            default_page: "/test"
-            index_page: "/test"
+            default_page: "/content/location/2"
+            index_page: "/content/location/2"
 
     url_alias:
         slug_converter:

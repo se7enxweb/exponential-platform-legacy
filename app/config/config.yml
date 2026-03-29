@@ -62,12 +62,6 @@ framework:
     form: ~
     validation: { enable_annotations: true }
     #serializer: { enable_annotations: true }
-    # Place "eztpl" engine first intentionally if you setup use with legacy bridge.
-    # This is to avoid template name parsing with Twig engine, refusing specific characters
-    # which are valid with legacy tpl files.
-    templating:
-        engines: ['twig']
-        #assets_version: SomeVersionScheme
     default_locale: '%locale_fallback%'
     trusted_hosts: ~
     session:
@@ -91,18 +85,6 @@ framework:
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
-
-# Assetic Configuration
-assetic:
-    debug: '%kernel.debug%'
-    use_controller: '%kernel.debug%'
-    bundles: [ EzPlatformAdminUiBundle ]
-    #java: /usr/bin/java
-    filters:
-        cssrewrite: ~
-        scssphp:
-            formatter: 'ScssPhp\ScssPhp\Formatter\Crunched'
-            import_paths: ['%kernel.project_dir%/web/']
 
 # Webpack Encore Configuration
 webpack_encore:
@@ -152,16 +134,16 @@ jms_translation:
     configs:
         admin:
             dirs:
-                - '%kernel.root_dir%/../vendor/se7enxweb/ezplatform-admin-ui/src'
-            output_dir: '%kernel.root_dir%/../vendor/se7enxweb/ezplatform-admin-ui/src/bundle/Resources/translations/'
+                - '%kernel.project_dir%/vendor/se7enxweb/ezplatform-admin-ui/src'
+            output_dir: '%kernel.project_dir%/vendor/se7enxweb/ezplatform-admin-ui/src/bundle/Resources/translations/'
             excluded_dirs: [Behat, Tests, node_modules]
             extractor:
                 - ez_policy
             output_format: "xliff"
         admin_modules:
             dirs:
-                - '%kernel.root_dir%/../vendor/se7enxweb/ezplatform-admin-ui-modules/src'
-            output_dir: '%kernel.root_dir%/../vendor/se7enxweb/ezplatform-admin-ui-modules/Resources/translations/'
+                - '%kernel.project_dir%/vendor/se7enxweb/ezplatform-admin-ui-modules/src'
+            output_dir: '%kernel.project_dir%/vendor/se7enxweb/ezplatform-admin-ui-modules/Resources/translations/'
             excluded_dirs: [Behat, Tests, node_modules]
             output_format: "xliff"
 
