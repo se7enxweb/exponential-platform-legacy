@@ -3,5 +3,9 @@ ezpublish:
         match:
             # Map\Host:
             #     platform.demo.exponential.earth: site
+            #     edit.platform.demo.exponential.earth: adminui
+            #     nga.platform.demo.exponential.earth: ngadminui
+            #     editor.platform.demo.exponential.earth: editor
+            #     admin.platform.demo.exponential.earth: admin
             #
             URIElement: 1
