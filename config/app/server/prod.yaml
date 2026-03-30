@@ -25,4 +25,29 @@ parameters:
 ezpublish:
     siteaccess:
         match:
+            # ╔══════════════════════════════════════════════════════════════════════════════╗
+            # ║  Map\Host — domain → siteaccess routing (COMMENTED OUT / INACTIVE)        ║
+            # ║                                                                            ║
+            # ║  When this block is active, any request whose HTTP Host header matches a   ║
+            # ║  key below is sent directly to the mapped siteaccess — no URI prefix is   ║
+            # ║  read or required. Host matching takes priority over URIElement when both  ║
+            # ║  matchers are listed here: first matcher that returns a hit wins.          ║
+            # ║                                                                            ║
+            # ║  TO ACTIVATE:                                                              ║
+            # ║    1. Remove the leading  #  from the Map\Host block below.               ║
+            # ║    2. Ensure DNS for the domain resolves to this server.                   ║
+            # ║    3. php bin/console cache:clear --env=prod                               ║
+            # ║                                                                            ║
+            # ║  CAUTION: once active, URLs generated for 'site' will NOT include the      ║
+            # ║  /site/ URI prefix — links generated via URIElement routing will break.    ║
+            # ║  Only activate one routing strategy (host OR URI) per siteaccess at once.  ║
+            # ╚══════════════════════════════════════════════════════════════════════════════╝
+            #
+            # Map\Host:
+            #     platform.demo.exponential.earth: site
+            #
+            # ── URI segment fallback (ACTIVE) ─────────────────────────────────────────────
+            # Reads the first URI path segment as the siteaccess name.
+            # e.g. https://platform.demo.exponential.earth/site/   → siteaccess 'site'
+            #      https://platform.demo.exponential.earth/fh_eng/ → siteaccess 'fh_eng'
             URIElement: 1
