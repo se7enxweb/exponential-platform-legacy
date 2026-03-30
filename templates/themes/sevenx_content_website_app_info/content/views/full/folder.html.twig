@@ -1,0 +1,435 @@
+{#
+    app/content/views/full/folder.html.twig — FALLBACK DESIGN
+    ──────────────────────────────────────────────────────────────────
+    Neowin.net-style responsive card layout used when no named design
+    is in the chain.
+
+    One-line toggle in ezpublish_siteaccess.yaml → design_list → site:
+        - sevenx_content_website_app   ← uncomment = Good Intentions view
+        (absent)                       ← this Neowin-style card layout
+
+    Attribute text: folder fields drive the intro header prose.
+    Children drive the hero + card grid (first-match field as excerpt).
+    Sidebar filter chips, stats, quick list and schema built via jQuery.
+#}
+{% extends "@ezdesign/pagelayout.html.twig" %}
+
+{% block page_title -%}
+{%- set _name = ez_content_name(content) -%}
+{%- set _alias = path('ez_urlalias', {locationId: location.id})|trim('/') -%}
+{%- set _raw_parts = (_alias and not (_alias starts with 'view/')) ? _alias|split('/') : [] -%}
+{%- set _parent_parts = [] -%}
+{%- for part in _raw_parts|slice(0, -1) -%}{%- set _parent_parts = _parent_parts|merge([part|replace({'-': ' ', '_': ' '})|title]) -%}{%- endfor -%}
+{%- set _path_label = _parent_parts|length > 0 ? (_parent_parts|join(' / ') ~ ' / ' ~ _name) : _name -%}
+{{ _path_label }} - Exponential Platform is The Power User's CMS / DXP
+{%- endblock %}
+
+{% block content %}
+{%- set children = ez_location_children(location, 50) -%}
+{%- set ct = content.contentType -%}
+
+
+<div id="sxa-nw">
+
+    {# ═══════════════════════════════════════════════
+       STICKY TOPBAR
+    ═══════════════════════════════════════════════ #}
+    <div class="nw-topbar" id="nw-topbar">
+        <span class="nw-tb-logo">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#58a6ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            {{ ez_content_name(content)|upper }}
+        </span>
+        <div class="nw-tb-sep"></div>
+        <span class="nw-tb-crumb">
+            {% if location.depth > 1 %}
+                <a href="{{ path('ez_urlalias', {locationId: location.parentLocationId}) }}">↑ Parent</a>
+                &nbsp;›&nbsp;
+            {% endif %}
+            {{ ez_content_name(content) }}
+        </span>
+        <span class="nw-tb-badge">{{ children|length }} items</span>
+        <span class="nw-tb-type">{{ ct ? ct.identifier : '' }}</span>
+    </div>
+
+    {# ═══════════════════════════════════════════════
+       INTRO — folder attributes used as layout prose, not raw blocks
+    ═══════════════════════════════════════════════ #}
+    <div class="nw-intro">
+        <h1 class="nw-intro-h1">{{ ez_content_name(content) }}</h1>
+        <div class="nw-intro-meta">
+            <span>Content <code>{{ content.id }}</code></span>
+            <span>Location <code>{{ location.id }}</code></span>
+            <span>Depth <code>{{ location.depth }}</code></span>
+            <span>Type <code>{{ ct ? ct.identifier : '' }}</code></span>
+            <span>Path <code>{{ location.pathString }}</code></span>
+        </div>
+        {# Text fields rendered as flowing prose in the intro band, not as labelled blocks #}
+        {%- set hasIntroContent = false -%}
+        {% for fieldDef in (ct ? ct.fieldDefinitions : []) %}
+            {%- if fieldDef.fieldTypeIdentifier in ['ezstring', 'eztext', 'ezrichtext', 'ezxmltext']
+                and fieldDef.identifier not in ['name', 'short_name']
+                and not ez_field_is_empty(content, fieldDef.identifier) -%}
+                {%- if not hasIntroContent -%}
+                    <div class="nw-intro-fields">
+                {%- endif -%}
+                {{ ez_render_field(content, fieldDef.identifier) }}
+                {%- set hasIntroContent = true -%}
+            {%- endif -%}
+        {% endfor %}
+        {%- if hasIntroContent -%}</div>{%- endif -%}
+    </div>
+
+    {# ═══════════════════════════════════════════════
+       MAIN LAYOUT
+    ═══════════════════════════════════════════════ #}
+    <div class="nw-wrap">
+
+        {# ╔══════════════════════════════════════════╗
+           ║  MAIN COLUMN                             ║
+           ╚══════════════════════════════════════════╝ #}
+        <div id="nw-main">
+
+            {# ── HERO (first child) ─────────────────── #}
+            {% if children|length > 0 %}
+                {%- set hc = children[0].getContent() -%}
+                <a href="{{ path('ez_urlalias', {locationId: children[0].id}) }}"
+                   class="nw-hero"
+                   data-type="{{ hc.contentType.identifier }}">
+                    <div class="nw-hero-bg"></div>
+                    <div class="nw-hero-dots"></div>
+                    <div class="nw-hero-glow"></div>
+                    <div class="nw-hero-body">
+                        <span class="nw-hero-cat">
+                            <svg width="8" height="8" viewBox="0 0 8 8" fill="#fff"><circle cx="4" cy="4" r="4"/></svg>
+                            {{ hc.contentType.identifier }}
+                        </span>
+                        <div class="nw-hero-title">{{ ez_content_name(hc) }}</div>
+
+                        {# Excerpt: first text field rendered as prose, CSS clamps to 2 lines #}
+                        <div class="nw-hero-excerpt">
+                            {% for fd in hc.contentType.fieldDefinitions %}
+                                {% if fd.fieldTypeIdentifier in ['ezstring','eztext','ezrichtext','ezxmltext']
+                                    and fd.identifier not in ['name','short_name','title']
+                                    and not ez_field_is_empty(hc, fd.identifier) %}
+                                    {{ ez_render_field(hc, fd.identifier)|striptags|trim }}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+
+                        <div class="nw-hero-foot">
+                            <span class="nw-hero-pill">loc:{{ children[0].id }}</span>
+                            <span class="nw-hero-pill">depth:{{ children[0].depth }}</span>
+                            <span class="nw-hero-arrow">→</span>
+                        </div>
+                    </div>
+                </a>
+            {% endif %}
+
+            {# ── CARD GRID — children 2-13 (max 12) ─── #}
+            {%- set colorMap = {
+                0: '#e53e3e', 1: '#dd6b20', 2: '#d69e2e', 3: '#38a169',
+                4: '#319795', 5: '#3182ce', 6: '#5a67d8', 7: '#805ad5',
+                8: '#d53f8c', 9: '#0bc5ea', 10: '#68d391', 11: '#f6e05e'
+            } -%}
+
+            <div class="nw-grid" id="nw-grid">
+                {% for child in children %}
+                    {% if loop.index >= 2 and loop.index <= 13 %}
+                        {%- set cc = child.getContent() -%}
+                        {%- set tid = cc.contentType.identifier -%}
+                        {%- set col = colorMap[tid|length % 12] -%}
+                        <a href="{{ path('ez_urlalias', {locationId: child.id}) }}"
+                           class="nw-card"
+                           data-type="{{ tid }}"
+                           data-loc="{{ child.id }}">
+                            <div class="nw-card-accent" style="background:{{ col }};"></div>
+                            <div class="nw-card-body">
+                                <span class="nw-card-cat" style="background:{{ col }}1a;color:{{ col }};">
+                                    <svg width="7" height="7" viewBox="0 0 8 8" style="flex-shrink:0;" fill="{{ col }}"><circle cx="4" cy="4" r="4"/></svg>
+                                    {{ tid }}
+                                </span>
+                                <div class="nw-card-title">{{ ez_content_name(cc) }}</div>
+                                {# First text field as excerpt — all rendered into clamped div #}
+                                <div class="nw-card-excerpt">
+                                    {% for fd in cc.contentType.fieldDefinitions %}
+                                        {% if fd.fieldTypeIdentifier in ['ezstring','eztext','ezrichtext','ezxmltext']
+                                            and fd.identifier not in ['name','short_name','title']
+                                            and not ez_field_is_empty(cc, fd.identifier) %}
+                                            {{ ez_render_field(cc, fd.identifier)|striptags|trim }}
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="nw-card-foot">
+                                <span class="nw-card-loc">loc:{{ child.id }}</span>
+                                <span class="nw-card-go">→</span>
+                            </div>
+                        </a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if children|length == 0 %}
+                    <div class="nw-empty">
+                        📭 This folder contains no content yet.
+                    </div>
+                {% endif %}
+
+                <div class="nw-no-results" id="nw-no-results">No items match this filter.</div>
+            </div>{# /nw-grid #}
+
+        </div>{# /nw-main #}
+
+        {# ╔══════════════════════════════════════════╗
+           ║  SIDEBAR                                 ║
+           ╚══════════════════════════════════════════╝ #}
+        <aside class="nw-sidebar" id="nw-sidebar">
+
+            {# ── Design toggle notice ── #}
+            <div class="nw-design-notice">
+                <strong>📐 App theme (fallback)</strong><br>
+                To enable the rich design, add <code>- sevenx_content_website_app</code>
+                to <code>design_list → site</code> in <code>ezpublish_siteaccess.yaml</code>,
+                then clear cache.
+            </div>
+
+            {# ── Filter by content type (chips built by jQuery) ── #}
+            <div class="nw-widget">
+                <div class="nw-whead">
+                    <div class="nw-whead-dot"></div>
+                    Filter by Type
+                </div>
+                <div class="nw-wbody">
+                    <div class="nw-chips" id="nw-chips">
+                        <span class="nw-chip nw-active" data-filter="all">
+                            All <span class="nw-chip-n" id="nw-chip-all-n">{{ children|length > 1 ? children|length - 1 : 0 }}</span>
+                        </span>
+                        {# Type chips injected by jQuery below #}
+                    </div>
+                </div>
+            </div>
+
+            {# ── Stats ── #}
+            <div class="nw-widget">
+                <div class="nw-whead">
+                    <div class="nw-whead-dot"></div>
+                    Location Stats
+                </div>
+                <div class="nw-wbody">
+                    <div class="nw-stats">
+                        <div class="nw-stat">
+                            <div class="nw-stat-n">{{ children|length }}</div>
+                            <div class="nw-stat-l">Items</div>
+                        </div>
+                        <div class="nw-stat">
+                            <div class="nw-stat-n">{{ location.depth }}</div>
+                            <div class="nw-stat-l">Depth</div>
+                        </div>
+                        <div class="nw-stat">
+                            <div class="nw-stat-n">{{ content.id }}</div>
+                            <div class="nw-stat-l">Content ID</div>
+                        </div>
+                        <div class="nw-stat">
+                            <div class="nw-stat-n">{{ location.id }}</div>
+                            <div class="nw-stat-l">Location ID</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# ── Quick list — ALL children ── #}
+            <div class="nw-widget">
+                <div class="nw-whead">
+                    <div class="nw-whead-dot"></div>
+                    All Content
+                </div>
+                <div class="nw-wbody" style="padding:8px 14px;">
+                    <div class="nw-qlist">
+                        {% for child in children %}
+                            {%- set cc = child.getContent() -%}
+                            <a href="{{ path('ez_urlalias', {locationId: child.id}) }}"
+                               class="nw-qli"
+                               data-card-loc="{{ child.id }}">
+                                <span class="nw-qli-num">{{ loop.index }}</span>
+                                <div class="nw-qli-info">
+                                    <div class="nw-qli-title">{{ ez_content_name(cc) }}</div>
+                                    <div class="nw-qli-type">{{ cc.contentType.identifier }}</div>
+                                </div>
+                            </a>
+                        {% else %}
+                            <p style="font-size:12px;color:#8b949e;text-align:center;padding:12px 0;">No items.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            {# ── Content Type Schema ── #}
+            <div class="nw-widget">
+                <div class="nw-whead">
+                    <div class="nw-whead-dot"></div>
+                    Schema — {{ ct ? ct.identifier : '(unknown)' }}
+                </div>
+                <div class="nw-wbody">
+                    <span class="nw-schema-toggle" id="nw-schema-toggle">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                        Show {{ ct ? ct.fieldDefinitions|length : 0 }} fields
+                    </span>
+                    <div class="nw-schema-wrap" id="nw-schema-wrap">
+                        <table class="nw-schema-tbl">
+                            <thead>
+                                <tr>
+                                    <th>Identifier</th>
+                                    <th>Type</th>
+                                    <th>Req</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for fd in (ct ? ct.fieldDefinitions : []) %}
+                                    <tr>
+                                        <td>{{ fd.identifier }}</td>
+                                        <td>{{ fd.fieldTypeIdentifier }}</td>
+                                        <td style="color:{{ fd.isRequired ? '#f85149' : '#c6cdd5' }};text-align:center;">{{ fd.isRequired ? '✓' : '·' }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="nw-path-block">
+                            <div class="nw-path-label">Path</div>
+                            <div class="nw-path-val">{{ location.pathString }}</div>
+                        </div>
+                        <a href="/admin/content/location/{{ location.id }}" class="nw-admin-link">↗ Open in Admin UI</a>
+                    </div>
+                </div>
+            </div>
+
+        </aside>
+    </div>{# /nw-wrap #}
+
+</div>{# /sxa-nw #}
+
+
+{# ═══════════════════════════════════════════════
+   JQUERY
+═══════════════════════════════════════════════ #}
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+        crossorigin="anonymous"></script>
+
+<script>
+(function ($) {
+    'use strict';
+
+    /* ── 1. Build filter chips from card data-type attributes ── */
+    var typeCounts = {};
+    $('#nw-grid .nw-card').each(function () {
+        var t = $(this).data('type');
+        typeCounts[t] = (typeCounts[t] || 0) + 1;
+    });
+
+    var colorOrder = [
+        '#e53e3e','#dd6b20','#d69e2e','#38a169',
+        '#319795','#3182ce','#5a67d8','#805ad5',
+        '#d53f8c','#0bc5ea','#68d391','#f6e05e'
+    ];
+    var colorIdx = 0;
+    $.each(typeCounts, function (type, count) {
+        var col = colorOrder[colorIdx % colorOrder.length];
+        colorIdx++;
+        $('#nw-chips').append(
+            '<span class="nw-chip" data-filter="' + type + '" style="--tc:' + col + ';">' +
+            type + ' <span class="nw-chip-n">' + count + '</span></span>'
+        );
+    });
+
+    /* ── 2. Filter logic ── */
+    $('#nw-chips').on('click', '.nw-chip', function () {
+        var $chip  = $(this);
+        var filter = $chip.data('filter');
+
+        $('.nw-chip').removeClass('nw-active');
+        $chip.addClass('nw-active');
+
+        var $cards  = $('#nw-grid .nw-card');
+        var $hero   = $('.nw-hero');
+        var visible = 0;
+
+        if (filter === 'all') {
+            $cards.removeClass('nw-hidden');
+            $hero.fadeIn(160);
+            visible = $cards.length;
+        } else {
+            $hero.fadeOut(120);
+            $cards.each(function () {
+                var $c = $(this);
+                if ($c.data('type') === filter) {
+                    $c.removeClass('nw-hidden');
+                    visible++;
+                } else {
+                    $c.addClass('nw-hidden');
+                }
+            });
+        }
+
+        if (visible === 0) {
+            $('#nw-no-results').addClass('nw-show');
+        } else {
+            $('#nw-no-results').removeClass('nw-show');
+        }
+    });
+
+    /* ── 3. Schema toggle ── */
+    $('#nw-schema-toggle').on('click', function () {
+        var $wrap = $('#nw-schema-wrap');
+        var $icon = $(this).find('svg polyline');
+        $wrap.slideToggle(200, function () {
+            var open = $wrap.is(':visible');
+            $('#nw-schema-toggle').html(
+                '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">' +
+                '<polyline points="' + (open ? '18 15 12 9 6 15' : '6 9 12 15 18 9') + '"/></svg>' +
+                (open ? 'Hide fields' : 'Show {{ ct ? ct.fieldDefinitions|length : 0 }} fields')
+            );
+        });
+    });
+
+    /* ── 4. Topbar shrinks on scroll ── */
+    $(window).on('scroll.nwtb', function () {
+        if ($(this).scrollTop() > 50) {
+            $('#nw-topbar').css({ height: '38px' });
+        } else {
+            $('#nw-topbar').css({ height: '48px' });
+        }
+    });
+
+    /* ── 5. Quick-list hover highlights corresponding card ── */
+    $('.nw-qli').on('mouseenter', function () {
+        var loc = $(this).data('card-loc');
+        $('#nw-grid .nw-card[data-loc="' + loc + '"]')
+            .css({ 'border-color': '#58a6ff', 'box-shadow': '0 0 0 3px rgba(88,166,255,.2)' });
+    }).on('mouseleave', function () {
+        $('#nw-grid .nw-card').css({ 'border-color': '', 'box-shadow': '' });
+    });
+
+    /* ── 6. Card + hero keyboard navigation (Enter / Space) ── */
+    $('#nw-grid .nw-card, .nw-hero').attr('tabindex', '0').attr('role', 'link')
+        .on('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                window.location.href = $(this).attr('href');
+            }
+        });
+
+    /* ── 7. Card entrance animation on load ── */
+    $('#nw-grid .nw-card').each(function (i) {
+        $(this).css({ opacity: 0, transform: 'translateY(14px)' });
+        setTimeout(function (el) {
+            $(el).animate({ opacity: 1 }, {
+                duration: 240,
+                step: function (now) {
+                    $(this).css('transform', 'translateY(' + (14 * (1 - now)) + 'px)');
+                }
+            });
+        }, i * 45, this);
+    });
+
+}(jQuery));
+</script>
+{% endblock %}

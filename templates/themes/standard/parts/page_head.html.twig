@@ -1,0 +1,36 @@
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ page_title|default("Exponential Platform is The Power User's CMS / DXP")|trim }}</title>
+    <link rel="stylesheet" href="{{ asset('assets/app/build/index.css') }}">
+    <link rel="stylesheet" href="/design/admin/stylesheets/core.css">
+    <link rel="stylesheet" href="/design/admin/stylesheets/pagelayout.css">
+    <link rel="stylesheet" href="/design/admin/stylesheets/content.css">
+    <link rel="stylesheet" href="/design/admin/stylesheets/theme/rounded.css">
+    <link rel="stylesheet" href="/design/admin/stylesheets/theme/yui_datatable.css">
+    <link rel="stylesheet" href="/design/admin/stylesheets/theme/yui_menu.css">
+    <link rel="stylesheet" href="/design/admin/stylesheets/theme/yui_container.css">
+    <link rel="stylesheet" href="/design/admin/stylesheets/theme/modalwindow.css">
+    <!-- Legacy JS: jQuery -->
+    <script src="/extension/ezjscore/design/standard/javascript/jquery-3.7.1.min.js"></script>
+    <script src="/extension/ezjscore/design/standard/javascript/jquery-migrate-1.2.1.min.js"></script>
+    <!-- Legacy JS: YUI2 loader (provides YAHOO.util.YUILoader) -->
+    <script src="/extension/ezjscore/design/standard/lib/yui/2.8.2/build/yuiloader/yuiloader-min.js"></script>
+    <script>
+        var YUI2_config = {
+            base: '/extension/ezjscore/design/standard/lib/yui/2.8.2/build/',
+            loadOptional: true,
+            combine: false
+        };
+        var YUILoader = new YAHOO.util.YUILoader(YUI2_config);
+    </script>
+    <!-- Legacy JS: Backend scripts (BackendJavaScriptList) -->
+    <script src="/design/standard/javascript/tools/ezjsselection.js"></script>
+    <script src="/design/standard/javascript/lib/ezjslibimagepreloader.js"></script>
+    <script src="/design/admin/javascript/popupmenu/ezpopupmenu.js"></script>
+    <script src="/design/admin/javascript/contentstructuremenu_dynamic.js"></script>
+    <script src="/design/admin/javascript/fixed_toolbar.js"></script>
+    <script src="/design/admin/javascript/ezmodalwindow.js"></script>
+    <script src="/design/admin/javascript/ezajaxuploader.js"></script>
+    <script src="/design/admin/javascript/ezcollapsiblemenu.js"></script>
+</head>

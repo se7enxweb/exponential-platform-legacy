@@ -5,7 +5,7 @@ parameters:
     ngsite.fh_group.locations.site_info.id: 65
     ngsite.bold_group.locations.site_info.id: 442
 
-    ngsite.fh_group.locations.tree_root.id: 385
+    ngsite.fh_group.locations.tree_root.id: 2
     ngsite.bold_group.locations.tree_root.id: 2
 
     ngsite.default.locations.ng_component_hero.id: 407

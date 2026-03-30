@@ -30,3 +30,18 @@ ezpublish:
                         template: "themes/app/pages/search.html.twig"
                         match: []
 
+        # ╔══════════════════════════════════════════════════════════════════════════════╗
+        # ║  TWIG PAGELAYOUT — site siteaccess                                           ║
+        # ║                                                                              ║
+        # ║  page_layout  = the Twig template that wraps ALL Twig-rendered content.      ║
+        # ║  This is what the folder page (and any Twig content view) extends.           ║
+        # ║  It is SEPARATE from ez_publish_legacy view_layout (legacy pages).           ║
+        # ║                                                                              ║
+        # ║  TO DISABLE: prefix the site: block lines with  ###  then cache:clear.      ║
+        # ║                                                                              ║
+        # ║  CURRENTLY ENABLED                                                           ║
+        # ╚══════════════════════════════════════════════════════════════════════════════╝
+        site:
+            page_layout: "@ezdesign/pagelayout.html.twig"
+            field_templates:
+                - { template: "@ezdesign/content/field_templates.html.twig", priority: 5000 }

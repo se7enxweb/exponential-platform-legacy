@@ -1,0 +1,6 @@
+# This file is the entry point to configure your own services.
+# See config/app/services.yaml for application-specific service configuration.
+parameters:
+    google_recaptcha_site_key: '%env(GOOGLE_RECAPTCHA_SITE_KEY)%'
+
+services:

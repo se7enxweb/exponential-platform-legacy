@@ -1,0 +1,12 @@
+{# content \Netgen\IbexaSiteApi\API\Values\Content #}
+{# location \Netgen\IbexaSiteApi\API\Values\Location #}
+
+
+
+<article class="view-type view-type-{{ view_type }} file vl6">
+    <h3 class="title">
+        <a href="{{ ez_path(location) }}">
+            {{ ng_render_field(content.fields.name) }}
+        </a>
+    </h3>
+</article>

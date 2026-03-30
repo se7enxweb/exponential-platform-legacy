@@ -1,0 +1,16 @@
+{# content \Netgen\IbexaSiteApi\API\Values\Content #}
+{# location \Netgen\IbexaSiteApi\API\Values\Location #}
+
+{% import "themes/app/content/macros/links.html.twig" as links %}
+
+
+<article class="view-type view-type-{{ view_type }} ng-banner vl6">
+    <h3 class="title">
+        {{ links.content_link(content, content.fields.title.value.text) }}
+    </h3>
+    {% if with_intro|default(false) %}
+        <div class="short">
+            {{ ng_render_field(content.fields.description) }}
+        </div>
+    {% endif %}
+</article>

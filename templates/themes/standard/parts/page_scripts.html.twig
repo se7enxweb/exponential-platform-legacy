@@ -1,0 +1,17 @@
+<script>
+$(function() {
+    // Dev bar: toggle how-to details with jQuery slideToggle
+    $('#lp-dev-bar-toggle').on('click', function() {
+        var $d = $('#lp-dev-bar-details'), $b = $(this);
+        $d.slideToggle(180, function() {
+            $b.html($d.is(':visible') ? 'Hide &#9650;' : 'Show how-to &#9660;');
+        });
+    });
+    // Header: mobile nav toggle
+    $('#lp-nav-toggle').on('click', function() {
+        var $nav = $('#lp-header-nav');
+        $nav.toggleClass('lp-nav-open');
+        $(this).attr('aria-expanded', $nav.hasClass('lp-nav-open') ? 'true' : 'false');
+    });
+});
+</script>

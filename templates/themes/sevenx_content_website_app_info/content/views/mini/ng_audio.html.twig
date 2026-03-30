@@ -1,0 +1,25 @@
+{# content \Netgen\IbexaSiteApi\API\Values\Content #}
+{# location \Netgen\IbexaSiteApi\API\Values\Location #}
+
+{% import 'themes/app/content/macros/content_fields.html.twig' as content_fields %}
+
+
+<article class="view-type view-type-{{ view_type }} ng-audio vl5">
+    {% set location_path = ez_path(location) %}
+
+    <figure class="image">
+        <i class="icon-volume-up article-icon" aria-hidden="true"></i>
+        {{ ng_render_field(
+            content.fields.image, {
+                'parameters': {
+                    'alias': 'i160',
+                    'link_href': location_path
+                }
+            }
+        ) }}
+    </figure>
+
+    <header class="article-header">
+        <h2 class="title"><a href="{{ location_path }}">{{ content_fields.title(content) }}</a></h2>
+    </header>
+</article>

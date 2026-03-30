@@ -1,0 +1,7 @@
+services:
+    App\ExponentialPlatformLocationChildrenTwigHelper\Twig\LocationChildrenExtension:
+        arguments:
+            $searchService:  '@ezpublish.api.service.search'
+            $locationService: '@ezpublish.api.service.location'
+        tags:
+            - { name: twig.extension }

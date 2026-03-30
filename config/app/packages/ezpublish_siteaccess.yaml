@@ -1,11 +1,14 @@
 parameters:
     ngsite.admin_siteaccess_name: adminui
+    ngsite.default_siteaccess_name: site
 
 ezpublish:
     siteaccess:
-        default_siteaccess: fh_eng
+        # default_siteaccess: fh_eng
+        default_siteaccess: '%ngsite.default_siteaccess_name%'
         list:
             - fh_eng
+            - '%ngsite.default_siteaccess_name%'
             - bold_eng
             - bold_ger
             - '%ngsite.admin_siteaccess_name%'
@@ -19,10 +22,12 @@ ezpublish:
                 - legacy_admin
             frontend_group:
                 - fh_eng
+                - '%ngsite.default_siteaccess_name%'
                 - bold_eng
                 - bold_ger
             fh_group:
                 - fh_eng
+                - site
             bold_group:
                 - bold_eng
                 - bold_ger
@@ -45,6 +50,7 @@ ezpublish:
             design: fh
             translation_siteaccesses:
                 - fh_eng
+                - '%ngsite.default_siteaccess_name%'
             content:
                 tree_root:
                     location_id: '%ngsite.fh_group.locations.tree_root.id%'
@@ -63,6 +69,13 @@ ezpublish:
         fh_eng:
             languages:
                 - eng-GB
+        site:
+            languages:
+                - eng-GB
+            # 7x app design — developer overlay (sevenx_content_website_app_developer)
+            # is first in its chain, so parts/notices.twig and any developer overrides are found first.
+            # Comment out to revert to plain fh design chain:
+            design: site
         bold_eng:
             languages:
                 - eng-GB
@@ -71,6 +84,24 @@ ezpublish:
                 - ger-DE
 
 ezdesign:
+    templates_theme_paths:
+        sevenx_content_website_app_developer:
+            - '%kernel.project_dir%/templates/themes/sevenx_content_website_app_developer'
+        sevenx_content_website_app_info:
+            - '%kernel.project_dir%/templates/themes/sevenx_content_website_app_info'
+        sevenx_content_website_app:
+            - '%kernel.project_dir%/templates/themes/sevenx_content_website_app'
+        fh:
+            - '%kernel.project_dir%/templates/themes/fh'
+        app:
+            - '%kernel.project_dir%/templates/themes/app'
+        bold:
+            - '%kernel.project_dir%/templates/themes/bold'
+        common:
+            - '%kernel.project_dir%/templates/themes/common'
+        standard:
+            - '%kernel.project_dir%/templates/themes/standard'
+
     design_list:
         bold:
             - bold
@@ -96,7 +127,41 @@ ezdesign:
             - ngadminui
             - common
 
+        # ── Active chain for the 'site' siteaccess ──
+        # To enable 7x theme: uncomment sevenx_content_website_app line below.
+        # To remove all 7x themes: comment the following out. note: design 'standard' is required to boot the app default design by default. All others add features in some unique way.
+        site:
+            - sevenx_content_website_app_developer
+            - sevenx_content_website_app_info
+            - sevenx_content_website_app
+            - fh
+            - app
+            - common
+            - standard
 ez_publish_legacy:
     system:
         legacy_admin:
             legacy_mode: true
+
+        # ╔══════════════════════════════════════════════════════════════════════════════╗
+        # ║  LEGACY PAGELAYOUT OVERRIDE — fh_group                                      ║
+        # ║                                                                              ║
+        # ║  This block sets the Twig pagelayout used by the legacy kernel for all       ║
+        # ║  siteaccesses in fh_group (fh_eng, site).                                   ║
+        # ║                                                                              ║
+        # ║  HOW TO RE-ENABLE:                                                           ║
+        # ║    Remove the  ###  prefix from the three lines below, then run:             ║
+        # ║      php bin/console cache:clear --env=dev                                   ║
+        # ║                                                                              ║
+        # ║  CURRENTLY DISABLED — legacy kernel will use its own default pagelayout.     ║
+        # ╚══════════════════════════════════════════════════════════════════════════════╝
+        #fh_group:
+        #    templating:
+        #        view_layout: themes/sevenx-content-website-app-developer/pagelayout.html.twig
+        #        ### view_layout: themes/app/pagelayout.html.twig
+        #
+        # ── Alternative design: 'sevenx-content-website-app' (clean front-end, no dev bar) ──
+        # To activate: uncomment the block below and comment out fh_group above.
+        # sevenx_group:
+        #     templating:
+        #         view_layout: themes/sevenx-content-website-app/pagelayout.html.twig

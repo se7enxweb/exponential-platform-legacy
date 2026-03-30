@@ -6,7 +6,7 @@ parameters:
     ngsite.bold_group.locations.site_info.id: 442
 
     # Homepage location IDs - use existing root node from installed dataset
-    ngsite.fh_group.locations.tree_root.id: 385
+    ngsite.fh_group.locations.tree_root.id: 2
     ngsite.bold_group.locations.tree_root.id: 2
 
     # Component locations

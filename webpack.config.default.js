@@ -25,8 +25,11 @@ Encore
 
   // allow sass/scss files to be processed
   .enableSassLoader((options) => {
-    options.sassOptions.includePaths = [path.resolve(__dirname, 'node_modules')]; // eslint-disable-line no-param-reassign
-    options.sassOptions.outputStyle = Encore.isProduction() ? 'compressed' : 'expanded';
+    options.api = 'modern'; // eslint-disable-line no-param-reassign
+    options.sassOptions.loadPaths = [path.resolve(__dirname, 'node_modules')]; // eslint-disable-line no-param-reassign
+    options.sassOptions.style = Encore.isProduction() ? 'compressed' : 'expanded'; // eslint-disable-line no-param-reassign
+    options.sassOptions.quietDeps = true; // eslint-disable-line no-param-reassign
+    options.sassOptions.silenceDeprecations = ['import']; // eslint-disable-line no-param-reassign
   })
 
   // allow legacy applications to use $/jQuery as a global variable

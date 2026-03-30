@@ -1,0 +1,13 @@
+<header class="site-header">
+    <div class="container">
+        {% include 'themes/app/content/parts/site_logo.html.twig' %}
+
+        <button class="mainnav-toggle" aria-label="{{ 'ngsite.main_navigation'|trans }}" aria-controls="mainNavigation" aria-expanded="false">
+            <span class="hamburger" aria-hidden="true"></span>
+        </button>
+
+        {% include 'themes/app/pagelayout/header/main_menu.html.twig' %}
+        {% include 'themes/app/pagelayout/header/search_box.html.twig' %}
+        {% include 'themes/app/pagelayout/header/language_selector.html.twig' %}
+    </div>
+</header>

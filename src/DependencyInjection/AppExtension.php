@@ -17,6 +17,7 @@ final class AppExtension extends Extension implements PrependExtensionInterface
 {
     private const PREPEND_EXTENSION_ALIASES = [
         'ibexa' => 'ezpublish',
+        'platform' => 'ezpublish',
     ];
 
     public function load(array $configs, ContainerBuilder $container): void

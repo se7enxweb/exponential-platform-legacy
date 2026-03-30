@@ -1,0 +1,76 @@
+{% set site_info = ngsite.siteInfoContent %}
+
+<footer class="site-footer">
+    <div class="container">
+        {% include 'themes/app/content/parts/site_logo.html.twig' %}
+
+        <div class="footer-menu">
+            {% block page_additional_menu_footer %}
+                {{ render_esi(
+                    controller(
+                        'ngsite.controller.menu', {
+                            menuName: 'ngsite_additional_menu'
+                        }
+                    )
+                ) }}
+            {% endblock %}
+        </div>
+
+        <nav class="footer-social" role="navigation">
+            <ul>
+                {% if site_info.hasField('facebook') and not site_info.fields.facebook.empty %}
+                    <li>
+                        <a href="{{ site_info.fields.facebook.value.link }}" aria-label="{{ 'ngsite.visit_us_on_facebook'|trans }}"  target="_blank" noreferrer noopener >
+                            <i class="icon-facebook"></i>
+                            <span class="tt">Facebook</span>
+                        </a>
+                    </li>
+                {% endif %}
+
+                {% if site_info.hasField('twitter') and not site_info.fields.twitter.empty %}
+                    <li>
+                        <a href="{{ site_info.fields.twitter.value.link }}" aria-label="{{ 'ngsite.visit_us_on_twitter'|trans }}"  target="_blank" noreferrer noopener >
+                            <i class="icon-twitter"></i>
+                            <span class="tt">Twitter</span>
+                        </a>
+                    </li>
+                {% endif %}
+
+                {% if site_info.hasField('instagram') and not site_info.fields.instagram.empty %}
+                    <li>
+                        <a href="{{ site_info.fields.instagram.value.link }}" aria-label="{{ 'ngsite.visit_us_on_instagram'|trans }}" target="_blank" noreferrer noopener >
+                            <i class="icon-instagram"></i>
+                            <span class="tt">Instagram</span>
+                        </a>
+                    </li>
+                {% endif %}
+
+                {% if site_info.hasField('linkedin') and not site_info.fields.linkedin.empty %}
+                    <li>
+                        <a href="{{ site_info.fields.linkedin.value.link }}" aria-label="{{ 'ngsite.visit_us_on_linkedin'|trans }}"  target="_blank" noreferrer noopener >
+                            <i class="icon-linkedin"></i>
+                            <span class="tt">LinkedIn</span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+
+        <div class="footer-info">
+            {% if ngsite.siteInfoContent.hasField('related_cookie_policy') and not ngsite.siteInfoContent.fields.related_cookie_policy.empty %}
+                <a href="#" class="js-open-ng-cc d-block my-2">{{ 'ngsite.layout.cookie_settings'|trans }}</a>
+            {% endif %}
+
+            {% if site_info.hasField('footer_block') and not site_info.fields.footer_block.empty %}
+                <div>
+                    {{ ng_render_field(site_info.fields.footer_block) }}
+                </div>
+            {% endif %}
+
+            <address>
+                {{ 'ngsite.layout.powered_by'|trans }} <a href="https://platform.exponential.earth">7x &amp; Exponential Platform Nexus</a>
+            </address>
+        </div>
+
+    </div>
+</footer>

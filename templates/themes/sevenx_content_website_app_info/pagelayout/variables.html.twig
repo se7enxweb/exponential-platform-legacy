@@ -1,0 +1,75 @@
+{% apply spaceless %}
+
+{# SITE NAME #}
+
+{% if site_name is not defined %}
+    {% set site_name = ngsite.siteInfoContent.fields.title.value.text|trim %}
+{% endif %}
+
+{# PATH ARRAY #}
+
+{% if show_path is not defined %}
+    {% set show_path = true %}
+{% endif %}
+
+{% if path_array is not defined %}
+    {% if content is defined and location|default(null) is not empty and not location.innerLocation.isDraft %}
+        {% set path_array = ngsite_location_path(location.id, {show_current_location: true}) %}
+        {% if path_array is not empty %}
+            {% set main_category_location_id = path_array[1].location.id ?? path_array[0].location.id %}
+        {% endif %}
+    {% else %}
+        {% set path_array = [] %}
+        {% set main_category_location_id = 0 %}
+    {% endif %}
+{% endif %}
+
+{# AVAILABLE TRANSLATIONS #}
+
+{% if available_translations is not defined %}
+    {% set available_translations = [] %}
+    {% set available_hreflang_translations = [] %}
+    {% set current_content_language = null %}
+
+    {% if content is defined %}
+        {% for language in ezplatform.configResolver.parameter('languages') %}
+            {% if current_content_language is empty and language in content.versionInfo.languageCodes %}
+                {% set current_content_language = language %}
+            {% endif %}
+        {% endfor %}
+
+        {% if current_content_language is empty %}
+            {% set current_content_language = content.contentInfo.mainLanguageCode %}
+        {% endif %}
+    {% endif %}
+
+    {% for language in ezplatform.availableLanguages %}
+        {% set translation_site_access = ezplatform.translationSiteAccess(language) %}
+
+        {% if translation_site_access is not empty %}
+            {% set siteaccess_languages = ezplatform.configResolver.parameter('languages', null, translation_site_access) %}
+            {% set route_reference = ez_route(params={'siteaccess': translation_site_access}) %}
+            {% set homepage_url = ez_url(ezplatform.rootLocation, {siteaccess: translation_site_access}) %}
+
+            {% if route_reference.route is not empty %}
+                {% if content is not defined %}
+                    {% set url = ez_url(route_reference) %}
+                    {% set available_translations = available_translations|merge({(language): url}) %}
+                    {% set available_hreflang_translations = available_hreflang_translations|merge({(language): url}) %}
+                {% elseif language in content.versionInfo.languageCodes or content.contentInfo.alwaysAvailable %}
+                    {% set url = ez_url(route_reference, {'language': language}) %}
+                    {% if '/view/content/' not in url %}
+                        {% set available_translations = available_translations|merge({(language): url}) %}
+                        {% set available_hreflang_translations = available_hreflang_translations|merge({(language): url}) %}
+                    {% endif %}
+                {% else %}
+                    {% set available_translations = available_translations|merge({(language): homepage_url}) %}
+                {% endif %}
+            {% else %}
+                {% set available_translations = available_translations|merge({(language): homepage_url}) %}
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+{% endapply %}{% block pagelayout_content %}{% endblock %}

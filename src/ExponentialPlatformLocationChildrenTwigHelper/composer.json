@@ -1,0 +1,55 @@
+{
+    "name": "se7enxweb/exponential-platform-location-children-twig-helper",
+    "description": "Twig helper bundle for Exponential Platform Legacy (eZ Platform / Ibexa OSS) — exposes ez_location_children() to fetch direct child Locations in templates.",
+    "type": "symfony-bundle",
+    "license": "GPL-2.0-or-later",
+    "keywords": [
+        "ezplatform",
+        "ibexa",
+        "twig",
+        "extension",
+        "location",
+        "children",
+        "exponential-platform",
+        "se7enxweb",
+        "symfony-bundle"
+    ],
+    "homepage": "https://github.com/se7enxweb/exponential-platform-location-children-twig-helper",
+    "support": {
+        "issues": "https://github.com/se7enxweb/exponential-platform-legacy/issues",
+        "source": "https://github.com/se7enxweb/exponential-platform-location-children-twig-helper"
+    },
+    "authors": [
+        {
+            "name": "7x / se7enxweb",
+            "homepage": "https://se7enx.com",
+            "role": "Lead Developer"
+        }
+    ],
+    "require": {
+        "php": ">=8.0",
+        "symfony/framework-bundle": "^5.4 || ^6.0",
+        "twig/twig": "^3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5 || ^10.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Se7enxweb\\ExponentialPlatformLocationChildrenTwigHelper\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Se7enxweb\\ExponentialPlatformLocationChildrenTwigHelper\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "1.0.x-dev"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}

@@ -1,0 +1,19 @@
+{# content \Netgen\IbexaSiteApi\API\Values\Content #}
+{# location \Netgen\IbexaSiteApi\API\Values\Location #}
+
+{% import 'themes/app/content/macros/content_fields.html.twig' as content_fields %}
+
+
+<article class="view-type view-type-{{ view_type }} {{ content.contentInfo.contentTypeIdentifier|replace({'_': '-'}) }} vl10">
+    <h3 class="title">
+        <a role="button" href="#collapse-{{ location.id }}" role="button" class="collapsed" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapse-{{ location.id }}">
+            {{ content_fields.title(content) }}
+        </a>
+    </h3>
+
+    <div id="collapse-{{ location.id }}" class="collapse" aria-labelledby="heading-{{ location.id }}" data-bs-parent=".list-accordion">
+        <div class="short">
+            {{ content_fields.intro(content) }}
+        </div>
+    </div>
+</article>

@@ -2,6 +2,7 @@
 
 return [
     App\AppBundle::class => ['all' => true],
+    App\ExponentialPlatformLocationChildrenTwigHelper\ExponentialPlatformLocationChildrenTwigHelperBundle::class => ['all' => true],
     Symfony\Bundle\FrameworkBundle\FrameworkBundle::class => ['all' => true],
     Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
     Symfony\Bundle\TwigBundle\TwigBundle::class => ['all' => true],

@@ -1,0 +1,81 @@
+{# Developer notice bars: lp-info-bar (blue) + lp-dev-bar (amber). Included via @ezdesign/parts/notices.twig #}
+
+    <div id="lp-info-bar">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2196f3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+        <span>Hybrid Kernel Content View &mdash; Edit your content in the
+            <a href="/adminui/" target="_top">Administrator (Page Editor)</a>
+        </span>
+    </div>
+
+    <div id="lp-dev-bar">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:3px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+        <div style="flex:1;min-width:0;">
+            <div id="lp-dev-bar-header">
+                <strong>Switch to a real site design.</strong>
+                <button id="lp-dev-bar-toggle" type="button">Show how-to &#9660;</button>
+            </div>
+            <div id="lp-dev-bar-details" style="display:none;margin-top:6px;">
+
+                <p style="margin:0 0 10px;"><strong>#1 &mdash; What you are seeing right now.</strong><br>
+                This page is using the <code style="display:inline;background:rgba(0,0,0,.07);color:inherit;padding:1px 5px;border-radius:3px;">app</code> theme
+                as its design &mdash; the default fallback that ships with this platform.
+                Content is rendered by the legacy kernel and wrapped in this Twig pagelayout.
+                The <strong>design chain</strong> controls which theme folder is searched first for templates.
+                It is a list &mdash; first match wins, the rest are fallbacks.</p>
+
+                <p style="margin:0 0 6px;"><strong>#2 &mdash; How to switch the active theme.</strong><br>
+                Open <code style="display:inline;background:rgba(0,0,0,.07);color:inherit;padding:1px 5px;border-radius:3px;">config/app/packages/ezpublish_siteaccess.yaml</code>
+                and find the <code style="display:inline;background:rgba(0,0,0,.07);color:inherit;padding:1px 5px;border-radius:3px;">site:</code> block
+                inside <code style="display:inline;background:rgba(0,0,0,.07);color:inherit;padding:1px 5px;border-radius:3px;">ezdesign.design_list</code>.
+                The line beginning with <code style="display:inline;background:rgba(0,0,0,.07);color:inherit;padding:1px 5px;border-radius:3px;">###</code>
+                is your theme toggle &mdash; uncomment it to enable that theme, comment it out to disable it.
+                Run <code style="display:inline;background:rgba(0,0,0,.07);color:inherit;padding:1px 5px;border-radius:3px;">php bin/console cache:clear --env=dev</code> after every change.</p>
+
+                <code>
+# ── ezdesign.design_list.site  (in ezpublish_siteaccess.yaml) ─────────────────
+# This list is the design chain for the 'site' siteaccess.
+# Templates are looked up top-to-bottom; first file found wins.
+# To activate the SevenX brand theme: uncomment the ### line below.
+# To fall back to the plain 'app' theme: keep it commented out.
+
+        site:
+            ### - sevenx_content_website_app   # ← uncomment to enable SevenX theme
+            - fh                               # ← fallback 1
+            - app                              # ← fallback 2  (you are here now)
+            - common
+            - standard
+# ──────────────────────────────────────────────────────────────────────────────
+# Each theme name maps to a folder:  templates/themes/&lt;name&gt;/
+# @ezdesign/  in Twig resolves to the first theme in the list that has the file.
+</code>
+
+                <p style="margin:10px 0 6px;border-top:1px solid rgba(245,158,11,.3);padding-top:10px;">
+                <strong>How to silence this message permanently.</strong><br>
+                Comment out the entire dev-bar block in your active pagelayout template.
+                Both formats are shown below &mdash; use the one that matches your template type.</p>
+
+                <code>
+&#123;# ── TWIG: templates/themes/sevenx-content-website-app-developer/pagelayout.html.twig
+   Wrap the parts/notices.twig include in a Twig block comment to hide it.
+   Remove the &#123;# and #&#125; markers below to restore it. #&#125;
+
+&#123;#
+    &#123;% include '@ezdesign/parts/notices.twig' %&#125;
+#&#125;
+</code>
+
+                <code>
+&#123;* ── eZ LEGACY TPL: design/mysite/override/templates/pagelayout.tpl ──────────
+   In a .tpl file, wrap the block in a legacy template comment using  &#123;* ... *&#125;
+   Remove the  &#123;*  and  *&#125;  markers below to restore it.                       *&#125;
+
+&#123;*
+    &lt;div id="lp-dev-bar"&gt;
+        ...entire dev bar block...
+    &lt;/div&gt;
+*&#125;
+</code>
+
+            </div>
+        </div>
+    </div>

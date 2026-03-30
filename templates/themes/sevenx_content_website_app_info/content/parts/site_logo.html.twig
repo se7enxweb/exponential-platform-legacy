@@ -1,0 +1,7 @@
+<a class="site-logo" href="{{ ez_path(ezplatform.rootLocation) }}" title="{{ site_name }}">
+    {% if ngsite.siteInfoContent.hasField('site_logo') and not ngsite.siteInfoContent.fields.site_logo.empty %}
+        <img src="{{ ngsite.siteInfoContent.fields.site_logo.value.uri }}" alt="" />
+    {% else %}
+        {{ site_name }}
+    {% endif %}
+</a>

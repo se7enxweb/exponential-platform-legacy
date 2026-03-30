@@ -47,7 +47,6 @@ yarn-error.log
 /public/index_cluster.php
 /public/index_rest.php
 /web
-/flex
 
 auth.json
 composer.phar
@@ -63,3 +62,12 @@ studio.json
 .env.local~
 /public/bundles/
 /doc/netgen/
+
+###> phpstan/phpstan ###
+phpstan.neon
+###< phpstan/phpstan ###
+
+###> php-cs-fixer/shim ###
+/.php-cs-fixer.php
+/.php-cs-fixer.cache
+###< php-cs-fixer/shim ###

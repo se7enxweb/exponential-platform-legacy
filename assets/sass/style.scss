@@ -1,9 +1,7 @@
 @charset "UTF-8";
 // IMPORTANT: only add imports to this file
 
-// External libraries
-@import 'swiper/css/bundle';
-@import 'photoswipe/dist/photoswipe';
+// Note: swiper and photoswipe CSS are imported as JS modules in assets/js/index.js
 
 // Main variables
 @import 'variables';
@@ -98,3 +96,6 @@
 
 // Cookie ribbon
 @import 'cookie_control';
+
+// SevenX Content Website App — legacy portal layout shell (lp-* selectors)
+@import 'sevenx_content_website_app';
