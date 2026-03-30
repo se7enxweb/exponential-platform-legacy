@@ -1,2 +1,80 @@
-# Legacy INI injection removed (netgen_site_legacy bundle not present).
-# Use ez_publish_legacy or direct INI overrides if needed.
+# Legacy INI injection via ExponentialPlatformLegacyInjectedSettingsBundle.
+# Equivalent to netgen_site_legacy injected_settings / injected_merge_settings.
+# Key format: 'file.ini/SectionName/SettingName'
+
+parameters:
+
+    # ── Scalar overrides (highest priority — replaces any matching INI value) ──
+    app.legacy.injected_settings:
+        'site.ini/SiteSettings/DefaultAccess': site
+        'site.ini/SiteSettings/RootNodeDepth': '1'
+        'site.ini/SiteAccessSettings/CheckValidity': 'false'
+        'site.ini/SiteAccessSettings/ForceVirtualHost': 'true'
+        'site.ini/SiteAccessSettings/RemoveSiteAccessIfDefaultAccess': enabled
+        'site.ini/DesignSettings/SiteDesign': standard
+        'site.ini/DesignSettings/DesignLocationCache': enabled
+        'site.ini/DatabaseSettings/Charset': utf8mb4
+        'site.ini/Session/SessionNameHandler': custom
+        'site.ini/UserSettings/LogoutRedirect': /
+        'content.ini/ClassGroupIDs/Media': '2'
+        'content.ini/ClassGroupIDs/Users': '3'
+        'content.ini/ClassGroupIDs/Setup': '-1'
+
+    # ── Array merges (appended to existing array INI values) ──
+    app.legacy.injected_merge_settings:
+        'site.ini/SiteSettings/SiteList':
+            - site
+            - admin
+            - legacy_admin
+        'site.ini/SiteAccessSettings/AvailableSiteAccessList':
+            - site
+            - admin
+            - legacy_admin
+        'site.ini/ExtensionSettings/ActiveExtensions':
+            - app
+            - ngsymfonytools
+            - ezrichtext
+            - ezplatformsearch
+            - ezjscore
+            - ezoe
+        'site.ini/SiteAccessRules/Rules':
+            - 'access;disable'
+            - 'module;user/register'
+            - 'module;user/activate'
+            - 'module;user/success'
+            - 'module;user/forgotpassword'
+            - 'module;ezinfo/about'
+            - 'module;content/advancedsearch'
+
+    # ── Per-siteaccess scalar overrides ──
+    app.legacy.siteaccess_injected_settings:
+        site:
+            # Override SiteDesign for legacy admin — admin3 is the primary design
+            'site.ini/DesignSettings/SiteDesign': standard
+        admin:
+            # Override SiteDesign for legacy admin — admin3 is the primary design
+            'site.ini/DesignSettings/SiteDesign': admin
+        legacy_admin:
+            # Override SiteDesign for legacy admin — admin3 is the primary design
+            'site.ini/DesignSettings/SiteDesign': admin
+
+    # ── Per-siteaccess array merges ──
+    app.legacy.siteaccess_injected_merge_settings:
+        site:
+            # Design fallback chain: admin3 → admin → standard
+            'site.ini/DesignSettings/AdditionalSiteDesignList':
+                #- admin3
+                #- admin
+                - standard
+        admin:
+            # Design fallback chain: admin3 → admin → standard
+            'site.ini/DesignSettings/AdditionalSiteDesignList':
+                # - admin3
+                - admin
+                - standard
+        legacy_admin:
+            # Design fallback chain: admin3 → admin → standard
+            'site.ini/DesignSettings/AdditionalSiteDesignList':
+                # - admin3
+                - admin
+                - standard

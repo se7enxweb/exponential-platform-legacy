@@ -1,0 +1,58 @@
+{#
+    standard/parts/content_sidebar.html.twig
+
+    Content sidebar coordinator — renders all sidebar widget cards for the
+    folder (and any other content view that needs the same sidebar).
+
+    Usage:
+        {% include '@ezdesign/parts/content_sidebar.html.twig' with {
+            content:  content,
+            location: location,
+            ct:       ct,
+            ci:       ci,
+            vi:       vi,
+            lpath:    lpath,
+        } only %}
+
+    Variables forwarded to each widget:
+        content   — eZ Content value object
+        location  — eZ Location value object
+        ct        — content.contentType (nullable)
+        ci        — content.contentInfo (nullable)
+        vi        — content.versionInfo (nullable)
+        lpath     — location.pathString trimmed of slashes
+
+    Widget partials (each independently includable):
+        @ezdesign/parts/content_sidebar/metadata_card.html.twig
+        @ezdesign/parts/content_sidebar/navigate_card.html.twig
+        @ezdesign/parts/content_sidebar/rest_api_card.html.twig
+        @ezdesign/parts/content_sidebar/ecosystem_card.html.twig
+#}
+<div style="display:flex;flex-direction:column;gap:14px;">
+
+    {# ── Metadata card ── #}
+    {% include '@ezdesign/parts/content_sidebar/metadata_card.html.twig' with {
+        content:  content,
+        location: location,
+        ci:       ci,
+        vi:       vi,
+    } only %}
+
+    {# ── Navigate card ── #}
+    {% include '@ezdesign/parts/content_sidebar/navigate_card.html.twig' with {
+        location: location,
+    } only %}
+
+    {# ── REST API card ── #}
+    {% include '@ezdesign/parts/content_sidebar/rest_api_card.html.twig' with {
+        content:  content,
+        location: location,
+        ct:       ct,
+        vi:       vi,
+        lpath:    lpath,
+    } only %}
+
+    {# ── Ecosystem card ── #}
+    {# % include '@ezdesign/parts/content_sidebar/ecosystem_card.html.twig' only % #}
+
+</div>{# /content_sidebar #}

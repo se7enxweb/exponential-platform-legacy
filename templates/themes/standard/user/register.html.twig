@@ -1,0 +1,296 @@
+{# Copyright 1998 - 2026 7x; All rights reserved (unless otherwise noted). #}
+{#
+    standard/user/register.html.twig
+
+    User self-registration form.
+    Template config key: user_registration.templates.form
+    Controller: UserRegisterController::registerAction
+    Form variable: form  (UserRegisterType — content form with all user fields)
+    Route: exp_user_register → /register
+
+    Form is rendered wholesale via form(form).
+    Individual field labels come from the eZ content type definition and are
+    rendered once by the Symfony form theme. If duplicate labels appear, the
+    source is the form theme at:
+        vendor/ibexa/core/src/bundle/Core/Resources/views/themes/standard/form_fields.html.twig
+        vendor/ezsystems/ezplatform-user/src/bundle/Resources/views/themes/standard/user/
+    The CSS rule `label + label { display: none }` inside .sr-register suppresses
+    any rendered duplicates without touching those vendor templates.
+#}
+{% extends '@ezdesign/pagelayout_login.html.twig' %}
+
+{% block page_title %}Create Account | Exponential Platform{% endblock %}
+
+{% block content %}
+<style>
+/* ══ Register page ══════════════════════════════════════════════════════════ */
+body.lp-login-page {
+    background: linear-gradient(150deg, #e0f7ff 0%, #f0fbff 45%, #fef9f0 100%) !important;
+}
+
+.sr-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 28px 16px 48px;
+    min-height: calc(100vh - 220px);
+}
+
+.sr-card {
+    background: #fff;
+    border: 3px solid #38bdf8;
+    border-radius: 22px;
+    box-shadow: 5px 5px 0 #0ea5e9, 0 24px 64px rgba(14,165,233,.13);
+    padding: 30px 36px 28px;
+    width: 100%;
+    max-width: 700px;
+}
+
+.sr-logo {
+    text-align: center;
+    margin-bottom: 14px;
+}
+.sr-logo a {
+    display: inline-flex;
+    align-items: center;
+    background: #e0f2fe;
+    border: 2px solid #7dd3fc;
+    border-radius: 50px;
+    padding: 6px 18px;
+    text-decoration: none;
+    box-shadow: 2px 2px 0 #bae6fd;
+}
+.sr-logo img {
+    height: 26px;
+    display: block;
+    border-radius: 4px;
+}
+
+.sr-title {
+    text-align: center;
+    font-size: 21px;
+    font-weight: 900;
+    color: #0c4a6e;
+    letter-spacing: -.4px;
+    margin: 0 0 3px;
+}
+.sr-title::before { content: '\25C8\00A0'; color: #38bdf8; }
+
+.sr-sub {
+    text-align: center;
+    font-size: 12.5px;
+    color: #64748b;
+    margin: 0 0 22px;
+}
+
+/* ── Form grid ────────────────────────────────────────────────────────────── */
+.sr-body form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 20px;
+}
+
+/* Field rows (Symfony wraps each field in a div) */
+.sr-body form > div {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Submit button / last action row spans both columns */
+.sr-body form > div:last-of-type,
+.sr-body form > button,
+.sr-body form > input[type="submit"] {
+    grid-column: 1 / -1;
+}
+
+/* ── Labels ────────────────────────────────────────────────────────────────── */
+.sr-body label {
+    display: block;
+    font-size: 10px;
+    font-weight: 800;
+    color: #0369a1;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    margin-bottom: 4px;
+}
+.sr-body label::before { content: '\25B8\00A0'; color: #38bdf8; }
+
+/* Suppress any duplicate labels the content-form theme may render */
+.sr-body label + label { display: none !important; }
+
+/* ── Inputs ────────────────────────────────────────────────────────────────── */
+.sr-body input[type="text"],
+.sr-body input[type="email"],
+.sr-body input[type="password"],
+.sr-body textarea {
+    width: 100%;
+    background: #f0f9ff;
+    border: 2px solid #bae6fd;
+    border-radius: 10px;
+    color: #0c4a6e;
+    font-size: 13.5px;
+    padding: 8px 11px;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color .14s, box-shadow .14s, background .14s;
+}
+.sr-body input[type="text"]:focus,
+.sr-body input[type="email"]:focus,
+.sr-body input[type="password"]:focus {
+    border-color: #38bdf8;
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(56,189,248,.18), 3px 3px 0 #bae6fd;
+}
+.sr-body input::placeholder { color: #94a3b8; font-size: 12px; }
+.sr-body textarea::placeholder { color: #94a3b8; font-size: 12px; }
+
+/* ── Signature / eztext textarea ──────────────────────────────────────────── */
+/* rows set by TextBlockFieldType from content type fieldSettings.textRows —  */
+/* SOURCE: vendor/se7enxweb/ezplatform-content-forms/src/lib/FieldType/Mapper/TextBlockFormMapper.php */
+/* We override to a comfortable 5-line height regardless of content type setting. */
+.sr-body textarea {
+    height: calc(5 * 1.5em + 18px); /* 5 lines at 1.5 line-height + padding */
+    min-height: calc(4 * 1.5em + 18px);
+    max-height: calc(6 * 1.5em + 18px);
+    resize: vertical;
+}
+
+/* ── Submit ────────────────────────────────────────────────────────────────── */
+.sr-body button[type="submit"],
+.sr-body input[type="submit"] {
+    grid-column: 1 / -1;
+    width: 100%;
+    background: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 100%);
+    border: 3px solid #0284c7;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 13.5px;
+    font-weight: 900;
+    padding: 11px 10px;
+    cursor: pointer;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    box-shadow: 3px 3px 0 #0284c7;
+    transition: transform .1s, box-shadow .1s;
+    margin-top: 6px;
+}
+.sr-body button[type="submit"]:hover,
+.sr-body input[type="submit"]:hover {
+    transform: translate(-1px,-1px);
+    box-shadow: 5px 5px 0 #0284c7;
+}
+.sr-body button[type="submit"]:active,
+.sr-body input[type="submit"]:active {
+    transform: translate(2px,2px);
+    box-shadow: 1px 1px 0 #0284c7;
+}
+
+/* ── Field errors ─────────────────────────────────────────────────────────── */
+.sr-body ul.errors,
+.sr-body .form-error-message {
+    list-style: none;
+    margin: 3px 0 0;
+    padding: 0;
+    font-size: 11px;
+    color: #dc2626;
+}
+.sr-body ul.errors li::before { content: '\2715\00A0'; font-weight: 800; }
+
+/* ── Form-level errors ────────────────────────────────────────────────────── */
+.sr-body .form-errors,
+.sr-body ul.form-errors {
+    grid-column: 1 / -1;
+    list-style: none;
+    margin: 0 0 10px;
+    padding: 10px 14px;
+    background: #fef2f2;
+    border: 2px solid #fca5a5;
+    border-radius: 10px;
+    font-size: 12px;
+    color: #dc2626;
+    box-shadow: 2px 2px 0 #fca5a5;
+}
+
+/* ── Sign-in link ─────────────────────────────────────────────────────────── */
+.sr-foot {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 12.5px;
+}
+.sr-foot a {
+    color: #0284c7;
+    font-weight: 700;
+    text-decoration: none;
+}
+.sr-foot a:hover { color: #0ea5e9; text-decoration: underline; }
+
+/* ── Footer ───────────────────────────────────────────────────────────────── */
+.sr-copyright {
+    text-align: center;
+    margin-top: 14px;
+    padding-bottom: 24px;
+    font-size: 11px;
+    color: #94a3b8;
+}
+.sr-copyright a { color: #94a3b8; text-decoration: none; }
+.sr-copyright a:hover { color: #64748b; }
+</style>
+
+<div class="sr-wrap">
+    <div class="sr-card">
+
+        <div class="sr-logo">
+            <a href="/"><img src="/assets/images/exponentialplatform.png" alt="Exponential Platform"></a>
+        </div>
+
+        <h1 class="sr-title">Create Account</h1>
+        <p class="sr-sub">Fill in your details below to get started &nbsp;✦</p>
+
+        <div class="sr-body">
+            {#
+                Form theme applied here — suppresses the outer (duplicate) label that
+                Symfony renders for each ContentFieldType collection entry.
+                Source file: templates/themes/standard/user/register_form_theme.html.twig
+                (read that file for the full root-cause trace per label duplication source)
+            #}
+            {% form_theme form '@ezdesign/user/register_form_theme.html.twig' %}
+
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            {#
+                Render only the field widgets, NOT form_row(form.fieldsData).
+                form_row would emit a <label> for the whole collection using the
+                translation key 'ezplatform.content_forms.content.fields' → "Fields"
+                SOURCE: BaseContentType::buildForm() line 43
+                    vendor/se7enxweb/ezplatform-content-forms/
+                        src/lib/Form/Type/Content/BaseContentType.php
+                Using form_widget skips the collection-level label entirely.
+            #}
+            {% for fieldForm in form.fieldsData %}
+                {{- form_row(fieldForm) -}}
+            {% endfor %}
+
+            {#
+                Register submit button — added in UserRegisterType::buildForm()
+                SOURCE: vendor/ezsystems/ezplatform-user/src/lib/Form/Type/UserRegisterType.php
+            #}
+            {{ form_widget(form.register) }}
+
+            {{ form_rest(form) }}
+            {{ form_end(form, {'render_rest': false}) }}
+        </div>
+
+        <div class="sr-foot">
+            <a href="{{ path('login') }}">&#9656; Already have an account? Sign in</a>
+        </div>
+
+    </div>
+</div>
+
+<div class="sr-copyright">
+    &copy; 1998&ndash;{{ "now"|date("Y") }}
+    <a href="https://se7enx.com" target="_blank" rel="noopener">7x</a> &middot;
+    <a href="https://exponential.earth" target="_blank" rel="noopener">Exponential</a>
+</div>
+{% endblock %}

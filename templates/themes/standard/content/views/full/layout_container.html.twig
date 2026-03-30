@@ -1,0 +1,75 @@
+{# standard/content/views/full/layout_container.html.twig
+   Root location container (Location ID 2) — developer/info theme fallback.
+   Structural shell matches folder.html.twig; main column renders legacy bridge output.
+#}
+
+{% extends pagelayout is defined ? pagelayout : "@ezdesign/pagelayout.html.twig" %}
+
+{% block page_title -%}
+{%- set _name = ez_content_name(content) -%}
+{%- set _alias = path('ez_urlalias', {locationId: location.id})|trim('/') -%}
+{%- set _raw_parts = (_alias and not (_alias starts with 'view/')) ? _alias|split('/') : [] -%}
+{%- set _parent_parts = [] -%}
+{%- for part in _raw_parts|slice(0, -1) -%}{%- set _parent_parts = _parent_parts|merge([part|replace({'-': ' ', '_': ' '})|title]) -%}{%- endfor -%}
+{%- set _path_label = _parent_parts|length > 0 ? (_parent_parts|join(' / ') ~ ' / ' ~ _name) : _name -%}
+{{ _path_label }} - Exponential Platform is The Power User's CMS / DXP
+{%- endblock %}
+
+{% block content %}
+
+{%- set ct    = content.contentType is defined ? content.contentType : null -%}
+{%- set ci    = content.contentInfo is defined ? content.contentInfo : null -%}
+{%- set vi    = content.versionInfo is defined ? content.versionInfo : null -%}
+{%- set lpath = location.pathString|trim('/') -%}
+
+<div style="font-family:system-ui,-apple-system,sans-serif;color:#0f172a;line-height:1.55;min-width:0;">
+
+    {% include '@ezdesign/parts/content_hero.html.twig' with {
+        content:  content,
+        location: location,
+        ct:       ct,
+        vi:       vi,
+    } only %}
+
+
+    {# ════════════════════════════════════════════════
+       TWO-COLUMN LAYOUT
+    ════════════════════════════════════════════════ #}
+    <div id="sxa-layout" style="display:grid;grid-template-columns:1fr 272px;gap:24px;align-items:start;">
+
+
+        {# ┌─────────────────────────────────────────┐
+           │  MAIN COLUMN — legacy bridge content    │
+           └─────────────────────────────────────────┘ #}
+        <div style="min-width:0;">
+
+            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04);">
+                <div style="padding:9px 16px;background:#f8fafc;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;gap:8px;">
+                    <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#475569;">Content</span>
+                    <code style="font-size:9px;font-family:ui-monospace,monospace;color:#94a3b8;background:#eef2f7;padding:1px 7px;border-radius:4px;">location:{{ location.id }}</code>
+                </div>
+                <div style="padding:16px;font-size:14px;color:#334155;line-height:1.7;word-break:break-word;overflow-x:auto;">
+                    {{ render(controller('ezpublish_legacy.controller:indexAction', {}, {'no_layout': '1'})) }}
+                </div>
+            </div>
+
+        </div>{# /main column #}
+
+
+        {# ┌─────────────────────────────────────────┐
+           │  SIDEBAR                                │
+           └─────────────────────────────────────────┘ #}
+        {% include '@ezdesign/parts/content_sidebar.html.twig' with {
+            content:  content,
+            location: location,
+            ct:       ct,
+            ci:       ci,
+            vi:       vi,
+            lpath:    lpath,
+        } only %}
+    </div>{# /layout #}
+
+</div>{# /sxa-layout-container #}
+
+
+{% endblock %}

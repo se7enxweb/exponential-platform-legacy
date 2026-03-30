@@ -1,0 +1,122 @@
+{#
+    standard/user/register_form_theme.html.twig
+
+    Symfony Twig form theme applied ONLY to the /register form via:
+        {% form_theme form '@ezdesign/user/register_form_theme.html.twig' %}
+    in templates/themes/standard/user/register.html.twig.
+
+    ════════════════════════════════════════════════════════════════════════════
+    WHY THIS FILE EXISTS — DUPLICATE LABEL ROOT CAUSES
+    ════════════════════════════════════════════════════════════════════════════
+
+    The register form uses UserRegisterType (extends BaseContentType) which
+    renders a FieldCollectionType of ContentFieldType entries. This produces
+    two label renders per field:
+
+    SOURCE A — the OUTER (duplicate, unwanted) label:
+        Each ContentFieldType entry is keyed by field identifier in
+        FieldCollectionType::buildForm() (PRE_SET_DATA listener):
+            vendor/se7enxweb/ezplatform-content-forms/
+                src/lib/Form/Type/Content/FieldCollectionType.php
+        The key ('first_name', 'last_name', 'user_account' …) is humanised by
+        Symfony's LabelGuesser → "First name", "Last name", "User account" …
+        Symfony's default form_row then renders a <label> for this outer row.
+        → This is the FIRST occurrence of the label. WE SUPPRESS IT HERE.
+
+    SOURCE B — the INNER (wanted) label:
+        Each field type mapper explicitly passes:
+            'label' => $fieldDefinition->getName()
+        e.g. for text fields:
+            vendor/se7enxweb/ezplatform-content-forms/
+                src/lib/FieldType/Mapper/TextLineFormMapper.php  (line ~35)
+        Equivalent mappers exist for every field type (ezuser, eztext, ezimage …)
+        in the same Mapper/ directory.
+        → This is the SECOND (correct) occurrence. WE KEEP IT.
+
+    SOURCE C — the "Fields" collection heading:
+        The fieldsData FieldCollectionType is added with:
+            'label' => 'ezplatform.content_forms.content.fields'
+        in BaseContentType::buildForm():
+            vendor/se7enxweb/ezplatform-content-forms/
+                src/lib/Form/Type/Content/BaseContentType.php  (line 43)
+        Symfony's form_row renders this as a <label> wrapping the whole
+        collection → "Fields" heading above all inputs.
+        → WE SUPPRESS IT in register.html.twig by calling form_widget(form.fieldsData)
+          directly (skipping form_row) which never emits the collection label.
+
+    ════════════════════════════════════════════════════════════════════════════
+    BLOCK NAMES (Symfony convention: blockPrefix + "_row" / "_widget" etc.)
+    ════════════════════════════════════════════════════════════════════════════
+
+    ContentFieldType::getBlockPrefix() → 'ezplatform_content_forms_content_field'
+        → row block:    ezplatform_content_forms_content_field_row   ← overridden below
+        → widget block: ezplatform_content_forms_content_field_widget
+
+    FieldCollectionType (extends CollectionType, no getBlockPrefix override)
+        → block prefix derived from class name: 'field_collection'
+        → row block: field_collection_row (not overridden; suppressed via template)
+
+    ════════════════════════════════════════════════════════════════════════════
+#}
+
+{#
+    ── OVERRIDE: ezplatform_content_forms_content_field_row ────────────────────
+    Suppresses SOURCE A (the outer duplicate label).
+    Default form_row renders: form_label + form_widget + form_errors.
+    We render: form_widget + form_errors only.
+    The form_widget on a ContentFieldType entry expands to its compound children
+    (the 'value' sub-field added by the field mapper) which carry SOURCE B labels.
+#}
+{% block ezplatform_content_forms_content_field_row %}
+    {#- No form_label here — outer label would duplicate the inner one from the mapper. -#}
+    {{- form_widget(form) -}}
+    {{- form_errors(form) -}}
+{% endblock %}
+
+{#
+    ── OVERRIDE: ezplatform_fieldtype_ezuser_row ────────────────────────────────
+    Suppresses the "User account" section heading.
+
+    SOURCE: UserAccountFieldValueFormMapper::mapFieldValueForm() line ~50
+        vendor/se7enxweb/ezplatform-content-forms/
+            src/lib/FieldType/Mapper/UserAccountFieldValueFormMapper.php
+        Sets 'label' => $fieldDefinition->getName() on the 'value' sub-field
+        of type UserAccountFieldType (block prefix: ezplatform_fieldtype_ezuser).
+    Symfony renders this compound type's label as a visible heading above the
+    username/password/email inputs — "User account" in English.
+    We skip form_label and render only the widget (which contains the actual
+    username, password, email sub-fields) and any errors.
+#}
+{% block ezplatform_fieldtype_ezuser_row %}
+    {#- "User account" heading suppressed — see comment above this block. -#}
+    {{- form_widget(form) -}}
+    {{- form_errors(form) -}}
+{% endblock %}
+
+{#
+    ── OVERRIDE: ezplatform_fieldtype_ezimage_widget ────────────────────────────
+    Moves the "Remove" checkbox to below the "Alternative text" input.
+
+    DEFAULT ORDER (from BinaryBaseFieldType + ImageFieldType::buildForm()):
+        1. remove       (CheckboxType)   ← BinaryBaseFieldType.php ~line 42
+        2. file         (FileType)       ← BinaryBaseFieldType.php ~line 50
+        3. alternativeText (TextType)    ← ImageFieldType.php ~line 42
+        4. additionalData  (JsonArrayType)   hidden
+
+    VENDOR FILES:
+        vendor/se7enxweb/ezplatform-content-forms/
+            src/lib/Form/Type/FieldType/BinaryBaseFieldType.php
+            src/lib/Form/Type/FieldType/ImageFieldType.php
+
+    We reorder to: file → alternativeText → remove, hiding additionalData.
+#}
+{% block ezplatform_fieldtype_ezimage_widget %}
+    {#- file upload input -#}
+    {{- form_row(form.file) -}}
+    {#- alternative text input (label from ImageFieldType.php ~line 46: "Alternative text") -#}
+    {{- form_row(form.alternativeText) -}}
+    {#- "Remove" checkbox placed last, below alt text -#}
+    {{- form_row(form.remove) -}}
+    {#- additionalData is a hidden JsonArrayType — rendered silently via form_rest -#}
+    {{- form_rest(form) -}}
+{% endblock %}

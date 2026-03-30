@@ -1,9 +1,16 @@
 {# Copyright 1998 - 2026 7x; All rights reserved (unless otherwise noted). #}
 {#
-    sevenx_content_website_app_info/user/login.html.twig
+    standard/user/login.html.twig
 
-    Overrides the nglayouts login to use the standalone dark card design.
-    Delegates to standard/user/login.html.twig via the design chain.
+    Login page for all siteaccesses using the standard design chain.
+    Extends pagelayout_login.html.twig — a standalone shell with no site
+    header/footer chrome, body.lp-login-page, and hashed CSS via encore.
+
+    Pointed to by ezpublish.yaml:
+        system.frontend_group.user.login_template: "@ezdesign/user/login.html.twig"
+
+    Styled by: assets/sass/_sevenx_content_website_app.scss — lp-login-* block
+    Reference design: https://get.exponential.earth/user/login
 #}
 {% extends '@ezdesign/pagelayout_login.html.twig' %}
 

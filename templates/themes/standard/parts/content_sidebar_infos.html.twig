@@ -1,0 +1,48 @@
+{#
+    parts/content_sidebar_infos.html.twig — Neowin-style sidebar coordinator
+    ────────────────────────────────────────────────────────────────────────
+    Used by:
+        sevenx_content_website_app_info/content/views/full/folder.html.twig
+
+    Widget partials (in order):
+        content_sidebar_infos/design_notice.html.twig   — static design-toggle notice
+        content_sidebar_infos/filter_chips.html.twig    — jQuery filter chips
+        content_sidebar_infos/stats_card.html.twig      — location stats grid
+        content_sidebar_infos/quicklist_card.html.twig  — all-children quick list
+        content_sidebar_infos/schema_card.html.twig     — content-type schema table
+
+    Required variables:
+        children  — ez_location_children result
+        location  — eZ Location value object
+        content   — eZ Content value object
+        ct        — content.contentType
+#}
+<aside class="nw-sidebar" id="nw-sidebar">
+
+    {% include '@ezdesign/parts/content_sidebar_infos/design_notice.html.twig' %}
+
+    {# ── Navigate card ── #}
+    {% include '@ezdesign/parts/content_sidebar/navigate_card.html.twig' with {
+        location: location,
+    } only %}
+
+    {% include '@ezdesign/parts/content_sidebar_infos/filter_chips.html.twig' with {
+        children: children,
+    } only %}
+
+    {% include '@ezdesign/parts/content_sidebar_infos/stats_card.html.twig' with {
+        children: children,
+        location: location,
+        content:  content,
+    } only %}
+
+    {% include '@ezdesign/parts/content_sidebar_infos/quicklist_card.html.twig' with {
+        children: children,
+    } only %}
+
+    {% include '@ezdesign/parts/content_sidebar_infos/schema_card.html.twig' with {
+        ct:       ct,
+        location: location,
+    } only %}
+
+</aside>

@@ -1,0 +1,17 @@
+{# ── Filter by content type (chips built by jQuery) ──
+   Variables: children
+#}
+<div class="nw-widget">
+    <div class="nw-whead">
+        <div class="nw-whead-dot"></div>
+        Filter by Type
+    </div>
+    <div class="nw-wbody">
+        <div class="nw-chips" id="nw-chips">
+            <span class="nw-chip nw-active" data-filter="all">
+                All <span class="nw-chip-n" id="nw-chip-all-n">{{ children|length > 1 ? children|length - 1 : 0 }}</span>
+            </span>
+            {# Type chips injected by jQuery below #}
+        </div>
+    </div>
+</div>

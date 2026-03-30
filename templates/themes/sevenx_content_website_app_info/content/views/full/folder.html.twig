@@ -182,126 +182,23 @@
         {# ╔══════════════════════════════════════════╗
            ║  SIDEBAR                                 ║
            ╚══════════════════════════════════════════╝ #}
-        <aside class="nw-sidebar" id="nw-sidebar">
+        {#
+            Sidebar extracted to standard parts template.
+            Widget partials live at:
+                templates/themes/standard/parts/content_sidebar_infos/design_notice.html.twig
+                templates/themes/standard/parts/content_sidebar_infos/filter_chips.html.twig
+                templates/themes/standard/parts/content_sidebar_infos/stats_card.html.twig
+                templates/themes/standard/parts/content_sidebar_infos/quicklist_card.html.twig
+                templates/themes/standard/parts/content_sidebar_infos/schema_card.html.twig
+            Coordinator: templates/themes/standard/parts/content_sidebar_infos.html.twig
+        #}
+        {% include '@ezdesign/parts/content_sidebar_infos.html.twig' with {
+            children: children,
+            location: location,
+            content:  content,
+            ct:       ct,
+        } only %}
 
-            {# ── Design toggle notice ── #}
-            <div class="nw-design-notice">
-                <strong>📐 App theme (fallback)</strong><br>
-                To enable the rich design, add <code>- sevenx_content_website_app</code>
-                to <code>design_list → site</code> in <code>ezpublish_siteaccess.yaml</code>,
-                then clear cache.
-            </div>
-
-            {# ── Filter by content type (chips built by jQuery) ── #}
-            <div class="nw-widget">
-                <div class="nw-whead">
-                    <div class="nw-whead-dot"></div>
-                    Filter by Type
-                </div>
-                <div class="nw-wbody">
-                    <div class="nw-chips" id="nw-chips">
-                        <span class="nw-chip nw-active" data-filter="all">
-                            All <span class="nw-chip-n" id="nw-chip-all-n">{{ children|length > 1 ? children|length - 1 : 0 }}</span>
-                        </span>
-                        {# Type chips injected by jQuery below #}
-                    </div>
-                </div>
-            </div>
-
-            {# ── Stats ── #}
-            <div class="nw-widget">
-                <div class="nw-whead">
-                    <div class="nw-whead-dot"></div>
-                    Location Stats
-                </div>
-                <div class="nw-wbody">
-                    <div class="nw-stats">
-                        <div class="nw-stat">
-                            <div class="nw-stat-n">{{ children|length }}</div>
-                            <div class="nw-stat-l">Items</div>
-                        </div>
-                        <div class="nw-stat">
-                            <div class="nw-stat-n">{{ location.depth }}</div>
-                            <div class="nw-stat-l">Depth</div>
-                        </div>
-                        <div class="nw-stat">
-                            <div class="nw-stat-n">{{ content.id }}</div>
-                            <div class="nw-stat-l">Content ID</div>
-                        </div>
-                        <div class="nw-stat">
-                            <div class="nw-stat-n">{{ location.id }}</div>
-                            <div class="nw-stat-l">Location ID</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {# ── Quick list — ALL children ── #}
-            <div class="nw-widget">
-                <div class="nw-whead">
-                    <div class="nw-whead-dot"></div>
-                    All Content
-                </div>
-                <div class="nw-wbody" style="padding:8px 14px;">
-                    <div class="nw-qlist">
-                        {% for child in children %}
-                            {%- set cc = child.getContent() -%}
-                            <a href="{{ path('ez_urlalias', {locationId: child.id}) }}"
-                               class="nw-qli"
-                               data-card-loc="{{ child.id }}">
-                                <span class="nw-qli-num">{{ loop.index }}</span>
-                                <div class="nw-qli-info">
-                                    <div class="nw-qli-title">{{ ez_content_name(cc) }}</div>
-                                    <div class="nw-qli-type">{{ cc.contentType.identifier }}</div>
-                                </div>
-                            </a>
-                        {% else %}
-                            <p style="font-size:12px;color:#8b949e;text-align:center;padding:12px 0;">No items.</p>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-
-            {# ── Content Type Schema ── #}
-            <div class="nw-widget">
-                <div class="nw-whead">
-                    <div class="nw-whead-dot"></div>
-                    Schema — {{ ct ? ct.identifier : '(unknown)' }}
-                </div>
-                <div class="nw-wbody">
-                    <span class="nw-schema-toggle" id="nw-schema-toggle">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-                        Show {{ ct ? ct.fieldDefinitions|length : 0 }} fields
-                    </span>
-                    <div class="nw-schema-wrap" id="nw-schema-wrap">
-                        <table class="nw-schema-tbl">
-                            <thead>
-                                <tr>
-                                    <th>Identifier</th>
-                                    <th>Type</th>
-                                    <th>Req</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for fd in (ct ? ct.fieldDefinitions : []) %}
-                                    <tr>
-                                        <td>{{ fd.identifier }}</td>
-                                        <td>{{ fd.fieldTypeIdentifier }}</td>
-                                        <td style="color:{{ fd.isRequired ? '#f85149' : '#c6cdd5' }};text-align:center;">{{ fd.isRequired ? '✓' : '·' }}</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        <div class="nw-path-block">
-                            <div class="nw-path-label">Path</div>
-                            <div class="nw-path-val">{{ location.pathString }}</div>
-                        </div>
-                        <a href="/admin/content/location/{{ location.id }}" class="nw-admin-link">↗ Open in Admin UI</a>
-                    </div>
-                </div>
-            </div>
-
-        </aside>
     </div>{# /nw-wrap #}
 
 </div>{# /sxa-nw #}

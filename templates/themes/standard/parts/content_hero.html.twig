@@ -1,0 +1,74 @@
+{#
+    standard/parts/content_hero.html.twig
+
+    Shared hero header for full content views (folder, layout_container, etc.).
+    Renders: breadcrumb path › badge row › H1 title › quick-reference info pills.
+
+    Usage:
+        {% include '@ezdesign/parts/content_hero.html.twig' with {
+            content:  content,
+            location: location,
+            ct:       ct,
+            vi:       vi,
+        } only %}
+
+    Expected variables:
+        content   — eZ Content value object
+        location  — eZ Location value object
+        ct        — content.contentType  (nullable)
+        vi        — content.versionInfo  (nullable)
+
+    Breadcrumb shows a "Parent" link only when location.depth > 1 (omitted at root).
+#}
+    {# ════════════════════════════════════════════════
+       HERO HEADER
+    ════════════════════════════════════════════════ #}
+    <div style="margin-bottom:24px;padding-bottom:20px;border-bottom:2px solid #e2e8f0;">
+
+        {# Breadcrumb #}
+        <nav aria-label="breadcrumb" style="font-size:12px;color:#94a3b8;margin-bottom:12px;display:flex;align-items:center;gap:5px;flex-wrap:wrap;">
+            <a href="/" style="color:#64748b;text-decoration:none;display:inline-flex;align-items:center;gap:4px;">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                Root
+            </a>
+            {% if location.depth > 1 %}
+                <span style="opacity:.4;">›</span>
+                <a href="{{ path('ez_urlalias', {locationId: location.parentLocationId}) }}" style="color:#64748b;text-decoration:none;">Parent</a>
+            {% endif %}
+            <span style="opacity:.4;">›</span>
+            <span style="color:#1e293b;font-weight:600;">{{ ez_content_name(content) }}</span>
+        </nav>
+
+        {# Badge row #}
+        <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:12px;">
+            <span style="background:#dbeafe;color:#1d4ed8;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;padding:3px 11px;border-radius:20px;">
+                {{ ct ? ct.identifier : '—' }}
+            </span>
+            <span style="background:#f0fdf4;color:#166534;font-size:10px;font-weight:700;padding:3px 11px;border-radius:20px;">
+                v{{ vi ? vi.versionNo : '—' }}
+            </span>
+            {% if location.hidden or location.invisible %}
+                <span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:3px 11px;border-radius:20px;">⚠ Hidden</span>
+            {% endif %}
+        </div>
+
+        <h1 style="margin:0 0 14px;font-size:2rem;font-weight:800;color:#0f172a;line-height:1.15;letter-spacing:-.025em;">
+            {{ ez_content_name(content) }}
+        </h1>
+
+        {# Quick-reference pills #}
+        <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;">
+            {% for label, val in {
+                'Content': content.id,
+                'Location': location.id,
+                'Depth': location.depth,
+                'Path': location.pathString
+            } %}
+                <span style="display:inline-flex;align-items:center;gap:5px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:3px 10px;font-size:11px;">
+                    <span style="color:#94a3b8;">{{ label }}</span>
+                    <code style="color:#334155;font-family:ui-monospace,monospace;">{{ val }}</code>
+                </span>
+            {% endfor %}
+        </div>
+
+    </div>{# /hero #}

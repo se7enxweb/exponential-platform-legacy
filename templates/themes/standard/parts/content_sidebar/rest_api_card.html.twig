@@ -1,0 +1,40 @@
+{#
+    standard/parts/content_sidebar/rest_api_card.html.twig
+
+    Sidebar widget: dark REST API v2 quick-link card for the current content/location.
+
+    Expected variables (all passed from content_sidebar.html.twig):
+        content   — eZ Content value object
+        location  — eZ Location value object
+        ct        — content.contentType (may be null)
+        vi        — content.versionInfo (may be null)
+        lpath     — location.pathString trimmed of leading/trailing slashes
+#}
+<div style="background:#0f172a;border:1px solid #1e293b;border-radius:10px;overflow:hidden;">
+    <div style="padding:10px 14px;border-bottom:1px solid #1e293b;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#475569;">REST API</span>
+        <code style="font-size:9px;color:#38bdf8;font-family:ui-monospace,monospace;background:rgba(56,189,248,.1);padding:1px 6px;border-radius:3px;">v2</code>
+    </div>
+    <div style="padding:6px 8px;display:flex;flex-direction:column;gap:1px;">
+        {% set api_links = [
+            ['API Root',       '/api/ezp/v2/'],
+            ['Content Object', '/api/ezp/v2/content/objects/' ~ content.id],
+            ['Location',       '/api/ezp/v2/content/locations/' ~ lpath],
+            ['Children',       '/api/ezp/v2/content/locations/' ~ lpath ~ '/children'],
+            ['Content Type',   '/api/ezp/v2/content/types/' ~ (ct ? ct.id : 0)],
+            ['URL Aliases',    '/api/ezp/v2/content/urlaliases?locationId=' ~ location.id],
+            ['Versions',       '/api/ezp/v2/content/objects/' ~ content.id ~ '/versions'],
+            ['Relations',      '/api/ezp/v2/content/objects/' ~ content.id ~ '/' ~ (vi ? vi.versionNo : 1) ~ '/relations'],
+            ['Sections',       '/api/ezp/v2/content/sections'],
+            ['User Sessions',  '/api/ezp/v2/user/sessions'],
+        ] %}
+        {% for api in api_links %}
+            <a href="{{ api[1] }}" target="_blank"
+               style="display:flex;align-items:center;gap:7px;padding:7px 10px;border-radius:6px;text-decoration:none;font-size:11px;color:#94a3b8;font-family:ui-monospace,monospace;"
+               onmouseover="this.style.background='#1e293b';this.style.color='#e2e8f0'" onmouseout="this.style.background='transparent';this.style.color='#94a3b8'">
+                <span style="font-size:9px;font-weight:700;color:#4ade80;background:rgba(74,222,128,.1);padding:1px 5px;border-radius:3px;flex-shrink:0;">GET</span>
+                <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ api[0] }}</span>
+            </a>
+        {% endfor %}
+    </div>
+</div>

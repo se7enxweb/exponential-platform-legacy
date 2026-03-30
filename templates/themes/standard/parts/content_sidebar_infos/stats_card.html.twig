@@ -1,0 +1,29 @@
+{# ── Location Stats ──
+   Variables: children, location, content
+#}
+<div class="nw-widget">
+    <div class="nw-whead">
+        <div class="nw-whead-dot"></div>
+        Location Stats
+    </div>
+    <div class="nw-wbody">
+        <div class="nw-stats">
+            <div class="nw-stat">
+                <div class="nw-stat-n">{{ children|length }}</div>
+                <div class="nw-stat-l">Items</div>
+            </div>
+            <div class="nw-stat">
+                <div class="nw-stat-n">{{ location.depth }}</div>
+                <div class="nw-stat-l">Depth</div>
+            </div>
+            <div class="nw-stat">
+                <div class="nw-stat-n">{{ content.id }}</div>
+                <div class="nw-stat-l">Content ID</div>
+            </div>
+            <div class="nw-stat">
+                <div class="nw-stat-n">{{ location.id }}</div>
+                <div class="nw-stat-l">Location ID</div>
+            </div>
+        </div>
+    </div>
+</div>

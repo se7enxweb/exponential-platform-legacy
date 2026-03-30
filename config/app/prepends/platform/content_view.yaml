@@ -405,3 +405,13 @@ system:
                     template: "@ezdesign/content/views/full/folder.html.twig"
                     match:
                         Identifier\ContentType: folder
+                # ── User group view — same Neowin-style design as folder ───────────────
+                user_group:
+                    template: "@ezdesign/content/views/full/folder.html.twig"
+                    match:
+                        Identifier\ContentType: user_group
+                # ── User view — same Neowin-style design as folder ────────────────────
+                user:
+                    template: "@ezdesign/content/views/full/folder.html.twig"
+                    match:
+                        Identifier\ContentType: user

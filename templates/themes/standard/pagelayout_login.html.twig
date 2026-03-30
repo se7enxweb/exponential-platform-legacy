@@ -1,0 +1,27 @@
+{# Copyright 1998 - 2026 7x; All rights reserved (unless otherwise noted). #}
+{#
+    pagelayout_login.html.twig — site-chrome shell for auth pages (/login, /register, etc.)
+
+    Includes the full site header and footer so auth pages match the main site design.
+    body.lp-login-page activates the lp-login-* SCSS block for the centred card.
+
+    Used by: templates/themes/standard/user/login.html.twig (and all other user flow templates)
+#}
+<!doctype html>
+<html lang="{{ app.request.locale|replace({'_': '-'}) }}">
+{% set _title %}{% block page_title %}Sign In | Exponential Platform{% endblock %}{% endset %}
+{% include '@ezdesign/parts/page_head.html.twig' with { page_title: _title } %}
+{% include '@ezdesign/parts/page_styles.html.twig' %}
+<body class="lp-login-page">
+
+<div id="lp-page">
+    {% include '@ezdesign/parts/page_header.html.twig' %}
+
+    {% block content %}{% endblock %}
+
+    {% include '@ezdesign/parts/page_footer.html.twig' %}
+</div>
+
+{% include '@ezdesign/parts/page_scripts.html.twig' %}
+</body>
+</html>

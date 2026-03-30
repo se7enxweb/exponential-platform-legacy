@@ -1,0 +1,12 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\ExponentialPlatformLegacyInjectedSettings\EventSubscriber\LegacyInjectedSettingsSubscriber:
+        arguments:
+            $injectedSettings: '%app.legacy.injected_settings%'
+            $injectedMergeSettings: '%app.legacy.injected_merge_settings%'
+            $siteaccessInjectedSettings: '%app.legacy.siteaccess_injected_settings%'
+            $siteaccessInjectedMergeSettings: '%app.legacy.siteaccess_injected_merge_settings%'
+            $siteAccess: '@ezpublish.siteaccess'

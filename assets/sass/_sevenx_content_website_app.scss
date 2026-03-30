@@ -338,6 +338,255 @@ body {
 }
 
 // ══════════════════════════════════════════════════════════════════════════════
+// Login page — templates/themes/standard/user/login.html.twig
+// Namespace: lp-login-*  (body.lp-login-page scoped)
+// Pagelayout: templates/themes/standard/pagelayout_login.html.twig
+// ══════════════════════════════════════════════════════════════════════════════
+
+body.lp-login-page {
+    background: linear-gradient(180deg, #ffffff 0%, #fff4ee 40%, #ffe0c8 70%, #ff8c42 100%);
+    color: #1a1a1a;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.lp-login-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 16px;
+}
+
+.lp-login-card {
+    width: 100%;
+    max-width: 400px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, .10), 0 2px 8px rgba(0,0,0,.06);
+}
+
+.lp-login-logo {
+    text-align: center;
+    margin-bottom: 28px;
+
+    a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: #f8f9fa;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 10px 20px;
+    }
+
+    img { height: 36px; width: auto; border-radius: 6px; }
+}
+
+.lp-login-title {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #111827;
+    text-align: center;
+    margin: 0 0 6px;
+    letter-spacing: -.03em;
+}
+
+.lp-login-sub {
+    font-size: 12.5px;
+    color: #6b7280;
+    text-align: center;
+    margin: 0 0 28px;
+    line-height: 1.5;
+}
+
+.lp-login-error {
+    background: rgba(232, 71, 43, .1);
+    border: 1px solid rgba(232, 71, 43, .35);
+    border-radius: 4px;
+    color: #e8472b;
+    font-size: 12.5px;
+    padding: 10px 14px;
+    margin-bottom: 20px;
+}
+
+.lp-login-field {
+    margin-bottom: 16px;
+
+    label {
+        display: block;
+        font-size: 11.5px;
+        font-weight: 700;
+        color: #374151;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: .06em;
+    }
+
+    input {
+        width: 100%;
+        background: #f9fafb;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        color: #111827;
+        font-size: 14px;
+        padding: 10px 14px;
+        outline: none;
+        transition: border-color .14s, box-shadow .14s;
+        box-sizing: border-box;
+
+        &:focus { border-color: #e8472b; box-shadow: 0 0 0 3px rgba(232, 71, 43, .12); background: #fff; }
+        &::placeholder { color: #9ca3af; }
+    }
+}
+
+.lp-login-submit {
+    width: 100%;
+    background: #e8472b;
+    border: 1px solid #e8472b;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 10px;
+    cursor: pointer;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    transition: background .14s, border-color .14s;
+    margin-top: 8px;
+
+    &:hover { background: #d73e24; border-color: #d73e24; }
+}
+
+.lp-login-submit-alt-wrap {
+    padding-top: 0.5rem;
+}
+
+.lp-login-submit--sm {
+    font-size: 11.5px;
+    padding: 7px 10px;
+    letter-spacing: .04em;
+}
+
+.lp-login-links {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 18px;
+    font-size: 11.5px;
+
+    a { color: #e8472b; font-weight: 600; text-decoration: none; &:hover { text-decoration: underline; } }
+}
+
+.lp-login-footer {
+    text-align: center;
+    padding: 20px 16px;
+    font-size: 11px;
+    color: #6b7280;
+
+    a { color: #6b7280; text-decoration: none; &:hover { color: #374151; } }
+}
+
+// ── Register card override (wider for content form) ───────────────────────────
+.lp-register-card { max-width: 560px; }
+
+// ── Symfony form widget overrides inside lp-login-* ──────────────────────────
+// Targets the raw Symfony form_widget/form_errors output inside our dark card.
+body.lp-login-page {
+
+    // Field-level errors from form_errors()
+    .lp-login-field ul.errors,
+    .lp-login-field .form-error-message {
+        list-style: none;
+        margin: 6px 0 0;
+        padding: 0;
+
+        li {
+            font-size: 12px;
+            color: #e8472b;
+            display: flex;
+            align-items: flex-start;
+            gap: 5px;
+
+            &::before { content: '!'; font-weight: 800; }
+        }
+    }
+
+    // Form-level errors (above the whole form)
+    .form-errors,
+    ul.form-errors {
+        list-style: none;
+        margin: 0 0 16px;
+        padding: 10px 14px;
+        background: rgba(232, 71, 43, .1);
+        border: 1px solid rgba(232, 71, 43, .35);
+        border-radius: 4px;
+        font-size: 12.5px;
+        color: #e8472b;
+
+        li::before { content: ''; }
+    }
+
+    // Register form: style the wholesale-rendered content form
+    .lp-register-form {
+        // Inputs and labels inherit from .lp-login-field where possible,
+        // but the content form renders its own divs — reset them here.
+        .form-group, div[class*="ez-field"] { margin-bottom: 16px; }
+
+        label {
+            display: block;
+            font-size: 11.5px;
+            font-weight: 600;
+            color: #8b949e;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 4px;
+            color: #c9d1d9;
+            font-size: 14px;
+            padding: 9px 12px;
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color .14s;
+
+            &:focus { border-color: #4a9fd4; box-shadow: 0 0 0 3px rgba(74, 159, 212, .12); }
+            &::placeholder { color: #484f58; }
+        }
+
+        button[type="submit"],
+        input[type="submit"] {
+            width: 100%;
+            background: #e8472b;
+            border: 1px solid #e8472b;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 700;
+            padding: 10px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            transition: background .14s, border-color .14s;
+            margin-top: 8px;
+
+            &:hover { background: #d73e24; border-color: #d73e24; }
+        }
+    }
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
 // NW homepage layout — templates/themes/app/content/views/full/layout_container.html.twig
 // Namespace: #nw  (isolated — no conflicts with lp-* or sxa-nw selectors)
 // ══════════════════════════════════════════════════════════════════════════════
@@ -1374,4 +1623,17 @@ body {
 }
 .video-js .vjs-poster {
     background-size: cover;
+}
+
+// ── Legacy admin: hide topline logo image ─────────────────────────────────────
+// CSS image-replacement hide — zero dimensions + visibility hidden keeps the
+// table cell structure intact while removing the image from view entirely.
+html.yui3-js-enabled body form table.layout tbody tr td.topline img {
+    display: block;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    font-size: 0;
+    line-height: 0;
 }

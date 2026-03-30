@@ -1,0 +1,32 @@
+{#
+    standard/parts/content_sidebar/navigate_card.html.twig
+
+    Sidebar widget: system navigation links (parent, home, admin, login/logout, REST).
+
+    Expected variables (all passed from content_sidebar.html.twig):
+        location  — eZ Location value object  (used for parentLocationId)
+#}
+<div style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04);">
+    <div style="padding:10px 14px;background:#f8fafc;border-bottom:1px solid #e2e8f0;">
+        <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#64748b;">Navigate</span>
+    </div>
+    <nav style="padding:6px 8px;display:flex;flex-direction:column;gap:1px;" aria-label="System navigation">
+        {% set nav_links = [
+            ['↑', 'Parent Folder',    path('ez_urlalias', {locationId: location.parentLocationId}),         '#0369a1', false],
+            ['🏠', 'Root / Home',     '/',                                                                    '#059669', false],
+            ['🌲', 'Top Level Nodes', 'https://platformlegacy.alpha.se7enx.com/view/content/0/full/1/1',     '#16a34a', true],
+            ['⚙', 'Admin Interface',  '/adminui/',                                                           '#7c3aed', true],
+            ['🔐', 'Login',           '/login',                                                               '#374151', false],
+            ['📤', 'Logout',          '/logout',                                                              '#374151', false],
+            ['🔍', 'REST API Root',   '/api/ezp/v2/',                                                        '#0891b2', true],
+        ] %}
+        {% for item in nav_links %}
+            <a href="{{ item[2] }}"{{ item[4] ? ' target="_top"' : '' }}
+               style="display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:7px;text-decoration:none;color:{{ item[3] }};font-size:12px;font-weight:500;"
+               onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='transparent'">
+                <span style="width:16px;text-align:center;flex-shrink:0;font-style:normal;">{{ item[0] }}</span>
+                {{ item[1] }}
+            </a>
+        {% endfor %}
+    </nav>
+</div>

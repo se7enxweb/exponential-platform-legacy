@@ -1,0 +1,1 @@
+module.exports = [".\/vendor\/se7enxweb\/ezplatform-richtext\/src\/bundle\/Resources\/encore\/ez.config.js",".\/vendor\/ezsystems\/ezplatform-admin-ui\/src\/bundle\/Resources\/encore\/ez.config.js"];

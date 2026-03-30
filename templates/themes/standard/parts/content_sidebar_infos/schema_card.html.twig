@@ -1,0 +1,40 @@
+{# ── Content Type Schema ──
+   Variables: ct, location
+#}
+<div class="nw-widget">
+    <div class="nw-whead">
+        <div class="nw-whead-dot"></div>
+        Schema — {{ ct ? ct.identifier : '(unknown)' }}
+    </div>
+    <div class="nw-wbody">
+        <span class="nw-schema-toggle" id="nw-schema-toggle">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Show {{ ct ? ct.fieldDefinitions|length : 0 }} fields
+        </span>
+        <div class="nw-schema-wrap" id="nw-schema-wrap">
+            <table class="nw-schema-tbl">
+                <thead>
+                    <tr>
+                        <th>Identifier</th>
+                        <th>Type</th>
+                        <th>Req</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for fd in (ct ? ct.fieldDefinitions : []) %}
+                        <tr>
+                            <td>{{ fd.identifier }}</td>
+                            <td>{{ fd.fieldTypeIdentifier }}</td>
+                            <td style="color:{{ fd.isRequired ? '#f85149' : '#c6cdd5' }};text-align:center;">{{ fd.isRequired ? '✓' : '·' }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="nw-path-block">
+                <div class="nw-path-label">Path</div>
+                <div class="nw-path-val">{{ location.pathString }}</div>
+            </div>
+            <a href="/admin/content/location/{{ location.id }}" class="nw-admin-link">↗ Open in Admin UI</a>
+        </div>
+    </div>
+</div>
