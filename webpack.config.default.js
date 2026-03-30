@@ -40,8 +40,8 @@ Encore
   // empty the outputPath dir before each build
   .cleanupOutputBeforeBuild()
 
-  // create hashed filenames (e.g. app.css?v=abc123)
-  .enableVersioning(Encore.isProduction())
+  // create hashed filenames (e.g. app.abc123.css) — always on so browsers never serve stale CSS/JS
+  .enableVersioning(true)
 
   .enablePostCssLoader((options) => {
     options.postcssOptions = {
