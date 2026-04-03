@@ -1,4 +1,4 @@
-# Exponential Platform Legacy 1.1.0.x aka (Platform v3)
+# Exponential Platform Legacy 3.0.0.x aka (Platform v3)
 
 [![PHP](https://img.shields.io/badge/PHP-8.0%20→%208.4-8892BF?logo=php&logoColor=white)](https://php.net)
 [![Symfony](https://img.shields.io/badge/Symfony-5.4%20LTS-000000?logo=symfony&logoColor=white)](https://symfony.com)
@@ -8,7 +8,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/se7enxweb/exponential-platform-legacy)](https://github.com/se7enxweb/exponential-platform-legacy/issues)
 [![GitHub stars](https://img.shields.io/github/stars/se7enxweb/exponential-platform-legacy?style=social)](https://github.com/se7enxweb/exponential-platform-legacy)
 
-> **Exponential Platform Legacy** is a hybrid-kernel open-source Digital Experience Platform (DXP/CMS) built on the **eZ Publish Legacy 5.x kernel** bridged to Symfony 5.4 LTS via the eZ LegacyBridge. It is the pure platform release — no Netgen Suite, no nglayouts. It runs the proven eZ Publish Legacy kernel with full PHP 8.x compatibility, sitting alongside the eZ Platform 3.3 new-stack layer in a single application.
+> **Exponential Platform Legacy** is a hybrid-kernel open-source Digital Experience Platform (DXP/CMS) built on the **Exponential 6.x (Legacy) kernel** bridged to Symfony 5.4 LTS via the 7x Exponential LegacyBridge. It is the pure platform release — no Netgen Suite, no nglayouts. It runs the proven eZ Publish Legacy kernel with full PHP 8.x compatibility, sitting alongside the eZ Platform 3.3 new-stack layer in a single application.
 
 ---
 
@@ -44,13 +44,13 @@
 
 ## Exponential Platform Legacy Project Status
 
-**Exponential Platform Legacy has made it beyond it's end of life in 2021 and survived. Current releases are primarily aimed at easing the requirements to support current versions of the PHP language like PHP 8.2, 8.3, 8.4 and beyond php9**
+**Exponential Platform Legacy has made it beyond it's end of life in 2021 and survived. Current releases are primarily aimed at easing the requirements to support current versions of the PHP language like PHP 8.2, 8.3, 8.4, 8.5, 8.6 and beyond php9**
 
-The platform is under active maintenance and targeted improvement. The 1.1.0.x (Platform v3) release line is the current stable series, also known as **Platform v3** — the first release to successfully bridge eZ Publish Legacy 5.x to Symfony 5.4 LTS with full PHP 8.x support. Ongoing work focuses on:
+The platform is under active maintenance and targeted improvement. The 3.0.0.x (Platform v3) release line is the current stable series, also known as **Platform v3** — the first release to successfully bridge Exponential 6.x (Legacy) to Symfony 5.4 LTS with full PHP 8.x support. Ongoing work focuses on:
 
-- Continued PHP 8.x compatibility (8.2, 8.3, 8.4 tested and supported)
-- eZ Publish Legacy kernel patches for PHP 8.x runtime compatibility
-- LegacyBridge maintenance for Symfony 5.4 LTS alignment
+- Continued PHP 8.x compatibility (8.2, 8.3, 8.4, 8.5 tested and supported)
+- Exponenital (Legacy) kernel patches for PHP 8.x runtime compatibility
+- LegacyBridge compatibility maintenance for Symfony 5.4 LTS alignment
 - Dependency upgrades across Composer and Yarn package ecosystems
 - Security patches and vulnerability triage
 - Documentation and developer experience improvements
@@ -81,10 +81,10 @@ Previously before 2022, 7x was called Brookins Consulting who was the outspoken 
 
 Exponential Platform Legacy runs **two content kernels in the same request cycle**:
 
-- **Legacy Kernel** — eZ Publish Legacy 5.x — the classic, battle-hardened PHP content engine with its native template system, modules, cronjob framework, roles, workflows, and full content model. This is the primary kernel in this release.
-- **New Stack** — eZ Platform 3.3 OSS (Symfony 5.4) — accessed via the LegacyBridge, providing REST API, GraphQL, Symfony controllers, and the eZ Platform Admin UI alongside the legacy admin.
+- **Legacy Kernel** — Exponential (Legacy) 6.x — the classic, battle-hardened PHP content engine with its native template system, modules, cronjob framework, roles, workflows, and full content model. This is the primary kernel in this release.
+- **New Stack** — Exponential Platform 3.3 OSS (Symfony 5.4) — accessed via the LegacyBridge, providing REST API, GraphQL, Symfony controllers, and the Exponential Platform Admin UI alongside the legacy admin.
 
-Both kernels share the same database, content repository, and web server entry point. Legacy content is rendered through native eZ Publish Legacy templates (`.tpl`) and Symfony Twig templates simultaneously. The bridge makes incremental migration possible — or simply lets you keep running the proven legacy stack indefinitely.
+Both kernels share the same database, content repository, and web server entry point. Legacy content is rendered through native Exponential (Legacy) templates (`.tpl`) and Symfony Twig templates simultaneously. The bridge makes incremental migration possible — or simply lets you keep running the proven legacy stack indefinitely.
 
 > **This is the pure platform release — Platform v3.** It does not include the Netgen Suite (no Netgen Layouts, no nglayouts, no ngsite bundle). If you need Netgen Layouts-driven page building on top of this stack, see the Exponential Platform Nexus release which builds on this foundation.
 
@@ -94,7 +94,7 @@ Exponential Platform Legacy (the application of interest) delivered to users wor
 
 With PHP we require composer to install Exponential Platform Legacy software and no other software required to run the application. This is an incredible improvement to the kernel (core) of Exponential Platform Legacy.
 
-Exponential Platform Legacy 1.1.0.x (Platform v3) Releases run the **eZ Publish Legacy 5.x kernel + LegacyBridge 3.x + eZ Platform 3.3 OSS + Symfony 5.4 LTS** — providing the classic eZ Publish experience with modern PHP 8.x runtime support. Platform v3 is the foundational release on which the Nexus (Netgen) variant is built.
+Exponential Platform Legacy 3.0.0.x (Platform v3) Releases run the **Exponential (Legacy) 6.x kernel + LegacyBridge 3.x + Exponential Platform 3.3 OSS + Symfony 5.4 LTS** — providing the classic eZ Publish experience with modern PHP 8.x runtime support. Platform v2.5+ is the foundational release on which the 7x Exponential Nexus (Netgen++) variant is built.
 
 ### What does Exponential Platform Legacy provide for end users building websites?
 
@@ -104,7 +104,7 @@ Standard CMS functionality, like news publishing and forums is built in and read
 
 Exponential Platform Legacy is database, platform and browser independent. Because it is browser based it can be used and updated from anywhere as long as you have access to the Internet.
 
-(Referred to as `legacy kernel` or `LegacyBridge stack` in eZ Platform 3.x / Ibexa OSS terminology)
+(Referred to as `hybride kernel`, or `legacy kernel`, or `LegacyBridge stack` in Exponential Platform 3.x / Ibexa OSS terminology)
 
 ---
 
@@ -112,10 +112,10 @@ Exponential Platform Legacy is database, platform and browser independent. Becau
 
 | Layer | Technology |
 |---|---|
-| **Language** | PHP 8.0 → 8.4 |
+| **Language** | PHP 8.0 → 8.5 |
 | **Framework** | Symfony 5.4 LTS |
-| **CMS Core (legacy)** | eZ Publish Legacy 5.x (`ezpublish_legacy/`) |
-| **CMS Core (new stack)** | eZ Platform 3.3 OSS (`se7enxweb/oss ~3.3`) |
+| **CMS Core (legacy)** | Exponential (Legacy) 6.x (`ezpublish_legacy/`) |
+| **CMS Core (new stack)** | Exponential Platform 3.3 OSS (`se7enxweb/oss ~3.3`) |
 | **Bridge** | LegacyBridge 3.x (`se7enxweb/legacy-bridge`) |
 | **ORM** | Doctrine ORM 2.x |
 | **Template Engine** | eZ Publish TPL (legacy) + Twig 3.x (new stack) |
@@ -125,8 +125,8 @@ Exponential Platform Legacy is database, platform and browser independent. Becau
 | **App Cache** | Filesystem (default) · Redis 6+ (optional) |
 | **Database** | MySQL 8.0+ · MariaDB 10.3+ · PostgreSQL 14+ |
 | **API** | REST API v2 · GraphQL (schema auto-generated) · JWT auth |
-| **Admin UI (legacy)** | eZ Publish Legacy Admin (`/ezpublish_legacy/` design) |
-| **Admin UI (new stack)** | eZ Platform Admin UI (`/adminui/`) |
+| **Admin UI (legacy)** | Exponential (Legacy) Admin (`/ezpublish_legacy/` design) |
+| **Admin UI (new stack)** | Exponential Platform Admin UI (`/adminui/`) |
 | **Dependency Mgmt** | Composer 2.x · Yarn 1.x |
 
 > **Not included in this release:** Netgen Layouts, Netgen Site bundle, nglayouts, ngsite CLI commands.
@@ -143,13 +143,13 @@ Exponential Platform Legacy is database, platform and browser independent. Becau
 
 ### What version of PHP is required
 
-Exponential Platform Legacy supports PHP 7.4 -> 8.4 please use the latest version of PHP available on your OS.
+Exponential Platform Legacy supports PHP 7.4 -> 8.5 please use the latest version of PHP available on your OS.
 
 ### Full Requirements Summary
 
 | Requirement | Minimum | Recommended |
 |---|---|---|
-| PHP | 8.0 | 8.3 or 8.4 |
+| PHP | 8.0 | 8.3 or 8.5 |
 | Composer | 2.x | latest 2.x |
 | Node.js | 18 | 18 LTS (via nvm) |
 | Yarn | 1.x | 1.22.x |
@@ -199,7 +199,7 @@ php bin/console ezpublish:legacy:clear-cache
 # 9. Start
 symfony server:start
 # → https://127.0.0.1:8000                  (site / hybrid-kernel frontend)
-# → https://127.0.0.1:8000/adminui/         (eZ Platform Admin UI — admin / publish)
+# → https://127.0.0.1:8000/adminui/         (Exponential Platform Admin UI — admin / publish)
 # → https://127.0.0.1:8000/ezpublish_legacy/ (Legacy Admin — admin / publish)
 ```
 
@@ -241,13 +241,13 @@ symfony server:start
     - in-site content editing
     - content geolocation
 
-### Additional capabilities in the 1.1.0.x (Platform v3) series
+### Additional capabilities in the 3.0.0.x (Platform v3) series
 
-- **Hybrid Kernel** — eZ Publish Legacy 5.x runs alongside eZ Platform 3.3 OSS in a single application via LegacyBridge 3.x
+- **Hybrid Kernel** — Exponential (Legacy) 6.x runs alongside Exponential Platform 3.3 OSS in a single application via LegacyBridge 3.x
 - **GraphQL API** — auto-generated schema per content model via `ezplatform:graphql:generate-schema`
 - **JWT Authentication** — REST API secured by RSA keypairs (`lexik/jwt-authentication-bundle`)
-- **eZ Platform Admin UI** — React-powered editorial interface at `/adminui/` alongside the classic Legacy Admin
-- **eZ Publish Legacy Admin** — the original, feature-complete administration interface for legacy content types, modules, and workflows
+- **Exponential Platform Admin UI** — React-powered editorial interface at `/adminui/` alongside the classic Legacy Admin
+- **Exponential (Legacy) Admin** — the original, feature-complete administration interface for legacy content types, modules, and workflows
 - **Webpack Encore** — modern asset pipeline with HMR dev server and production minification
 - **Design Engine** — `@ezdesign` Twig namespace with theme fallback chain (theme → standard) for clean template inheritance
 - **Multi-siteaccess** — run multiple sites, languages, or environments from a single codebase and database
@@ -271,7 +271,7 @@ The installation guide covers:
 - Search index initialisation
 - Cache management (Symfony cache + Legacy kernel cache)
 - Day-to-day operations (start / stop / restart / deploy)
-- Cron job setup (eZ Platform cron + Legacy cron runner)
+- Cron job setup (Exponential Platform cron + Legacy cron runner)
 - Solr search engine integration
 - Varnish HTTP cache integration
 - Troubleshooting
@@ -280,7 +280,7 @@ The installation guide covers:
 
 ## Key CLI Commands Reference
 
-A quick reference for the most frequently used Symfony, eZ Platform, and eZ Publish Legacy console commands. For full documentation see [doc/INSTALL.md](doc/INSTALL.md).
+A quick reference for the most frequently used Symfony, Exponential Platform, and Exponential (Legacy) console commands. For full documentation see [doc/INSTALL.md](doc/INSTALL.md).
 
 ### Symfony Core
 
@@ -308,13 +308,13 @@ php bin/console doctrine:migration:diff                            # generate a 
 php bin/console doctrine:schema:validate                           # validate entity mappings
 ```
 
-### eZ Platform / Ibexa OSS (new stack)
+### Exponential Platform / Ibexa OSS (new stack)
 
 ```bash
 php bin/console ezplatform:install ibexa-oss        # fresh install with demo data (options: clean, ibexa-oss)
 php bin/console ezplatform:reindex                  # rebuild search index (full)
 php bin/console ezplatform:reindex --iteration-count=50   # incremental reindex
-php bin/console ezplatform:cron:run                 # run the eZ Platform cron scheduler
+php bin/console ezplatform:cron:run                 # run the Exponential Platform cron scheduler
 php bin/console ezplatform:graphql:generate-schema  # regenerate GraphQL schema
 php bin/console ezplatform:solr:create-core --cores=default   # set up Solr core
 php bin/console bazinga:js-translation:dump public/assets --merge-domains  # JS i18n
@@ -322,7 +322,7 @@ php bin/console fos:httpcache:invalidate:path / --all   # purge HTTP cache paths
 php bin/console lexik:jwt:generate-keypair          # generate RSA keypair for REST API auth
 ```
 
-### eZ Publish Legacy kernel (LegacyBridge)
+### Exponential (Legacy) kernel (LegacyBridge)
 
 ```bash
 # Clear legacy kernel caches (template / ini / content / override)
@@ -348,7 +348,7 @@ php ezpublish_legacy/bin/php/ezcli.php <command>
 
 | URL | Purpose |
 |---|---|
-| `/adminui/` | eZ Platform Admin UI (new stack, React) |
+| `/adminui/` | Exponential Platform Admin UI (new stack, React) |
 | `/ezpublish_legacy/index.php` | Legacy Admin interface (classic eZ Publish) |
 | `/` | Public site (hybrid-kernel Twig + Legacy TPL) |
 | `/api/ezp/v2/` | REST API v2 |
@@ -387,7 +387,7 @@ make vendor                   # composer install (--no-dev -o in prod)
 make assets                   # build site frontend assets (dev)
 make assets-prod              # build site frontend assets (prod, minified)
 make assets-watch             # watch mode — auto-rebuild on change
-make ibexa-assets             # build eZ Platform Admin UI assets
+make ibexa-assets             # build Exponential Platform Admin UI assets
 
 # ── Cache ──────────────────────────────────────────────────────────────────
 make clear-cache              # cache:clear (default: APP_ENV=dev)
@@ -466,7 +466,7 @@ Everyone is encouraged to [contribute](CONTRIBUTING.md) to the development of ne
 3. **Install** the full dev stack per [doc/INSTALL.md](doc/INSTALL.md) (`APP_ENV=dev`)
 4. **Make** your changes — follow coding standards in [CONTRIBUTING.md](CONTRIBUTING.md)
 5. **Test** with `php bin/phpunit` and verify no regressions
-6. **Push** your branch and open a **Pull Request** against the `1.1.0.x` branch
+6. **Push** your branch and open a **Pull Request** against the `3.0.0.x` branch
 7. **Participate** in the review — maintainers will give feedback promptly
 
 Bug reports, feature requests, and discussion are all welcome via the [issue tracker](https://github.com/se7enxweb/exponential-platform-legacy/issues) and [GitHub Discussions](https://github.com/se7enxweb/exponential-platform-legacy/discussions).
@@ -484,7 +484,7 @@ A wide range of donation options avaialble at [sponsor.se7enx.com](https://spons
 
 Every contribution — from a one-time thank-you donation to an ongoing support subscription — goes directly toward:
 - Maintaining PHP compatibility as new versions release
-- Patching the eZ Publish Legacy kernel for PHP 8.x and beyond
+- Patching the Exponential (Legacy) kernel for PHP 8.x and beyond
 - Writing documentation and tutorials
 - Running the community infrastructure (forums, chat, docs portal)
 - Triaging and fixing security vulnerabilities
@@ -526,11 +526,15 @@ Ibexa DXP Developer Portal: [developers.ibexa.co](https://developers.ibexa.co/)
 
 Exponential Platform Legacy is GNU GPL licensed.
 
-You can choose between the GNU GPL and the Ibexa Professional License. The GNU GPL gives you the right to use, modify and redistribute Exponential Platform Legacy under certain conditions. The GNU GPL license is distributed with the software, see the file LICENSE. It is also available at http://www.gnu.org/licenses/gpl.txt
+You can not choose between the GNU GPL and the Ibexa Professional License.
+
+The GNU GPL gives you the right to use, modify and redistribute Exponential Platform Legacy under certain conditions.
+
+The GNU GPL license is distributed with the software, see the file LICENSE. It is also available at http://www.gnu.org/licenses/gpl.txt
 
 Using Exponential Platform Legacy under the terms of the GNU GPL is free of charge.
 
 ---
 
-*Copyright &copy; 1998 – 2026 7x (Brookins Consulting / se7enx.com). All rights reserved unless otherwise noted.*  
+*Copyright &copy; 1998 – 2026 7x (se7enx.com). All rights reserved unless otherwise noted.*  
 *Exponential Platform Legacy is Open Source software released under the GNU GPL v2 or any later version.*
