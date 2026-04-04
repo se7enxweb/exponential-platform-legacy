@@ -16,7 +16,7 @@
         "ext-mbstring": "*",
         "nyholm/psr7": "^1.0",
         "se7enxweb/exponential-platform-dxp": "4.6.x-dev",
-        "se7enxweb/legacy-bridge": "^3.0",
+        "se7enxweb/legacy-bridge": "4.x-dev",
         "se7enxweb/site-legacy-bundle": "^2.0",
         "symfony/flex": "^2",
         "symfony/runtime": "^5.3"
