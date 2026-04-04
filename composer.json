@@ -31,6 +31,7 @@
     "config": {
         "allow-plugins": {
             "ibexa/post-install": true,
+            "se7enxweb/exponential-legacy-installer": true,
             "symfony/flex": true,
             "symfony/runtime": true,
             "*": false
