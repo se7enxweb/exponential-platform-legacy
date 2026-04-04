@@ -6,14 +6,16 @@
     "require": {
         "php": "^7.4 || ^8.0 || ^8.1 || ^8.2 || ^8.3 || ^8.4 || ^8.5",
         "ext-ctype": "*",
-        "ext-iconv": "*",
-        "ext-gd": "*",
         "ext-curl": "*",
-        "ext-json": "*",
-        "ext-xsl": "*",
-        "ext-xml": "*",
+        "ext-gd": "*",
+        "ext-iconv": "*",
         "ext-intl": "*",
+        "ext-json": "*",
         "ext-mbstring": "*",
+        "ext-xml": "*",
+        "ext-xsl": "*",
+        "netgen/layouts-ibexa": "^1.4",
+        "netgen/layouts-standard": "^1.4",
         "nyholm/psr7": "^1.0",
         "se7enxweb/exponential-platform-dxp": "4.6.x-dev",
         "se7enxweb/legacy-bridge": "4.x-dev",
@@ -57,7 +59,8 @@
     "scripts": {
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd"
+            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
         "post-install-cmd": [
             "@auto-scripts"
@@ -71,7 +74,6 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": false,
-    },
     "extra": {
         "ezpublish-legacy-dir": "ezpublish_legacy",
         "symfony": {
