@@ -71,7 +71,9 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": false,
+    },
     "extra": {
+        "ezpublish-legacy-dir": "ezpublish_legacy",
         "symfony": {
             "allow-contrib": true,
             "require": "^5.3",
