@@ -1,5 +1,5 @@
 {
-    "name": "se7enxweb/exponential-platform-v4x-dxp-skeleton",
+    "name": "se7enxweb/exponential-platform-legacy",
     "type": "project",
     "license": "(GPL-2.0-or-later or proprietary)",
     "description": "A project skeleton for installing 7x Exponential Platform v4.6.x DXP (Open Source)",
@@ -16,6 +16,8 @@
         "ext-mbstring": "*",
         "nyholm/psr7": "^1.0",
         "se7enxweb/exponential-platform-dxp": "4.6.x-dev",
+        "se7enxweb/legacy-bridge": "^3.0",
+        "se7enxweb/site-legacy-bundle": "^2.0",
         "symfony/flex": "^2",
         "symfony/runtime": "^5.3"
     },
