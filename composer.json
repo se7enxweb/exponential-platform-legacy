@@ -60,16 +60,25 @@
     },
     "scripts": {
         "auto-scripts": {
-            "cache:clear": "symfony-cmd",
+            "bazinga:js-translation:dump public/assets --merge-domains": "symfony-cmd",
             "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+            "ezpublish:legacy:assets_install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
+            "ezpublish:legacybundles:install_extensions --relative": "symfony-cmd"
         },
+        "project-scripts": [
+            "@php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php"
+        ],
         "post-install-cmd": [
-            "@auto-scripts"
+            "php bin/install-legacy-links",
+            "@auto-scripts",
+            "@project-scripts"
         ],
         "post-update-cmd": [
-            "@auto-scripts"
-        ]
+            "php bin/install-legacy-links",
+            "@auto-scripts",
+            "@project-scripts"
+        ],
+        "phpstan": "@php vendor/bin/phpstan analyse -c phpstan.neon --level=8 --ansi src tests"
     },
     "conflict": {
         "symfony/symfony": "*"
