@@ -18,7 +18,7 @@
         "netgen/layouts-standard": "^1.4",
         "nyholm/psr7": "^1.0",
         "se7enxweb/exponential-platform-dxp": "4.6.x-dev",
-        "se7enxweb/legacy-bridge": "4.x-dev",
+        "se7enxweb/legacy-bridge": "^4.0.0.0",
         "se7enxweb/ngsymfonytools": "^4.0.0.0",
         "se7enxweb/richtext-datatype-bundle": "*",
         "se7enxweb/ezplatform-xmltext-fieldtype": "4.x-dev",
