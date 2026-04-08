@@ -45,6 +45,15 @@
     - [22a. MySQL / MariaDB → PostgreSQL](#22a-mysql--mariadb--postgresql)
     - [22b. PostgreSQL → MySQL / MariaDB](#22b-postgresql--mysql--mariadb)
     - [22c. Post-conversion checklist](#22c-post-conversion-checklist)
+    - [22d. Any → SQLite (go to SQLite)](#22d-any--sqlite-go-to-sqlite)
+    - [22e. SQLite → MySQL / MariaDB](#22e-sqlite--mysql--mariadb)
+    - [22f. SQLite → PostgreSQL](#22f-sqlite--postgresql)
+    - [22g. SQLite → Oracle](#22g-sqlite--oracle)
+    - [22h. Oracle → SQLite](#22h-oracle--sqlite)
+    - [22i. MySQL / MariaDB → Oracle](#22i-mysql--mariadb--oracle)
+    - [22j. Oracle → MySQL / MariaDB](#22j-oracle--mysql--mariadb)
+    - [22k. PostgreSQL → Oracle](#22k-postgresql--oracle)
+    - [22l. Oracle → PostgreSQL](#22l-oracle--postgresql)
 23. [Complete CLI Reference](#23-complete-cli-reference)
 
 ---
@@ -54,8 +63,9 @@
 ### PHP
 
 - **PHP 8.0–8.5** (PHP 8.3 or 8.5 strongly recommended)
-- Required extensions: `gd` or `imagick`, `redis`, `curl`, `json`, `pdo_mysql` or `pdo_pgsql`,
+- Required extensions: `gd` or `imagick`, `redis`, `curl`, `json`, `pdo_mysql` or `pdo_pgsql` or `pdo_sqlite`,
   `xsl`, `xml`, `intl`, `mbstring`, `opcache`, `ctype`, `iconv`
+- For SQLite: `pdo_sqlite` + `sqlite3` extensions (usually bundled with PHP; verify with `php -m | grep -i sqlite`)
 - `memory_limit` ≥ 256M (set in `php.ini` or `.htaccess`; restart web server after changes)
 - `date.timezone` must be set in `php.ini` or `.htaccess` — see https://php.net/manual/en/timezones.php
 - `max_execution_time` ≥ 90 (recommended 300 for CLI)
@@ -110,6 +120,10 @@ npm install -g yarn
 - **MariaDB 10.3+**
   _or_
 - **PostgreSQL 14+**
+  _or_
+- **SQLite 3.35+** — no server required; the `.db` file is created automatically on first install.
+  Recommended for **local development, testing, demos, and air-gapped deployments** only.
+  Requires `pdo_sqlite` and `sqlite3` PHP extensions.
 
 ### Optional
 
@@ -152,7 +166,7 @@ Browser Request
 - Platform v3 uses **LegacyBridge 3.x** (v4 uses LegacyBridge 4.x)
 - Platform v3 runs **eZ Platform / Exponential Platform 3.3 OSS** (v4 runs Platform 4 OSS)
 - Platform v3 does **not include Netgen Layouts** (v4 includes Netgen Layouts 1.4+)
-- Platform v3 install command: `ezplatform:install ibexa-oss` (v4: `ibexa:install exponential-oss`)
+- Platform v3 install command: `ezplatform:install exponential-oss` (v4: `ibexa:install exponential-oss`)
 - Platform v3 `memory_limit` ≥ 256M (v4 ≥ 512M due to dual-kernel overhead)
 
 ---
@@ -219,7 +233,7 @@ mysql -u root -p -e "CREATE DATABASE exponential CHARACTER SET utf8mb4 COLLATE u
 #### Step 5 — Import schema and demo data
 
 ```bash
-php bin/console ezplatform:install ibexa-oss
+php bin/console ezplatform:install exponential-oss
 ```
 
 The demo data creates an administrator user: **username** `admin`, **password** `publish`.
@@ -365,6 +379,35 @@ DATABASE_VERSION=16
 # DATABASE_URL="pgsql://your_db_user:your_db_password@127.0.0.1:5432/your_db_name?serverVersion=16"
 ```
 
+### SQLite (zero-config — dev / testing)
+
+SQLite requires **no database server**. The `.db` file is created on disk automatically
+when you run the install command. It is the fastest way to get a local development
+environment running without installing MySQL or PostgreSQL.
+
+```dotenv
+# Replace (or override) the DATABASE_URL line in .env.local:
+DATABASE_URL="sqlite:///%kernel.project_dir%/var/data_%kernel.environment%.db"
+
+# Symfony's async messenger must use the synchronous transport with SQLite
+# (the default doctrine transport requires a second DB connection that may not
+#  be available on SQLite; sync:// avoids this entirely):
+MESSENGER_TRANSPORT_DSN=sync://
+```
+
+> **Notes:**
+> - The DB file path evaluates to e.g. `var/data_dev.db` or `var/data_prod.db`.
+> - Do **not** set `DATABASE_DRIVER`, `DATABASE_HOST`, `DATABASE_PORT`, etc. when using the
+>   `DATABASE_URL` DSN form — they are only used when the URL is constructed from parts.
+> - The `pdo_sqlite` and `sqlite3` PHP extensions must be enabled. Verify: `php -m | grep -i sqlite`
+> - After install, make the DB file writable by the web server:
+>   ```bash
+>   chmod 664 var/data_dev.db
+>   chown $USER:www-data var/data_dev.db   # adjust group to your web server user
+>   ```
+> - **Not recommended for production** — SQLite does not support concurrent writes under load.
+>   Use MySQL/MariaDB or PostgreSQL for any multi-user or public-facing deployment.
+
 ### Search, cache, and HTTP cache
 
 ```dotenv
@@ -445,11 +488,11 @@ mysql -u root -p -e "CREATE DATABASE exponential CHARACTER SET utf8mb4 COLLATE u
 #### Import schema and demo data
 
 ```bash
-php bin/console ezplatform:install ibexa-oss
+php bin/console ezplatform:install exponential-oss
 ```
 
 Available installer types:
-- `ibexa-oss` — full schema + demo content (recommended for first install)
+- `exponential-oss` — full schema + demo content (recommended for first install)
 - `clean` — schema only, no demo content
 
 The demo data creates: **username** `admin`, **password** `publish`. Change this immediately.
@@ -465,8 +508,83 @@ sudo -u postgres psql -c "CREATE DATABASE exponential ENCODING 'UTF8' LC_COLLATE
 Set `DATABASE_DRIVER=pdo_pgsql` and the PostgreSQL vars in `.env.local` (see Section 4), then:
 
 ```bash
-php bin/console ezplatform:install ibexa-oss
+php bin/console ezplatform:install exponential-oss
 ```
+
+### 5c. SQLite (dev/testing)
+
+SQLite requires no server. The database file is created automatically by the installer.
+
+#### Step 1 — Verify PHP extensions
+
+```bash
+php -m | grep -i sqlite
+# Expected output should include both:
+#   SQLite3
+#   pdo_sqlite
+```
+
+If either is missing, enable them in `php.ini` (e.g. `extension=pdo_sqlite` and `extension=sqlite3`)
+and restart your web server / PHP-FPM.
+
+#### Step 2 — Configure `.env.local`
+
+Replace (or add) the `DATABASE_URL` line and add the messenger transport:
+
+```dotenv
+DATABASE_URL="sqlite:///%kernel.project_dir%/var/data_%kernel.environment%.db"
+MESSENGER_TRANSPORT_DSN=sync://
+```
+
+Remove or comment out any `DATABASE_DRIVER`, `DATABASE_HOST`, `DATABASE_PORT`,
+`DATABASE_NAME`, `DATABASE_USER`, `DATABASE_PASSWORD` lines — they are not used
+when a full DSN is provided.
+
+#### Step 3 — Run the installer
+
+```bash
+php bin/console ezplatform:install exponential-oss
+```
+
+This single command:
+1. Creates the SQLite `.db` file at `var/data_<environment>.db` (e.g. `var/data_dev.db`)
+2. Imports the Exponential OSS schema (156 queries from `data/sqlite/cleandata.sql`)
+3. Seeds demo content — creates content types, content objects, users, roles
+4. Creates the Doctrine ORM tables
+
+Default administrator credentials: **username** `admin` / **password** `publish`.
+**Change the admin password immediately** after installation.
+
+#### Step 4 — Fix file permissions
+
+```bash
+chmod 664 var/data_dev.db
+chown $USER:www-data var/data_dev.db   # replace www-data with your web server group
+```
+
+#### Step 5 — Clear caches
+
+```bash
+php bin/console cache:clear
+php bin/console ezpublish:legacy:clear-cache
+```
+
+#### SQLite limitations
+
+| Limitation | Impact |
+|---|---|
+| No concurrent write transactions | Under heavy or concurrent load, writes queue and can timeout. Use MySQL/MariaDB for production. |
+| No replication or clustering | Cannot be used in multi-server (cluster) deployments |
+| No `FULLTEXT` index | Legacy kernel full-text search falls back to `LIKE` queries |
+| File-level locking | File must be on a local filesystem — NFS/CIFS mounts not supported |
+
+> **TL;DR:** SQLite is ideal for **local development, automated testing, and demos**.
+> Use MySQL 8.0+, MariaDB 10.3+, or PostgreSQL 14+ for any public-facing production deployment.
+
+> 💾 **Git Save Point — SQLite install complete**
+> ```bash
+> git commit --allow-empty -m "chore(install): sqlite database provisioned for dev"
+> ```
 
 ### Run Doctrine migrations (on updates)
 
@@ -1010,7 +1128,7 @@ php bin/console cache:clear
    ```
 2. Set `APP_HTTP_CACHE=0` in your web server vhost (let Varnish handle caching).
 3. Load the eZ Platform Varnish VCL — a starting-point VCL template is in `doc/varnish/`.
-   Refer to the eZ Platform 3.3 / Ibexa documentation for the appropriate `.vcl` file.
+   Refer to the eZ Platform 3.3 documentation for the appropriate `.vcl` file.
 
 ---
 
@@ -1259,18 +1377,535 @@ php bin/console ezplatform:reindex
 
 After any database engine change:
 
-- [ ] Update `DATABASE_DRIVER`, `DATABASE_HOST`, `DATABASE_NAME`, `DATABASE_USER`, `DATABASE_PASSWORD` in `.env.local`
+- [ ] Update `DATABASE_URL` (or individual `DATABASE_*` vars) in `.env.local`
 - [ ] Run `php bin/console cache:clear --env=prod`
 - [ ] Run `php bin/console ezpublish:legacy:clear-cache`
+- [ ] Run `php bin/console doctrine:schema:validate`
+- [ ] Run `php bin/console doctrine:migration:migrate --allow-no-migration`
 - [ ] Run `php bin/console ezplatform:reindex`
 - [ ] Test the Legacy Admin: log in, browse content, publish a test item
-- [ ] Test the Platform Admin UI: log in, browse content types
 - [ ] Test the public site: browse several pages, check images load
 - [ ] Test REST API: `curl https://your-site.com/api/ezp/v2/ -H "Accept: application/json"`
-- [ ] Test GraphQL: `curl https://your-site.com/graphql`
-- [ ] Verify user login works in both admin interfaces
+- [ ] Verify user login works in the admin interface
 - [ ] Check the Symfony log for errors: `tail -100 var/log/prod.log`
-- [ ] Run `php bin/console doctrine:schema:validate` to verify entity mapping
+- [ ] If SQLite target — verify file permissions: `ls -la var/data_*.db`
+
+---
+
+### 22d. Any → SQLite (go to SQLite)
+
+Use this path to migrate an existing MySQL/MariaDB or PostgreSQL database **into SQLite**
+for local development, testing, or air-gapped demos.
+
+> ⚠️ **SQLite is dev/testing only.** See [Section 5c](#5c-sqlite-devtesting) for full limitations.
+
+#### From MySQL / MariaDB → SQLite
+
+Use the [**mysql2sqlite**](https://github.com/dumblob/mysql2sqlite) shell script (MIT licence,
+no dependencies beyond `bash` and `sqlite3`):
+
+```bash
+# 1. Get the script
+curl -LO https://raw.githubusercontent.com/dumblob/mysql2sqlite/master/mysql2sqlite
+chmod +x mysql2sqlite
+
+# 2. Dump the MySQL database through the converter and pipe into SQLite
+mysqldump --no-tablespaces --skip-extended-insert --compact \
+  -u "$DATABASE_USER" -p"$DATABASE_PASSWORD" \
+  -h "$DATABASE_HOST" "$DATABASE_NAME" \
+  | ./mysql2sqlite - | sqlite3 var/data_dev.db
+```
+
+> `--skip-extended-insert` produces one `INSERT` per row — slower but required by the converter.
+> For large databases, dump table-by-table:
+
+```bash
+TABLES=$(mysql -u "$DATABASE_USER" -p"$DATABASE_PASSWORD" -h "$DATABASE_HOST" "$DATABASE_NAME" \
+  -e 'SHOW TABLES;' --batch --skip-column-names)
+
+for TABLE in $TABLES; do
+  mysqldump --no-tablespaces --skip-extended-insert --compact \
+    -u "$DATABASE_USER" -p"$DATABASE_PASSWORD" -h "$DATABASE_HOST" "$DATABASE_NAME" "$TABLE" \
+    | ./mysql2sqlite - >> /tmp/dump.sql
+done
+
+sqlite3 var/data_dev.db < /tmp/dump.sql
+```
+
+#### From PostgreSQL → SQLite
+
+Use [**pgloader**](https://pgloader.io) (PostgreSQL-licenced):
+
+```bash
+apt install pgloader          # Debian/Ubuntu
+# brew install pgloader       # macOS
+
+# Create an empty target file
+touch var/data_dev.db
+
+# Write a pgloader command file
+cat > /tmp/pg_to_sqlite.load << EOF
+LOAD DATABASE
+  FROM postgresql://db_user:db_pass@127.0.0.1/db_name
+  INTO sqlite:///$(pwd)/var/data_dev.db
+
+WITH include no drop, create tables, create indexes, reset sequences;
+EOF
+
+pgloader /tmp/pg_to_sqlite.load
+```
+
+#### After migrating to SQLite — update `.env.local`
+
+```dotenv
+DATABASE_URL="sqlite:///%kernel.project_dir%/var/data_dev.db"
+MESSENGER_TRANSPORT_DSN=sync://
+```
+
+Fix permissions and clear caches (see [Section 5c](#5c-sqlite-devtesting) steps 4–5).
+
+---
+
+### 22e. SQLite → MySQL / MariaDB
+
+Create the target database first (see [Section 5a](#5a-mysql--mariadb)).
+
+#### Method 1 — [sqlite3-to-mysql](https://github.com/techouse/sqlite3-to-mysql) (Python, MIT)
+
+```bash
+pip install sqlite3-to-mysql
+
+sqlite3mysql \
+  --sqlite-file var/data_dev.db \
+  --mysql-database "$DATABASE_NAME" \
+  --mysql-user "$DATABASE_USER" \
+  --mysql-password "$DATABASE_PASSWORD" \
+  --mysql-host "$DATABASE_HOST" \
+  --mysql-port 3306 \
+  --chunk 1000
+```
+
+**Installing sqlite3-to-mysql:**
+
+| Platform | Command |
+|---|---|
+| Debian / Ubuntu / Mint | `apt install python3 python3-pip && pip3 install sqlite3-to-mysql` |
+| RHEL / AlmaLinux / Rocky | `dnf install python3 python3-pip && pip3 install sqlite3-to-mysql` |
+| Fedora | `dnf install python3 && pip3 install sqlite3-to-mysql` |
+| Arch / Manjaro | `pacman -S python && pip install sqlite3-to-mysql` |
+| macOS | `pip3 install sqlite3-to-mysql` |
+| FreeBSD | `pkg install python3 && pip3 install sqlite3-to-mysql` |
+| Generic | [pypi.org/project/sqlite3-to-mysql](https://pypi.org/project/sqlite3-to-mysql/) |
+
+#### Method 2 — manual SQL dump + sed fixes
+
+```bash
+# 1. Dump from SQLite
+sqlite3 var/data_dev.db .dump > /tmp/sqlite_dump.sql
+
+# 2. Strip SQLite-specific preamble
+sed -i '/^PRAGMA/d; /^BEGIN TRANSACTION/d; /^COMMIT/d; /^CREATE UNIQUE INDEX/d' /tmp/sqlite_dump.sql
+
+# 3. Convert double-quoted identifiers to backtick-quoted
+sed -i 's/"\([a-zA-Z_][a-zA-Z0-9_]*\)"/`\1`/g' /tmp/sqlite_dump.sql
+
+# 4. Map SQLite types to MySQL equivalents
+sed -i 's/INTEGER PRIMARY KEY AUTOINCREMENT/INT NOT NULL AUTO_INCREMENT PRIMARY KEY/g' /tmp/sqlite_dump.sql
+sed -i 's/ BOOLEAN/ TINYINT(1)/g' /tmp/sqlite_dump.sql
+
+# 5. Import
+mysql -u "$DATABASE_USER" -p"$DATABASE_PASSWORD" "$DATABASE_NAME" < /tmp/sqlite_dump.sql
+```
+
+> The sed approach is fragile on complex schemas. Prefer `sqlite3-to-mysql` for production migrations.
+
+#### After migrating — update `.env.local`
+
+```dotenv
+DATABASE_DRIVER=pdo_mysql
+DATABASE_HOST=127.0.0.1
+DATABASE_PORT=3306
+DATABASE_NAME=your_db_name
+DATABASE_USER=your_db_user
+DATABASE_PASSWORD=your_db_password
+DATABASE_CHARSET=utf8mb4
+DATABASE_COLLATION=utf8mb4_unicode_520_ci
+DATABASE_VERSION=mariadb-10.x   # or 8.0 for MySQL
+# Remove DATABASE_URL=sqlite:// and MESSENGER_TRANSPORT_DSN=sync://
+```
+
+---
+
+### 22f. SQLite → PostgreSQL
+
+Use [**pgloader**](https://pgloader.io) — it has native SQLite source support:
+
+```bash
+apt install pgloader   # Debian/Ubuntu; brew install pgloader for macOS
+
+# Create the target database
+psql -U postgres -c "CREATE DATABASE exponential ENCODING 'UTF8' TEMPLATE template0;"
+
+# Write a pgloader command file
+cat > /tmp/sqlite_to_pg.load << EOF
+LOAD DATABASE
+  FROM sqlite:///$(pwd)/var/data_dev.db
+  INTO postgresql://pg_user:pg_pass@127.0.0.1/exponential
+
+WITH include no drop, create tables, create indexes, reset sequences;
+EOF
+
+pgloader /tmp/sqlite_to_pg.load
+```
+
+pgloader handles type mapping (INTEGER → bigint, TEXT → text, REAL → double precision),
+index creation, and sequence reset so `nextval()` picks up after the highest existing ID.
+
+**Installing pgloader:**
+
+| Platform | Command |
+|---|---|
+| Debian / Ubuntu / Mint | `apt install pgloader` |
+| Fedora | `dnf install pgloader` |
+| Arch / Manjaro | AUR: `yay -S pgloader` |
+| macOS (Homebrew) | `brew install pgloader` |
+| FreeBSD | `pkg install pgloader` |
+| Docker (any OS) | `docker run --rm -it dimitri/pgloader pgloader <args>` |
+| From source | `git clone https://github.com/dimitri/pgloader && cd pgloader && make pgloader` |
+
+#### After migrating — update `.env.local`
+
+```dotenv
+DATABASE_DRIVER=pdo_pgsql
+DATABASE_HOST=127.0.0.1
+DATABASE_PORT=5432
+DATABASE_NAME=exponential
+DATABASE_USER=pg_user
+DATABASE_PASSWORD=pg_pass
+DATABASE_CHARSET=utf8
+DATABASE_VERSION=16
+# Remove DATABASE_URL=sqlite:// and MESSENGER_TRANSPORT_DSN=sync://
+```
+
+Then run the post-conversion checklist ([Section 22c](#22c-post-conversion-checklist)).
+
+---
+
+### 22g. SQLite → Oracle
+
+Oracle XE (Express Edition) is free to use for development. The recommended FOSS path
+is to export SQLite via its `.dump` command, then load into Oracle using **SQLcl** (Oracle’s
+free CLI) or a JDBC-based tool.
+
+#### Method — CSV export + Oracle SQLcl import
+
+```bash
+# 1. Export each table from SQLite as CSV
+mkdir -p /tmp/sqlite_csv
+sqlite3 -header -csv var/data_dev.db .dump   # schema reference
+
+TABLES=$(sqlite3 var/data_dev.db "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;")
+for TABLE in $TABLES; do
+  sqlite3 -header -csv var/data_dev.db "SELECT * FROM \"$TABLE\";" > /tmp/sqlite_csv/$TABLE.csv
+done
+
+# 2. Create the schema in Oracle (use Doctrine schema:create or a manual DDL)
+# Oracle XE free download: https://www.oracle.com/database/technologies/xe-downloads.html
+# SQLcl free download: https://www.oracle.com/database/sqldeveloper/technologies/sqlcl/
+
+# 3. Load each CSV with SQLcl
+for CSV in /tmp/sqlite_csv/*.csv; do
+  TABLE=$(basename "$CSV" .csv)
+  sql -s oracle_user/oracle_pass@localhost:1521/XEPDB1 <<EOF
+    SET FEEDBACK OFF
+    LOAD DATA INFILE '$CSV'
+    APPEND INTO TABLE "$TABLE"
+    FIELDS TERMINATED BY ','
+    OPTIONALLY ENCLOSED BY '"'
+    FIRST ROW IS HEADER;
+EOF
+done
+```
+
+**Installing SQLcl:**
+
+| Platform | Command / Download |
+|---|---|
+| All platforms | [oracle.com/database/sqldeveloper/technologies/sqlcl](https://www.oracle.com/database/sqldeveloper/technologies/sqlcl/) — zip download, Java 11+ required |
+| Homebrew (macOS) | `brew install --cask sqlcl` |
+| Debian / Ubuntu | Download the zip; `unzip sqlcl-*.zip -d /opt/sqlcl && ln -s /opt/sqlcl/bin/sql /usr/local/bin/sql` |
+
+> Oracle requires `pdo_oci` or `oci8` PHP extensions. Set `DATABASE_URL` as:
+> ```dotenv
+> DATABASE_URL="oci8://oracle_user:oracle_pass@localhost:1521/XEPDB1"
+> ```
+> There is no `pdo_oracle`; use `oci8` driver in Doctrine: `DATABASE_DRIVER=oci8`.
+
+---
+
+### 22h. Oracle → SQLite
+
+Export from Oracle using **ora2pg** (GPL v3, the industry-standard Oracle → FOSS migration tool)
+or **SQLcl CSV export**, then load into SQLite.
+
+#### Method 1 — ora2pg (Oracle → SQL dump → SQLite)
+
+```bash
+apt install ora2pg   # Debian/Ubuntu; see ora2pg docs for other platforms
+# ora2pg: https://github.com/darold/ora2pg
+
+# Minimal ora2pg config
+cat > /tmp/ora2pg.conf << 'EOF'
+ORACLE_DSN  dbi:Oracle:host=oracle_host;sid=ORCL
+ORACLE_USER system
+ORACLE_PWD  password
+SCHEMA      YOUR_SCHEMA
+TYPE        TABLE, INSERT, SEQUENCE, INDEX, CONSTRAINT
+OUT_FILE    /tmp/ora_export.sql
+QUOTE_STRING_WITH_DOLLAR 0
+EOF
+
+ora2pg -c /tmp/ora2pg.conf
+
+# The output SQL is PostgreSQL dialect; convert to SQLite via pgloader:
+touch var/data_dev.db
+
+# Load into PostgreSQL first, then use the SQLite -> PostgreSQL path in reverse:
+# (or pipe the DDL through sed to strip PostgreSQL-specific syntax and import directly)
+sqlite3 var/data_dev.db < /tmp/ora_export.sql
+```
+
+#### Method 2 — SQLcl CSV export → SQLite
+
+```bash
+# 1. Export all tables as CSV from Oracle using SQLcl
+mkdir -p /tmp/ora_csv
+# In SQLcl for each table:
+# SET MARKUP CSV ON
+# SPOOL /tmp/ora_csv/table_name.csv
+# SELECT * FROM table_name;
+# SPOOL OFF
+
+# 2. Create schema in SQLite via Doctrine or manual DDL
+php bin/console doctrine:schema:create --env=dev   # with DATABASE_URL=sqlite://...
+
+# 3. Import CSVs into SQLite
+for CSV in /tmp/ora_csv/*.csv; do
+  TABLE=$(basename "$CSV" .csv)
+  sqlite3 var/data_dev.db << EOF
+.mode csv
+.import '$CSV' '$TABLE'
+EOF
+done
+```
+
+#### After migrating — update `.env.local`
+
+```dotenv
+DATABASE_URL="sqlite:///%kernel.project_dir%/var/data_dev.db"
+MESSENGER_TRANSPORT_DSN=sync://
+```
+
+Fix permissions and clear caches (see [Section 5c](#5c-sqlite-devtesting) steps 4–5).
+Then run the post-conversion checklist ([Section 22c](#22c-post-conversion-checklist)).
+
+---
+
+### 22i. MySQL / MariaDB → Oracle
+
+The recommended FOSS approach is **ora2pg in reverse** (it can read MySQL and write Oracle-compatible
+SQL), or a **mysqldump → SQLcl** pipeline.
+
+#### Method — CSV export + Oracle SQLcl import
+
+```bash
+# 1. Export all tables from MySQL as CSV
+TABLES=$(mysql -u "$DATABASE_USER" -p"$DATABASE_PASSWORD" -h "$DATABASE_HOST" "$DATABASE_NAME" \
+  -e 'SHOW TABLES;' --batch --skip-column-names)
+
+mkdir -p /tmp/mysql_csv
+for TABLE in $TABLES; do
+  mysql -u "$DATABASE_USER" -p"$DATABASE_PASSWORD" -h "$DATABASE_HOST" "$DATABASE_NAME" \
+    -e "SELECT * FROM \`$TABLE\`" --batch | sed 's/\t/,/g' > /tmp/mysql_csv/$TABLE.csv
+done
+
+# 2. Create the schema in Oracle
+# Option A: generate from Doctrine (requires pdo_oci / oci8 in .env.local)
+php bin/console doctrine:schema:create
+# Option B: use ora2pg with MySQL source to generate Oracle DDL
+ora2pg -t TABLE -c /tmp/ora2pg_mysql.conf   # see ora2pg docs for MYSQL_DSN option
+
+# 3. Load CSVs with SQLcl
+# SQLcl download: https://www.oracle.com/database/sqldeveloper/technologies/sqlcl/
+for CSV in /tmp/mysql_csv/*.csv; do
+  TABLE=$(basename "$CSV" .csv)
+  sql oracle_user/oracle_pass@localhost:1521/XEPDB1 @/tmp/load_$TABLE.sql
+  # or use LOAD DATA via SQLcl's built-in CSV loader
+done
+```
+
+**Installing ora2pg:**
+
+| Platform | Command |
+|---|---|
+| Debian / Ubuntu / Mint | `apt install ora2pg` |
+| RHEL / AlmaLinux / Rocky | `dnf install ora2pg` (EPEL) or from source |
+| macOS (Homebrew) | `brew install ora2pg` |
+| Arch / Manjaro | AUR: `yay -S ora2pg` |
+| All platforms (Perl / CPAN) | `cpan install Ora2Pg` |
+| Source | [github.com/darold/ora2pg](https://github.com/darold/ora2pg) |
+
+#### After migrating — update `.env.local`
+
+```dotenv
+# Oracle requires the oci8 Doctrine driver (not pdo_oci):
+DATABASE_URL="oci8://oracle_user:oracle_pass@localhost:1521/XEPDB1"
+```
+
+> Doctrine requires the `oci8` PHP extension. Install it via PECL:
+> `pecl install oci8` (requires Oracle Instant Client headers).
+
+---
+
+### 22j. Oracle → MySQL / MariaDB
+
+Use **ora2pg** (GPL v3) — it was built specifically for this direction and generates
+MySQL-compatible output when `MYSQL_DSN` is configured as the target.
+
+```bash
+apt install ora2pg
+
+# ora2pg config targeting MySQL
+cat > /tmp/ora2pg_to_mysql.conf << 'EOF'
+ORACLE_DSN  dbi:Oracle:host=oracle_host;sid=ORCL
+ORACLE_USER system
+ORACLE_PWD  password
+SCHEMA      YOUR_SCHEMA
+TYPE        TABLE, INSERT, SEQUENCE, INDEX, CONSTRAINT
+OUT_FILE    /tmp/ora_to_mysql.sql
+MYSQL_DSN   dbi:mysql:host=127.0.0.1;database=exponential
+MYSQL_USER  db_user
+MYSQL_PWD   db_pass
+EOF
+
+ora2pg -c /tmp/ora2pg_to_mysql.conf
+
+# Import
+mysql -u "$DATABASE_USER" -p"$DATABASE_PASSWORD" "$DATABASE_NAME" < /tmp/ora_to_mysql.sql
+```
+
+Verify row counts match before switching the application:
+
+```bash
+# Oracle counts (via SQLcl)
+echo "SELECT COUNT(*) FROM table_name;" | sql oracle_user/oracle_pass@localhost:1521/XEPDB1
+
+# MySQL counts
+mysql -u "$DATABASE_USER" -p"$DATABASE_PASSWORD" "$DATABASE_NAME" \
+  -e "SELECT table_name, table_rows FROM information_schema.tables WHERE table_schema='$DATABASE_NAME';"
+```
+
+#### After migrating — update `.env.local`
+
+```dotenv
+DATABASE_DRIVER=pdo_mysql
+DATABASE_HOST=127.0.0.1
+DATABASE_PORT=3306
+DATABASE_NAME=your_db_name
+DATABASE_USER=your_db_user
+DATABASE_PASSWORD=your_db_password
+DATABASE_CHARSET=utf8mb4
+DATABASE_COLLATION=utf8mb4_unicode_520_ci
+DATABASE_VERSION=mariadb-10.x   # or 8.0 for MySQL
+```
+
+Then run the post-conversion checklist ([Section 22c](#22c-post-conversion-checklist)).
+
+---
+
+### 22k. PostgreSQL → Oracle
+
+Use **ora2pg** (it supports PostgreSQL as a source in addition to Oracle):
+
+```bash
+apt install ora2pg
+
+# ora2pg config with PostgreSQL source
+cat > /tmp/pg_to_oracle.conf << 'EOF'
+PG_DSN      dbi:Pg:host=127.0.0.1;database=exponential
+PG_USER     pg_user
+PG_PWD      pg_pass
+SCHEMA      public
+TYPE        TABLE, INSERT, SEQUENCE, INDEX, CONSTRAINT
+OUT_FILE    /tmp/pg_to_oracle.sql
+QUOTE_STRING_WITH_DOLLAR 0
+EOF
+
+ora2pg -c /tmp/pg_to_oracle.conf
+
+# Load into Oracle with SQLcl
+sql oracle_user/oracle_pass@localhost:1521/XEPDB1 @/tmp/pg_to_oracle.sql
+```
+
+#### After migrating — update `.env.local`
+
+```dotenv
+DATABASE_URL="oci8://oracle_user:oracle_pass@localhost:1521/XEPDB1"
+```
+
+---
+
+### 22l. Oracle → PostgreSQL
+
+**ora2pg** is the industry-standard tool for this path — its primary, most-tested use-case:
+
+```bash
+apt install ora2pg
+
+# Create target PostgreSQL database
+psql -U postgres -c "CREATE DATABASE exponential ENCODING 'UTF8' TEMPLATE template0;"
+
+# ora2pg config
+cat > /tmp/ora_to_pg.conf << 'EOF'
+ORACLE_DSN  dbi:Oracle:host=oracle_host;sid=ORCL
+ORACLE_USER system
+ORACLE_PWD  password
+SCHEMA      YOUR_SCHEMA
+TYPE        TABLE, INSERT, SEQUENCE, INDEX, CONSTRAINT
+OUT_FILE    /tmp/ora_to_pg.sql
+QUOTE_STRING_WITH_DOLLAR 0
+EOF
+
+ora2pg -c /tmp/ora_to_pg.conf
+
+# Import into PostgreSQL
+psql -U pg_user exponential < /tmp/ora_to_pg.sql
+```
+
+For large schemas use pgloader as a follow-up validator:
+
+```bash
+# Reset sequences (ora2pg may not always set them correctly)
+psql -U pg_user exponential -c "
+  SELECT 'SELECT setval(''' || sequence_name || ''', (SELECT MAX(id) FROM ' || replace(sequence_name, '_id_seq', '') || '));'
+  FROM information_schema.sequences WHERE sequence_schema = 'public';
+" | psql -U pg_user exponential
+```
+
+#### After migrating — update `.env.local`
+
+```dotenv
+DATABASE_DRIVER=pdo_pgsql
+DATABASE_HOST=127.0.0.1
+DATABASE_PORT=5432
+DATABASE_NAME=exponential
+DATABASE_USER=pg_user
+DATABASE_PASSWORD=pg_pass
+DATABASE_CHARSET=utf8
+DATABASE_VERSION=16
+```
+
+Then run the post-conversion checklist ([Section 22c](#22c-post-conversion-checklist)).
 
 ---
 
@@ -1359,11 +1994,11 @@ php bin/console doctrine:database:drop --force                    # drop the dat
 
 ---
 
-### 23.3 Exponential Platform v3 / Ibexa OSS (new stack)
+### 23.3 Exponential Platform v3 (new stack)
 
 ```bash
 # ── Installation ───────────────────────────────────────────────────────────
-php bin/console ezplatform:install ibexa-oss        # install schema + demo data
+php bin/console ezplatform:install exponential-oss   # install schema + demo data
 php bin/console ezplatform:install clean             # schema only, no demo content
 
 # ── Search / Reindex ───────────────────────────────────────────────────────

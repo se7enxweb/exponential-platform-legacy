@@ -120,7 +120,7 @@ Exponential Platform Legacy is database, platform and browser independent. Becau
 | **Search** | Legacy search (default) · Solr 7.7 / 8.x (optional) |
 | **HTTP Cache** | Symfony HttpCache (default) · Varnish 6/7 (optional) |
 | **App Cache** | Filesystem (default) · Redis 6+ (optional) |
-| **Database** | MySQL 8.0+ · MariaDB 10.3+ · PostgreSQL 14+ |
+| **Database** | MySQL 8.0+ · MariaDB 10.3+ · PostgreSQL 14+ · SQLite 3.35+ (dev/testing) |
 | **API** | REST API v2 · GraphQL (schema auto-generated) · JWT auth |
 | **Admin UI (legacy)** | Exponential (Legacy) Admin (`/ezpublish_legacy/` design) |
 | **Admin UI (new stack)** | Exponential Platform Admin UI (`/adminui/`) |
@@ -136,7 +136,7 @@ Exponential Platform Legacy is database, platform and browser independent. Becau
 
 - PHP 8.0+ (8.2, 8.3, or 8.5 recommended)
 - A web server: Apache 2.4 or Nginx 1.18+
-- A database server: MySQL 8.0+, MariaDB 10.3+, or PostgreSQL 14+
+- A database server: MySQL 8.0+, MariaDB 10.3+, PostgreSQL 14+, or SQLite 3.35+ (dev/testing — zero config, no server needed)
 - Composer 2.x
 - Node.js 18 LTS (via nvm recommended; `.nvmrc` present in project root)
 - Yarn 1.22.x
@@ -172,8 +172,13 @@ cp .env .env.local
 # Edit DATABASE_HOST, DATABASE_NAME, DATABASE_USER, DATABASE_PASSWORD, APP_SECRET, APP_ENV
 
 # 3. Create database and import demo data
+
+# Option A — SQLite (zero config, dev/testing only — no server needed):
+DATABASE_URL="sqlite:///%kernel.project_dir%/var/data_dev.db" php bin/console ezplatform:install exponential-oss
+
+# Option B — MySQL / MariaDB:
 mysql -u root -p -e "CREATE DATABASE exponential CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;"
-php bin/console ezplatform:install ibexa-oss
+php bin/console ezplatform:install exponential-oss
 
 # 4. Generate JWT keypair (required for REST API)
 php bin/console lexik:jwt:generate-keypair
@@ -290,7 +295,7 @@ The installation guide covers:
 - Varnish HTTP cache integration
 - Docker development environment
 - Deployer zero-downtime production deploys
-- Database conversion (MySQL ↔ PostgreSQL)
+- Database conversion (MySQL ↔ PostgreSQL ↔ SQLite)
 - Troubleshooting
 
 Read the full guide at [doc/INSTALL.md](doc/INSTALL.md).
@@ -329,10 +334,10 @@ php bin/console doctrine:migration:diff                            # generate a 
 php bin/console doctrine:schema:validate                           # validate entity mappings
 ```
 
-### Exponential Platform v3 / Ibexa OSS (new stack)
+### Exponential Platform v3 (new stack)
 
 ```bash
-php bin/console ezplatform:install ibexa-oss            # fresh install with demo data (options: clean, ibexa-oss)
+php bin/console ezplatform:install exponential-oss      # fresh install with demo data (options: clean, exponential-oss)
 php bin/console ezplatform:reindex                      # rebuild search index (full)
 php bin/console ezplatform:reindex --iteration-count=50 # incremental reindex
 php bin/console ezplatform:cron:run                     # run the Platform v3 cron scheduler
