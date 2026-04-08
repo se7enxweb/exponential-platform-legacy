@@ -4,3 +4,16 @@ parameters:
     google_recaptcha_site_key: '%env(GOOGLE_RECAPTCHA_SITE_KEY)%'
 
 services:
+    # ── Exponential Platform installer type "exponential-oss" ──────────────────
+    # Registers the "exponential-oss" install type for Platform v3 so that:
+    #   php bin/console ezplatform:install exponential-oss
+    # resolves to this class. Uses the "ezplatform.installer" tag (Platform v3 /
+    # eZ Platform 3.x tag; Platform v4 uses "ibexa.installer" instead).
+    App\Installer\ExponentialOssInstaller:
+        lazy: false
+        arguments:
+            $db: '@Doctrine\DBAL\Connection'
+            $schemaBuilder: '@EzSystems\DoctrineSchema\API\Builder\SchemaBuilder'
+            $projectDir: '%kernel.project_dir%'
+        tags:
+            - { name: ezplatform.installer, type: exponential-oss }
