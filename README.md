@@ -174,11 +174,11 @@ cp .env .env.local
 # 3. Create database and import demo data
 
 # Option A — SQLite (zero config, dev/testing only — no server needed):
-DATABASE_URL="sqlite:///%kernel.project_dir%/var/data_dev.db" php bin/console ezplatform:install exponential-oss
+DATABASE_URL="sqlite:///%kernel.project_dir%/var/data_dev.db" php bin/console exponential:install exponential-oss
 
 # Option B — MySQL / MariaDB:
 mysql -u root -p -e "CREATE DATABASE exponential CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;"
-php bin/console ezplatform:install exponential-oss
+php bin/console exponential:install exponential-oss
 
 # 4. Generate JWT keypair (required for REST API)
 php bin/console lexik:jwt:generate-keypair
@@ -336,13 +336,19 @@ php bin/console doctrine:schema:validate                           # validate en
 
 ### Exponential Platform v3 (new stack)
 
+> **Command Prefix Convention:** Commands using the `exponential:` prefix below are the
+> canonical name in this distribution. The old `ibexa:*` and `ezplatform:*` / `ezpublish:*`
+> names work as **deprecated aliases** — they are fully functional but will be removed in a
+> future major release. Commands still shown with an `ezplatform:` prefix have not yet been
+> migrated and retain their legacy name in the current release.
+
 ```bash
-php bin/console ezplatform:install exponential-oss      # fresh install with demo data (options: clean, exponential-oss)
-php bin/console ezplatform:reindex                      # rebuild search index (full)
-php bin/console ezplatform:reindex --iteration-count=50 # incremental reindex
-php bin/console ezplatform:cron:run                     # run the Platform v3 cron scheduler
-php bin/console ezplatform:graphql:generate-schema      # regenerate GraphQL schema
-php bin/console ezplatform:solr:create-core --cores=default   # set up Solr core
+php bin/console exponential:install exponential-oss     # fresh install with demo data (options: clean, exponential-oss)
+php bin/console exponential:reindex                     # rebuild search index (full)
+php bin/console exponential:reindex --iteration-count=50 # incremental reindex
+php bin/console ezplatform:cron:run                     # run the Platform v3 cron scheduler (not yet migrated)
+php bin/console ezplatform:graphql:generate-schema      # regenerate GraphQL schema (not yet migrated)
+php bin/console ezplatform:solr:create-core --cores=default   # set up Solr core (not yet migrated)
 php bin/console bazinga:js-translation:dump public/assets --merge-domains   # JS i18n
 php bin/console fos:httpcache:invalidate:path / --all   # purge HTTP cache paths
 php bin/console lexik:jwt:generate-keypair              # generate RSA keypair for REST API auth
@@ -358,7 +364,7 @@ php bin/console ezpublish:legacy:clear-cache
 php bin/console ezpublish:legacy:generate-autoloads
 
 # Run a legacy script (e.g. cronjob scripts, import scripts)
-php bin/console ezpublish:legacy:script <script-name>
+php bin/console exponential:legacy:script <script-name>
 
 # Run legacy cronjobs directly (bypass Symfony, use in crontab)
 php ezpublish_legacy/runcronjobs.php --siteaccess legacy_admin
@@ -426,7 +432,7 @@ make clear-all-cache          # cache:clear + pool:clear (incl. Redis)
 
 # ── Database / Search ──────────────────────────────────────────────────────
 make migrations               # doctrine:migration:migrate --allow-no-migration
-make reindex                  # ezplatform:reindex (full search reindex)
+make reindex                  # exponential:reindex (full search reindex)
 
 # ── Content ────────────────────────────────────────────────────────────────
 make images                   # generate image variations (i30, i160, i320...)

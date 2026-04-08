@@ -11,6 +11,23 @@
 
 ---
 
+> **Console Command Prefix Convention**
+>
+> All `bin/console` commands in this distribution support three name prefixes. Only
+> `exponential:` is the canonical name going forward; the others are deprecated aliases that
+> remain fully functional for backward compatibility:
+>
+> | **Preferred — use this** | Deprecated (functional) | Deprecated (functional) |
+> |---|---|---|
+> | `exponential:*` | `ibexa:*` | `ezplatform:*` / `ezpublish:*` |
+>
+> Commands in this guide use `exponential:*` where the rename has been applied. Commands still
+> shown with an `ezplatform:` or `ezpublish:` prefix (e.g. `ezplatform:cron:run`,
+> `ezplatform:graphql:generate-schema`, `ezpublish:legacy:clear-cache`) have not yet been
+> migrated to the `exponential:` prefix in this release — they are fully functional as-is.
+
+---
+
 ## Table of Contents
 
 1. [Requirements](#1-requirements)
@@ -166,7 +183,7 @@ Browser Request
 - Platform v3 uses **LegacyBridge 3.x** (v4 uses LegacyBridge 4.x)
 - Platform v3 runs **eZ Platform / Exponential Platform 3.3 OSS** (v4 runs Platform 4 OSS)
 - Platform v3 does **not include Netgen Layouts** (v4 includes Netgen Layouts 1.4+)
-- Platform v3 install command: `ezplatform:install exponential-oss` (v4: `ibexa:install exponential-oss`)
+- Platform v3 install command: `exponential:install exponential-oss` (v4: `ibexa:install exponential-oss`)
 - Platform v3 `memory_limit` ≥ 256M (v4 ≥ 512M due to dual-kernel overhead)
 
 ---
@@ -233,7 +250,7 @@ mysql -u root -p -e "CREATE DATABASE exponential CHARACTER SET utf8mb4 COLLATE u
 #### Step 5 — Import schema and demo data
 
 ```bash
-php bin/console ezplatform:install exponential-oss
+php bin/console exponential:install exponential-oss
 ```
 
 The demo data creates an administrator user: **username** `admin`, **password** `publish`.
@@ -304,7 +321,7 @@ php bin/console ezpublish:legacy:clear-cache
 #### Step 12 — Reindex search
 
 ```bash
-php bin/console ezplatform:reindex
+php bin/console exponential:reindex
 # or: make reindex
 ```
 
@@ -488,7 +505,7 @@ mysql -u root -p -e "CREATE DATABASE exponential CHARACTER SET utf8mb4 COLLATE u
 #### Import schema and demo data
 
 ```bash
-php bin/console ezplatform:install exponential-oss
+php bin/console exponential:install exponential-oss
 ```
 
 Available installer types:
@@ -508,7 +525,7 @@ sudo -u postgres psql -c "CREATE DATABASE exponential ENCODING 'UTF8' LC_COLLATE
 Set `DATABASE_DRIVER=pdo_pgsql` and the PostgreSQL vars in `.env.local` (see Section 4), then:
 
 ```bash
-php bin/console ezplatform:install exponential-oss
+php bin/console exponential:install exponential-oss
 ```
 
 ### 5c. SQLite (dev/testing)
@@ -543,7 +560,7 @@ when a full DSN is provided.
 #### Step 3 — Run the installer
 
 ```bash
-php bin/console ezplatform:install exponential-oss
+php bin/console exponential:install exponential-oss
 ```
 
 This single command:
@@ -817,7 +834,7 @@ php bin/console cache:clear
 Required after fresh install, after importing content, or after switching search engines.
 
 ```bash
-php bin/console ezplatform:reindex
+php bin/console exponential:reindex
 # or:
 make reindex
 ```
@@ -825,7 +842,7 @@ make reindex
 ### Refresh index (incremental update)
 
 ```bash
-php bin/console ezplatform:reindex --iteration-count=100
+php bin/console exponential:reindex --iteration-count=100
 ```
 
 For Solr only — force a commit after indexing:
@@ -1010,7 +1027,7 @@ php bin/console ezpublish:legacy:clear-cache
 php bin/console cache:warmup --env=prod
 
 # 9. Reindex if content model changed
-# php bin/console ezplatform:reindex --env=prod
+# php bin/console exponential:reindex --env=prod
 ```
 
 Or using the Makefile:
@@ -1051,7 +1068,7 @@ composer update se7enxweb/legacy-bridge     # update a single package
 # After update, always run:
 php bin/console doctrine:migration:migrate --allow-no-migration
 php bin/console cache:clear
-php bin/console ezplatform:reindex          # if search engine schema may have changed
+php bin/console exponential:reindex          # if search engine schema may have changed
 ```
 
 > 💾 **Git Save Point — After composer update**
@@ -1102,7 +1119,7 @@ Add the following to crontab (`crontab -e -u www-data`):
    ```
 4. Reindex all content:
    ```bash
-   php bin/console ezplatform:reindex
+   php bin/console exponential:reindex
    ```
 
 ### Switch back to legacy search
@@ -1231,7 +1248,7 @@ php bin/console cache:clear
 ### Search results outdated
 
 ```bash
-php bin/console ezplatform:reindex
+php bin/console exponential:reindex
 ```
 
 ### Permission denied writing to `var/`, `public/var/`, or `ezpublish_legacy/var/`
@@ -1330,7 +1347,7 @@ pgloader exponential.load
 php bin/console cache:clear --env=prod
 
 # 6. Reindex search
-php bin/console ezplatform:reindex
+php bin/console exponential:reindex
 ```
 
 ### 22b. PostgreSQL → MySQL / MariaDB
@@ -1370,7 +1387,7 @@ pgloader pg-to-mysql.load
 
 # 3. Update .env.local to use MySQL/MariaDB and clear cache
 php bin/console cache:clear --env=prod
-php bin/console ezplatform:reindex
+php bin/console exponential:reindex
 ```
 
 ### 22c. Post-conversion checklist
@@ -1382,7 +1399,7 @@ After any database engine change:
 - [ ] Run `php bin/console ezpublish:legacy:clear-cache`
 - [ ] Run `php bin/console doctrine:schema:validate`
 - [ ] Run `php bin/console doctrine:migration:migrate --allow-no-migration`
-- [ ] Run `php bin/console ezplatform:reindex`
+- [ ] Run `php bin/console exponential:reindex`
 - [ ] Test the Legacy Admin: log in, browse content, publish a test item
 - [ ] Test the public site: browse several pages, check images load
 - [ ] Test REST API: `curl https://your-site.com/api/ezp/v2/ -H "Accept: application/json"`
@@ -1998,25 +2015,25 @@ php bin/console doctrine:database:drop --force                    # drop the dat
 
 ```bash
 # ── Installation ───────────────────────────────────────────────────────────
-php bin/console ezplatform:install exponential-oss   # install schema + demo data
-php bin/console ezplatform:install clean             # schema only, no demo content
+php bin/console exponential:install exponential-oss   # install schema + demo data
+php bin/console exponential:install clean             # schema only, no demo content
 
 # ── Search / Reindex ───────────────────────────────────────────────────────
-php bin/console ezplatform:reindex                  # full reindex (all content)
-php bin/console ezplatform:reindex --iteration-count=100   # incremental reindex
-php bin/console ezplatform:reindex --content-type=article  # reindex one content type
-php bin/console ezplatform:solr:create-core --cores=default  # provision Solr core
+php bin/console exponential:reindex                  # full reindex (all content)
+php bin/console exponential:reindex --iteration-count=100   # incremental reindex
+php bin/console exponential:reindex --content-type=article  # reindex one content type
+php bin/console ezplatform:solr:create-core --cores=default  # provision Solr core (not yet migrated)
 
 # ── Content Repository ─────────────────────────────────────────────────────
-php bin/console ezplatform:content:cleanup-drafts   # remove stale draft versions
-php bin/console ezplatform:content:cleanup-versions --keep=3  # keep last N versions
+php bin/console ezplatform:content:cleanup-drafts   # remove stale draft versions (not yet migrated)
+php bin/console exponential:content:cleanup-versions --keep=3  # keep last N versions
 
 # ── Cron ───────────────────────────────────────────────────────────────────
-php bin/console ezplatform:cron:run                 # run eZ Platform cron scheduler
+php bin/console ezplatform:cron:run                 # run eZ Platform cron scheduler (not yet migrated)
 php bin/console ezplatform:cron:run --quiet         # cron (suppress output for crontab)
 
 # ── GraphQL ────────────────────────────────────────────────────────────────
-php bin/console ezplatform:graphql:generate-schema  # regenerate GraphQL schema
+php bin/console ezplatform:graphql:generate-schema  # regenerate GraphQL schema (not yet migrated)
 
 # ── HTTP Cache ─────────────────────────────────────────────────────────────
 php bin/console fos:httpcache:invalidate:path / --all   # purge all HTTP cache paths
@@ -2031,7 +2048,7 @@ php bin/console liip:imagine:cache:remove --filter=small  # remove one variation
 
 # ── Config Debug ───────────────────────────────────────────────────────────
 php bin/console debug:config ezplatform             # dump full resolved eZ config
-php bin/console ezplatform:debug:dump-info          # dump eZ Platform environment info
+php bin/console ezplatform:debug:dump-info          # dump eZ Platform environment info (not yet migrated)
 ```
 
 ---
@@ -2046,7 +2063,7 @@ php bin/console ezpublish:legacy:clear-cache
 php bin/console ezpublish:legacy:generate-autoloads
 
 # ── Script Runner ──────────────────────────────────────────────────────────
-php bin/console ezpublish:legacy:script <script-name>
+php bin/console exponential:legacy:script <script-name>
 
 # ── Cronjobs (direct — bypass Symfony, use in crontab) ────────────────────
 php ezpublish_legacy/runcronjobs.php --siteaccess legacy_admin
@@ -2124,10 +2141,10 @@ make clear-cache              # cache:clear
 make clear-all-cache          # cache:clear + cache:pool:clear
 
 make migrations               # doctrine:migration:migrate --allow-no-migration
-make reindex                  # ezplatform:reindex
+make reindex                  # exponential:reindex
 
 make images                   # generate image variations
-make graphql-schema           # ezplatform:graphql:generate-schema
+make graphql-schema           # ezplatform:graphql:generate-schema (not yet migrated)
 
 make update-code              # git stash -> pull --rebase -> stash pop
 ```

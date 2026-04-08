@@ -34,6 +34,9 @@ ibexa-assets: ## Generate Ibexa Admin UI assets
 	. ${NVM_DIR}/nvm.sh && nvm use || nvm install $(cat .nvmrc)
 	$(COMPOSER_RUN) ibexa-assets
 
+.PHONY: exponential-platform-assets
+exponential-platform-assets: ibexa-assets ## Alias: build Exponential Platform Admin UI assets
+
 .PHONY: assets
 .ONESHELL:
 assets: ## Build frontend assets for DEV environment
