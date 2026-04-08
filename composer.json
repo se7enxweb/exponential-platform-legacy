@@ -1,8 +1,6 @@
 {
-    "name": "se7enxweb/exponential-platform-legacy",
     "type": "project",
-    "license": "(GPL-2.0-or-later or proprietary)",
-    "description": "A project skeleton for installing 7x Exponential Platform v4.6.x DXP (Open Source)",
+    "license": "proprietary",
     "require": {
         "php": "^7.4 || ^8.0 || ^8.1 || ^8.2 || ^8.3 || ^8.4 || ^8.5",
         "ext-ctype": "*",
@@ -17,7 +15,7 @@
         "netgen/layouts-ibexa": "^1.4",
         "netgen/layouts-standard": "^1.4",
         "nyholm/psr7": "^1.0",
-        "se7enxweb/exponential-platform-dxp": "4.6.x-dev",
+        "se7enxweb/exponential-platform-dxp": "4.6.x-LB-dev",
         "se7enxweb/legacy-bridge": "^4.0.0.0",
         "se7enxweb/ngsymfonytools": "^4.0.0.0",
         "se7enxweb/richtext-datatype-bundle": "*",
@@ -65,7 +63,9 @@
             "bazinga:js-translation:dump public/assets --merge-domains": "symfony-cmd",
             "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
             "ezpublish:legacy:assets_install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
-            "ezpublish:legacybundles:install_extensions --relative": "symfony-cmd"
+            "ezpublish:legacybundles:install_extensions --relative": "symfony-cmd",
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
         "project-scripts": [
             "@php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php"
@@ -98,9 +98,6 @@
                 "flex://defaults"
             ],
             "docker": false
-        },
-        "branch-alias": {
-            "dev-4.6": "4.6.0.x-dev"
         }
     }
 }
