@@ -15,6 +15,23 @@
 
 ---
 
+> **Console Command Prefix Convention**
+>
+> All `bin/console` commands in this distribution support three name prefixes. Only
+> `exponential:` is the canonical name going forward; the others are deprecated aliases that
+> remain fully functional for backward compatibility:
+>
+> | **Preferred — use this** | Deprecated (functional) | Deprecated (functional) |
+> |---|---|---|
+> | `exponential:*` | `ibexa:*` | `ezplatform:*` / `ezpublish:*` |
+>
+> Commands in this guide use `exponential:*` where the rename has been applied. Commands still
+> shown with an `ezplatform:` or `ezpublish:` prefix (e.g. `ezplatform:cron:run`,
+> `ezplatform:graphql:generate-schema`, `ezpublish:legacy:clear-cache`) have not yet been
+> migrated to the `exponential:` prefix in this release — they are fully functional as-is.
+
+---
+
 ## Table of Contents
 
 1. [Requirements](#1-requirements)
@@ -406,7 +423,7 @@ php bin/console ezpublish:legacy:clear-cache
 #### Step 12 — Reindex search
 
 ```bash
-php bin/console ezplatform:reindex
+php bin/console exponential:reindex
 ```
 
 > 💾 **Git Save Point 2 — Installation complete**
@@ -588,8 +605,10 @@ psql -U postgres -c "CREATE DATABASE exponential ENCODING 'UTF8';"
 ### Import schema and demo data
 
 ```bash
-php bin/console ibexa:install exponential-oss
-# deprecated alias (still works): php bin/console ezplatform:install exponential-oss
+php bin/console exponential:install exponential-oss
+# Deprecated aliases (still work):
+# php bin/console ibexa:install exponential-oss
+# php bin/console ezplatform:install exponential-oss
 ```
 
 The demo data creates an administrator user:
@@ -645,7 +664,7 @@ when a full DSN is provided.
 #### Step 3 — Run the install command
 
 ```bash
-php bin/console ibexa:install exponential-oss
+php bin/console exponential:install exponential-oss
 ```
 
 This single command:
@@ -1104,9 +1123,9 @@ Default credentials: **admin / publish** — change immediately after install.
 To run a legacy script:
 
 ```bash
-php bin/console ezpublish:legacy:script <script-name>
+php bin/console exponential:legacy:script <script-name>
 # Example:
-php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php
+php bin/console exponential:legacy:script bin/php/ezpgenerateautoloads.php
 ```
 
 ---
@@ -1176,19 +1195,19 @@ lost, all existing tokens are invalidated and clients must re-authenticate.
 Required after fresh install, after importing content, or after switching search engines:
 
 ```bash
-php bin/console ezplatform:reindex
+php bin/console exponential:reindex
 ```
 
 ### Incremental reindex
 
 ```bash
-php bin/console ezplatform:reindex --iteration-count=100
+php bin/console exponential:reindex --iteration-count=100
 ```
 
 ### Reindex a specific content type
 
 ```bash
-php bin/console ezplatform:reindex --content-type=article
+php bin/console exponential:reindex --content-type=article
 ```
 
 For Solr — force commit after indexing:
@@ -1368,7 +1387,7 @@ php bin/console ezpublish:legacy:clear-cache
 php bin/console ezpublish:legacy:generate-autoloads
 
 # 11. Reindex search (if content model changed)
-# php bin/console ezplatform:reindex --env=prod
+# php bin/console exponential:reindex --env=prod
 ```
 
 > 💾 **Git Save Point — After each production deploy**
@@ -1407,7 +1426,7 @@ php bin/console doctrine:migration:migrate --allow-no-migration
 php bin/console cache:clear
 php bin/console ezpublish:legacy:generate-autoloads
 php bin/console ezpublish:legacy:clear-cache
-php bin/console ezplatform:reindex   # if content model schema may have changed
+php bin/console exponential:reindex   # if content model schema may have changed
 ```
 
 > 💾 **Git Save Point — After composer update**
@@ -1466,7 +1485,7 @@ Add to crontab (`crontab -e -u www-data`):
    ```
 4. Reindex all content:
    ```bash
-   php bin/console ezplatform:reindex
+   php bin/console exponential:reindex
    ```
 
 ### Switch back to legacy search
@@ -1584,7 +1603,7 @@ php bin/console cache:clear
 ### Search results outdated
 
 ```bash
-php bin/console ezplatform:reindex
+php bin/console exponential:reindex
 ```
 
 ### Permission denied on var/, public/var/, or ezpublish_legacy/var/
@@ -2256,7 +2275,7 @@ php bin/console doctrine:migration:migrate --allow-no-migration
 php bin/console ezpublish:legacy:generate-autoloads
 
 # 7. Regenerate the search index against the new DB
-php bin/console ezplatform:reindex
+php bin/console exponential:reindex
 
 # 8. Smoke-test the site
 curl -I http://localhost/
@@ -2374,27 +2393,28 @@ php bin/console doctrine:database:drop --force                    # drop the dat
 
 ```bash
 # ── Installation ───────────────────────────────────────────────────────────
-php bin/console ibexa:install exponential-oss             # schema + demo data (Exponential OSS type)
-php bin/console ibexa:install ibexa-oss                   # schema + demo data (upstream Ibexa OSS type)
-# Deprecated command alias — both types still work via it:
+php bin/console exponential:install exponential-oss             # schema + demo data (Exponential OSS type)
+php bin/console exponential:install ibexa-oss                   # schema + demo data (upstream Ibexa OSS type)
+# Deprecated aliases — both types still work via them:
+# php bin/console ibexa:install exponential-oss
 # php bin/console ezplatform:install exponential-oss
 
 # ── Search / Reindex ───────────────────────────────────────────────────────
-php bin/console ezplatform:reindex                         # full reindex
-php bin/console ezplatform:reindex --iteration-count=100   # incremental
-php bin/console ezplatform:reindex --content-type=article  # one content type
-php bin/console ezplatform:solr:create-core --cores=default  # provision Solr core
+php bin/console exponential:reindex                         # full reindex
+php bin/console exponential:reindex --iteration-count=100   # incremental
+php bin/console exponential:reindex --content-type=article  # one content type
+php bin/console ezplatform:solr:create-core --cores=default  # provision Solr core (not yet migrated)
 
 # ── Content Repository ─────────────────────────────────────────────────────
-php bin/console ezplatform:content:cleanup-drafts          # remove stale drafts
-php bin/console ezplatform:content:cleanup-versions --keep=3  # keep last N per content
+php bin/console ezplatform:content:cleanup-drafts          # remove stale drafts (not yet migrated)
+php bin/console exponential:content:cleanup-versions --keep=3  # keep last N per content
 
 # ── Cron ───────────────────────────────────────────────────────────────────
-php bin/console ezplatform:cron:run                        # run Platform v4 cron scheduler
+php bin/console ezplatform:cron:run                        # run Platform v4 cron scheduler (not yet migrated)
 php bin/console ezplatform:cron:run --quiet                # suppress output (use in crontab)
 
 # ── GraphQL ────────────────────────────────────────────────────────────────
-php bin/console ezplatform:graphql:generate-schema         # regenerate from content model
+php bin/console ezplatform:graphql:generate-schema         # regenerate from content model (not yet migrated)
 
 # ── HTTP Cache ─────────────────────────────────────────────────────────────
 php bin/console fos:httpcache:invalidate:path / --all      # purge all HTTP cache paths
@@ -2408,7 +2428,7 @@ php bin/console liip:imagine:cache:remove                  # remove all cached v
 php bin/console liip:imagine:cache:remove --filter=small   # remove one variation alias
 
 # ── Config Inspection ──────────────────────────────────────────────────────
-php bin/console ezplatform:debug:dump-info                 # dump platform environment info
+php bin/console ezplatform:debug:dump-info                 # dump platform environment info (not yet migrated)
 php bin/console debug:config ibexa                         # dump full resolved platform config
 ```
 
@@ -2433,7 +2453,7 @@ cd ..
 
 # ── Script Runner ──────────────────────────────────────────────────────────
 # Run any legacy script (import scripts, one-off maintenance)
-php bin/console ezpublish:legacy:script <script-name>
+php bin/console exponential:legacy:script <script-name>
 
 # ── Cronjobs (direct — bypass Symfony, use in crontab) ─────────────────────
 php ezpublish_legacy/runcronjobs.php --siteaccess legacy_admin
