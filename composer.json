@@ -79,9 +79,9 @@
         "bex/behat-screenshot": "^1.2.7",
         "ezsystems/behat-screenshot-image-driver-cloudinary": "^1.1",
         "overblog/graphiql-bundle": "^0.1.2",
-        "phpunit/phpunit": "^7.2.6",
+        "phpunit/phpunit": "^11.5",
         "sensio/generator-bundle": "^3.1.7",
-        "symfony/phpunit-bridge": "^4.1.1",
+        "symfony/phpunit-bridge": "^7.2",
         "liuggio/fastest": "^1.6"
     },
     "conflict": {
