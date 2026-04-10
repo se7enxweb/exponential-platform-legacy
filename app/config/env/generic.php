@@ -75,3 +75,8 @@ if ($value = getenv('SESSION_HANDLER_ID')) {
 if ($value = getenv('SESSION_SAVE_PATH')) {
     $container->setParameter('ezplatform.session.save_path', $value);
 }
+
+// Override SQLite database path (defaults to var/data_{env}.db via default_parameters.yml)
+if ($value = getenv('DATABASE_PATH')) {
+    $container->setParameter('database_path', $value);
+}

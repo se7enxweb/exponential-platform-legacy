@@ -16,6 +16,9 @@ parameters:
     database_charset: '%env(DATABASE_CHARSET)%'
     # collation currently has effect on MySQL only
     database_collation: '%env(DATABASE_COLLATION)%'
+    # Path to SQLite database file; only used when database_driver is pdo_sqlite.
+    # Defaults to var/data_{env}.db (e.g. var/data_dev.db). Override with DATABASE_PATH env var.
+    database_path: '%kernel.project_dir%/var/data_%kernel.environment%.db'
 
     # Setting for mail system, used by SwiftMailer
     mailer_host: '%env(MAILER_HOST)%'

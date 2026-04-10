@@ -17,3 +17,6 @@ parameters:
     env(DATABASE_PASSWORD):
     env(DATABASE_CHARSET): utf8mb4
     env(DATABASE_COLLATION): utf8mb4_unicode_520_ci
+    # SQLite path defaults to var/data_{env}.db (set per-environment automatically).
+    # Override by setting DATABASE_PATH in the environment or in parameters.yml:
+    #   env(DATABASE_PATH): /absolute/path/to/site.db
