@@ -1,6 +1,12 @@
 <?php /* #?ini charset="utf-8"?
 
+[DebugSettings]
+# DebugOutput=enabled
+# Debug=true
+
 [DatabaseSettings]
+# DatabaseImplementation=sqlite3
+# Database=var/data_dev.db
 Charset=utf8mb4
 
 [FileSettings]

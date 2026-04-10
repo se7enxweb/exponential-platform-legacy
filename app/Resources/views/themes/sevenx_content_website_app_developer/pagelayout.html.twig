@@ -1,0 +1,19 @@
+{# Copyright 1998 - 2026 7x; All rights reserved (unless otherwise noted). #}
+<!doctype html>
+<html lang="{{ app.request.locale|replace({'_': '-'}) }}">
+{% set _title %}{% block page_title %}Exponential Platform is The Power User's CMS / DXP{% endblock %}{% endset %}
+{% include '@ezdesign/parts/page_head.html.twig' with { page_title: _title } %}
+{% include '@ezdesign/parts/page_styles.html.twig' %}
+<body>
+
+{% set _notices %}{% include '@ezdesign/parts/notices.twig' %}{% endset %}
+{# ── notices.twig renders #lp-info-bar and #lp-dev-bar ──
+   Source: templates/themes/sevenx-content-website-app-developer/parts/notices.twig
+   To hide: comment out the set/include above or wrap the bar divs in {\# ... #\} inside notices.twig
+#}
+{% set _content %}{% block content %}{% endblock %}{% endset %}
+{% include '@ezdesign/parts/page_container.html.twig' with { legacy_content: _content, notices: _notices } %}
+
+{% include '@ezdesign/parts/page_scripts.html.twig' %}
+</body>
+</html>

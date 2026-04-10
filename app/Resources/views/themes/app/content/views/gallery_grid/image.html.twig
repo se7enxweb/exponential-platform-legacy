@@ -1,0 +1,14 @@
+{# content \Netgen\IbexaSiteApi\API\Values\Content #}
+{# location \Netgen\IbexaSiteApi\API\Values\Location #}
+
+{% import 'themes/app/content/macros/slide.html.twig' as slide %}
+{% import 'themes/app/content/macros/content_fields.html.twig' as content_fields %}
+
+
+<div class="view-type view-type-{{ view_type }} image vl3">
+    {% set title = content_fields.title(content) %}
+
+    <a href="{{ asset(ng_image_alias(content.fields.image, 'i1320').uri) }}" title="{{ title }}" class="js-lightbox-item" data-pswp-width="{{ content.fields.image.value.width }}" data-pswp-height="{{ content.fields.image.value.height }}">
+        {{ slide.image(content) }}
+    </a>
+</div>

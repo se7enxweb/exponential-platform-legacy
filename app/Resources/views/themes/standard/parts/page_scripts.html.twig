@@ -1,0 +1,23 @@
+<script>
+(function () {
+    // Mobile nav toggle
+    var toggle = document.getElementById('lp-nav-toggle');
+    var nav = document.getElementById('lp-header-nav');
+    if (toggle && nav) {
+        toggle.addEventListener('click', function () {
+            var expanded = toggle.getAttribute('aria-expanded') === 'true';
+            toggle.setAttribute('aria-expanded', String(!expanded));
+            nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+        });
+    }
+
+    // Dev bar toggle
+    var devToggle = document.getElementById('lp-dev-bar-toggle');
+    var devDetails = document.getElementById('lp-dev-bar-details');
+    if (devToggle && devDetails) {
+        devToggle.addEventListener('click', function () {
+            devDetails.style.display = devDetails.style.display === 'none' ? 'block' : 'none';
+        });
+    }
+}());
+</script>

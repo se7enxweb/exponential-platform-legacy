@@ -1,0 +1,16 @@
+{# Copyright 1998 - 2026 7x. #}
+<!doctype html>
+<html lang="{{ app.request.locale|replace({'_': '-'}) }}">
+{% set _title %}{% block page_title %}Exponential Platform{% endblock %}{% endset %}
+{% include '@ezdesign/parts/page_head.html.twig' with { page_title: _title } %}
+<body class="lp-login-page">
+{% include '@ezdesign/parts/page_header.html.twig' %}
+<div id="lp-page">
+    <main id="lp-login-main">
+        {% block content %}{% endblock %}
+    </main>
+</div>
+{% include '@ezdesign/parts/page_footer.html.twig' %}
+{% include '@ezdesign/parts/page_scripts.html.twig' %}
+</body>
+</html>

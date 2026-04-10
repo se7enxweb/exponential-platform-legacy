@@ -1,0 +1,7 @@
+{% if location is defined and content is defined %}
+<aside class="lp-sidebar">
+    {% include '@ezdesign/parts/content_sidebar/metadata_card.html.twig' with { location: location, content: content } %}
+    {% include '@ezdesign/parts/content_sidebar/navigate_card.html.twig' with { location: location, content: content } %}
+    {% include '@ezdesign/parts/content_sidebar/rest_api_card.html.twig' with { location: location, content: content } %}
+</aside>
+{% endif %}

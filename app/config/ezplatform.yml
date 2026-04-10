@@ -15,7 +15,7 @@ ezpublish:
     siteaccess:
         list: [site, admin, legacy_admin]
         groups:
-            site_group: [site legacy_admin]
+            site_group: [site, legacy_admin]
 
             # WARNING: Do not remove or rename this group.
             # It's used to distinguish common siteaccesses from admin ones.
@@ -23,10 +23,10 @@ ezpublish:
             admin_group: [admin]
         default_siteaccess: site
         match:
-            Map\Host:
-                platform.alpha.se7enx.com: site
-                edit.platform.alpha.se7enx.com: admin
-            # URIElement: 1
+            # Map\Host:
+            #    platform.alpha.se7enx.com: site
+            #    edit.platform.alpha.se7enx.com: admin
+            URIElement: 1
 
     # System settings, read in following order: `default`, <siteaccess-group>, <siteacces>, and `global`
     # TIP: For multisite installations organize shared config into SiteAccess groups,
@@ -50,7 +50,7 @@ ezpublish:
                 varnish_invalidate_token: '%varnish_invalidate_token%'
 
         site_group:
-            design: standard
+            design: site
             content_tree_module:
                 contextual_tree_root_location_ids:
                     - 2 # Home (Content structure)
@@ -77,12 +77,51 @@ ezpublish:
                 media: /1/43/
         site:
             languages: [eng-GB]
-            default_page: "/test"
-            index_page: "/test"
+            default_page: "/content/view/full/2"
+            #index_page: "/content/view/full/2"
+            pagelayout: "@ezdesign/pagelayout.html.twig"
+            content_view:
+                full:
+                    layout_folder:
+                        template: "@ezdesign/content/views/full/layout_container.html.twig"
+                        match:
+                            Id\Location: 2
+                    folder:
+                        template: "@ezdesign/content/views/full/folder.html.twig"
+                        match:
+                            Identifier\ContentType: folder
+                    user_group:
+                        template: "@ezdesign/content/views/full/folder.html.twig"
+                        match:
+                            Identifier\ContentType: user_group
+            field_templates:
+                - { template: "@ezdesign/content/field_templates.html.twig", priority: 5000 }
 
     url_alias:
         slug_converter:
             transformation: 'urlalias_lowercase'
+
+ezdesign:
+    design_list:
+        site:
+            - sevenx_content_website_app_developer
+            - sevenx_content_website_app_info
+            - sevenx_content_website_app
+            - fh
+            - app
+            - common
+            - standard
+        fh:
+            - fh
+            - app
+            - common
+            - standard
+        app:
+            - app
+            - common
+            - standard
+        standard:
+            - standard
 
 ez_platform_standard_design:
     # makes Kernel default templates (in EzPublishCoreBundle/Resources/views) part of standard Design

@@ -1,0 +1,67 @@
+{# Copyright 1998 - 2026 7x; All rights reserved (unless otherwise noted). #}
+{#
+    sevenx_content_website_app_info/user/login.html.twig
+
+    Overrides the nglayouts login to use the standalone dark card design.
+    Delegates to standard/user/login.html.twig via the design chain.
+#}
+{% extends '@ezdesign/pagelayout_login.html.twig' %}
+
+{% block page_title %}Sign In | Exponential Platform{% endblock %}
+
+{% block content %}
+<div class="lp-login-wrap">
+    <div class="lp-login-card">
+
+        <div class="lp-login-logo">
+            <a href="/"><img src="/assets/images/exponentialplatform.png" alt="Exponential Platform"></a>
+        </div>
+
+        <h1 class="lp-login-title">Sign In</h1>
+        <p class="lp-login-sub">Please enter your username and password to login.</p>
+
+        {% if error %}
+            <div class="lp-login-error">{{ error.message|trans }}</div>
+        {% endif %}
+
+        <form action="{{ path('login_check') }}" method="post" autocomplete="on">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <div class="lp-login-field">
+                <label for="username">Username</label>
+                <input type="text"
+                       id="username"
+                       name="_username"
+                       value="{{ last_username }}"
+                       autofocus
+                       required
+                       autocomplete="username"
+                       placeholder="Enter your username">
+            </div>
+
+            <div class="lp-login-field">
+                <label for="password">Password</label>
+                <input type="password"
+                       id="password"
+                       name="_password"
+                       required
+                       autocomplete="current-password"
+                       placeholder="Enter your password">
+            </div>
+
+            <button type="submit" class="lp-login-submit">Sign In</button>
+
+            <div class="lp-login-links">
+                <a href="{{ path('exp_user_forgot_password') }}">Forgot password?</a>
+                <a href="{{ path('exp_user_register') }}">Create account</a>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<div class="lp-login-footer">
+    &copy; 1998&ndash;{{ "now"|date("Y") }} <a href="https://se7enx.com" target="_blank" rel="noopener">7x</a>.
+    Powered by <a href="https://exponential.earth" target="_blank" rel="noopener">Exponential</a>.
+</div>
+{% endblock %}

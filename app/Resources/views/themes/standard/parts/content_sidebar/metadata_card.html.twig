@@ -1,0 +1,18 @@
+{% if location is defined and content is defined %}
+<div class="lp-sidebar-card lp-metadata-card">
+    <h3>Metadata</h3>
+    <table class="lp-meta-table">
+        <tr><th>Content ID</th><td>{{ content.id }}</td></tr>
+        <tr><th>Location ID</th><td>{{ location.id }}</td></tr>
+        <tr><th>Content Type ID</th><td>{{ content.contentInfo.contentTypeId }}</td></tr>
+        <tr><th>Owner ID</th><td>{{ content.contentInfo.ownerId }}</td></tr>
+        <tr><th>Published</th><td>{{ content.contentInfo.publishedDate|date('Y-m-d H:i') }}</td></tr>
+        <tr><th>Modified</th><td>{{ content.contentInfo.modificationDate|date('Y-m-d H:i') }}</td></tr>
+        <tr><th>Language</th><td>{{ content.contentInfo.mainLanguageCode }}</td></tr>
+        <tr><th>Visible</th><td>{{ location.invisible ? 'No' : 'Yes' }}</td></tr>
+        <tr><th>Priority</th><td>{{ location.priority }}</td></tr>
+        <tr><th>Sort field</th><td>{{ location.sortField }}</td></tr>
+        <tr><th>Sort order</th><td>{{ location.sortOrder }}</td></tr>
+    </table>
+</div>
+{% endif %}

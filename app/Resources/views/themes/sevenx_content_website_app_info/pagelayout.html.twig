@@ -1,0 +1,22 @@
+{# Copyright 1998 - 2026 7x; All rights reserved (unless otherwise noted). #}
+<!doctype html>
+<html lang="{{ app.request.locale|replace({'_': '-'}) }}">
+{% set _title %}{% block page_title %}Exponential Platform is The Power User's CMS / DXP{% endblock %}{% endset %}
+{% include '@ezdesign/parts/page_head.html.twig' with { page_title: _title } %}
+{% include '@ezdesign/parts/page_styles.html.twig' %}
+<body>
+
+{% set _notices %}
+    <div id="lp-info-bar">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2196f3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>Hybrid Kernel Content View &mdash; Edit your content in the
+            <a href="/adminui/" target="_top">Administrator (Page Editor)</a>
+        </span>
+    </div>
+{% endset %}
+{% set _content %}{% block content %}{% endblock %}{% endset %}
+{% include '@ezdesign/parts/page_container.html.twig' with { legacy_content: _content, notices: _notices } %}
+
+{% include '@ezdesign/parts/page_scripts.html.twig' %}
+</body>
+</html>

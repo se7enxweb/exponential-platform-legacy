@@ -29,3 +29,9 @@ services:
         class: EzSystems\RepositoryForms\User\ConfigurableRegistrationContentTypeLoader
         arguments:
             $params: '%ezrepoforms.user_register.registration_content_types%'
+
+    AppBundle\Twig\ChildrenExtension:
+        arguments:
+            $repository: '@ezpublish.api.repository'
+        tags:
+            - { name: twig.extension }

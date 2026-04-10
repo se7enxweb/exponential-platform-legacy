@@ -1,0 +1,29 @@
+{# content \Netgen\IbexaSiteApi\API\Values\Content #}
+{# location \Netgen\IbexaSiteApi\API\Values\Location #}
+
+{% if not content.fields.image.empty %}
+    {% set image = content.fields.image %}
+    {% set image_alias = ng_image_alias(image, 'i1320') %}
+    {% set image_uri = image_alias ? image_alias.uri : '//:0' %}
+    {% set alt_text = image.value.alternativeText|default('') %}
+    {% set lazy_loading = ezplatform.configResolver.getParameter('lazy_loading.enabled', 'ngsite') %}
+
+    {% if is_slider %}
+        <div class="swiper-slide">
+    {% endif %}
+            <figure class="image-wrapper">
+                <img
+                    src="{{ image_uri }}"
+                    {% if is_slider or lazy_loading %}loading="lazy"{% endif %} alt="{{ alt_text }}"
+                />
+
+                {% if content.fields.caption is defined and not content.fields.caption.empty %}
+                    <figcaption>
+                        {{ ng_render_field(content.fields.caption) }}
+                    </figcaption>
+                {% endif %}
+            </figure>
+    {% if is_slider %}
+        </div>
+    {% endif %}
+{% endif %}

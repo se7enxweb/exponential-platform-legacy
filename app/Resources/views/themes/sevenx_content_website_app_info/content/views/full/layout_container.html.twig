@@ -1,0 +1,855 @@
+{#
+    app/content/views/full/layout_container.html.twig — HOMEPAGE LAYOUT
+    ──────────────────────────────────────────────────────────────────
+    Matched exclusively for Location ID 2 / Content ID 1
+    ("Exponential Platform" root folder — what renders at /)
+
+    This is the intentional homepage design:
+      • Exponential Developer Journey hero — 21-discipline card grid
+      • Dynamic title breadcrumb from url alias
+      • Subitems card grid (if any children exist)
+
+    Generic folders use: themes/app/content/views/full/folder.html.twig
+    Routing config:      config/app/packages/ezpublish.yaml → layout_folder
+    DB reference:        node_id=2 / contentobject_id=1
+#}
+{% extends "@ezdesign/pagelayout.html.twig" %}
+
+{% block page_title -%}
+{%- set _name = ez_content_name(content) -%}
+{%- set _alias = path('ez_urlalias', {locationId: location.id})|trim('/') -%}
+{%- set _raw_parts = (_alias and not (_alias starts with 'view/')) ? _alias|split('/') : [] -%}
+{%- set _parent_parts = [] -%}
+{%- for part in _raw_parts|slice(0, -1) -%}{%- set _parent_parts = _parent_parts|merge([part|replace({'-': ' ', '_': ' '})|title]) -%}{%- endfor -%}
+{%- set _path_label = _parent_parts|length > 0 ? (_parent_parts|join(' / ') ~ ' / ' ~ _name) : _name -%}
+{{ _path_label }} - Exponential Platform is The Power User's CMS / DXP
+{%- endblock %}
+
+{% block content %}
+{%- set children = ez_location_children(location, 50) -%}
+{%- set ct = content.contentType -%}
+{%- set skip = ['name', 'short_name'] -%}
+
+{%- set bodyFields = [] -%}
+{% if ct is not null %}
+{% for fd in ct.fieldDefinitions %}
+    {%- if fd.identifier not in skip and not ez_is_field_empty(content, fd.identifier) -%}
+        {%- set bodyFields = bodyFields|merge([fd]) -%}
+    {%- endif -%}
+{% endfor %}
+{% endif %}
+
+{# First text-like field = hero excerpt #}
+{%- set heroExcerpt = '' -%}
+{%- set heroField   = null -%}
+{% for fd in bodyFields %}
+    {%- if heroField is null and fd.fieldTypeIdentifier in ['ezrichtext','ezxmltext','eztext','ezstring'] -%}
+        {%- set heroField   = fd -%}
+        {%- set heroExcerpt = ez_render_field(content, fd.identifier)|striptags|trim|slice(0,320) -%}
+    {%- endif -%}
+{% endfor %}
+
+{# Palette #}
+{%- set c = {
+    bg:       '#191919',
+    bgBody:   '#f1f1f1',
+    bgCard:   '#ffffff',
+    nav:      '#111111',
+    navHov:   '#e8472b',
+    hero:     '#161b22',
+    accent:   '#e8472b',
+    accentB:  '#4a9fd4',
+    hdr:      '#0e0e0e',
+    txt:      '#1a1a1a',
+    txtMuted: '#6b7280',
+    border:   '#e0e0e0',
+    tagBg:    '#e8472b',
+    tagTxt:   '#ffffff',
+    sideHdr:  '#1a1a1a'
+} -%}
+
+{# Neowin category tabs — derived from content type identifier #}
+{%- set cats = ['News','Software','Microsoft','Apple','Google','Linux','Security','Gaming','Hardware'] -%}
+
+{# Icon map #}
+{%- set ico = {
+    'ezstring':    '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>',
+    'eztext':      '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="14" y1="18" x2="3" y2="18"/></svg>',
+    'ezrichtext':  '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>',
+    'ezxmltext':   '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>',
+    'ezimage':     '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>',
+    'ezurl':       '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>',
+    'ezboolean':   '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+    'ezinteger':   '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>',
+    'ezdatetime':  '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
+    'ezkeyword':   '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>',
+    'default':     '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
+} -%}
+
+
+<div id="nw">
+
+{# ════════════════════════════════════════════
+   ① CATEGORY NAV BAR
+   ════════════════════════════════════════════ #}
+<nav class="nw-catnav" aria-label="Categories">
+    <div class="nw-catnav-inner">
+        {% for cat in cats %}
+            <a href="#"
+               class="{{ ct is not null and ct.identifier|lower == cat|lower ? 'nw-active' : '' }}"
+               onclick="return false;">{{ cat }}</a>
+            {%- if not loop.last -%}<div class="nw-catnav-sep"></div>{%- endif -%}
+        {% endfor %}
+        <div class="nw-catnav-sep"></div>
+        <a href="#" onclick="return false;" style="color:#e8472b;font-weight:800;">{{ ez_content_name(content) }}</a>
+    </div>
+</nav>
+
+{# ════════════════════════════════════════════
+   BREADCRUMB BAR
+   ════════════════════════════════════════════ #}
+<div class="nw-bread">
+    <div class="nw-bread-inner">
+        <a href="/">Home</a>
+        <span class="sep">›</span>
+        {% if location.depth > 1 %}
+            <a href="{{ path('ez_urlalias', {locationId: location.parentLocationId}) }}">Parent</a>
+            <span class="sep">›</span>
+        {% endif %}
+        <span class="current">{{ ez_content_name(content) }}</span>
+    </div>
+</div>
+
+{# ════════════════════════════════════════════
+   ② MERGED HEADER — journey intro + folder info card
+   ════════════════════════════════════════════ #}
+<section class="nw-exp" id="nw-exp-journey">
+
+    <div class="nw-mhd">
+        <div class="nw-mhd-inner">
+
+            {# LEFT: journey heading + folder info card #}
+            <div class="nw-mhd-left">
+                <div class="nw-mhd-eyebrow">Exponential CMS Ecosystem</div>
+                <h2 class="nw-mhd-h2">Become an <em>Exponential</em> <span class="nw-rainbow">Developer</span></h2>
+                <p class="nw-mhd-sub">21 disciplines defining the modern Exponential Platform Web CMS&nbsp;/&nbsp;DXP Ecosystem Developer today&nbsp;.. Choose wisely! If you must choose your path; choose wisely your future redefined.</p>
+
+                <div class="nw-mhd-fcard">
+                    <div class="nw-mhd-ftags">
+                        <span class="nw-mhd-ftag">{{ ct is not null ? ct.identifier : '' }}</span>
+                        <span class="nw-mhd-ftag-dim">loc:{{ location.id }}</span>
+                        <span class="nw-mhd-ftag-dim">depth:{{ location.depth }}</span>
+                        {% if children|length > 0 %}<span class="nw-mhd-ftag-dim">{{ children|length }}&nbsp;items</span>{% endif %}
+                        <span class="nw-mhd-ftag-dim">content:{{ content.id }}</span>
+                    </div>
+                    <div class="nw-mhd-fname">
+                        <a href="{{ path('ez_urlalias', {locationId: location.id}) }}">{{ ez_content_name(content) }}</a>
+                    </div>
+                    {% if heroExcerpt %}<div class="nw-mhd-fexcerpt">{{ heroExcerpt }}</div>{% endif %}
+                </div>
+            </div>
+
+            {# RIGHT: ghost count + quick-links #}
+            <div class="nw-mhd-right">
+                <div class="nw-mhd-count">21</div>
+                <div class="nw-mhd-count-l">Disciplines</div>
+                {% if children|length > 0 %}
+                <div class="nw-mhd-links">
+                    {% for child in children %}
+                        {% if loop.index <= 5 %}
+                            {%- set cc = child.getContent() -%}
+                            <a href="{{ path('ez_urlalias', {locationId: child.id}) }}" class="nw-mhd-link">
+                                <span class="nw-mhd-link-n">0{{ loop.index }}</span>
+                                <span class="nw-mhd-link-title">{{ ez_content_name(cc) }}</span>
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+        </div>
+
+        {# Filter bar #}
+        <div class="nw-mhd-filters" id="nw-exp-filters">
+            <span class="nw-exp-filter-label">Filter:</span>
+            <span class="nw-exp-chip nw-exp-chip-on" data-expf="all">All 21</span>
+            <span class="nw-exp-chip" data-expf="build">Build</span>
+            <span class="nw-exp-chip" data-expf="design">Design</span>
+            <span class="nw-exp-chip" data-expf="write">Write</span>
+            <span class="nw-exp-chip" data-expf="ops">Ops</span>
+            <span class="nw-exp-chip" data-expf="community">Community</span>
+        </div>
+    </div>
+
+    {# 21-card grid — no images, pure ASCII/Unicode glyphs at 4rem #}
+    <div class="nw-exp-grid" id="nw-exp-grid">
+
+        {# ── 01 Core Developer ── #}
+        <div class="nw-exp-card" data-expcat="build">
+            <div class="nw-exp-card-bar" style="background:#e8472b"></div>
+            <div class="nw-exp-icon-zone">
+                <span class="nw-exp-glyph" style="color:#e8472b">⚡</span>
+                <span class="nw-exp-num">01</span>
+            </div>
+            <div class="nw-exp-body">
+                <span class="nw-exp-tag" style="background:rgba(232,71,43,.15);color:#e8472b">Build</span>
+                <div class="nw-exp-title">Core Developer</div>
+                <div class="nw-exp-desc">Write PHP services, event subscribers, and repository API extensions inside a Symfony bundle on top of Ibexa DXP.</div>
+            </div>
+            <div class="nw-exp-foot">
+                <span class="nw-exp-level">
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip on"></span>
+                    Senior
+                </span>
+                <span class="nw-exp-action">Begin ›</span>
+            </div>
+        </div>
+
+        {# ── 02 Theme Designer ── #}
+        <div class="nw-exp-card" data-expcat="design">
+            <div class="nw-exp-card-bar" style="background:#a259ff"></div>
+            <div class="nw-exp-icon-zone">
+                <span class="nw-exp-glyph" style="color:#a259ff">◈</span>
+                <span class="nw-exp-num">02</span>
+            </div>
+            <div class="nw-exp-body">
+                <span class="nw-exp-tag" style="background:rgba(162,89,255,.15);color:#a259ff">Design</span>
+                <div class="nw-exp-title">Theme Designer</div>
+                <div class="nw-exp-desc">Master the eZ Design Engine — themes, design lists, SiteAccess pagelayout overrides, SASS tokens and Webpack Encore pipelines.</div>
+            </div>
+            <div class="nw-exp-foot">
+                <span class="nw-exp-level">
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip"></span>
+                    Mid
+                </span>
+                <span class="nw-exp-action">Begin ›</span>
+            </div>
+        </div>
+
+        {# ── 03 Bundle Creator ── #}
+        <div class="nw-exp-card" data-expcat="build">
+            <div class="nw-exp-card-bar" style="background:#3182ce"></div>
+            <div class="nw-exp-icon-zone">
+                <span class="nw-exp-glyph" style="color:#3182ce">⬡</span>
+                <span class="nw-exp-num">03</span>
+            </div>
+            <div class="nw-exp-body">
+                <span class="nw-exp-tag" style="background:rgba(49,130,206,.15);color:#3182ce">Build</span>
+                <div class="nw-exp-title">Bundle Creator</div>
+                <div class="nw-exp-desc">Design and publish reusable Symfony bundles: composer.json, DependencyInjection extension, service YAML, and GitHub Actions CI.</div>
+            </div>
+            <div class="nw-exp-foot">
+                <span class="nw-exp-level">
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip on"></span>
+                    Senior
+                </span>
+                <span class="nw-exp-action">Begin ›</span>
+            </div>
+        </div>
+
+        {# ── 04 Extension Creator ── #}
+        <div class="nw-exp-card" data-expcat="build">
+            <div class="nw-exp-card-bar" style="background:#e8472b"></div>
+            <div class="nw-exp-icon-zone">
+                <span class="nw-exp-glyph" style="color:#f59e0b">✦</span>
+                <span class="nw-exp-num">04</span>
+            </div>
+            <div class="nw-exp-body">
+                <span class="nw-exp-tag" style="background:rgba(232,71,43,.15);color:#e8472b">Build</span>
+                <div class="nw-exp-title">Extension Creator</div>
+                <div class="nw-exp-desc">Build legacy eZ extensions — autoloads, ini settings, design overrides and PHP classes that plug into the eZPublish 4/5 kernel.</div>
+            </div>
+            <div class="nw-exp-foot">
+                <span class="nw-exp-level">
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip"></span>
+                    <span class="nw-exp-level-pip"></span>
+                    Entry
+                </span>
+                <span class="nw-exp-action">Begin ›</span>
+            </div>
+        </div>
+
+        {# ── 05 Field Type Engineer ── #}
+        <div class="nw-exp-card" data-expcat="build">
+            <div class="nw-exp-card-bar" style="background:#38a169"></div>
+            <div class="nw-exp-icon-zone">
+                <span class="nw-exp-glyph" style="color:#38a169">⊕</span>
+                <span class="nw-exp-num">05</span>
+            </div>
+            <div class="nw-exp-body">
+                <span class="nw-exp-tag" style="background:rgba(56,161,105,.15);color:#38a169">Build</span>
+                <div class="nw-exp-title">Field Type Engineer</div>
+                <div class="nw-exp-desc">Implement custom FieldType + FieldValue, SPI Gateway, Storage Handler, FormMapper, and Twig view templates for data at scale.</div>
+            </div>
+            <div class="nw-exp-foot">
+                <span class="nw-exp-level">
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip on"></span>
+                    Senior
+                </span>
+                <span class="nw-exp-action">Begin ›</span>
+            </div>
+        </div>
+
+        {# ── 06 Template Architect ── #}
+        <div class="nw-exp-card" data-expcat="design">
+            <div class="nw-exp-card-bar" style="background:#a259ff"></div>
+            <div class="nw-exp-icon-zone">
+                <span class="nw-exp-glyph" style="color:#a259ff">◱</span>
+                <span class="nw-exp-num">06</span>
+            </div>
+            <div class="nw-exp-body">
+                <span class="nw-exp-tag" style="background:rgba(162,89,255,.15);color:#a259ff">Design</span>
+                <div class="nw-exp-title">Template Architect</div>
+                <div class="nw-exp-desc">Own the full Twig template hierarchy from pagelayout through content_type view rules to partial embed overrides across all SiteAccesses.</div>
+            </div>
+            <div class="nw-exp-foot">
+                <span class="nw-exp-level">
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip"></span>
+                    Mid
+                </span>
+                <span class="nw-exp-action">Begin ›</span>
+            </div>
+        </div>
+
+        {# ── 07 Content Modeller ── #}
+        <div class="nw-exp-card" data-expcat="build">
+            <div class="nw-exp-card-bar" style="background:#dd6b20"></div>
+            <div class="nw-exp-icon-zone">
+                <span class="nw-exp-glyph" style="color:#dd6b20">◆</span>
+                <span class="nw-exp-num">07</span>
+            </div>
+            <div class="nw-exp-body">
+                <span class="nw-exp-tag" style="background:rgba(221,107,32,.15);color:#dd6b20">Build</span>
+                <div class="nw-exp-title">Content Modeller</div>
+                <div class="nw-exp-desc">Design rich content type schemas: field definitions, field groups, translation matrices, object states and user-group policies.</div>
+            </div>
+            <div class="nw-exp-foot">
+                <span class="nw-exp-level">
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip"></span>
+                    Mid
+                </span>
+                <span class="nw-exp-action">Begin ›</span>
+            </div>
+        </div>
+
+        {# ── 08 API Integration Engineer ── #}
+        <div class="nw-exp-card" data-expcat="build">
+            <div class="nw-exp-card-bar" style="background:#0bc5ea"></div>
+            <div class="nw-exp-icon-zone">
+                <span class="nw-exp-glyph" style="color:#0bc5ea">⇌</span>
+                <span class="nw-exp-num">08</span>
+            </div>
+            <div class="nw-exp-body">
+                <span class="nw-exp-tag" style="background:rgba(11,197,234,.15);color:#0bc5ea">Build</span>
+                <div class="nw-exp-title">API Integration Engineer</div>
+                <div class="nw-exp-desc">Consume and extend the eZ REST API, build GraphQL resolvers, connect headless front-ends and third-party DAM / PIM / CRM systems.</div>
+            </div>
+            <div class="nw-exp-foot">
+                <span class="nw-exp-level">
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip on"></span>
+                    Senior
+                </span>
+                <span class="nw-exp-action">Begin ›</span>
+            </div>
+        </div>
+
+        {# ── 09 DevOps Engineer ── #}
+        <div class="nw-exp-card" data-expcat="ops">
+            <div class="nw-exp-card-bar" style="background:#e53e3e"></div>
+            <div class="nw-exp-icon-zone">
+                <span class="nw-exp-glyph" style="color:#e53e3e">⚙</span>
+                <span class="nw-exp-num">09</span>
+            </div>
+            <div class="nw-exp-body">
+                <span class="nw-exp-tag" style="background:rgba(229,62,62,.15);color:#e53e3e">Ops</span>
+                <div class="nw-exp-title">DevOps Engineer</div>
+                <div class="nw-exp-desc">Provision servers, configure PHP-FPM pools, containerise with Docker, automate deploys with Deployer/Ansible and manage Varnish + Redis layers.</div>
+            </div>
+            <div class="nw-exp-foot">
+                <span class="nw-exp-level">
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip on"></span>
+                    Senior
+                </span>
+                <span class="nw-exp-action">Begin ›</span>
+            </div>
+        </div>
+
+        {# ── 10 Performance Optimizer ── #}
+        <div class="nw-exp-card" data-expcat="ops">
+            <div class="nw-exp-card-bar" style="background:#d69e2e"></div>
+            <div class="nw-exp-icon-zone">
+                <span class="nw-exp-glyph" style="color:#d69e2e">≋</span>
+                <span class="nw-exp-num">10</span>
+            </div>
+            <div class="nw-exp-body">
+                <span class="nw-exp-tag" style="background:rgba(214,158,46,.15);color:#d69e2e">Ops</span>
+                <div class="nw-exp-title">Performance Optimizer</div>
+                <div class="nw-exp-desc">Profile Symfony apps with Blackfire, tune HTTP cache TTLs, configure Varnish VCL rules, optimise SQL queries and OPcache settings.</div>
+            </div>
+            <div class="nw-exp-foot">
+                <span class="nw-exp-level">
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip"></span>
+                    Mid
+                </span>
+                <span class="nw-exp-action">Begin ›</span>
+            </div>
+        </div>
+
+        {# ── 11 Search Engineer ── #}
+        <div class="nw-exp-card" data-expcat="build">
+            <div class="nw-exp-card-bar" style="background:#4a9fd4"></div>
+            <div class="nw-exp-icon-zone">
+                <span class="nw-exp-glyph" style="color:#4a9fd4">⊛</span>
+                <span class="nw-exp-num">11</span>
+            </div>
+            <div class="nw-exp-body">
+                <span class="nw-exp-tag" style="background:rgba(74,159,212,.15);color:#4a9fd4">Build</span>
+                <div class="nw-exp-title">Search Engineer</div>
+                <div class="nw-exp-desc">Extend the Search API with custom Criteria and Sort Clauses, tune Elasticsearch/Solr mappings and build faceted search experiences.</div>
+            </div>
+            <div class="nw-exp-foot">
+                <span class="nw-exp-level">
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip on"></span>
+                    Senior
+                </span>
+                <span class="nw-exp-action">Begin ›</span>
+            </div>
+        </div>
+
+        {# ── 12 Security Auditor ── #}
+        <div class="nw-exp-card" data-expcat="ops">
+            <div class="nw-exp-card-bar" style="background:#e53e3e"></div>
+            <div class="nw-exp-icon-zone">
+                <span class="nw-exp-glyph" style="color:#e53e3e">⊗</span>
+                <span class="nw-exp-num">12</span>
+            </div>
+            <div class="nw-exp-body">
+                <span class="nw-exp-tag" style="background:rgba(229,62,62,.15);color:#e53e3e">Ops</span>
+                <div class="nw-exp-title">Security Auditor</div>
+                <div class="nw-exp-desc">Harden eZ/Ibexa installs: review Policies, Roles, and Limitations; patch dependency chains; run OWASP checks and configure CSP headers.</div>
+            </div>
+            <div class="nw-exp-foot">
+                <span class="nw-exp-level">
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip on"></span>
+                    Senior
+                </span>
+                <span class="nw-exp-action">Begin ›</span>
+            </div>
+        </div>
+
+        {# ── 13 Documentation Writer ── #}
+        <div class="nw-exp-card" data-expcat="write">
+            <div class="nw-exp-card-bar" style="background:#68d391"></div>
+            <div class="nw-exp-icon-zone">
+                <span class="nw-exp-glyph" style="color:#68d391">✎</span>
+                <span class="nw-exp-num">13</span>
+            </div>
+            <div class="nw-exp-body">
+                <span class="nw-exp-tag" style="background:rgba(104,211,145,.15);color:#68d391">Write</span>
+                <div class="nw-exp-title">Documentation Writer</div>
+                <div class="nw-exp-desc">Write developer reference docs, migration guides and runbooks using Markdown, RST or Sphinx. Maintain API docs auto-generated from PHPDoc.</div>
+            </div>
+            <div class="nw-exp-foot">
+                <span class="nw-exp-level">
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip"></span>
+                    <span class="nw-exp-level-pip"></span>
+                    Entry
+                </span>
+                <span class="nw-exp-action">Begin ›</span>
+            </div>
+        </div>
+
+        {# ── 14 Article Author ── #}
+        <div class="nw-exp-card" data-expcat="write">
+            <div class="nw-exp-card-bar" style="background:#68d391"></div>
+            <div class="nw-exp-icon-zone">
+                <span class="nw-exp-glyph" style="color:#68d391">✒</span>
+                <span class="nw-exp-num">14</span>
+            </div>
+            <div class="nw-exp-body">
+                <span class="nw-exp-tag" style="background:rgba(104,211,145,.15);color:#68d391">Write</span>
+                <div class="nw-exp-title">Article Author</div>
+                <div class="nw-exp-desc">Publish tutorials, case studies and opinion pieces on the Exponential platform blog, Medium, dev.to or your own headless Ibexa site.</div>
+            </div>
+            <div class="nw-exp-foot">
+                <span class="nw-exp-level">
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip"></span>
+                    <span class="nw-exp-level-pip"></span>
+                    Entry
+                </span>
+                <span class="nw-exp-action">Begin ›</span>
+            </div>
+        </div>
+
+        {# ── 15 Ecosystem Advocate ── #}
+        <div class="nw-exp-card" data-expcat="community">
+            <div class="nw-exp-card-bar" style="background:#f687b3"></div>
+            <div class="nw-exp-icon-zone">
+                <span class="nw-exp-glyph" style="color:#f687b3">◍</span>
+                <span class="nw-exp-num">15</span>
+            </div>
+            <div class="nw-exp-body">
+                <span class="nw-exp-tag" style="background:rgba(246,135,179,.15);color:#f687b3">Community</span>
+                <div class="nw-exp-title">Ecosystem Advocate</div>
+                <div class="nw-exp-desc">Speak at conferences, host meetups, record screencasts and evangelise eZ/Ibexa/Exponential CMS to enterprise buyers and dev communities.</div>
+            </div>
+            <div class="nw-exp-foot">
+                <span class="nw-exp-level">
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip"></span>
+                    Mid
+                </span>
+                <span class="nw-exp-action">Begin ›</span>
+            </div>
+        </div>
+
+        {# ── 16 Technical Trainer ── #}
+        <div class="nw-exp-card" data-expcat="community">
+            <div class="nw-exp-card-bar" style="background:#f687b3"></div>
+            <div class="nw-exp-icon-zone">
+                <span class="nw-exp-glyph" style="color:#f687b3">◵</span>
+                <span class="nw-exp-num">16</span>
+            </div>
+            <div class="nw-exp-body">
+                <span class="nw-exp-tag" style="background:rgba(246,135,179,.15);color:#f687b3">Community</span>
+                <div class="nw-exp-title">Technical Trainer</div>
+                <div class="nw-exp-desc">Design and deliver workshops on content modelling, template development, SiteAccess configuration and API consumption for dev teams.</div>
+            </div>
+            <div class="nw-exp-foot">
+                <span class="nw-exp-level">
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip"></span>
+                    Mid
+                </span>
+                <span class="nw-exp-action">Begin ›</span>
+            </div>
+        </div>
+
+        {# ── 17 Community Steward ── #}
+        <div class="nw-exp-card" data-expcat="community">
+            <div class="nw-exp-card-bar" style="background:#f687b3"></div>
+            <div class="nw-exp-icon-zone">
+                <span class="nw-exp-glyph" style="color:#f687b3">⊙</span>
+                <span class="nw-exp-num">17</span>
+            </div>
+            <div class="nw-exp-body">
+                <span class="nw-exp-tag" style="background:rgba(246,135,179,.15);color:#f687b3">Community</span>
+                <div class="nw-exp-title">Community Steward</div>
+                <div class="nw-exp-desc">Moderate forums, triage GitHub issues, welcome newcomers to Slack, organise hackathons and keep the #exponential-cms community thriving.</div>
+            </div>
+            <div class="nw-exp-foot">
+                <span class="nw-exp-level">
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip"></span>
+                    <span class="nw-exp-level-pip"></span>
+                    Entry
+                </span>
+                <span class="nw-exp-action">Begin ›</span>
+            </div>
+        </div>
+
+        {# ── 18 Systems Integrator ── #}
+        <div class="nw-exp-card" data-expcat="build">
+            <div class="nw-exp-card-bar" style="background:#3182ce"></div>
+            <div class="nw-exp-icon-zone">
+                <span class="nw-exp-glyph" style="color:#3182ce">⟳</span>
+                <span class="nw-exp-num">18</span>
+            </div>
+            <div class="nw-exp-body">
+                <span class="nw-exp-tag" style="background:rgba(49,130,206,.15);color:#3182ce">Build</span>
+                <div class="nw-exp-title">Systems Integrator</div>
+                <div class="nw-exp-desc">Wire eZ/Ibexa into enterprise stacks: SAP, Salesforce, Adobe Analytics, Siteimprove, TYPO3 Headless and custom ERP/OMS connectors.</div>
+            </div>
+            <div class="nw-exp-foot">
+                <span class="nw-exp-level">
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip"></span>
+                    Mid
+                </span>
+                <span class="nw-exp-action">Begin ›</span>
+            </div>
+        </div>
+
+        {# ── 19 Migration Specialist ── #}
+        <div class="nw-exp-card" data-expcat="ops">
+            <div class="nw-exp-card-bar" style="background:#d69e2e"></div>
+            <div class="nw-exp-icon-zone">
+                <span class="nw-exp-glyph" style="color:#d69e2e">⇥</span>
+                <span class="nw-exp-num">19</span>
+            </div>
+            <div class="nw-exp-body">
+                <span class="nw-exp-tag" style="background:rgba(214,158,46,.15);color:#d69e2e">Ops</span>
+                <div class="nw-exp-title">Migration Specialist</div>
+                <div class="nw-exp-desc">Upgrade eZ Publish 4→5→Platform→Ibexa, write custom migration steps, use ibexa/migrations bundle and validate data integrity post-upgrade.</div>
+            </div>
+            <div class="nw-exp-foot">
+                <span class="nw-exp-level">
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip on"></span>
+                    Senior
+                </span>
+                <span class="nw-exp-action">Begin ›</span>
+            </div>
+        </div>
+
+        {# ── 20 Open Source Contributor ── #}
+        <div class="nw-exp-card" data-expcat="community">
+            <div class="nw-exp-card-bar" style="background:#38a169"></div>
+            <div class="nw-exp-icon-zone">
+                <span class="nw-exp-glyph" style="color:#38a169">◉</span>
+                <span class="nw-exp-num">20</span>
+            </div>
+            <div class="nw-exp-body">
+                <span class="nw-exp-tag" style="background:rgba(56,161,105,.15);color:#38a169">Community</span>
+                <div class="nw-exp-title">Open Source Contributor</div>
+                <div class="nw-exp-desc">Send PRs to ibexa/core, ezsystems/ezplatform-* and Netgen repos. Write unit tests, fix deprecations, improve PHPStan baseline and add CI coverage.</div>
+            </div>
+            <div class="nw-exp-foot">
+                <span class="nw-exp-level">
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip on"></span>
+                    <span class="nw-exp-level-pip"></span>
+                    Mid
+                </span>
+                <span class="nw-exp-action">Begin ›</span>
+            </div>
+        </div>
+
+        {# ── 21 Ecosystem Architect ── #}
+        <div class="nw-exp-card" data-expcat="build" style="grid-column:span 1">
+            <div class="nw-exp-card-bar" style="background:linear-gradient(90deg,#e8472b,#a259ff,#3182ce)"></div>
+            <div class="nw-exp-icon-zone">
+                <span class="nw-exp-glyph" style="color:#f0f6fc;text-shadow:0 0 20px rgba(232,71,43,.5)">∞</span>
+                <span class="nw-exp-num">21</span>
+            </div>
+            <div class="nw-exp-body">
+                <span class="nw-exp-tag" style="background:linear-gradient(90deg,rgba(232,71,43,.2),rgba(162,89,255,.2));color:#c9d1d9;border:1px solid #3a3a3a">All Paths</span>
+                <div class="nw-exp-title" style="color:#fff">Ecosystem Architect</div>
+                <div class="nw-exp-desc">See the whole board. Design multi-site content architectures, define Platform Edition roadmaps, steer community OSS strategy and mentor the next cohort of Exponential builders.</div>
+            </div>
+            <div class="nw-exp-foot" style="border-color:#2a2a2a">
+                <span class="nw-exp-level">
+                    <span class="nw-exp-level-pip on" style="background:#e8472b"></span>
+                    <span class="nw-exp-level-pip on" style="background:#a259ff"></span>
+                    <span class="nw-exp-level-pip on" style="background:#3182ce"></span>
+                    Expert
+                </span>
+                <span class="nw-exp-action" style="color:#e8472b">Ascend ›</span>
+            </div>
+        </div>
+
+    </div>{# /nw-exp-grid #}
+</section>{# /nw-exp-journey #}
+
+{# ════════════════════════════════════════════
+   ④ SUBITEMS — card grid, only when present
+   ════════════════════════════════════════════ #}
+{% if children|length > 0 %}
+{%- set subColors = ['#e53e3e','#dd6b20','#d69e2e','#38a169','#319795','#3182ce','#5a67d8','#805ad5','#d53f8c','#0bc5ea','#68d391','#f6e05e'] -%}
+<div class="nw-sub">
+    <div class="nw-sub-hdr">
+        <div class="nw-sub-hdr-line"></div>
+        <span class="nw-sub-title">Latest Content</span>
+        <span class="nw-sub-count">{{ children|length }}</span>
+        <div class="nw-filter-chips" id="nw-chips">
+            <span class="nw-chip nw-chip-on" data-filter="all">All</span>
+        </div>
+    </div>
+
+    <div class="nw-sub-grid" id="nw-sub-grid">
+        {% for child in children %}
+            {%- set cc  = child.getContent() -%}
+            {%- set tid = cc.contentType.identifier -%}
+            {%- set col = subColors[tid|length % 12] -%}
+            <a href="{{ path('ez_urlalias', {locationId: child.id}) }}"
+               class="nw-sub-card"
+               data-type="{{ tid }}"
+               tabindex="0"
+               role="link">
+                <div class="nw-sub-thumb" style="background:{{ col }}"></div>
+                <div class="nw-sub-art">
+                    <div class="nw-sub-art-bg"></div>
+                    <div class="nw-sub-art-dots"></div>
+                    <div class="nw-sub-art-ico">
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+                    </div>
+                </div>
+                <div class="nw-sub-body">
+                    <span class="nw-sub-cat" style="color:{{ col }}">
+                        <svg width="6" height="6" viewBox="0 0 8 8" fill="{{ col }}"><circle cx="4" cy="4" r="4"/></svg>
+                        {{ tid }}
+                    </span>
+                    <div class="nw-sub-name">{{ ez_content_name(cc) }}</div>
+                    <div class="nw-sub-excerpt">
+                        {% for fd in cc.contentType.fieldDefinitions %}
+                            {% if fd.fieldTypeIdentifier in ['ezstring','eztext','ezrichtext','ezxmltext']
+                                and fd.identifier not in ['name','short_name','title']
+                                and not ez_is_field_empty(cc, fd.identifier) %}
+                                {{ ez_render_field(cc, fd.identifier)|striptags|trim }}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="nw-sub-foot">
+                    <span class="nw-sub-loc">loc:{{ child.id }}</span>
+                    <span class="nw-sub-more">Read →</span>
+                </div>
+            </a>
+        {% endfor %}
+        <div class="nw-no-results" id="nw-no-results">No items match this filter.</div>
+    </div>
+</div>
+{% endif %}
+
+{# ════════════════════════════════════════════
+   ⑤ FOOTER BAND
+   ════════════════════════════════════════════ #}
+<div class="nw-foot">
+    <div class="nw-foot-inner">
+        <span>{{ ct is not null ? ct.identifier : 'n/a' }} / Content {{ content.id }} / Location {{ location.id }}</span>
+        <div class="nw-foot-links">
+            <a href="/">Home</a>
+            {% if location.depth > 1 %}<a href="{{ path('ez_urlalias', {locationId: location.parentLocationId}) }}">Parent</a>{% endif %}
+            <a href="/admin/content/location/{{ location.id }}">Admin</a>
+        </div>
+    </div>
+</div>
+
+</div>{# /nw #}
+
+{# jQuery already loaded by legacy pagelayout — just behaviour #}
+<script>
+(function($){
+    'use strict';
+
+    /* ── Build type filter chips from cards ── */
+    var seen = {};
+    $('#nw-sub-grid .nw-sub-card').each(function(){
+        var t = $(this).data('type');
+        if(!seen[t]){ seen[t]=0; }
+        seen[t]++;
+    });
+    $.each(seen, function(t, n){
+        $('#nw-chips').append('<span class="nw-chip" data-filter="'+t+'">'+t+' <small>('+n+')</small></span>');
+    });
+
+    /* ── Filter ── */
+    $('#nw-chips').on('click','.nw-chip',function(){
+        var f = $(this).data('filter');
+        $('.nw-chip').removeClass('nw-chip-on');
+        $(this).addClass('nw-chip-on');
+        var visible = 0;
+        if(f==='all'){
+            $('#nw-sub-grid .nw-sub-card').removeClass('nw-hidden');
+            visible = $('#nw-sub-grid .nw-sub-card').length;
+        } else {
+            $('#nw-sub-grid .nw-sub-card').each(function(){
+                if($(this).data('type')===f){ $(this).removeClass('nw-hidden'); visible++; }
+                else { $(this).addClass('nw-hidden'); }
+            });
+        }
+        $('#nw-no-results').toggleClass('nw-show', visible===0);
+    });
+
+    /* ── ToC scroll-spy ── */
+    $('#nw-toc').on('click','.nw-toc-item',function(){
+        var $el = $('#'+$(this).data('target'));
+        if($el.length) $('html,body').animate({scrollTop:$el.offset().top-55},280);
+        $('.nw-toc-item').removeClass('nw-toc-active');
+        $(this).addClass('nw-toc-active');
+    });
+    if('IntersectionObserver' in window){
+        var obs = new IntersectionObserver(function(entries){
+            entries.forEach(function(e){
+                if(e.isIntersecting){
+                    var id = e.target.id;
+                    $('.nw-toc-item').removeClass('nw-toc-active');
+                    $('.nw-toc-item[data-target="'+id+'"]').addClass('nw-toc-active');
+                }
+            });
+        },{rootMargin:'-55px 0px -70% 0px'});
+        $('.nw-sec').each(function(){ obs.observe(this); });
+    }
+
+    /* ── Schema toggle ── */
+    $('#nw-schema-tog').on('click',function(){
+        var $b = $('#nw-schema-body');
+        $b.slideToggle(200,function(){
+            var open = $b.is(':visible');
+            $('#nw-schema-tog').html(
+                '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="'+(open?'18 15 12 9 6 15':'6 9 12 15 18 9')+'"/></svg> '+(open?'Hide fields':'Show {{ ct is not null ? ct.fieldDefinitions|length : 0 }} fields')
+            );
+        });
+    });
+
+    /* ── Back to top ── */
+    $('.nw-to-top').on('click',function(){ $('html,body').animate({scrollTop:0},300); });
+
+    /* ── Subitem card entrance stagger ── */
+    $('#nw-sub-grid .nw-sub-card').each(function(i){
+        $(this).css({opacity:0,transform:'translateY(14px)'});
+        setTimeout(function(el){
+            $(el).animate({opacity:1},{duration:220,step:function(n){ $(this).css('transform','translateY('+(14*(1-n))+'px)'); }});
+        }, i*40, this);
+    });
+
+    /* ── Card keyboard nav ── */
+    $('#nw-sub-grid .nw-sub-card').on('keydown',function(e){
+        if(e.key==='Enter'||e.key===' '){ e.preventDefault(); window.location.href=$(this).attr('href'); }
+    });
+
+    /* ── Exp-journey filter chips ── */
+    $('#nw-exp-filters').on('click','.nw-exp-chip',function(){
+        var f = $(this).data('expf');
+        $('.nw-exp-chip').removeClass('nw-exp-chip-on');
+        $(this).addClass('nw-exp-chip-on');
+        if(f==='all'){
+            $('#nw-exp-grid .nw-exp-card').removeClass('nw-exp-hidden');
+        } else {
+            $('#nw-exp-grid .nw-exp-card').each(function(){
+                $(this).toggleClass('nw-exp-hidden', $(this).data('expcat') !== f);
+            });
+        }
+    });
+
+    /* ── Exp-journey card entrance stagger ── */
+    $('#nw-exp-grid .nw-exp-card').each(function(i){
+        $(this).css({opacity:0,transform:'translateY(18px)'});
+        setTimeout(function(el){
+            $(el).animate({opacity:1},{duration:260,step:function(n){ $(this).css('transform','translateY('+(18*(1-n))+'px)'); }});
+        }, 80 + i*55, this);
+    });
+
+}(jQuery));
+</script>
+{% endblock %}

@@ -1,0 +1,19 @@
+{# content \Netgen\IbexaSiteApi\API\Values\Content #}
+
+{% macro image(content, field_name, alias_name, use_lazy_load) %}
+    {% import 'themes/app/content/macros/content_fields.html.twig' as content_fields %}
+
+    {% set field_name = field_name|default('image') %}
+    {% set alias_name = alias_name|default('i1320') %}
+
+    {% if content.hasField(field_name) and not content.fields[field_name].empty %}
+        {{ ng_render_field(
+            content.fields[field_name], {
+                parameters: {
+                    alias: alias_name,
+                    lazy_loading: use_lazy_load|default(false)
+                }
+            }
+        ) }}
+    {% endif %}
+{% endmacro %}

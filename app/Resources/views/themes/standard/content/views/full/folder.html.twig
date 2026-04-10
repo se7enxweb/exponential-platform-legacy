@@ -1,0 +1,15 @@
+{% extends "@ezdesign/pagelayout.html.twig" %}
+
+{% block page_title %}{{ ez_content_name(content) }} — Exponential Platform{% endblock %}
+
+{% block content %}
+<div class="lp-layout-container">
+    <main class="lp-main">
+        {% include '@ezdesign/parts/content_hero.html.twig' with { location: location, content: content } %}
+        <div class="lp-main-content">
+            {{ render(controller('ezpublish_legacy.controller:indexAction', {}, {'no_layout': '1'})) }}
+        </div>
+    </main>
+    {% include '@ezdesign/parts/content_sidebar.html.twig' with { location: location, content: content } %}
+</div>
+{% endblock %}

@@ -13,8 +13,10 @@ RelatedSiteAccessList[]=legacy_admin
 ShowHiddenNodes=true
 
 [DesignSettings]
-SiteDesign=admin2
+SiteDesign=admin3
 AdditionalSiteDesignList[]
+AdditionalSiteDesignList[]=admin3
+AdditionalSiteDesignList[]=admin2
 AdditionalSiteDesignList[]=admin
 AdditionalSiteDesignList[]=standard
 AdditionalSiteDesignList[]=base

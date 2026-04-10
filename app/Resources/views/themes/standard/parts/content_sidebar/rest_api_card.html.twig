@@ -1,0 +1,10 @@
+{% if location is defined and content is defined %}
+<div class="lp-sidebar-card lp-rest-api-card">
+    <h3>REST API</h3>
+    <ul class="lp-nav-list lp-api-links">
+        <li><a href="/api/ezp/v2/content/objects/{{ content.id }}" rel="noopener" target="_blank">Content Object</a></li>
+        <li><a href="/api/ezp/v2/content/locations/{{ location.pathString }}" rel="noopener" target="_blank">Location</a></li>
+        <li><a href="/api/ezp/v2/content/types/{{ content.contentInfo.contentTypeId }}" rel="noopener" target="_blank">Content Type</a></li>
+    </ul>
+</div>
+{% endif %}

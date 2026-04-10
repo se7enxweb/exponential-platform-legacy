@@ -1,0 +1,35 @@
+{% if location is defined and content is defined %}
+<div class="lp-content-hero">
+
+    {% if location.depth > 1 %}
+    <nav class="lp-breadcrumb" aria-label="Breadcrumb">
+        <ol>
+            <li><a href="{{ path('ez_urlalias', {locationId: 2}) }}">Home</a></li>
+            {% for ancestor in location.path[1:-1] %}
+                {% if ancestor != 1 %}
+                <li><a href="{{ path('ez_urlalias', {locationId: ancestor}) }}">{{ ancestor }}</a></li>
+                {% endif %}
+            {% endfor %}
+            <li aria-current="page">{{ ez_content_name(content) }}</li>
+        </ol>
+    </nav>
+    {% endif %}
+
+    <div class="lp-content-badges">
+        <span class="lp-badge lp-badge-type">type:{{ content.contentInfo.contentTypeId }}</span>
+        {% if location.invisible %}
+            <span class="lp-badge lp-badge-hidden">Hidden</span>
+        {% endif %}
+    </div>
+
+    <h1 class="lp-content-title">{{ ez_content_name(content) }}</h1>
+
+    <div class="lp-content-pills">
+        <span class="lp-pill">Content ID: {{ content.id }}</span>
+        <span class="lp-pill">Location ID: {{ location.id }}</span>
+        <span class="lp-pill">Depth: {{ location.depth }}</span>
+        <span class="lp-pill">Path: {{ location.pathString }}</span>
+    </div>
+
+</div>
+{% endif %}

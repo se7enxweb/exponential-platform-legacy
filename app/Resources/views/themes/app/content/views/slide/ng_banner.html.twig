@@ -1,0 +1,16 @@
+{# content \Netgen\IbexaSiteApi\API\Values\Content #}
+{# location \Netgen\IbexaSiteApi\API\Values\Location #}
+
+{% import 'themes/app/content/macros/slide.html.twig' as slide %}
+{% import 'themes/app/content/macros/links.html.twig' as links %}
+
+
+<div class="view-type view-type-{{ view_type }} ng-banner vl3">
+    {{ slide.image(content) }}
+
+    <div class="info">
+        <h3 class="title">
+            {{ links.content_link(content, content.fields.title.value.text) }}
+        </h3>
+    </div>
+</div>

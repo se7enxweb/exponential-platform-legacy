@@ -1,0 +1,12 @@
+{% if location is defined %}
+<div class="lp-sidebar-card lp-navigate-card">
+    <h3>Navigate</h3>
+    <ul class="lp-nav-list">
+        {% if location.parentLocationId is defined and location.parentLocationId > 1 %}
+        <li><a href="{{ path('ez_urlalias', {locationId: location.parentLocationId}) }}">&uarr; Parent</a></li>
+        {% endif %}
+        <li><a href="{{ path('ez_urlalias', {locationId: location.id}) }}">&#8635; Current</a></li>
+        <li><a href="{{ path('_ezpublishLocation', {locationId: location.id}) }}">Location view</a></li>
+    </ul>
+</div>
+{% endif %}
