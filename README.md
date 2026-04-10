@@ -114,7 +114,7 @@ Exponential Platform Legacy is database, platform and browser independent. Becau
 | **Search** | Legacy search (default) · Solr 6.x / 7.x (optional) |
 | **HTTP Cache** | Symfony HttpCache (default) · Varnish 5/6 (optional) |
 | **App Cache** | Filesystem (default) · Redis 4+ (optional) |
-| **Database** | MySQL 5.7+ · MariaDB 10.0+ · PostgreSQL 9.5+ |
+| **Database** | MySQL 5.7+ · MariaDB 10.0+ · PostgreSQL 9.5+ · SQLite 3.35+ (dev / testing) |
 | **API** | REST API v2 · GraphQL ^1.0 |
 | **Admin UI (legacy)** | Exponential (Legacy) Admin (`/ezpublish_legacy/`) |
 | **Admin UI (new stack)** | eZ Platform 2.5 Admin UI (`/admin/`) |
@@ -124,9 +124,10 @@ Exponential Platform Legacy is database, platform and browser independent. Becau
 
 ## Requirements
 
-- PHP 7.1.3+ or 8.1 / 8.2 (8.2 recommended)
+- PHP 7.1.3+ or 8.1 / 8.2 / 8.3 (8.3 recommended)
+- Required PHP extensions: `curl`, `intl`, `mbstring`, `pdo`, `pdo_mysql` or `pdo_pgsql` or `pdo_sqlite`, `xml`, `zip`, `fileinfo`, `imagick` or `gd`, `xsl`
 - A web server: Apache 2.4 or Nginx 1.18+
-- A database server: MySQL 5.7+, MariaDB 10.0+, or PostgreSQL 9.5+
+- A database server: MySQL 5.7+, MariaDB 10.0+, PostgreSQL 9.5+, or **SQLite 3.35+** (zero-config; dev / testing only — requires `pdo_sqlite` + `sqlite3` PHP extensions)
 - Composer 2.x
 - Node.js 14 LTS (via nvm recommended)
 - Yarn 1.22.x
@@ -135,13 +136,14 @@ Exponential Platform Legacy is database, platform and browser independent. Becau
 
 | Requirement | Minimum | Recommended |
 |---|---|---|
-| PHP | 7.1.3 | 8.2 |
+| PHP | 7.1.3 | 8.3 |
 | Composer | 2.x | latest 2.x |
 | Node.js | 12 | 14 LTS (via nvm) |
 | Yarn | 1.x | 1.22.x |
 | MySQL | 5.7 | 8.0+ (utf8mb4) |
 | MariaDB | 10.0 | 10.6+ |
 | PostgreSQL | 9.5 | 14+ |
+| [SQLite](https://www.sqlite.org/download.html) | 3.35 | 3.39+ (dev/testing only) |
 | Redis | 4.0 | 6.x (optional) |
 | Solr | 6.x | 7.7.x (optional) |
 | Varnish | 5.0 | 6.x (optional) |
@@ -159,14 +161,20 @@ cd exponential_website
 
 # 2. Configure environment
 cp app/config/parameters.yml.dist app/config/parameters.yml
-# Edit app/config/parameters.yml: set database_host, database_name, database_user,
-#   database_password, and secret (generate: php -r "echo bin2hex(random_bytes(32));")
+# MySQL/MariaDB: edit database_host, database_name, database_user, database_password, and secret
+# SQLite (zero-config — no server required): set database_driver: pdo_sqlite
+#   and database_path: "%kernel.root_dir%/../var/data_%kernel.environment%.db"
+#   The .db file is created automatically on first install.
 
-# 3. Create database
+# 3. Create database (MySQL / MariaDB)
 mysql -u root -p -e "CREATE DATABASE exponential CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;"
+# SQLite: skip this step — no server or database creation required
 
 # 4. Install Platform database content
+# MySQL/MariaDB:
 php bin/console ezplatform:install clean
+# SQLite (exponential-oss install type with composite PK fix):
+php bin/console ezplatform:install exponential-oss
 
 # 5. Set permissions
 setfacl -R -m u:www-data:rwX -m g:www-data:rwX var web/var ezpublish_legacy/var
@@ -217,7 +225,7 @@ symfony server:start
 - Full support for Unicode
 - Template engine (Legacy TPL for legacy kernel + Twig 2.x for new stack)
 - A headless CRUD REST API v2
-- Database abstraction layer supporting MySQL, MariaDB, PostgreSQL, and Oracle
+- Database abstraction layer supporting MySQL, MariaDB, SQLite 3.x, PostgreSQL, and Oracle
 - MVC architecture
 - Support for the latest image and video file formats (webp, webm, png, jpeg, etc.)
 - Support for highly available and scalable configurations (multi-server clusters)
@@ -243,9 +251,30 @@ Create a new project using Composer:
 composer create-project se7enxweb/exponential-platform-legacy:2.5.0.x-dev exponential_website
 ```
 
-The installation guide covers environment configuration, database setup, web server configuration, asset builds, legacy bundle setup, search indexing, cron jobs, Solr, Varnish, and production deployment.
+The installation guide covers environment configuration, database setup (MySQL, MariaDB, PostgreSQL, and **SQLite zero-config**), web server configuration, asset builds, legacy bundle setup, search indexing, cron jobs, Solr, Varnish, production deployment, and **database conversion** between engines.
 
 See **[doc/INSTALL.md](doc/INSTALL.md)** for the complete step-by-step guide.
+
+### SQLite — Zero-Config Local Development
+
+[SQLite](https://www.sqlite.org/download.html) is supported as a zero-config database backend for **local development, automated testing, demo environments, and air-gapped deployments**. No database server software is required — the `.db` file is created on disk automatically when you run the install command.
+
+```bash
+# In app/config/parameters.yml, set:
+#   database_driver: pdo_sqlite
+#   database_path: "%kernel.root_dir%/../var/data_%kernel.environment%.db"
+
+php bin/console ezplatform:install exponential-oss
+# The exponential-oss install type uses SqliteDbPlatform to generate the correct
+# composite PRIMARY KEY(id, version) DDL — required for proper content versioning.
+```
+
+Both the Symfony new-stack and the Exponential (Legacy) kernel share the same `.db` file automatically via LegacyBridge.
+
+> **Not recommended for production** — SQLite does not support concurrent writes under load.
+> Use MySQL/MariaDB or PostgreSQL for any multi-user or public-facing deployment.
+
+See [doc/INSTALL.md — Section 4c](doc/INSTALL.md#4c-sqlite-zero-config-database) for the full SQLite install walkthrough and [Section 18](doc/INSTALL.md#18-database-conversion) for converting between database engines.
 
 ---
 
