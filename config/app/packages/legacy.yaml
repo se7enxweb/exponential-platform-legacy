@@ -56,7 +56,7 @@ parameters:
             'site.ini/DesignSettings/SiteDesign': admin
         legacy_admin:
             # Override SiteDesign for legacy admin — admin3 is the primary design
-            'site.ini/DesignSettings/SiteDesign': admin
+            'site.ini/DesignSettings/SiteDesign': admin3
 
     # ── Per-siteaccess array merges ──
     app.legacy.siteaccess_injected_merge_settings:
@@ -75,6 +75,7 @@ parameters:
         legacy_admin:
             # Design fallback chain: admin3 → admin → standard
             'site.ini/DesignSettings/AdditionalSiteDesignList':
-                # - admin3
+                - admin3
+                - admin2
                 - admin
                 - standard
