@@ -15,7 +15,13 @@ module.exports = (Encore) => {
             alloyeditor: 'AlloyEditor',
             'prop-types': 'PropTypes',
         })
-        .enableSassLoader()
+        .enableSassLoader((options) => {
+            options.api = 'modern'; // eslint-disable-line no-param-reassign
+            options.sassOptions = { // eslint-disable-line no-param-reassign
+                quietDeps: true,
+                loadPaths: [path.resolve(__dirname)],
+            };
+        })
         .enableReactPreset()
         .enableSingleRuntimeChunk();
 
