@@ -93,7 +93,9 @@
     "replace": {
         "symfony/polyfill-ctype": "*",
         "symfony/polyfill-iconv": "*",
-        "symfony/polyfill-php72": "*"
+        "symfony/polyfill-php72": "*",
+        "se7enxweb/ezpublish-legacy-installer": "*",
+        "ezsystems/doctrine-dbal-schema": "*"
     },
     "scripts": {
         "auto-scripts": {
