@@ -11,7 +11,8 @@ parameters:
         'site.ini/SiteAccessSettings/CheckValidity': 'false'
         'site.ini/SiteAccessSettings/ForceVirtualHost': 'true'
         'site.ini/SiteAccessSettings/RemoveSiteAccessIfDefaultAccess': enabled
-        'site.ini/DesignSettings/SiteDesign': standard
+        #'site.ini/DesignSettings/SiteDesign': standard
+        'site.ini/DesignSettings/SiteDesign': simple
         'site.ini/DesignSettings/DesignLocationCache': enabled
         'site.ini/DatabaseSettings/Charset': utf8mb4
         'site.ini/Session/SessionNameHandler': custom
@@ -25,10 +26,12 @@ parameters:
         'site.ini/SiteSettings/SiteList':
             - site
             - admin
+            - legacy_site
             - legacy_admin
         'site.ini/SiteAccessSettings/AvailableSiteAccessList':
             - site
             - admin
+            - legacy_site
             - legacy_admin
         'site.ini/ExtensionSettings/ActiveExtensions':
             - app
@@ -54,6 +57,9 @@ parameters:
         admin:
             # Override SiteDesign for legacy admin — admin3 is the primary design
             'site.ini/DesignSettings/SiteDesign': admin
+        legacy_site:
+            # Override SiteDesign for legacy simple is the primary design
+            'site.ini/DesignSettings/SiteDesign': simple
         legacy_admin:
             # Override SiteDesign for legacy admin — admin3 is the primary design
             'site.ini/DesignSettings/SiteDesign': admin3

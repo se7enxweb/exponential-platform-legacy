@@ -1,7 +1,13 @@
 <?php /* #?ini charset="utf-8"?
 
 [DatabaseSettings]
-Charset=utf8mb4
+#DatabaseImplementation=sqlite3
+#Database=../var/data_dev.db
+#Charset=utf8mb4
+
+[DebugSettings]
+DebugOutput=enabled
+Debug=true
 
 [FileSettings]
 VarDir=var/site
@@ -9,6 +15,8 @@ VarDir=var/site
 [ExtensionSettings]
 ActiveExtensions[]
 ActiveExtensions[]=ngsymfonytools
+ActiveExtensions[]=sevenx_themes_simple
+ActiveExtensions[]=bcwebsitestatistics
 ActiveExtensions[]=ezrichtext
 ActiveExtensions[]=ezplatformsearch
 ActiveExtensions[]=ezdemo
@@ -24,6 +32,7 @@ SiteList[]
 SiteList[]=site
 SiteList[]=admin
 SiteList[]=legacy_admin
+SiteList[]=legacy_site
 RootNodeDepth=1
 
 [UserSettings]
@@ -34,8 +43,9 @@ CheckValidity=false
 AvailableSiteAccessList[]
 AvailableSiteAccessList[]=site
 AvailableSiteAccessList[]=admin
+AvailableSiteAccessList[]=legacy_site
 AvailableSiteAccessList[]=legacy_admin
-MatchOrder=host
+MatchOrder=host;uri
 HostMatchMapItems[]
 HostMatchMapItems[]=platform.alpha.se7enx.com;site
 HostMatchMapItems[]=edit.platform.alpha.se7enx.com;admin

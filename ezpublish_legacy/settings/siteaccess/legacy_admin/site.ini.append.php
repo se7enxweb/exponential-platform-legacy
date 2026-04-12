@@ -13,8 +13,10 @@ RelatedSiteAccessList[]=legacy_admin
 ShowHiddenNodes=true
 
 [DesignSettings]
-SiteDesign=admin2
+SiteDesign=admin3
 AdditionalSiteDesignList[]
+AdditionalSiteDesignList[]=admin3
+AdditionalSiteDesignList[]=admin2
 AdditionalSiteDesignList[]=admin
 AdditionalSiteDesignList[]=standard
 AdditionalSiteDesignList[]=base
@@ -25,9 +27,11 @@ ContentObjectLocale=eng-GB
 ShowUntranslatedObjects=enabled
 SiteLanguageList[]
 SiteLanguageList[]=eng-GB
+SiteLanguageList[]=eng-US
 TextTranslation=disabled
 
 [ContentSettings]
 CachedViewPreferences[full]=admin_navigation_content=1;admin_children_viewmode=list;admin_list_limit=1
 TranslationList=
+
 */ ?>

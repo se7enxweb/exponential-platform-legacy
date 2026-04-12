@@ -13,6 +13,7 @@ ezpublish:
             - bold_ger
             - '%ngsite.admin_siteaccess_name%'
             - ngadminui
+            - legacy_site
             - legacy_admin
         groups:
             admin_group:
@@ -27,6 +28,7 @@ ezpublish:
                 - bold_ger
             fh_group:
                 - fh_eng
+                - legacy_site
                 - site
             bold_group:
                 - bold_eng
@@ -141,6 +143,8 @@ ezdesign:
 ez_publish_legacy:
     system:
         legacy_admin:
+            legacy_mode: true
+        legacy_site:
             legacy_mode: true
 
         # ╔══════════════════════════════════════════════════════════════════════════════╗

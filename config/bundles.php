@@ -63,4 +63,5 @@ return [
     MediataCom\MediataEzpageFieldtypeBundle\MediataEzpageFieldtypeBundle::class => ['all' => true],
     Novactive\Bundle\eZSEOBundle\NovaeZSEOBundle::class => ['all' => true],
     ContextualCode\EzPlatformAlloyEditorElementWidth\EzPlatformAlloyEditorElementWidthBundle::class => ['all' => true],
+    Netgen\Bundle\RichTextDataTypeBundle\NetgenRichTextDataTypeBundle::class => ['all' => true],
 ];

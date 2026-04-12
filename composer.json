@@ -4,7 +4,7 @@
     "homepage": "https://platform.exponential.earth",
     "authors": [
         {
-            "name": "7x",
+	    "name": "7x",
             "homepage": "https://se7enx.com"
         },
         {
@@ -24,7 +24,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "se7enxweb/oss": "~3.3.0.0",
-        "se7enxweb/legacy-bridge": "^3.0",
+        "se7enxweb/legacy-bridge": "^3.0.0.34",
         "se7enxweb/symfony": "5.4.x-dev",
         "se7enxweb/symfony-flex": "^2.10.1",
         "symfony/console": "5.4.*",
@@ -35,7 +35,7 @@
         "sentry/sentry-symfony": "^4.0",
         "twig/twig": "^3.0",
         "twig/intl-extra": "^3.0",
-        "se7enxweb/ezplatform-kernel": "~1.3",
+        "se7enxweb/ezplatform-kernel": "~1.3.43",
         "se7enxweb/ezplatform-rest": "~1.3.27",
         "se7enxweb/ezplatform-content-forms": "~1.3.19",
         "se7enxweb/ezplatform-http-cache": "~2.3.19",
