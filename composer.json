@@ -1,8 +1,8 @@
 {
-    "name": "se7enxweb/exponential-platform-legacy-skeleton",
+    "name": "se7enxweb/exponential-platform-legacy",
     "type": "project",
     "license": "(GPL-2.0-or-later or proprietary)",
-    "description": "A project skeleton for installing 7x Exponential Platform Legacy (Open Source)",
+    "description": "A project skeleton for installing 7x Exponential Platform Legacy (Platform v5; Open Source)",
     "require": {
         "php": ">=8.3",
         "ext-ctype": "*",
@@ -15,7 +15,7 @@
         "ext-intl": "*",
         "ext-mbstring": "*",
         "nyholm/psr7": "^1.0",
-        "se7enxweb/exponential-platform-legacy": "dev-master",
+        "se7enxweb/exponential-platform-dxp": "dev-master",
         "symfony/flex": "^2",
         "symfony/runtime": "^7.3"
     },
