@@ -24,7 +24,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "se7enxweb/oss": "~3.3.0.0",
-        "se7enxweb/legacy-bridge": "^3.0.0.34",
+        "se7enxweb/legacy-bridge": "^3.0.0.35",
         "se7enxweb/symfony": "5.4.x-dev",
         "se7enxweb/symfony-flex": "^2.10.1",
         "symfony/console": "5.4.*",
@@ -103,6 +103,7 @@
             "ezpublish:legacybundles:install_extensions --relative": "symfony-cmd"
         },
         "project-scripts": [
+            "eZ\\Bundle\\EzPublishLegacyBundle\\Composer\\ScriptHandler::installIniSettings",
             "@php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php"
         ],
         "post-install-cmd": [
