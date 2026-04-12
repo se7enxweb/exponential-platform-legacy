@@ -14,8 +14,15 @@
         "ext-xml": "*",
         "ext-intl": "*",
         "ext-mbstring": "*",
+        "netgen/layouts-ibexa": "^1.4",
+        "netgen/layouts-standard": "^1.4",
         "nyholm/psr7": "^1.0",
-        "se7enxweb/exponential-platform-dxp": "dev-master",
+        "se7enxweb/exponential-platform-dxp": "5.x-LB-dev",
+        "se7enxweb/legacy-bridge": "^4.0.0.0",
+        "se7enxweb/ngsymfonytools": "^4.0.0.0",
+        "se7enxweb/richtext-datatype-bundle": "*",
+        "se7enxweb/ezplatform-xmltext-fieldtype": "4.x-dev",
+        "se7enxweb/site-legacy-bundle": "^2.0",
         "symfony/flex": "^2",
         "symfony/runtime": "^7.3"
     },
@@ -27,6 +34,7 @@
     "config": {
         "allow-plugins": {
             "ibexa/post-install": true,
+            "se7enxweb/exponential-legacy-installer": true,
             "symfony/flex": true,
             "symfony/runtime": true,
             "*": false
@@ -54,14 +62,24 @@
     },
     "scripts": {
         "auto-scripts": {
-            "cache:clear": "symfony-cmd",
-            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd"
+            "bazinga:js-translation:dump public/assets --merge-domains": "symfony-cmd",
+            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
+            "ezpublish:legacy:assets_install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
+            "ezpublish:legacybundles:install_extensions --relative": "symfony-cmd",
+            "cache:clear": "symfony-cmd"
         },
+        "project-scripts": [
+            "@php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php"
+        ],
         "post-install-cmd": [
-            "@auto-scripts"
+            "php bin/install-legacy-links",
+            "@auto-scripts",
+            "@project-scripts"
         ],
         "post-update-cmd": [
-            "@auto-scripts"
+            "php bin/install-legacy-links",
+            "@auto-scripts",
+            "@project-scripts"
         ]
     },
     "conflict": {
@@ -80,6 +98,7 @@
             ],
             "docker": false
         },
+        "ezpublish-legacy-dir": "ezpublish_legacy",
         "branch-alias": {
             "dev-master": "5.0.x-dev"
         }
