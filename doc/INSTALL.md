@@ -586,6 +586,19 @@ php bin/console cache:clear
 php bin/console ezpublish:legacy:clear-cache
 ```
 
+#### Step 6 — Regenerate legacy extension autoloads
+
+Required after every fresh install or any time extensions are added or removed.
+Without this step the legacy kernel cannot locate extension classes and will fail
+with null-object errors at runtime.
+
+```bash
+php bin/console ezpublish:legacy:generate-autoloads
+```
+
+> ℹ️ This scans `ezpublish_legacy/extension/*/` and rebuilds the class maps in
+> `ezpublish_legacy/var/autoload/`. It must be re-run whenever extensions change.
+
 #### SQLite limitations
 
 | Limitation | Impact |
