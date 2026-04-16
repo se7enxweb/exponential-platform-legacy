@@ -1,11 +1,13 @@
-# Exponential Platform DXP v5 (Platform v5; Open Source; Starter Skeleton)
+# Exponential Platform Legacy v5 — Full Legacy Bridge (Platform v5; Open Source; Starter Skeleton)
 ## Installation & Operations Guide
 
-> **Platform v5 DXP** is the standard single-kernel release of Exponential Platform DXP. It runs the **Exponential Platform v5 OSS** new-stack kernel on **Symfony 7.4 LTS** with **PHP 8.3+**.
+> **Exponential Platform Legacy v5** is the **full Legacy Bridge release** of Exponential Platform DXP. It ships **two working kernels in one Symfony application**: the modern **Exponential Platform v5 OSS** new-stack kernel on **Symfony 7.4 LTS** with **PHP 8.3+**, and the classic **eZ Publish legacy kernel** running through the `se7enxweb/legacy-bridge` package.
+>
+> Both kernels share a single database, a single `public/index.php` entry point, and a single Composer-managed project. The legacy kernel is **live by default** — no post-install activation is required.
 >
 > This guide uses numbered **Git Save Points** throughout. Commit at each one so you can return to any working checkpoint without redoing completed work.
 >
-> This installation is straightforward for a modern Symfony project. Read it in full before starting.
+> Read this guide in full before starting. The Legacy Bridge sections (especially autoload generation and extension symlinks) have a required ordering — skipping steps leads to errors.
 
 ---
 
@@ -17,7 +19,7 @@
 > |---|---|---|
 > | `exponential:*` | `ibexa:*` | `ezplatform:*` / `ezpublish:*` |
 >
-> Commands in this guide use `exponential:*` where the rename has been applied. Commands not yet migrated retain their `ibexa:*` name (e.g. `ibexa:cron:run`, `ibexa:graphql:generate-schema`) — they are fully functional as-is. The `ezplatform:*` prefix does not exist in v5.
+> Commands in this guide use `exponential:*` where the rename has been applied. Commands not yet migrated retain their `ibexa:*` name (e.g. `ibexa:cron:run`, `ibexa:graphql:generate-schema`). Legacy Bridge commands use the `ezpublish:legacy:*` prefix — these are provided by the `se7enxweb/legacy-bridge` bundle and are not subject to the rename.
 
 ---
 
@@ -25,44 +27,54 @@
 
 1. [Requirements](#1-requirements)
 2. [Architecture Overview](#2-architecture-overview)
-3. [First-Time Installation](#3-first-time-installation)
-   - [3a. Composer create-project (recommended)](#3a-composer-create-project-recommended)
-   - [3b. GitHub git clone (developers)](#3b-github-git-clone-developers)
-4. [Environment Configuration (.env.local)](#4-environment-configuration-envlocal)
+3. [Legacy Bridge — What You Get Out of the Box](#3-legacy-bridge--what-you-get-out-of-the-box)
+   - [3a. Default Siteaccesses & Access Points](#3a-default-siteaccesses--access-points)
+   - [3b. Legacy Kernel Directory Layout](#3b-legacy-kernel-directory-layout)
+   - [3c. Legacy Siteaccess Configuration](#3c-legacy-siteaccess-configuration)
+   - [3d. Legacy Extensions](#3d-legacy-extensions)
+   - [3e. Database Translator Extension](#3e-database-translator-extension)
+   - [3f. Legacy INI Settings & Overrides](#3f-legacy-ini-settings--overrides)
+   - [3g. Legacy Templates & Design](#3g-legacy-templates--design)
+   - [3h. Legacy Cache Management](#3h-legacy-cache-management)
+   - [3i. Legacy Bridge CLI Commands](#3i-legacy-bridge-cli-commands)
+4. [First-Time Installation](#4-first-time-installation)
+   - [4a. Composer create-project (recommended)](#4a-composer-create-project-recommended)
+   - [4b. GitHub git clone (developers)](#4b-github-git-clone-developers)
+5. [Environment Configuration (.env.local)](#5-environment-configuration-envlocal)
    - [MySQL / MariaDB vars](#minimum-required-variables)
    - [PostgreSQL vars](#postgresql-alternative-to-mysql)
    - [SQLite vars](#sqlite-zero-config-alternative--dev--testing)
-5. [Database Setup](#5-database-setup)
-   - [5a. MySQL / MariaDB](#5-database-setup)
-   - [5b. PostgreSQL](#5-database-setup)
-   - [5c. SQLite (zero-config)](#5c-sqlite-zero-config-database)
-6. [Web Server Setup](#6-web-server-setup)
-   - [6a. Apache 2.4](#6a-apache-24)
-   - [6b. Nginx](#6b-nginx)
-   - [6c. Symfony CLI (development only)](#6c-symfony-cli-development-only)
-7. [File & Directory Permissions](#7-file--directory-permissions)
-8. [Frontend Assets (Site CSS/JS)](#8-frontend-assets-site-cssjs)
-9. [Admin UI Assets (Platform v5 Admin UI)](#9-admin-ui-assets-platform-v5-admin-ui)
-10. [JWT Authentication (REST API)](#10-jwt-authentication-rest-api)
-11. [GraphQL Schema](#11-graphql-schema)
-12. [Search Index](#12-search-index)
-13. [Image Variations](#13-image-variations)
-14. [Cache Management](#14-cache-management)
-15. [Day-to-Day Operations: Start / Stop / Restart](#15-day-to-day-operations-start--stop--restart)
-16. [Updating the Codebase](#16-updating-the-codebase)
-17. [Cron Jobs](#17-cron-jobs)
-18. [Solr Search Engine (optional)](#18-solr-search-engine-optional)
-19. [Varnish HTTP Cache (optional)](#19-varnish-http-cache-optional)
-20. [Troubleshooting](#20-troubleshooting)
-21. [Database Conversion](#21-database-conversion)
-    - [21a. Any → SQLite](#21a-any--sqlite-go-to-sqlite)
-    - [21b. SQLite → MySQL / MariaDB](#21b-sqlite--mysql--mariadb)
-    - [21c. SQLite → PostgreSQL](#21c-sqlite--postgresql)
-    - [21d. MySQL / MariaDB → PostgreSQL](#21d-mysql--mariadb--postgresql)
-    - [21e. PostgreSQL → MySQL / MariaDB](#21e-postgresql--mysql--mariadb)
-    - [21f. Any → Oracle (export only)](#21f-any--oracle-export-only)
-    - [21g. Post-conversion checklist](#21g-post-conversion-checklist)
-22. [Complete CLI Reference](#22-complete-cli-reference)
+6. [Database Setup](#6-database-setup)
+   - [6a. MySQL / MariaDB](#6-database-setup)
+   - [6b. PostgreSQL](#6-database-setup)
+   - [6c. SQLite (zero-config)](#6c-sqlite-zero-config-database)
+7. [Web Server Setup](#7-web-server-setup)
+   - [7a. Apache 2.4](#7a-apache-24)
+   - [7b. Nginx](#7b-nginx)
+   - [7c. Symfony CLI (development only)](#7c-symfony-cli-development-only)
+8. [File & Directory Permissions](#8-file--directory-permissions)
+9. [Frontend Assets (Site CSS/JS)](#9-frontend-assets-site-cssjs)
+10. [Admin UI Assets (Platform v5 Admin UI)](#10-admin-ui-assets-platform-v5-admin-ui)
+11. [JWT Authentication (REST API)](#11-jwt-authentication-rest-api)
+12. [GraphQL Schema](#12-graphql-schema)
+13. [Search Index](#13-search-index)
+14. [Image Variations](#14-image-variations)
+15. [Cache Management](#15-cache-management)
+16. [Day-to-Day Operations: Start / Stop / Restart](#16-day-to-day-operations-start--stop--restart)
+17. [Updating the Codebase](#17-updating-the-codebase)
+18. [Cron Jobs](#18-cron-jobs)
+19. [Solr Search Engine (optional)](#19-solr-search-engine-optional)
+20. [Varnish HTTP Cache (optional)](#20-varnish-http-cache-optional)
+21. [Troubleshooting](#21-troubleshooting)
+22. [Database Conversion](#22-database-conversion)
+    - [22a. Any → SQLite](#22a-any--sqlite-go-to-sqlite)
+    - [22b. SQLite → MySQL / MariaDB](#22b-sqlite--mysql--mariadb)
+    - [22c. SQLite → PostgreSQL](#22c-sqlite--postgresql)
+    - [22d. MySQL / MariaDB → PostgreSQL](#22d-mysql--mariadb--postgresql)
+    - [22e. PostgreSQL → MySQL / MariaDB](#22e-postgresql--mysql--mariadb)
+    - [22f. Any → Oracle (export only)](#22f-any--oracle-export-only)
+    - [22g. Post-conversion checklist](#22g-post-conversion-checklist)
+23. [Complete CLI Reference](#23-complete-cli-reference)
 
 ---
 
@@ -191,7 +203,7 @@ sudo mv composer.phar /usr/local/bin/composer
 
 ## 2. Architecture Overview
 
-Platform v5 DXP is a clean, single-kernel Symfony application.
+Exponential Platform Legacy v5 with Legacy Bridge is a **dual-kernel Symfony application**.
 
 ```
 Browser Request
@@ -200,85 +212,556 @@ Browser Request
    Web Server (Apache / Nginx)
       │
       ▼
-  public/index.php (Symfony Entry Point)
+  public/index.php  ──  Symfony Kernel (Platform v5 OSS — Symfony 7.4 LTS)
       │
-      ▼
-  Symfony Kernel (Platform v5 OSS — Symfony 7.4 LTS)
-      ├── Exponential Platform v5 Admin UI (/adminui/)
-      ├── REST API v2 (/api/ezp/v2/)
-      ├── GraphQL API (/graphql)
-      └── Symfony/Twig site controllers (/)
+      ├── URI: /adminui/**           → Platform v5 Admin UI (React)       ← siteaccess: admin
+      │                                  login: admin / publish
+      ├── URI: /api/ezp/v2/**        → REST API v2 (JWT-auth)             ← siteaccess: admin
+      ├── URI: /graphql              → GraphQL API                         ← siteaccess: admin
+      │
+      ├── URI: /legacy_admin/**      → Legacy Bridge → Legacy Kernel       ← siteaccess: legacy_admin
+      │                                  Classic eZ Publish Admin (login: admin / publish)
+      │
+      ├── URI: /legacy_site/**       → Legacy Bridge → Legacy Kernel       ← siteaccess: legacy_site
+      │                                  Classic eZ Publish Front End
+      │
+      └── URI: /**                   → Platform v5 Twig/Symfony Front End  ← siteaccess: site
+                                         Symfony controllers + Twig templates
 ```
+
+The two kernels share:
+- The same **database** (all content is in one DB; both kernels read and write to it)
+- The same **`public/index.php`** Symfony entry point
+- The same **Composer project** and vendor directory
+- The same **JWT keypair** (the Platform v5 REST API uses it; the legacy kernel does not)
+
+The legacy kernel runs exclusively within the `legacy_mode: true` siteaccesses (`legacy_site`, `legacy_admin`). Requests to all other URIs are handled entirely by the Symfony/Platform v5 stack.
 
 ### Siteaccesses
 
-| Siteaccess | Purpose | URL |
-|---|---|---|
-| `site` | Twig front end | `/` (Symfony router) |
-| `admin` | Platform v5 Admin UI | `/adminui/` |
+| Siteaccess | Kernel | URL prefix | Purpose |
+|---|---|---|---|
+| `site` | Platform v5 OSS | `/` | Symfony/Twig public front end |
+| `legacy_site` | Legacy (Bridge) | `/legacy_site/` | Classic eZ Publish public front end |
+| `legacy_admin` | Legacy (Bridge) | `/legacy_admin/` | Classic eZ Publish admin interface |
+| `admin` | Platform v5 OSS | `/adminui/` | Platform v5 Admin UI (React) |
 
 ### Key Directories
 
 ```
 project-root/
 ├── src/
-│   ├── Controller/            Symfony controllers for your site
-│   ├── Entity/                Doctrine entities (if used)
-│   └── Kernel.php             Application kernel
+│   ├── Controller/                 Symfony controllers for the Platform v5 site
+│   ├── Entity/                     Doctrine entities (if used)
+│   ├── LegacySettings/
+│   │   └── override/
+│   │       └── site.ini.append.php  Global legacy INI override (Flex-installed)
+│   └── Kernel.php
 ├── config/
-│   ├── packages/              Bundle configuration (ibexa.yaml, security.yaml, etc.)
-│   ├── routes/                Route definitions
-│   └── services.yaml          Service definitions
+│   ├── packages/
+│   │   ├── ibexa.yaml              Ibexa/Platform v5 siteaccess configuration
+│   │   ├── ez_publish_legacy.yaml  Legacy Bridge injected settings and siteaccess config
+│   │   └── ...
+│   ├── routes/
+│   └── services.yaml
 ├── templates/
-│   └── themes/                Twig templates by siteaccess/theme
-├── assets/
-│   ├── js/                    Site JavaScript source
-│   ├── scss/                  Site SCSS source
-│   └── styles/                Additional stylesheets
-├── public/                    Web root
-│   ├── assets/                Built frontend assets (Webpack Encore output)
-│   │   └── app/               Site assets (build/ for prod, build_dev/ for dev)
-│   └── bundles/               Symfony public assets (symlinked by assets:install)
+│   └── themes/                     Platform v5 Twig templates by siteaccess/theme
+├── assets/                         Webpack Encore source (JS, SCSS)
+├── public/                         Web root
+│   ├── assets/app/                 Built site frontend assets
+│   └── bundles/                    Symfony + legacy public assets (symlinked)
+├── ezpublish_legacy/               ← Legacy kernel root (installed by legacy-bridge)
+│   ├── extension/                  Legacy extensions directory
+│   │   ├── app/                    Your site's legacy extension
+│   │   ├── sevenx_exponential_platform_v5_database_translator/
+│   │   │                           DB translator (MySQL/MariaDB/PostgreSQL/SQLite)
+│   │   └── ...                     All other active legacy extensions
+│   ├── settings/
+│   │   ├── override/               Global INI overrides (site.ini.append.php)
+│   │   └── siteaccess/
+│   │       ├── legacy_site/        Per-siteaccess INI files for legacy_site
+│   │       └── legacy_admin/       Per-siteaccess INI files for legacy_admin
+│   ├── var/
+│   │   └── site/                   Legacy var dir: cache, storage, log
+│   │       ├── cache/              Legacy template/INI cache
+│   │       └── storage/            Legacy binary file storage
+│   ├── design/                     Legacy designs and templates
+│   └── autoload/                   Legacy autoload arrays (generated)
 ├── var/
-│   ├── cache/                 Symfony application cache
-│   ├── log/                   Application logs
-│   └── data_<env>.db          SQLite database (if using SQLite)
-└── vendor/                    PHP packages (composer-managed; not committed)
+│   ├── cache/                      Symfony application cache
+│   ├── log/                        Symfony application logs
+│   └── data_<env>.db               SQLite database (if using SQLite)
+└── vendor/
+    └── se7enxweb/legacy-bridge/    The Legacy Bridge package
 ```
 
 ---
 
-## 3. First-Time Installation
+## 3. Legacy Bridge — What You Get Out of the Box
 
-### 3a. Composer create-project (recommended)
+This section is a dedicated reference for everything the Legacy Bridge provides and how to work with it. Read this before starting your installation.
+
+### 3a. Default Siteaccesses & Access Points
+
+After a fresh install, **all of the following URLs are live with no additional configuration**. Replace `http://localhost` with `https://127.0.0.1:8000` if using the Symfony CLI dev server.
+
+#### Platform v5 New Stack
+
+| URL | Description |
+|---|---|
+| `http://localhost/adminui/` | **Platform v5 Admin UI** — React editorial interface |
+| `http://localhost/api/ezp/v2/` | **REST API v2** — full content API (JWT-authenticated) |
+| `http://localhost/graphql` | **GraphQL** — auto-generated content schema |
+| `http://localhost/graphql/explorer` | GraphiQL browser (APP_ENV=dev only) |
+| `http://localhost/` | Symfony/Twig public site (`site` siteaccess) |
+
+#### Legacy Site Frontend (`/legacy_site/`)
+
+| URL | Description |
+|---|---|
+| `http://localhost/legacy_site/` | **Legacy site home page** |
+| `http://localhost/legacy_site/user/login` | Legacy login form |
+| `http://localhost/legacy_site/user/logout` | Log out of legacy session |
+| `http://localhost/legacy_site/user/register` | New user self-registration |
+| `http://localhost/legacy_site/user/forgotpassword` | Password recovery (sends reset email) |
+| `http://localhost/legacy_site/user/activation` | Account activation (token from email) |
+| `http://localhost/legacy_site/user/password` | Change password (authenticated) |
+| `http://localhost/legacy_site/user/preferences` | User profile preferences |
+| `http://localhost/legacy_site/content/view/full/2` | View content node 2 (root/home) |
+| `http://localhost/legacy_site/content/view/full/{nodeId}` | View any content node by Location ID |
+| `http://localhost/legacy_site/content/download/{contentId}/{attributeId}` | Download a binary file attribute |
+| `http://localhost/legacy_site/content/imagepreview/{contentId}/{attributeId}` | Preview an image attribute |
+| `http://localhost/legacy_site/content/search` | Simple keyword search |
+| `http://localhost/legacy_site/content/advancedsearch` | Advanced search with filters |
+| `http://localhost/legacy_site/search/searchResult` | Search results page |
+| `http://localhost/legacy_site/rss/feed/1` | RSS 2.0 feed (feed ID 1) |
+| `http://localhost/legacy_site/bookmark/list` | Bookmarks list (authenticated) |
+| `http://localhost/legacy_site/bookmark/add` | Add a bookmark (authenticated) |
+| `http://localhost/legacy_site/notification/settings` | Notification email preferences (authenticated) |
+| `http://localhost/legacy_site/collaboration/inbox` | Collaboration inbox (authenticated) |
+| `http://localhost/legacy_site/ezinfo/about` | Platform system information |
+| `http://localhost/legacy_site/ezinfo/copyright` | Platform copyright notice |
+| `http://localhost/legacy_site/ezinfo/credits` | Credits and contributors |
+| `http://localhost/legacy_site/ezinfo/changelog` | Platform changelog summary |
+| `http://localhost/legacy_site/layout/set/{layoutName}` | Switch the active page layout for the session |
+| `http://localhost/legacy_site/shop/basket` | Shopping basket (if shop extension active) |
+| `http://localhost/legacy_site/shop/vieworder/{orderId}` | View a placed order (shop) |
+
+#### Legacy Admin Interface (`/legacy_admin/`)
+
+| URL | Description |
+|---|---|
+| `http://localhost/legacy_admin/` | **Legacy Admin dashboard** |
+| `http://localhost/legacy_admin/user/login` | Legacy admin login form |
+| `http://localhost/legacy_admin/user/logout` | Log out from legacy admin |
+| `http://localhost/legacy_admin/content/dashboard` | Admin content dashboard |
+| `http://localhost/legacy_admin/content/browse` | Browse entire content tree |
+| `http://localhost/legacy_admin/content/view/full/2` | View/edit root content node |
+| `http://localhost/legacy_admin/content/search` | Admin keyword search |
+| `http://localhost/legacy_admin/content/advancedsearch` | Admin advanced search with filters |
+| `http://localhost/legacy_admin/content/trash` | Trash / recycle bin |
+| `http://localhost/legacy_admin/content/pendinglist` | Content items awaiting approval |
+| `http://localhost/legacy_admin/content/collectedinfo` | Collected information (form submissions) |
+| `http://localhost/legacy_admin/class/grouplist` | Content type group management |
+| `http://localhost/legacy_admin/class/list` | Content types (classes) in a group |
+| `http://localhost/legacy_admin/class/view/{classId}` | View a content type definition |
+| `http://localhost/legacy_admin/class/edit/{classId}` | Edit a content type |
+| `http://localhost/legacy_admin/class/copy/{classId}` | Duplicate a content type |
+| `http://localhost/legacy_admin/role/list` | Roles and policies overview |
+| `http://localhost/legacy_admin/role/view/{roleId}` | View a role's policies |
+| `http://localhost/legacy_admin/role/edit/{roleId}` | Edit policies for a role |
+| `http://localhost/legacy_admin/section/list` | Content sections |
+| `http://localhost/legacy_admin/section/view/{sectionId}` | Content in a section |
+| `http://localhost/legacy_admin/user/list` | User and user group management |
+| `http://localhost/legacy_admin/user/view/{userId}` | View user account |
+| `http://localhost/legacy_admin/state/groups` | Content object state groups |
+| `http://localhost/legacy_admin/state/view/{groupId}` | States in a group |
+| `http://localhost/legacy_admin/workflow/grouplist` | Workflow groups |
+| `http://localhost/legacy_admin/workflow/list/{groupId}` | Workflows in a group |
+| `http://localhost/legacy_admin/workflow/view/{workflowId}` | View a workflow definition |
+| `http://localhost/legacy_admin/trigger/list` | Workflow trigger assignments |
+| `http://localhost/legacy_admin/trigger/edit/{triggerId}` | Edit a trigger assignment |
+| `http://localhost/legacy_admin/settings/list` | INI settings browser |
+| `http://localhost/legacy_admin/settings/edit` | Edit site INI settings |
+| `http://localhost/legacy_admin/settings/download` | Export settings archive |
+| `http://localhost/legacy_admin/design/index` | Design and template management |
+| `http://localhost/legacy_admin/package/repository` | Extension and package repository browser |
+| `http://localhost/legacy_admin/setup/index` | Setup wizard |
+| `http://localhost/legacy_admin/notification/settings` | Admin notification preferences |
+| `http://localhost/legacy_admin/collaboration/inbox` | Collaboration inbox (admin) |
+
+#### Default Credentials
+
+| Credential | Value |
+|---|---|
+| Username (both admin interfaces) | `admin` |
+| Password | `publish` |
+
+**Change the admin password immediately after your first login** — this credential is publicly documented.
+
+---
+
+### 3b. Legacy Kernel Directory Layout
+
+The legacy kernel lives in the `ezpublish_legacy/` directory at the project root. It is **not shipped as a Git submodule** — it is installed by the `se7enxweb/legacy-bridge` Composer package during `composer install`:
+
+```
+ezpublish_legacy/
+├── bin/                        CLI scripts (ezpgenerateautoloads.php, etc.)
+├── design/                     Built-in and custom legacy designs
+│   ├── standard/               Base eZ Publish standard design
+│   ├── admin2/                 Legacy admin design
+│   └── {your-design}/          Your custom site design
+├── extension/                  Legacy extensions (all active extensions live here)
+│   ├── app/                    Site-specific legacy extension (your custom code)
+│   ├── sevenx_exponential_platform_v5_database_translator/
+│   │                           DB translator extension (installed by Composer)
+│   ├── ezwebin/                Built-in website-in-a-box extension
+│   ├── ngsymfonytools/         Netgen Symfony tools bridge extension
+│   └── ...                     Other installed extensions
+├── kernel/                     eZ Publish legacy kernel PHP source
+├── lib/                        eZ Publish legacy library PHP source
+├── settings/
+│   ├── override/               Global INI overrides (applied to all siteaccesses)
+│   │   └── site.ini.append.php  Primary override file (ExFlexed from recipe)
+│   └── siteaccess/
+│       ├── legacy_site/        Per-siteaccess INI overrides for legacy_site
+│       │   ├── site.ini.append.php
+│       │   └── ...
+│       └── legacy_admin/       Per-siteaccess INI overrides for legacy_admin
+│           ├── site.ini.append.php
+│           └── ...
+├── var/
+│   └── site/                   Legacy var directory (VarDir=var/site in site.ini)
+│       ├── autoload/           Generated autoload arrays (do not edit)
+│       ├── cache/              Legacy template and INI cache
+│       ├── log/                Legacy application log
+│       └── storage/            Binary files, images, and media uploads
+├── autoload/                   Legacy package/bundle autoload output
+└── index.php                   Legacy standalone entry point (not used with Bridge)
+```
+
+> The `ezpublish_legacy/var/site/` path is declared by `VarDir=var/site` in `site.ini.append.php`. Do not rename or relocate this directory without updating the INI setting to match.
+
+---
+
+### 3c. Legacy Siteaccess Configuration
+
+Siteaccess configuration lives in two places:
+
+**1. Symfony side** — `config/packages/ibexa.yaml` declares the siteaccesses and their Platform v5 settings:
+
+```yaml
+ibexa:
+    siteaccess:
+        list: [site, legacy_site, legacy_admin]
+        groups:
+            site_group: [site, legacy_site, legacy_admin]
+    system:
+        legacy_site:
+            languages: [eng-GB]
+        legacy_admin:
+            languages: [eng-GB]
+    # ...
+```
+
+**2. Legacy Bridge** — `config/packages/ez_publish_legacy.yaml` activates `legacy_mode: true` for the legacy siteaccesses and injects INI settings into the legacy kernel at boot:
+
+```yaml
+ez_publish_legacy:
+    system:
+        legacy_site:
+            legacy_mode: true
+        legacy_admin:
+            legacy_mode: true
+```
+
+**3. Legacy INI** — `src/LegacySettings/override/site.ini.append.php` (installed by Flex into `ezpublish_legacy/settings/override/`) is the primary INI override file. It controls which siteaccesses the legacy kernel serves, which extensions are active, and database settings:
+
+```ini
+[SiteSettings]
+DefaultAccess=legacy_site
+SiteList[]=site
+SiteList[]=legacy_site
+SiteList[]=legacy_admin
+
+[SiteAccessSettings]
+AvailableSiteAccessList[]=site
+AvailableSiteAccessList[]=legacy_site
+AvailableSiteAccessList[]=legacy_admin
+MatchOrder=uri
+
+[ExtensionSettings]
+ActiveExtensions[]=sevenx_exponential_platform_v5_database_translator
+ActiveExtensions[]=app
+ActiveExtensions[]=ngsite
+# ... (full list in the override file)
+```
+
+> The `DefaultAccess=legacy_site` setting means that unqualified requests to the legacy kernel (without a siteaccess prefix) are handled as `legacy_site`. This is correct for the Bridge — Symfony routing always includes the siteaccess URI prefix.
+
+To add a new siteaccess:
+1. Add it to `ibexa.yaml` → `siteaccess.list` and the appropriate group
+2. Add `legacy_mode: true` in `ez_publish_legacy.yaml` (if it is a legacy siteaccess)
+3. Add `SiteList[]=my_siteaccess` and `AvailableSiteAccessList[]=my_siteaccess` to the INI override
+4. Create `ezpublish_legacy/settings/siteaccess/my_siteaccess/site.ini.append.php` with siteaccess-specific overrides
+5. Clear caches: `php bin/console cache:clear`
+
+---
+
+### 3d. Legacy Extensions
+
+Legacy extensions live in `ezpublish_legacy/extension/`. They are activated in `[ExtensionSettings]ActiveExtensions[]` in the legacy INI override.
+
+The following extensions are active by default (installed by the Flex recipe):
+
+| Extension | Purpose |
+|---|---|
+| `sevenx_exponential_platform_v5_database_translator` | **Required first** — DB driver alias translator for MySQL/MariaDB/PostgreSQL/SQLite |
+| `app` | Your site's custom legacy extension (add your legacy PHP classes, templates here) |
+| `ngsite` | Netgen site base legacy extension |
+| `sevenx_themes_simple` | 7x simple theme base |
+| `ngsymfonytools` | Netgen Symfony tools bridge (share Symfony services in legacy templates) |
+| `ezrichtext` | RichText datatype in legacy |
+| `ezwebin` | Built-in website-in-a-box design and templates |
+| `eztags` | Tag/category management field type |
+| `ezoe` | Legacy online editor (OE) |
+| `ezjscore` | JavaScript Core (async requests in legacy) |
+| `ezformtoken` | CSRF token protection for legacy forms |
+| `ezstarrating` | Star rating field type |
+| `ezgmaplocation` | Google Maps location field type |
+| `recaptcha` | reCAPTCHA form protection |
+| `xrowmetadata` | SEO metadata extension |
+| `bcgooglesitemaps` | Google sitemap XML generation |
+| `bcwebsitestatistics` | Website hit statistics |
+
+#### Installing a new legacy extension
 
 ```bash
-composer create-project se7enxweb/exponential-platform-dxp-skeleton \
+# 1. Place the extension directory in ezpublish_legacy/extension/
+#    (or install via Composer if the extension has a package)
+composer require vendor/extension-package
+
+# 2. Add to ActiveExtensions in your INI override:
+#    src/LegacySettings/override/site.ini.append.php
+#    (or ezpublish_legacy/settings/override/site.ini.append.php)
+#    ActiveExtensions[]=my_extension
+
+# 3. If the extension came via a Symfony bundle, install its extension symlinks:
+php bin/console ezpublish:legacybundles:install_extensions --relative
+
+# 4. Regenerate legacy autoloads (REQUIRED after any extension change):
+php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php
+
+# 5. Clear all caches:
+php bin/console cache:clear
+```
+
+> **Autoload regeneration is mandatory** after adding, removing, or renaming any legacy extension. Skipping this step causes "Class not found" errors in the legacy kernel.
+
+#### Removing a legacy extension
+
+```bash
+# 1. Remove or comment out the ActiveExtensions[] line in site.ini.append.php
+# 2. Regenerate autoloads:
+php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php
+# 3. Clear caches:
+php bin/console cache:clear
+```
+
+---
+
+### 3e. Database Translator Extension
+
+The `sevenx_exponential_platform_v5_database_translator` extension is a critical component that must remain **first** in the `ActiveExtensions[]` list. It provides the `QueryTranslator*` database driver classes that allow the legacy kernel to connect to MySQL 8.0, MariaDB 10.6, PostgreSQL 14+, and SQLite 3.35+.
+
+Without this extension (or with it in the wrong position), the legacy kernel will fail to connect to the database on modern PHP/database versions.
+
+The extension works by registering `ImplementationAlias` values in `[DatabaseSettings]`:
+
+```ini
+ImplementationAlias[ezmysqli]=QueryTranslatorDriverMySQLiDB
+ImplementationAlias[ezmysql]=QueryTranslatorDriverMySQLiDB
+ImplementationAlias[sqlite3]=QueryTranslatorDriverSQLite3DB
+ImplementationAlias[ezpostgresql]=QueryTranslatorDriverPostgreSQLDB
+ImplementationAlias[postgres]=QueryTranslatorDriverPostgreSQLDB
+ImplementationAlias[postgresql]=QueryTranslatorDriverPostgreSQLDB
+```
+
+The database to use is configured in `[DatabaseSettings]` of `site.ini.append.php` or — for the Bridge — injected via `config/packages/ez_publish_legacy.yaml`.
+
+---
+
+### 3f. Legacy INI Settings & Overrides
+
+The legacy kernel reads INI configuration from a layered override system. Files are loaded from most-specific to least-specific; later files override earlier ones for matching keys.
+
+Override file load order (most → least specific):
+1. `ezpublish_legacy/settings/siteaccess/{siteaccess}/*.ini.append.php` — siteaccess-specific overrides
+2. `ezpublish_legacy/settings/override/*.ini.append.php` — global project overrides
+3. `ezpublish_legacy/extension/{name}/settings/` — extension defaults
+4. `ezpublish_legacy/settings/` — base kernel defaults
+
+The most important file is `src/LegacySettings/override/site.ini.append.php` (which Flex installs/symlinks to `ezpublish_legacy/settings/override/`). It controls siteaccess lists, active extensions, session handling, mail, and feature flags.
+
+**To change a legacy INI setting globally**, edit `src/LegacySettings/override/site.ini.append.php`:
+
+```ini
+[SiteSettings]
+# Your override here
+DefaultAccess=legacy_site
+```
+
+**To change a setting per-siteaccess**, create or edit `ezpublish_legacy/settings/siteaccess/{name}/site.ini.append.php`:
+
+```ini
+# ezpublish_legacy/settings/siteaccess/legacy_site/site.ini.append.php
+<?php /* #?ini charset="utf-8"?
+
+[SiteSettings]
+SiteName=My Site
+
+[DesignSettings]
+SiteDesign=my_design
+
+*/ ?>
+```
+
+Always clear the legacy cache after INI changes:
+
+```bash
+php bin/console cache:clear    # clears both Symfony and legacy caches
+# or just the legacy cache:
+rm -rf ezpublish_legacy/var/site/cache/
+```
+
+---
+
+### 3g. Legacy Templates & Design
+
+The legacy kernel uses its own `eZ template` language (`.tpl` files), separate from Symfony Twig templates. Legacy templates live in two places:
+
+1. **Extension design** (preferred for your site): `ezpublish_legacy/extension/{name}/design/{design}/templates/`
+2. **Central design** (fallback): `ezpublish_legacy/design/{design}/templates/`
+
+The active design is set per-siteaccess in `DesignSettings`:
+
+```ini
+# ezpublish_legacy/settings/siteaccess/legacy_site/site.ini.append.php
+[DesignSettings]
+SiteDesign=your_design
+AdditionalSiteDesignList[]
+AdditionalSiteDesignList[]=ezwebin
+AdditionalSiteDesignList[]=standard
+```
+
+After changing any `.tpl` templates in `APP_ENV=dev`, the legacy kernel re-compiles them from the INI override `[TemplateSettings]DevelopmentMode=enabled`. In production, compiled templates are cached in `ezpublish_legacy/var/site/cache/` — clear the legacy cache to pick up changes:
+
+```bash
+rm -rf ezpublish_legacy/var/site/cache/
+# then reload the page — the legacy kernel will recompile on next request
+```
+
+---
+
+### 3h. Legacy Cache Management
+
+The legacy kernel maintains its own cache, independent of the Symfony application cache. Both caches can be cleared with a single command:
+
+```bash
+php bin/console cache:clear
+# This runs:
+#   1. Symfony cache:clear (clears var/cache/)
+#   2. LegacyCachePurger (clears ezpublish_legacy/var/site/cache/)
+```
+
+To clear only the legacy template/INI cache manually:
+
+```bash
+rm -rf ezpublish_legacy/var/site/cache/
+```
+
+To clear only cached HTTP pages (if using the legacy `ezplatform:content:clear-cache` or Varnish):
+
+```bash
+php bin/console fos:httpcache:invalidate:path / --all
+```
+
+---
+
+### 3i. Legacy Bridge CLI Commands
+
+These commands are provided by the `se7enxweb/legacy-bridge` bundle (`EzPublishLegacyBundle`):
+
+```bash
+# Publish legacy bundle public/ assets to public/bundles/ (web-accessible)
+php bin/console ezpublish:legacy:assets_install --symlink --relative public
+
+# Install legacy extension symlinks from Symfony bundle registrations into
+# ezpublish_legacy/extension/ (run after composer install/update)
+php bin/console ezpublish:legacybundles:install_extensions --relative
+
+# Regenerate legacy autoloads — REQUIRED after any extension is added/removed/renamed
+# Writes: ezpublish_legacy/var/autoload/ and ezpublish_legacy/autoload/
+php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php
+
+# Run any arbitrary legacy PHP script through the fully-booted legacy kernel
+# Useful for one-off data operations, migrations, or diagnostics
+php bin/console ezpublish:legacy:script path/to/legacy/script.php [-- [legacy-args]]
+
+# Example: run the legacy site installer script
+php bin/console ezpublish:legacy:script bin/php/ezsiteinstaller.php
+```
+
+**Order dependency during install/update:**
+
+```
+1. composer install / composer update
+2. php bin/console ezpublish:legacy:assets_install --symlink --relative public
+3. php bin/console ezpublish:legacybundles:install_extensions --relative
+4. php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php
+5. php bin/console cache:clear
+```
+
+Steps 2–5 are run automatically by the `post-install-cmd` / `post-update-cmd` Composer scripts in `composer.json`, so you normally do not need to run them manually.
+
+---
+
+## 4. First-Time Installation
+
+### 4a. Composer create-project (recommended)
+
+```bash
+composer create-project se7enxweb/exponential-platform-legacy \
     my-project
 cd my-project
 ```
 
 Composer will:
 
-1. Download all PHP packages
-2. Run Symfony Flex recipes (including the `se7enxweb/exponential-platform-dxp` recipe)
-3. Execute `post-install-cmd` scripts:
+1. Download all PHP packages including `se7enxweb/legacy-bridge` and the full legacy kernel
+2. Run Symfony Flex recipes (including the `se7enxweb/exponential-platform-dxp` recipe — installs `src/LegacySettings/override/site.ini.append.php` and other config files)
+3. Execute `post-install-cmd` scripts in order:
+   - `php bin/install-legacy-links` — creates legacy kernel symlinks
    - `assets:install` — publishes bundle `public/` assets to `public/bundles/`
+   - `ezpublish:legacy:assets_install` — publishes legacy bundle assets
+   - `ezpublish:legacybundles:install_extensions` — installs legacy extension symlinks
    - `cache:clear` — warms up the initial cache
+   - `ezpublish:legacy:script bin/php/ezpgenerateautoloads.php` — generates legacy autoloads
 
 > 💾 **Git Save Point 1 — Project created**
 > ```bash
 > git init && git add -A
-> git commit -m "chore(init): composer create-project exponential-platform-dxp dev-master"
+> git commit -m "chore(init): composer create-project exponential-platform-legacy"
 > ```
 
-Continue from Section 4.
+Continue from Section 5.
 
-### 3b. GitHub git clone (developers)
+### 4b. GitHub git clone (developers)
 
 ```bash
-git clone git@github.com:se7enxweb/exponential-platform-dxp-skeleton.git
-cd exponential-platform-dxp-skeleton
+git clone git@github.com:se7enxweb/exponential-platform-legacy.git
+cd exponential-platform-legacy
 git checkout master
 ```
 
@@ -288,7 +771,7 @@ git checkout master
 composer install --keep-vcs
 ```
 
-This downloads all packages and runs `post-install-cmd` scripts (assets, cache).
+This downloads all packages (including the legacy kernel via `se7enxweb/legacy-bridge`), runs Flex recipes, installs legacy extension symlinks, and generates legacy autoloads.
 
 > 💾 **Git Save Point 1 — Vendors installed**
 > ```bash
@@ -297,15 +780,15 @@ This downloads all packages and runs `post-install-cmd` scripts (assets, cache).
 
 #### Step 2 — Configure environment
 
-See Section 4.
+See Section 5.
 
 #### Step 3 — Create the database
 
-See Section 5.
+See Section 6.
 
 #### Step 4 — Set permissions
 
-See Section 7.
+See Section 8.
 
 #### Step 5 — Build frontend assets
 
@@ -349,7 +832,7 @@ php bin/console exponential:reindex
 > 💾 **Git Save Point 2 — Installation complete**
 > ```bash
 > git add -A
-> git commit -m "chore(install): platform v5 DXP install complete"
+> git commit -m "chore(install): exponential-platform-legacy install complete"
 > ```
 
 #### Step 11 — Start the dev server
@@ -358,18 +841,25 @@ php bin/console exponential:reindex
 symfony server:start
 ```
 
-Access points after install:
+All access points after install:
 
 | URL | Description |
 |---|---|
-| https://127.0.0.1:8000/ | Public site (Symfony/Twig) |
-| https://127.0.0.1:8000/adminui/ | Platform v5 Admin UI (React) |
-| https://127.0.0.1:8000/api/ezp/v2/ | REST API v2 |
-| https://127.0.0.1:8000/graphql | GraphQL endpoint |
+| `https://127.0.0.1:8000/` | Platform v5 Symfony/Twig public site |
+| `https://127.0.0.1:8000/legacy_site/` | **Legacy site front end** (classic eZ Publish) |
+| `https://127.0.0.1:8000/legacy_site/user/login` | Legacy user login |
+| `https://127.0.0.1:8000/legacy_site/ezinfo/about` | Legacy system info |
+| `https://127.0.0.1:8000/legacy_admin/` | **Legacy Admin interface** (classic eZ Publish admin) |
+| `https://127.0.0.1:8000/legacy_admin/content/dashboard` | Legacy admin dashboard |
+| `https://127.0.0.1:8000/adminui/` | **Platform v5 Admin UI** (React) |
+| `https://127.0.0.1:8000/api/ezp/v2/` | REST API v2 |
+| `https://127.0.0.1:8000/graphql` | GraphQL endpoint |
+
+Default credentials: `admin` / `publish` — change immediately after first login.
 
 ---
 
-## 4. Environment Configuration (.env.local)
+## 5. Environment Configuration (.env.local)
 
 Never commit `.env.local`. It overrides `.env` with host-specific secrets.
 
@@ -498,7 +988,7 @@ SESSION_SAVE_PATH=%kernel.project_dir%/var/sessions/%kernel.environment%
 
 ---
 
-## 5. Database Setup
+## 6. Database Setup
 
 ### Create the database
 
@@ -543,7 +1033,7 @@ Change the admin password immediately after installation via the Platform v5 Adm
 php bin/console doctrine:migration:migrate --allow-no-migration
 ```
 
-### 5c. SQLite (zero-config database)
+### 6c. SQLite (zero-config database)
 
 SQLite is the fastest way to spin up a local development or demo environment — no database server software required at all.
 
@@ -624,7 +1114,7 @@ php bin/console cache:clear
 
 ---
 
-## 6. Web Server Setup
+## 7. Web Server Setup
 
 ### 6a. Apache 2.4
 
@@ -737,7 +1227,7 @@ symfony server:log                 # tail server log
 
 ---
 
-## 7. File & Directory Permissions
+## 8. File & Directory Permissions
 
 Replace `www-data` with your actual web server user (e.g. `apache`, `nginx`, `_www` on macOS).
 
@@ -774,7 +1264,7 @@ chmod -R 775 var/ public/var/
 
 ---
 
-## 8. Frontend Assets (Site CSS/JS)
+## 9. Frontend Assets (Site CSS/JS)
 
 The project uses Webpack Encore + Yarn. Always activate Node.js 20 LTS first.
 
@@ -823,7 +1313,7 @@ yarn watch
 
 ---
 
-## 9. Admin UI Assets (Platform v5 Admin UI)
+## 10. Admin UI Assets (Platform v5 Admin UI)
 
 The Platform v5 Admin UI assets (React components, SCSS, icons) are built separately from the site frontend. They are not rebuilt automatically on `composer install` (no Node.js required on production servers) — deploy pre-built assets or build on demand.
 
@@ -875,7 +1365,7 @@ php bin/console bazinga:js-translation:dump public/assets --merge-domains
 
 ---
 
-## 10. JWT Authentication (REST API)
+## 11. JWT Authentication (REST API)
 
 JWT keypairs are required for the REST API to function. They are not included in the repository (they are git-ignored). Generate them on every fresh install:
 
@@ -897,7 +1387,7 @@ Back up `config/jwt/private.pem` and `config/jwt/public.pem` securely. If they a
 
 ---
 
-## 11. GraphQL Schema
+## 12. GraphQL Schema
 
 The GraphQL schema is auto-generated from the content type model. Regenerate it after any content type or field type changes:
 
@@ -915,7 +1405,7 @@ The GraphQL endpoint is available at `/graphql` (or the URL configured in `confi
 
 ---
 
-## 12. Search Index
+## 13. Search Index
 
 ### Full reindex (rebuild from scratch)
 
@@ -945,7 +1435,7 @@ curl http://localhost:8983/solr/collection1/update?commit=true
 
 ---
 
-## 13. Image Variations
+## 14. Image Variations
 
 Image variations are generated on demand by Liip Imagine when a content view requests a variation alias. Configuration lives in `config/packages/ibexa.yaml` under `ibexa.system.<siteaccess>.image_variations`.
 
@@ -983,7 +1473,7 @@ ibexa:
 
 ---
 
-## 14. Cache Management
+## 15. Cache Management
 
 ### Clear Symfony application cache
 
@@ -1021,7 +1511,7 @@ php bin/console cache:warmup --env=prod
 
 ---
 
-## 15. Day-to-Day Operations: Start / Stop / Restart
+## 16. Day-to-Day Operations: Start / Stop / Restart
 
 ### Apache
 
@@ -1070,29 +1560,36 @@ symfony server:status        # show status + URL
 # 1. Pull code
 git pull --rebase
 
-# 2. Install/update vendors
+# 2. Install/update vendors (also runs legacy extension symlinks + autoloads via post-update-cmd)
 composer install --no-dev -o
 
 # 3. Run Doctrine migrations
 php bin/console doctrine:migration:migrate --allow-no-migration --env=prod
 
-# 4. Publish bundle public assets
+# 4. Publish bundle public assets (Symfony + legacy)
 php bin/console assets:install --symlink --relative public --env=prod
+php bin/console ezpublish:legacy:assets_install --symlink --relative public --env=prod
 
-# 5. Rebuild Platform v5 Admin UI assets (if admin-ui bundle updated)
+# 5. Ensure legacy extension symlinks are current
+php bin/console ezpublish:legacybundles:install_extensions --relative --env=prod
+
+# 6. Regenerate legacy autoloads (if any extension was added/removed/updated)
+php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php
+
+# 7. Rebuild Platform v5 Admin UI assets (if admin-ui bundle updated)
 source ~/.nvm/nvm.sh && nvm use 20 && yarn ibexa:build
 
-# 6. Rebuild frontend site assets (if theme/JS/CSS changed)
+# 8. Rebuild frontend site assets (if theme/JS/CSS changed)
 yarn build
 
-# 7. Dump JS translations
+# 9. Dump JS translations
 php bin/console bazinga:js-translation:dump public/assets --merge-domains --env=prod
 
-# 8. Clear & warm up caches
+# 10. Clear & warm up caches (clears both Symfony and legacy caches)
 php bin/console cache:clear --env=prod
 php bin/console cache:warmup --env=prod
 
-# 9. Reindex search (if content model changed)
+# 11. Reindex search (if content model changed)
 # php bin/console exponential:reindex --env=prod
 ```
 
@@ -1104,7 +1601,7 @@ php bin/console cache:warmup --env=prod
 
 ---
 
-## 16. Updating the Codebase
+## 17. Updating the Codebase
 
 ### Pull latest code and rebuild
 
@@ -1149,7 +1646,7 @@ yarn dev
 
 ---
 
-## 17. Cron Jobs
+## 18. Cron Jobs
 
 Add to crontab (`crontab -e -u www-data`):
 
@@ -1160,7 +1657,7 @@ Add to crontab (`crontab -e -u www-data`):
 
 ---
 
-## 18. Solr Search Engine (optional)
+## 19. Solr Search Engine (optional)
 
 ### Switch from legacy to Solr
 
@@ -1184,7 +1681,7 @@ php bin/console cache:clear
 
 ---
 
-## 19. Varnish HTTP Cache (optional)
+## 20. Varnish HTTP Cache (optional)
 
 1. Set env vars in `.env.local`:
    ```bash
@@ -1203,7 +1700,7 @@ php bin/console cache:clear
 
 ---
 
-## 20. Troubleshooting
+## 21. Troubleshooting
 
 ### White screen / 500 error
 
@@ -1311,9 +1808,76 @@ chmod 664 var/data_dev.db
 chown $USER:www-data var/data_dev.db
 ```
 
+### Legacy site returns "Module not found" or blank page
+
+The legacy module/view requested does not exist or the extension providing it is not active. Check:
+
+1. Is the extension in `ActiveExtensions[]` in `site.ini.append.php`?
+2. Have autoloads been regenerated after the extension was added?
+3. Is there a template for the content type / view mode at the expected design path?
+
+```bash
+# Regenerate autoloads
+php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php
+# Clear all caches
+php bin/console cache:clear
+```
+
+### Legacy "Class XYZ not found" after adding an extension
+
+Autoloads are stale. Regenerate them:
+
+```bash
+php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php
+php bin/console cache:clear
+```
+
+### Legacy admin at `/legacy_admin/` redirects to login but login fails
+
+1. Verify `legacy_mode: true` is set for `legacy_admin` in `config/packages/ez_publish_legacy.yaml`
+2. Verify the `legacy_admin` siteaccess is in `AvailableSiteAccessList` in `site.ini.append.php`
+3. Check `ezpublish_legacy/var/site/log/` for legacy kernel error messages
+4. In development, enable `DebugOutput=enabled` in `site.ini.append.php` to see legacy error output
+
+### Legacy templates not updating after changes
+
+The legacy template cache is stale. Clear it:
+
+```bash
+rm -rf ezpublish_legacy/var/site/cache/
+php bin/console cache:clear
+```
+
+Or set `[TemplateSettings]DevelopmentMode=enabled` in your siteaccess `site.ini.append.php` (dev only — disables legacy template caching).
+
+### Legacy database errors: "Unknown database implementation"
+
+The `sevenx_exponential_platform_v5_database_translator` extension is not first in `ActiveExtensions[]`, or autoloads have not been regenerated:
+
+```bash
+# Ensure the extension is first in site.ini.append.php:
+# ActiveExtensions[]=sevenx_exponential_platform_v5_database_translator
+# ActiveExtensions[]=app
+# ... (all others after)
+
+# Regenerate autoloads and clear cache
+php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php
+php bin/console cache:clear
+```
+
+### Legacy extension symlinks missing after `composer update`
+
+Re-run the legacy extension symlink installer:
+
+```bash
+php bin/console ezpublish:legacybundles:install_extensions --relative
+php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php
+php bin/console cache:clear
+```
+
 ---
 
-## 21. Database Conversion
+## 22. Database Conversion
 
 This section covers converting an existing, running Exponential Platform DXP application from one database engine to another using free and open-source tools only.
 
@@ -1687,11 +2251,11 @@ chown "$USER":www-data var/data_dev.db
 
 ---
 
-## 22. Complete CLI Reference
+## 23. Complete CLI Reference
 
 A comprehensive reference of every CLI command used in day-to-day development, maintenance, and operations. For help on any command run `php bin/console help <command>`.
 
-### 22.1 Symfony Core
+### 23.1 Symfony Core
 
 ```bash
 # ── Discovery ──────────────────────────────────────────────────────────────
@@ -1738,7 +2302,7 @@ php bin/console lexik:jwt:generate-keypair               # generate RSA keypair
 php bin/console lexik:jwt:generate-keypair --overwrite   # rotate keypair
 ```
 
-### 22.2 Doctrine / Migrations
+### 23.2 Doctrine / Migrations
 
 ```bash
 # ── Migrations ─────────────────────────────────────────────────────────────
@@ -1760,7 +2324,7 @@ php bin/console doctrine:database:create                          # create the d
 php bin/console doctrine:database:drop --force                    # drop the database (DESTRUCTIVE)
 ```
 
-### 22.3 Platform v5 — `exponential:` Commands
+### 23.3 Platform v5 — `exponential:` Commands
 
 All commands below are canonical `exponential:*` names introduced in Platform v5. For migrated commands, `ibexa:*` remains a deprecated alias. The `ezplatform:*` prefix does **not** exist in v5. Use `exponential:*` for all new scripts and documentation.
 
@@ -2158,7 +2722,7 @@ php bin/console liip:imagine:cache:remove --filter=small   # remove one variatio
 php bin/console debug:config ibexa                         # dump full resolved platform config
 ```
 
-### 22.4 Frontend / Asset Build (Yarn / Webpack Encore)
+### 23.4 Frontend / Asset Build (Yarn / Webpack Encore)
 
 ```bash
 # ── Node version ───────────────────────────────────────────────────────────
@@ -2185,7 +2749,7 @@ yarn ibexa:watch                       # watch Admin UI assets for changes
 yarn list                              # list installed packages and versions
 ```
 
-### 22.5 Composer Maintenance
+### 23.5 Composer Maintenance
 
 ```bash
 # ── Installing ─────────────────────────────────────────────────────────────
@@ -2210,7 +2774,7 @@ composer audit                          # check for security advisories
 composer validate                       # validate composer.json / composer.lock
 ```
 
-### 22.6 Symfony CLI
+### 23.6 Symfony CLI
 
 ```bash
 symfony server:start                    # start HTTPS dev server (https://127.0.0.1:8000)
@@ -2225,7 +2789,7 @@ symfony local:php:list                  # list PHP versions available via Symfon
 symfony php bin/console <cmd>           # run console through Symfony CLI's PHP version
 ```
 
-### 22.7 Git Workflow Shortcuts
+### 23.7 Git Workflow Shortcuts
 
 ```bash
 # ── Branching ──────────────────────────────────────────────────────────────
@@ -2247,9 +2811,56 @@ git diff HEAD                               # uncommitted changes
 git status                                  # working tree status
 ```
 
+### 23.8 Legacy Bridge
+
+```bash
+# ── Asset Publishing ───────────────────────────────────────────────────────
+# Publish legacy bundle public/ assets to public/bundles/ (web-accessible)
+php bin/console ezpublish:legacy:assets_install --symlink --relative public
+
+# ── Extension Management ───────────────────────────────────────────────────
+# Install/update legacy extension symlinks from Symfony bundle registrations
+# (creates ezpublish_legacy/extension/{name} → symlink into bundle's Resources/ezpublish_legacy/)
+php bin/console ezpublish:legacybundles:install_extensions --relative
+
+# ── Autoload Generation (REQUIRED after any extension change) ──────────────
+# Regenerates ezpublish_legacy/var/autoload/ and ezpublish_legacy/autoload/
+php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php
+
+# ── Running Legacy Scripts ─────────────────────────────────────────────────
+# Run any legacy CLI script through the fully-booted legacy kernel
+php bin/console ezpublish:legacy:script <path/to/script.php>
+php bin/console ezpublish:legacy:script <path/to/script.php> -- --arg1 val1
+
+# Common legacy scripts:
+php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php          # regenerate autoloads
+php bin/console ezpublish:legacy:script bin/php/ezsiteinstaller.php               # run legacy site installer
+php bin/console ezpublish:legacy:script extension/myext/bin/myscript.php          # custom extension script
+
+# ── Cache ──────────────────────────────────────────────────────────────────
+php bin/console cache:clear                  # clears BOTH Symfony and legacy caches (recommended)
+rm -rf ezpublish_legacy/var/site/cache/      # clear legacy template/INI cache only (manual)
+
+# ── SiteAccess Config Inspection (via Platform v5) ─────────────────────────
+php bin/console exponential:debug:config-resolver languages --siteaccess=legacy_site
+php bin/console exponential:debug:config-resolver languages --siteaccess=legacy_admin
+php bin/console exponential:debug:config-resolver http_cache.purge_servers --siteaccess=legacy_site
+
+# ── Setup Wizard ───────────────────────────────────────────────────────────
+# Available at: http://localhost/legacy_admin/setup/index
+# Or via script:
+php bin/console ezpublish:legacy:script bin/php/ezsiteinstaller.php
+
+# ── Full post-install / post-deploy sequence ───────────────────────────────
+php bin/console ezpublish:legacy:assets_install --symlink --relative public
+php bin/console ezpublish:legacybundles:install_extensions --relative
+php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php
+php bin/console cache:clear
+```
+
 For web server configuration templates see `doc/apache2/` and `doc/nginx/` (if present). For Docker-based development see `doc/docker/` and `compose.override.yaml` (if present).
 
 ---
 
 Copyright © 1998 – 2026 7x (se7enx.com). All rights reserved unless otherwise noted.
-Exponential Platform DXP is Open Source software released under the GNU GPL v2 or any later version.
+Exponential Platform Legacy is Open Source software released under the GNU GPL v2 or any later version.
