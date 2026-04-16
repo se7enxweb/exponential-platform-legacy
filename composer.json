@@ -54,8 +54,7 @@
     "replace": {
         "symfony/polyfill-ctype": "*",
         "symfony/polyfill-iconv": "*",
-        "symfony/polyfill-php72": "*",
-        "ibexa/admin-ui-assets": "dev-5.0-next"
+        "symfony/polyfill-php72": "*"
     },
     "scripts": {
         "auto-scripts": {
