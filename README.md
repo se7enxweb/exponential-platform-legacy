@@ -322,6 +322,20 @@ php bin/console doctrine:schema:validate                           # validate en
 php bin/console exponential:install exponential-oss           # fresh install with demo data
 php bin/console exponential:reindex                           # rebuild search index (full)
 php bin/console exponential:reindex --iteration-count=50      # incremental reindex
+php bin/console exponential:check-urls                        # check all content URLs for broken links
+php bin/console exponential:urls:regenerate-aliases           # regenerate all URL aliases
+php bin/console exponential:copy-subtree <src-loc> <dst-loc>  # copy a content subtree
+php bin/console exponential:delete-content-translation <content-id> <lang>  # remove a translation
+php bin/console exponential:content:cleanup-versions --keep=3 # prune old content versions
+php bin/console exponential:content:remove-duplicate-fields <type>  # fix duplicate field definitions
+php bin/console exponential:content-type-group:set-system <id>      # mark content type group as system
+php bin/console exponential:user:expire-password <login>      # force password expiry for a user
+php bin/console exponential:user:validate-password-hashes     # validate stored password hash formats
+php bin/console exponential:images:normalize-paths            # normalize image field path structure
+php bin/console exponential:images:resize-original <filter>   # resize original images
+php bin/console exponential:io:migrate-files --from=<h> --to=<h>  # migrate files between IO handlers
+php bin/console exponential:timestamps:to-utc                 # convert stored timestamps to UTC
+php bin/console exponential:debug:config-resolver             # dump resolved config-resolver values
 php bin/console ezplatform:cron:run                           # run the Platform v4 cron scheduler (not yet migrated)
 php bin/console ezplatform:graphql:generate-schema            # regenerate GraphQL schema (not yet migrated)
 php bin/console ezplatform:solr:create-core --cores=default   # set up Solr core (not yet migrated)

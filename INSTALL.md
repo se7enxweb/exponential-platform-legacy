@@ -2407,7 +2407,31 @@ php bin/console ezplatform:solr:create-core --cores=default  # provision Solr co
 
 # ── Content Repository ─────────────────────────────────────────────────────
 php bin/console ezplatform:content:cleanup-drafts          # remove stale drafts (not yet migrated)
-php bin/console exponential:content:cleanup-versions --keep=3  # keep last N per content
+php bin/console exponential:content:cleanup-versions --keep=3    # keep last N versions per content
+php bin/console exponential:content:remove-duplicate-fields <type>  # remove duplicate field defs from content type
+php bin/console exponential:copy-subtree <src-location-id> <dst-location-id>  # copy a content subtree
+php bin/console exponential:delete-content-translation <content-id> <language-code>  # remove one translation
+
+# ── URL Management ─────────────────────────────────────────────────────────
+php bin/console exponential:check-urls                           # check all content URLs and report broken ones
+php bin/console exponential:urls:regenerate-aliases              # regenerate all URL aliases for content
+
+# ── User Management ────────────────────────────────────────────────────────
+php bin/console exponential:user:expire-password <user-login>   # force password expiry for a user
+php bin/console exponential:user:validate-password-hashes        # validate and report stored password hash formats
+
+# ── Images ─────────────────────────────────────────────────────────────────
+php bin/console exponential:images:normalize-paths               # normalize image field path structure
+php bin/console exponential:images:resize-original <filter>      # resize original images using a variation filter
+
+# ── IO / File Storage ──────────────────────────────────────────────────────
+php bin/console exponential:io:migrate-files --from=<handler> --to=<handler>  # migrate files between IO handlers
+
+# ── Content Type Groups ────────────────────────────────────────────────────
+php bin/console exponential:content-type-group:set-system <identifier>  # mark a content type group as system-managed
+
+# ── Data Maintenance ───────────────────────────────────────────────────────
+php bin/console exponential:timestamps:to-utc                    # convert all stored timestamps to UTC
 
 # ── Cron ───────────────────────────────────────────────────────────────────
 php bin/console ezplatform:cron:run                        # run Platform v4 cron scheduler (not yet migrated)
@@ -2428,8 +2452,10 @@ php bin/console liip:imagine:cache:remove                  # remove all cached v
 php bin/console liip:imagine:cache:remove --filter=small   # remove one variation alias
 
 # ── Config Inspection ──────────────────────────────────────────────────────
-php bin/console ezplatform:debug:dump-info                 # dump platform environment info (not yet migrated)
-php bin/console debug:config ibexa                         # dump full resolved platform config
+php bin/console exponential:debug:config-resolver           # dump resolved config-resolver values (siteaccess)
+php bin/console exponential:debug:config                    # alias for exponential:debug:config-resolver
+php bin/console ezplatform:debug:dump-info                  # dump platform environment info (not yet migrated)
+php bin/console debug:config ibexa                          # dump full resolved platform config
 ```
 
 ---
