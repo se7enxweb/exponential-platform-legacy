@@ -12,5 +12,10 @@
   },
   "resolutions": {
     "minimatch": "3.0.5"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.8",
+    "photoswipe": "^5.4.4",
+    "swiper": "^12.1.3"
   }
 }

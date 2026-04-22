@@ -86,6 +86,8 @@ framework:
         packages:
             ezplatform:
                 json_manifest_path: '%kernel.project_dir%/web/assets/ezplatform/build/manifest.json'
+            app:
+                json_manifest_path: '%kernel.project_dir%/web/assets/app/manifest.json'
     php_errors:
         log: true
 
@@ -111,6 +113,7 @@ webpack_encore:
     output_path: "%kernel.project_dir%/web/assets/build"
     builds:
         ezplatform: "%kernel.project_dir%/web/assets/ezplatform/build"
+        app: "%kernel.project_dir%/web/assets/app"
 
 # Swiftmailer Configuration
 swiftmailer:

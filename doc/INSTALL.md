@@ -489,6 +489,27 @@ yarn encore dev-server
 
 After a successful build, compiled site assets appear under `web/assets/build/` and Admin UI encore assets under `web/assets/ezplatform/build/`.
 
+### Build the project app CSS (SCSS entry point)
+
+The project ships a dedicated **`app`** Webpack Encore named config that compiles the site-level SCSS (`assets/scss/index.scss`) into versioned CSS under `web/assets/app/`.  
+This config is separate from the Admin UI `ezplatform` build and must be compiled explicitly:
+
+```bash
+# Development (with source maps):
+node_modules/.bin/encore dev --config-name app
+
+# Production (minified, versioned):
+node_modules/.bin/encore production --config-name app
+```
+
+The compiled output is referenced in templates via the Symfony WebpackEncoreBundle helper:
+
+```twig
+{{ encore_entry_link_tags('index', null, 'app') }}
+```
+
+> **Note:** Bootstrap 5, Swiper, and PhotoSwipe are declared as npm dependencies (`package.json`). Run `yarn install` (or `npm install`) before building so these packages are available to the SCSS compiler.
+
 ---
 
 ## 9. JS Translations and Assetic Assets

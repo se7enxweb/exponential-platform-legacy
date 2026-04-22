@@ -10,19 +10,18 @@ const customConfigs = require('./ez.webpack.custom.configs.js');
 
 Encore.reset();
 Encore
-    .setOutputPath('web/assets/build')
-    .setPublicPath('/assets/build')
+    .setOutputPath('web/assets/app')
+    .setPublicPath('/assets/app')
     .enableSassLoader()
     .enableReactPreset()
-    .enableSingleRuntimeChunk();
+    .enableSingleRuntimeChunk()
+    .enableVersioning()
+    .configureCssLoader(function(config) {
+        config.url = false;
+    })
+    .addStyleEntry('index', './assets/scss/index.scss');
 
-// Put your config here.
+const projectConfig = Encore.getWebpackConfig();
+projectConfig.name = 'app';
 
-
-
-// uncomment the two lines below, if you added a new entry (by Encore.addEntry() or Encore.addStyleEntry() method) to your own Encore configuration for your project
-// const projectConfig = Encore.getWebpackConfig();
-// module.exports = [ eZConfig, ...customConfigs, projectConfig ];
-
-// comment-out this line if you've uncommented the above lines
-module.exports = [ eZConfig, ...customConfigs ];
+module.exports = [ eZConfig, ...customConfigs, projectConfig ];
