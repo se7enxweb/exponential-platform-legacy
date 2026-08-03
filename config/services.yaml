@@ -1,0 +1,120 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+    google_recaptcha_site_key: '%env(GOOGLE_RECAPTCHA_SITE_KEY)%'
+    # Legacy bridge: ensure legacy_mode is available under the ibexa.site_access.config namespace
+    # (EzPublishLegacyExtension stores it under ezsettings.* but our ChainConfigResolver uses ibexa.site_access.config.*)
+    ibexa.site_access.config.default.legacy_mode: false
+    ibexa.site_access.config.site.legacy_mode: false
+    ibexa.site_access.config.legacy_site.legacy_mode: true
+    ibexa.site_access.config.legacy_admin.legacy_mode: true
+    ibexa.site_access.config.legacy_site.url_alias_router: false
+    ibexa.site_access.config.legacy_admin.url_alias_router: false
+    # LegacyMapper/Configuration::getClusterSettings() always fires because dfs_nfs_path has a default
+    # value. It then requires these parameters even when DFS is not in use. Define stubs here so
+    # the legacy kernel can boot without error; FileHandler is overridden to eZFSFileHandler via
+    # injected_settings in ez_publish_legacy.yaml to prevent DFS from activating.
+    dfs_database_host: 'localhost'
+    dfs_database_port: ''
+    dfs_database_name: ''
+    dfs_database_user: ''
+    dfs_database_password: ''
+
+services:
+    # Fix: ezpublish.config.resolver is registered as an empty standalone ChainConfigResolver.
+    # Override it as an alias to the real resolver (Ibexa\Bundle\Core\DependencyInjection\Configuration\ChainConfigResolver)
+    # which has all 4 sub-resolvers (DefaultScope, SiteAccessGroup, StaticSiteAccess, GlobalScope) wired in.
+    ezpublish.config.resolver:
+        alias: Ibexa\Bundle\Core\DependencyInjection\Configuration\ChainConfigResolver
+        public: true
+
+    # LegacyMapper/SiteAccess calls $this->container->get('ezpublish.siteaccess') directly.
+    # Must be a public alias to the shared Ibexa\Core\MVC\Symfony\SiteAccess service so
+    # the old bridge mapper gets the same object that SiteAccessListener mutates per-request
+    # (setting ->name to the matched siteaccess, e.g. 'legacy_site' or 'legacy_admin').
+    # Using a standalone class: definition here creates a second, never-updated instance
+    # which always returns name='site' (the Ibexa default), causing eZSiteAccess::change('site')
+    # to find no siteaccess override dir and fall back to the base SiteDesign=admin.
+    ezpublish.siteaccess:
+        alias: 'Ibexa\Core\MVC\Symfony\SiteAccess'
+        public: true
+
+    # ngsymfonytoolsapicontentconverter (and others) call $container->get('ezpublish.api.repository')
+    # directly at runtime — the service must be public so Symfony doesn't inline/remove it.
+    ezpublish.api.repository:
+        alias: Ibexa\Contracts\Core\Repository\Repository
+        public: true
+
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+            - '../src/ezpublish_legacy/app/root/config.php'
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+
+    App\EventSubscriber\LegacyInjectedSettingsSubscriber:
+        arguments:
+            $injectedSettings: '%app.legacy.injected_settings%'
+            $injectedMergeSettings: '%app.legacy.injected_merge_settings%'
+            $siteaccessInjectedSettings: '%app.legacy.siteaccess_injected_settings%'
+            $siteaccessInjectedMergeSettings: '%app.legacy.siteaccess_injected_merge_settings%'
+            $siteAccess: '@ezpublish.siteaccess'
+
+    # Override the legacy bridge RestListener with a safe version that guards
+    # against ezxFormToken not being loaded (it's only available after the legacy
+    # kernel boots, which never happens on pure-Symfony siteaccesses like /admin/).
+    ezpublish_legacy.rest_listener:
+        class: App\EventListener\LegacyRestListener
+        arguments: ['%ibexa.rest.csrf_token_intention%']
+        tags:
+            - { name: kernel.event_subscriber }
+
+    # Prevent App\ autoconfig from registering a second instance of LegacyRestListener.
+    App\EventListener\LegacyRestListener:
+        autoconfigure: false
+        arguments: ['%ibexa.rest.csrf_token_intention%']
+
+    # Override the legacy bridge RequestListener: the upstream calls the removed
+    # $repository->setCurrentUser() / ->getCurrentUserReference() methods.
+    # Ibexa 4.x moved those to $repository->getPermissionResolver()->{set,get}CurrentUserReference().
+    ezpublish_legacy.request_listener:
+        class: App\EventListener\LegacyRequestListener
+        arguments:
+            - '@ezpublish.config.resolver'
+            - '@ezpublish.api.repository'
+            - '@security.token_storage'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    App\EventListener\LegacyRequestListener:
+        autoconfigure: false
+        arguments:
+            - '@ezpublish.config.resolver'
+            - '@ezpublish.api.repository'
+            - '@security.token_storage'
+
+    # ── Exponential Platform installer type "exponential-oss" ──────────────────
+    # Registers the "exponential-oss" install type so that:
+    #   php bin/console ibexa:install exponential-oss
+    #   php bin/console ezplatform:install exponential-oss  (deprecated alias)
+    # both work.  Delegates to CoreInstaller (schema + cleandata.sql seed data).
+    App\Installer\ExponentialOssInstaller:
+        autowire: true
+        lazy: false
+        parent: Ibexa\Bundle\RepositoryInstaller\Installer\DbBasedInstaller
+        tags:
+            - { name: ibexa.installer, type: exponential-oss }

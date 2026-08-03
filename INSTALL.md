@@ -28,8 +28,12 @@
 4. **Configure the environment**:
    ```bash
    cp .env .env.local
-   # edit .env.local with your database URL and APP_SECRET
+   # Replace the empty APP_SECRET with a generated secret:
+   sed -i "s/^APP_SECRET=$/APP_SECRET=$(openssl rand -hex 16)/" .env.local
+   # edit .env.local with your database URL
    ```
+
+   The `APP_SECRET` must not be empty; `php bin/console cache:clear --env=prod` will fail with a `kernel.secret` error if it is not set.
 5. **Set up the database**:
    ```bash
    php bin/console doctrine:database:create
