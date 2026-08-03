@@ -1,0 +1,50 @@
+{
+  "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
+    "@babel/preset-react": "^7.26.0",
+    "@babel/runtime": "^7.26.0",
+    "@ckeditor/ckeditor5-dev-utils": "^59.0.0",
+    "@hotwired/stimulus": "^3.0.0",
+    "@ibexa/frontend-config": "https://github.com/ibexa/frontend-config#v5.0.2",
+    "@ibexa/ts-config": "https://github.com/ibexa/ts-config-ibexa#v1.1.4",
+    "@svgr/webpack": "^8.1.0",
+    "@symfony/stimulus-bridge": "^3.0.0",
+    "@symfony/webpack-encore": "^5.1.0",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "ckeditor5": "^48.3.1",
+    "core-js": "^3.42.0",
+    "file-loader": "^6.0.0",
+    "marked": "^18.0.7",
+    "postcss": "^8.5.0",
+    "postcss-loader": "^4.3.0",
+    "raw-loader": "^4.0.1",
+    "regenerator-runtime": "^0.14.1",
+    "sass": "^1.77.6",
+    "sass-loader": "^16.0.8",
+    "style-loader": "^2.0.0",
+    "ts-loader": "^9.5.1",
+    "turndown": "^7.2.4",
+    "turndown-plugin-gfm": "^1.0.2",
+    "typescript": "^5.6.3",
+    "webpack": "^5.99.7",
+    "webpack-cli": "^6.0.1"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "dev-server": "encore dev-server",
+    "dev": "encore dev",
+    "watch": "encore dev --watch",
+    "build": "encore production --progress",
+    "ibexa:dev": "encore dev --config-name ibexa",
+    "ibexa:watch": "encore dev --watch --config-name ibexa",
+    "ibexa:build": "encore production --progress --config-name ibexa && encore production --progress --config-name react && encore production --progress --config-name reactDOM && encore production --progress --config-name richtext"
+  },
+  "packageManager": "yarn@1.22.22"
+}

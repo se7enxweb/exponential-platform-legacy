@@ -62,7 +62,8 @@
             "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
             "ezpublish:legacy:assets_install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
             "ezpublish:legacybundles:install_extensions --relative": "symfony-cmd",
-            "cache:clear": "symfony-cmd"
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
         "project-scripts": [
             "@php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php"

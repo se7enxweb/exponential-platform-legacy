@@ -11,6 +11,41 @@
 
 ---
 
+## Quick Start for New Users
+
+1. **System requirements**: PHP 8.3+, Composer 2.x, **Node.js 24 LTS**, Yarn 1.22.x, and a MySQL/MariaDB/PostgreSQL/SQLite database.
+2. **Install Node.js 24 LTS** (this is a version jump — the previous release required Node.js 20 LTS):
+   ```bash
+   source ~/.nvm/nvm.sh
+   nvm install 24
+   nvm use 24
+   npm install -g yarn@1.22.22
+   ```
+3. **Install PHP dependencies**:
+   ```bash
+   composer install
+   ```
+4. **Configure the environment**:
+   ```bash
+   cp .env .env.local
+   # edit .env.local with your database URL and APP_SECRET
+   ```
+5. **Set up the database**:
+   ```bash
+   php bin/console doctrine:database:create
+   php bin/console exponential:install
+   ```
+6. **Build frontend assets**:
+   ```bash
+   yarn install
+   yarn dev
+   ```
+7. **Configure the web server** to point `DocumentRoot` at `public/` and restart PHP-FPM / the web server.
+
+The detailed sections below expand each step.
+
+---
+
 > **Console Command Prefix Convention**
 >
 > All `bin/console` commands in this distribution support three name prefixes. Only `exponential:` is the canonical name going forward; the others are deprecated aliases that remain fully functional for backward compatibility:
@@ -96,30 +131,31 @@
 
 ### Node.js & Yarn
 
-- [Node.js](https://nodejs.org/en/download/) **20 LTS** — managed via [nvm](https://github.com/nvm-sh/nvm) (recommended on all platforms)
-- [Yarn](https://classic.yarnpkg.com/en/docs/install) **1.22.x** — activated via [corepack](https://github.com/nodejs/corepack) `enable` after `nvm use 20`
-- Do not use Node.js 18 or 22 — only 20 LTS is tested and supported for this release
+- [Node.js](https://nodejs.org/en/download/) **24 LTS** — managed via [nvm](https://github.com/nvm-sh/nvm) (recommended on all platforms)
+- [Yarn](https://classic.yarnpkg.com/en/docs/install) **1.22.x** — install globally with `npm install -g yarn@1.22.22` after `nvm use 24`
+- **Version jump from previous release:** This distribution now requires **Node.js 24 LTS**; the prior release required and only supported Node.js 20 LTS.
+- Do not use Node.js 18, 20, or 22 — only 24 LTS is tested and supported for this release
 
-Installing nvm + Node.js 20 LTS (all UNIX / macOS / BSD / WSL):
+Installing nvm + Node.js 24 LTS (all UNIX / macOS / BSD / WSL):
 
 ```bash
 # Universal installer — works on Linux (all distros), macOS, BSD, WSL
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
 source ~/.nvm/nvm.sh           # or restart your shell
-nvm install 20
-nvm use 20
-corepack enable                # activates Yarn 1.22.x
+nvm install 24
+nvm use 24
+npm install -g yarn@1.22.22    # installs Yarn 1.22.x for this Node version
 ```
 
 | OS | Package manager install |
 |---|---|
 | Debian / Ubuntu / Mint / Pop!_OS | `apt install nodejs npm` then `npm i -g yarn` |
-| RHEL / CentOS / AlmaLinux / Rocky | `dnf module enable nodejs:20 && dnf install nodejs` |
+| RHEL / CentOS / AlmaLinux / Rocky | `dnf module enable nodejs:24 && dnf install nodejs` |
 | Fedora | `dnf install nodejs` |
-| openSUSE / SUSE SLES | `zypper install nodejs20` |
+| openSUSE / SUSE SLES | `zypper install nodejs24` |
 | Arch / Manjaro | `pacman -S nodejs npm` |
-| FreeBSD | `pkg install node20` |
-| macOS (Homebrew) | `brew install node@20` |
+| FreeBSD | `pkg install node24` |
+| macOS (Homebrew) | `brew install node@24` |
 | Generic binary | nodejs.org/en/download |
 
 ### Composer
@@ -187,8 +223,8 @@ sudo mv composer.phar /usr/local/bin/composer
 |---|---|---|
 | PHP | 8.3 | 8.3 or 8.5 |
 | Composer | 2.x | latest 2.x |
-| Node.js | 20 LTS | 20 LTS (via nvm) |
-| Yarn | 1.x | 1.22.22 (corepack) |
+| Node.js | 24 LTS | 24 LTS (via nvm) |
+| Yarn | 1.x | 1.22.22 (npm install -g) |
 | MySQL | 8.0 | 8.0+ (utf8mb4) |
 | MariaDB | 10.3 | 10.6+ |
 | PostgreSQL | 14 | 16+ |
