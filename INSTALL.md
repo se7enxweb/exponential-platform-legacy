@@ -352,9 +352,9 @@ Continue from [Section 4](#4-environment-configuration-envlocal).
 ### 3b. GitHub git clone (developers)
 
 ```bash
-git clone git@github.com:se7enxweb/exponential-platform-legacy.git
+git clone https://github.com/se7enxweb/exponential-platform-legacy.git
 cd exponential-platform-legacy
-git checkout 3.x
+git checkout 4.6.x
 ```
 
 #### Step 1 — Install PHP dependencies
@@ -2590,7 +2590,7 @@ symfony php bin/console <cmd>           # run console through Symfony CLI's PHP 
 ```bash
 # ── Branching ──────────────────────────────────────────────────────────────
 git checkout -b feature/my-feature          # new feature branch off current
-git checkout 3.x                            # switch to the stable branch
+git checkout 4.6.x                          # switch to the stable branch of this line
 
 # ── Save Points ────────────────────────────────────────────────────────────
 git add -A && git commit -m "chore: <description>"
