@@ -183,7 +183,7 @@ setfacl -dR -m u:www-data:rwX -m g:www-data:rwX var web/var ezpublish_legacy/var
 # 6. Install legacy bundle assets and generate autoloads
 php bin/console assets:install --symlink --relative web
 php bin/console ezpublish:legacybundles:install_extensions
-php bin/console ezpublish:legacy:generate-autoloads
+(cd ezpublish_legacy && php bin/php/ezpgenerateautoloads.php --extension)
 
 # 7. Build frontend assets
 nvm use 14 && yarn install && yarn encore production
@@ -194,7 +194,7 @@ php bin/console assetic:dump
 
 # 9. Clear all caches (Symfony + Legacy kernel)
 php bin/console cache:clear
-php bin/console ezpublish:legacy:clear-cache
+php bin/console ezpublish:legacy:script bin/php/ezcache.php --clear-all
 
 # 10. Start
 symfony server:start
@@ -319,14 +319,14 @@ php bin/console assetic:dump                                 # dump assetic asse
 ### Exponential (Legacy) Kernel (LegacyBridge)
 
 ```bash
-# Clear legacy kernel caches (template / ini / content / override)
-php bin/console ezpublish:legacy:clear-cache
+# Clear legacy kernel caches (template / ini / content / override), run through the bridge with the platform database settings
+php bin/console ezpublish:legacy:script bin/php/ezcache.php --clear-all
 
 # Install assets from Symfony bundles into ezpublish_legacy extensions
 php bin/console ezpublish:legacybundles:install_extensions
 
 # Regenerate legacy autoload arrays (required after adding/removing extensions)
-php bin/console ezpublish:legacy:generate-autoloads
+(cd ezpublish_legacy && php bin/php/ezpgenerateautoloads.php --extension)
 
 # Run legacy cronjobs (use in crontab targeting legacy_admin siteaccess)
 php ezpublish_legacy/runcronjobs.php --siteaccess legacy_admin
