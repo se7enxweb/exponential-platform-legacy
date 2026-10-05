@@ -26,9 +26,19 @@
 > | `exponential:*` | `ibexa:*` | `ezplatform:*` / `ezpublish:*` |
 >
 > Commands in this guide use `exponential:*` where the rename has been applied. Commands still
-> shown with an `ezplatform:` or `ezpublish:` prefix (e.g. `ezplatform:cron:run`,
-> `ezplatform:graphql:generate-schema`, `ezpublish:legacy:clear-cache`) have not yet been
-> migrated to the `exponential:` prefix in this release — they are fully functional as-is.
+> shown with an `ezplatform:` prefix (e.g. `ezplatform:cron:run`,
+> `ezplatform:graphql:generate-schema`) have not yet been migrated to the `exponential:` prefix
+> in this release — they are fully functional as-is.
+>
+> The bridge's legacy commands are shown with their `ezpublish:` names (`ezpublish:legacy:script`,
+> `ezpublish:legacy:assets_install`, `ezpublish:legacybundles:install_extensions`), because those
+> exist in every LegacyBridge 4 release this line allows: the `exponential:legacy:*` names exist
+> from bridge `v4.0.0.2` on, and a project still locked to `v4.0.0.0` or `v4.0.0.1` knows only
+> the `ezpublish:` ones (`composer show se7enxweb/legacy-bridge` tells you which you have). There
+> is no `ezpublish:legacy:clear-cache` or `ezpublish:legacy:generate-autoloads` command in any
+> LegacyBridge release: clear the legacy caches with
+> `ezpublish:legacy:script bin/php/ezcache.php --clear-all` and regenerate the legacy autoloads with
+> `ezpublish:legacy:script bin/php/ezpgenerateautoloads.php --extension`.
 
 ---
 
@@ -404,7 +414,7 @@ php bin/console lexik:jwt:generate-keypair
 #### Step 9 — Regenerate legacy autoloads
 
 ```bash
-php bin/console ezpublish:legacy:generate-autoloads
+php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php --extension
 ```
 
 #### Step 10 — Generate GraphQL schema
@@ -417,7 +427,7 @@ php bin/console ezplatform:graphql:generate-schema
 
 ```bash
 php bin/console cache:clear
-php bin/console ezpublish:legacy:clear-cache
+php bin/console ezpublish:legacy:script bin/php/ezcache.php --clear-all
 ```
 
 #### Step 12 — Reindex search
@@ -696,7 +706,7 @@ restrictive.
 
 ```bash
 php bin/console cache:clear
-php bin/console ezpublish:legacy:clear-cache
+php bin/console ezpublish:legacy:script bin/php/ezcache.php --clear-all
 ```
 
 #### The Legacy kernel
@@ -1081,7 +1091,7 @@ Required after your first install and after adding or removing any legacy extens
 
 ```bash
 # Via Symfony console (recommended)
-php bin/console ezpublish:legacy:generate-autoloads
+php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php --extension
 
 # Or directly from inside the legacy directory
 cd ezpublish_legacy && php bin/php/ezpgenerateautoloads.php && php bin/php/ezpgenerateautoloads.php --extension
@@ -1091,7 +1101,7 @@ cd ..
 ### Clear legacy cache
 
 ```bash
-php bin/console ezpublish:legacy:clear-cache
+php bin/console ezpublish:legacy:script bin/php/ezcache.php --clear-all
 ```
 
 ### Active extensions
@@ -1110,8 +1120,8 @@ ActiveExtensions[]=sevenx_themes_simple
 After adding or removing an extension entry, regenerate autoloads and clear cache:
 
 ```bash
-php bin/console ezpublish:legacy:generate-autoloads
-php bin/console ezpublish:legacy:clear-cache
+php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php --extension
+php bin/console ezpublish:legacy:script bin/php/ezcache.php --clear-all
 ```
 
 ### Legacy Admin UI access
@@ -1123,9 +1133,9 @@ Default credentials: **admin / publish** — change immediately after install.
 To run a legacy script:
 
 ```bash
-php bin/console exponential:legacy:script <script-name>
+php bin/console ezpublish:legacy:script <script-name>
 # Example:
-php bin/console exponential:legacy:script bin/php/ezpgenerateautoloads.php
+php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php
 ```
 
 ---
@@ -1290,13 +1300,13 @@ php bin/console fos:httpcache:invalidate:tag <tag>
 ### Clear legacy kernel cache
 
 ```bash
-php bin/console ezpublish:legacy:clear-cache
+php bin/console ezpublish:legacy:script bin/php/ezcache.php --clear-all
 ```
 
 ### Clear everything at once (Symfony + Legacy)
 
 ```bash
-php bin/console cache:clear && php bin/console ezpublish:legacy:clear-cache
+php bin/console cache:clear && php bin/console ezpublish:legacy:script bin/php/ezcache.php --clear-all
 ```
 
 ### Nuclear option (development)
@@ -1381,10 +1391,10 @@ php bin/console bazinga:js-translation:dump public/assets --merge-domains --env=
 # 9. Clear & warm up caches
 php bin/console cache:clear --env=prod
 php bin/console cache:warmup --env=prod
-php bin/console ezpublish:legacy:clear-cache
+php bin/console ezpublish:legacy:script bin/php/ezcache.php --clear-all
 
 # 10. Regenerate legacy autoloads (if extensions changed)
-php bin/console ezpublish:legacy:generate-autoloads
+php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php --extension
 
 # 11. Reindex search (if content model changed)
 # php bin/console exponential:reindex --env=prod
@@ -1408,7 +1418,7 @@ composer install
 php bin/install-legacy-links
 php bin/console doctrine:migration:migrate --allow-no-migration
 php bin/console cache:clear
-php bin/console ezpublish:legacy:clear-cache
+php bin/console ezpublish:legacy:script bin/php/ezcache.php --clear-all
 ```
 
 ### Update Composer packages
@@ -1424,8 +1434,8 @@ composer update se7enxweb/legacy-bridge
 php bin/install-legacy-links
 php bin/console doctrine:migration:migrate --allow-no-migration
 php bin/console cache:clear
-php bin/console ezpublish:legacy:generate-autoloads
-php bin/console ezpublish:legacy:clear-cache
+php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php --extension
+php bin/console ezpublish:legacy:script bin/php/ezcache.php --clear-all
 php bin/console exponential:reindex   # if content model schema may have changed
 ```
 
@@ -1449,7 +1459,7 @@ yarn dev
 ### Regenerate legacy autoloads (after adding/removing legacy extensions)
 
 ```bash
-php bin/console ezpublish:legacy:generate-autoloads
+php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php --extension
 # or from inside the legacy directory:
 cd ezpublish_legacy && php bin/php/ezpgenerateautoloads.php && php bin/php/ezpgenerateautoloads.php --extension
 ```
@@ -1465,10 +1475,10 @@ Add to crontab (`crontab -e -u www-data`):
 */5 * * * * /usr/bin/php /var/www/exponential/bin/console ezplatform:cron:run --env=prod >> /var/log/exponential-cron.log 2>&1
 
 # Legacy kernel cron runner via LegacyBridge (every 5 minutes)
-*/5 * * * * /usr/bin/php /var/www/exponential/ezpublish_legacy/runcronjobs.php --siteaccess legacy_admin >> /var/log/exponential-legacy-cron.log 2>&1
+*/5 * * * * cd /var/www/exponential && /usr/bin/php bin/console --env=prod --siteaccess=legacy_admin ezpublish:legacy:script runcronjobs.php >> /var/log/exponential-legacy-cron.log 2>&1
 
 # Legacy kernel front-end cron (if legacy_site has cronjobs)
-*/5 * * * * /usr/bin/php /var/www/exponential/ezpublish_legacy/runcronjobs.php --siteaccess legacy_site >> /var/log/exponential-legacy-site-cron.log 2>&1
+*/5 * * * * cd /var/www/exponential && /usr/bin/php bin/console --env=prod --siteaccess=legacy_site ezpublish:legacy:script runcronjobs.php >> /var/log/exponential-legacy-site-cron.log 2>&1
 ```
 
 ---
@@ -1585,7 +1595,7 @@ yarn ibexa:build
 ```bash
 # Clear both Symfony and Legacy caches
 php bin/console cache:clear
-php bin/console ezpublish:legacy:clear-cache
+php bin/console ezpublish:legacy:script bin/php/ezcache.php --clear-all
 
 # Nuclear option
 rm -rf var/cache/dev var/cache/prod
@@ -1624,7 +1634,7 @@ php bin/console cache:clear
 
 ```bash
 # Clear legacy template, ini, content, and override caches
-php bin/console ezpublish:legacy:clear-cache
+php bin/console ezpublish:legacy:script bin/php/ezcache.php --clear-all
 
 # Reinstall public assets
 php bin/console assets:install --symlink --relative public
@@ -1633,7 +1643,7 @@ php bin/console assets:install --symlink --relative public
 php bin/install-legacy-links
 
 # Regenerate legacy autoload arrays
-php bin/console ezpublish:legacy:generate-autoloads
+php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php --extension
 cd ezpublish_legacy && php bin/php/ezpgenerateautoloads.php && php bin/php/ezpgenerateautoloads.php --extension && cd ..
 ```
 
@@ -2263,7 +2273,7 @@ $EDITOR .env.local
 php bin/console cache:clear
 
 # 3. Clear the legacy kernel cache (it reads DB config from its own ini cache)
-php bin/console ezpublish:legacy:clear-cache
+php bin/console ezpublish:legacy:script bin/php/ezcache.php --clear-all
 
 # 4. Validate Doctrine entity mappings against the new DB
 php bin/console doctrine:schema:validate
@@ -2272,7 +2282,7 @@ php bin/console doctrine:schema:validate
 php bin/console doctrine:migration:migrate --allow-no-migration
 
 # 6. Re-run the legacy autoload generator (safe to run again; it regenerates the array)
-php bin/console ezpublish:legacy:generate-autoloads
+php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php --extension
 
 # 7. Regenerate the search index against the new DB
 php bin/console exponential:reindex
@@ -2296,7 +2306,7 @@ chown "$USER":www-data var/data_dev.db
 | Binary/blob content garbled | Charset mismatch during export | Re-export with explicit `--default-character-set=utf8mb4` (mysqldump) or `CLIENT_ENCODING=UTF8` (psql) |
 | `Serialization failure` (PostgreSQL) | Concurrent access during import | Import with `APP_ENV=dev` and no web traffic; use a maintenance window |
 | Image variation 404s | `ezcontentobject_attribute` row count mismatch | Verify row counts between source and target; re-run data transfer for that table |
-| Legacy Admin 500 after conversion | Legacy kernel ini cache has old DB type | `php bin/console ezpublish:legacy:clear-cache` then reload |
+| Legacy Admin 500 after conversion | Legacy kernel ini cache has old DB type | `php bin/console ezpublish:legacy:script bin/php/ezcache.php --clear-all` then reload |
 | SQLite `attempt to write a readonly database` | Web server user cannot write the `.db` file | `chmod 664 var/data_*.db && chown $USER:www-data var/data_*.db` |
 
 > 💾 **Git Save Point — database conversion complete**
@@ -2465,11 +2475,11 @@ php bin/console debug:config ibexa                          # dump full resolved
 ```bash
 # ── Cache ──────────────────────────────────────────────────────────────────
 # Clears legacy template cache, ini cache, content object cache, override cache
-php bin/console ezpublish:legacy:clear-cache
+php bin/console ezpublish:legacy:script bin/php/ezcache.php --clear-all
 
 # ── Autoloads ──────────────────────────────────────────────────────────────
 # Regenerate legacy autoload arrays — required after adding/removing extensions
-php bin/console ezpublish:legacy:generate-autoloads
+php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php --extension
 
 # From inside the legacy directory (also regenerates extension autoloads)
 cd ezpublish_legacy
@@ -2479,11 +2489,11 @@ cd ..
 
 # ── Script Runner ──────────────────────────────────────────────────────────
 # Run any legacy script (import scripts, one-off maintenance)
-php bin/console exponential:legacy:script <script-name>
+php bin/console ezpublish:legacy:script <script-name>
 
-# ── Cronjobs (direct — bypass Symfony, use in crontab) ─────────────────────
-php ezpublish_legacy/runcronjobs.php --siteaccess legacy_admin
-php ezpublish_legacy/runcronjobs.php --siteaccess legacy_site
+# ── Cronjobs (through the bridge, with the platform database settings) ────
+php bin/console --env=prod --siteaccess=legacy_admin ezpublish:legacy:script runcronjobs.php
+php bin/console --env=prod --siteaccess=legacy_site ezpublish:legacy:script runcronjobs.php
 
 # ── Legacy Symlinks (LegacyBridge edition specific) ────────────────────────
 php bin/install-legacy-links     # Create/verify all src/ → ezpublish_legacy/ symlinks
