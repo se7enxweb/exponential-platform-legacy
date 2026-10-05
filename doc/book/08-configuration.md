@@ -230,11 +230,14 @@ can go wrong: a variation whose filter has no ImageMagick equivalent in the brid
 alias but gets no `Filters[]` on the legacy side, so the legacy file comes out unscaled; compare the two images once
 after adding a variation. The sizes above are examples, not the values of any shipped design.
 
-The 4.6 recipe's `ibexa.yaml` adds `original` and `reference` variations with `reference: ~` and empty filters in the
-`default` scope and for `legacy_site` and `legacy_admin`, with the comment that a null built-in variation made
-`getImageSettings()` fail when the legacy kernel was built. The 4.6 and 5.0 recipes also declare
-`ibexa.site_access.config.default.imagemagick.pre_parameters` and `post_parameters` as empty container parameters,
-because the bridge reads them and no 4.x/5.x configuration parser defines them.
+The `ibexa.yaml` of the 4.6 and 5 recipes adds `original` and `reference` variations with `reference: ~` and empty
+filters in three scopes, among them `legacy_site` and `legacy_admin`, with the comment that a null built-in variation
+made `getImageSettings()` fail when the legacy kernel was built (also during `cache:clear`). The 5 recipe also
+declares `ibexa.site_access.config.default.imagemagick.pre_parameters` and `post_parameters` as empty container
+parameters in `ez_publish_legacy.yaml`, because the bridge reads them and no 5.x configuration parser defines them;
+on 4.6 the platform kernel still defines them itself (`Configuration/Parser/Image.php` and `default_settings.yml` of
+`se7enxweb/exponential-platform-dxp-core`), so the 4.6 recipe does not need the declaration. Keep both blocks when
+you rewrite these files.
 
 Removing aliases: the legacy events `image/removeAliases`, `image/trashAliases` and `image/purgeAliases` are wired to
 the platform's alias cleaner, so a legacy edit also clears the platform's variations of that image.
@@ -263,9 +266,25 @@ content. Languages themselves (`ezcontent_language`) live in the shared database
 | Legacy global overrides | `ezpublish_legacy/settings/override/` (in git) | `ezpublish_legacy/settings/override/` | `src/LegacySettings/override/`, linked in by `bin/install-legacy-links` | same |
 | Legacy siteaccess settings | `ezpublish_legacy/settings/siteaccess/legacy_admin/` (in git) | `ezpublish_legacy/settings/siteaccess/` | `src/ezpublish_legacy/app/settings/siteaccess/<name>/`, linked in | same |
 | Project legacy extension | | | `src/ezpublish_legacy/app` linked as `ezpublish_legacy/extension/app` | same |
+| Trusted proxies | `SYMFONY_TRUSTED_PROXIES`, read by `web/app.php` | `TRUSTED_PROXIES`, read by `config/packages/ezpublish.yaml` | `TRUSTED_PROXIES`, read by `config/packages/trusted_proxies.yaml` | same as 4.6 |
+| Recipe that wrote `config/` and `src/` | none (files in git) | none (files in git) | `sevenx-recipes` slot `1.2` | slot `1.4` |
 
 On 4.6 and 5.x, keep your changes in `src/`: `bin/install-legacy-links` runs on every `composer install` and
 `composer update` and re-creates the links into `ezpublish_legacy/`, which Composer may replace.
+
+**Which recipe your project got.** Symfony Flex picks the recipe folder from the version of
+`se7enxweb/exponential-platform-dxp`, and the two Legacy branches of that package carry branch aliases: `4.6.x-LB`
+is `1.2.x-dev`, `5.x-LB` is `1.4.x-dev`. So a 4.6 project is written by the recipe in folder `1.2` (the same files
+as the folder `4.6.x-LB-dev`, apart from `bin/install-legacy-links`), and a 5 project by the folder `1.4`, not by
+the folder `5.0`, an older copy of the same recipe. `symfony.lock` records which one ran:
+
+```bash
+grep -A6 '"se7enxweb/exponential-platform-dxp"' symfony.lock | grep '"version"'
+# expected on the 5 line: "version": "1.4" (twice: the package and its recipe)
+```
+
+The difference matters for the legacy kernel: the `1.4` override activates the table translator of the 5 line
+first ([10.6](10-upgrading-between-lines.md#106-from-33-to-46-and-from-46-to-5)), the `5.0` one does not.
 
 ## References
 
@@ -274,7 +293,10 @@ In this repository: [`app/config/ezplatform.yml`](../../app/config/ezplatform.ym
 [`config/app/packages/legacy.yaml`](https://github.com/se7enxweb/exponential-platform-legacy/blob/3.x/config/app/packages/legacy.yaml) and
 [`config/app/packages/ezpublish_siteaccess.yaml`](https://github.com/se7enxweb/exponential-platform-legacy/blob/3.x/config/app/packages/ezpublish_siteaccess.yaml);
 the 4.6 and 5.x project files in [se7enxweb/sevenx-recipes](https://github.com/se7enxweb/sevenx-recipes)
-(`se7enxweb/exponential-platform-dxp/4.6.x-LB-dev/` and `5.0/`).
+([`se7enxweb/exponential-platform-dxp/1.2/`](https://github.com/se7enxweb/sevenx-recipes/tree/master/se7enxweb/exponential-platform-dxp/1.2)
+and [`1.4/`](https://github.com/se7enxweb/sevenx-recipes/tree/master/se7enxweb/exponential-platform-dxp/1.4)); the
+branch aliases in the `composer.json` of [se7enxweb/exponential-platform-dxp](https://github.com/se7enxweb/exponential-platform-dxp)
+(branches `4.6.x-LB` and `5.x-LB`).
 
 The bridge: [se7enxweb/LegacyBridge](https://github.com/se7enxweb/LegacyBridge) (Composer package `se7enxweb/legacy-bridge`) (`bundle/LegacyMapper/`,
 `bundle/DependencyInjection/Configuration.php`, `bundle/Resources/config/view.yml`).
