@@ -38,7 +38,7 @@ checklist you can run on a fresh machine.
 | PostgreSQL | 9.5+ | 14+ | 14+ | 14+ |
 | SQLite | 3.35+ (development, tests) | 3.35+ | 3.35+ | 3.35+ |
 | Composer | 2.x | 2.x | 2.x | 2.x |
-| Node.js / Yarn (asset build only) | 14 LTS / 1.22 | 18 LTS / 1.22 | 20 LTS / 1.22 | 20 LTS / 1.22 |
+| Node.js / Yarn (asset build only) | 14 LTS / 1.22 | 18 LTS / 1.22 | 20 LTS / 1.22 | 20 LTS / 1.22 (`v5.0.2`); 24 LTS / 1.22 (branch) |
 | Serving | Exponential Velocity (PHP 8.1+), or Apache 2.4 / nginx 1.18+ with PHP-FPM | the same | the same (Velocity needs PHP 8.1+) | the same |
 
 The database versions and memory figures are those each line's README and installation guide state; the PHP floors
@@ -51,7 +51,7 @@ states the widest range; required packages narrow it.
 
 | Line | Skeleton `composer.json` | Narrowed by | Floor in practice |
 |---|---|---|---|
-| 2.5 | `^7.1.3 \|\| ^8.1 \|\| ^8.2` | `se7enxweb/exponential ^6.0.12`: the published 6.0.10 to 6.0.14 declare `^8.1 ...` | **8.1** |
+| 2.5 | `^7.1.3 \|\| ^8.1 \|\| ^8.2` | `se7enxweb/exponential ^6.0.12`: the releases it allows, 6.0.12 to 6.0.14, declare `^8.1 \|\| ... \|\| ^8.8` | **8.1** |
 | 3.x | `^8.0` | the same kernel range, through LegacyBridge 3 (`se7enxweb/exponential ^6.0.12`) | **8.1** |
 | 4.6.x | `^7.4 \|\| ^8.0 \|\| ... \|\| ^8.5` | LegacyBridge 4 (`php ^8.0`); the kernel's `dev-main` declares `^8.0 ...` | **8.0** |
 | 5.x | `>=8.3` | LegacyBridge 5 (`php ^8.4`, every release from 5.0.0.0 to 5.0.10) | **8.4** |
@@ -59,11 +59,13 @@ states the widest range; required packages narrow it.
 Notes:
 
 - `^8.1` in Composer means 8.1 up to, but not including, 9.0, so the constraint itself does not stop PHP 8.3 or 8.5 on
-  the 2.5 line. The 2.5 installation guide says "tested through 8.2", its README recommends 8.3. Treat 8.1 and 8.2 as
-  tested and newer versions as accepted.
-- The 2.5 installation guide (`doc/INSTALL.md`) tells you to run Composer with `--ignore-platform-reqs`. That switch
-  skips the PHP and extension checks entirely, so Composer can then install packages your PHP cannot run. Use it only
-  after you checked the requirements yourself, never to get around a PHP version that is too old.
+  the 2.5 line. The installation guide published with `v2.5.0.3` says "tested through 8.2", the README recommends 8.3.
+  Treat 8.1 and 8.2 as tested and newer versions as accepted.
+- The installation guide published with `v2.5.0.3` added `--ignore-platform-reqs` to every Composer command; the
+  current short guide on `master` ([doc/INSTALL.md](../INSTALL.md)) no longer does. That switch skips the PHP and
+  extension checks entirely, so Composer can then install packages your PHP cannot run, and the failure only shows up
+  later as a fatal error in a request. Use it only after you checked the requirements yourself, never to get around a
+  PHP version that is too old.
 - Exponential Velocity needs PHP 8.1 or later (its `composer.json`: `php >=8.1`), so on 4.6.x with PHP 8.0 you serve
   the site with Apache or nginx ([chapter 6](06-serving-the-site.md)).
 - The legacy kernel's own view of PHP versions, including what changed between 8.0 and 8.5, is in the Exponential 6
@@ -77,6 +79,19 @@ command -v php                           # which binary that is
 php --ini                                # which php.ini files the CLI reads
 php-fpm -v                               # the FPM side, if you use PHP-FPM (the name varies: php-fpm8.3, ...)
 ```
+
+A typical result on a server prepared for the 4.6.x line, and how to read it:
+
+```text
+$ php -v
+PHP 8.3.12 (cli) (built: Sep 24 2026 10:12:44) (NTS)       <- 8.3: fine for 2.5, 3.x and 4.6.x, too old for 5.x
+$ php --ini
+Loaded Configuration File:         /etc/php/8.3/cli/php.ini <- the CLI's file; FPM reads /etc/php/8.3/fpm/php.ini
+```
+
+What goes wrong when the floor is missed: Composer stops before it installs anything, with a message such as
+`se7enxweb/legacy-bridge v5.0.10 requires php ^8.4 -> your php version (8.3.12) does not satisfy that requirement`.
+That is the check working as intended; install a newer PHP (or choose an older line) rather than overriding it.
 
 ## 2.3 PHP extensions
 
@@ -123,8 +138,15 @@ php -m | grep -i -E '^(ctype|curl|gd|imagick|iconv|intl|json|mbstring|xml|xsl|pd
 | `upload_max_filesize`, `post_max_size` | your largest upload | the shipped Apache and nginx examples allow 48 MB request bodies |
 | `opcache.enable` | `1` | performance; for Velocity see [chapter 6](06-serving-the-site.md) |
 | `realpath_cache_size` | 4096K or more | Symfony recommends it for the many files of a full stack |
+| `display_errors` | `Off` on production | errors belong in the log; on 2.5 `web/app.php` switches display off itself when debugging is off (branch commit `7605f57`, planned release `v2.5.0.4`), while `v2.5.0.3` and earlier switched it **on** for every request |
 
 The CLI and the web server may read different `php.ini` files (`php --ini` shows the CLI's). Set the values for both.
+Exponential Velocity is a third place. Its workers are started by the PHP **CLI**, so they read the CLI's `php.ini`,
+not PHP-FPM's. On top of that, the engine's compatibility layer reports and enforces some `ini` values of its own
+(`Q.compat.ini`); its `--preset=symfony` sets `upload_max_filesize` to 10M and `post_max_size` to 12M, and a preset is
+applied after the configuration file, so it wins over values you wrote there. Chapter 6
+([6.3.3](06-serving-the-site.md#633-two-ways-to-run-a-symfony-application)) therefore writes the compatibility
+settings into the configuration file instead of using the preset.
 The legacy kernel's checks of `php.ini` are described in the Exponential 6 book,
 [2. Requirements](https://github.com/se7enxweb/exponential/blob/main/doc/install/02-requirements.md).
 
@@ -159,16 +181,28 @@ production server that receives built assets.
 | 2.5 | 14 LTS | 1.22 (classic) | Webpack Encore 1.8.2 with webpack 4.46 needs Node 12 to 14; Node 16 or later breaks the build |
 | 3.x | 18 LTS | 1.22 | the project has `.nvmrc` with `v18`, so `nvm use` picks it |
 | 4.6.x | 20 LTS | 1.22, through `corepack enable` | "only 20 LTS is tested" |
-| 5.x | 20 LTS | 1.22, through `corepack enable` | the same |
+| 5.x, release `v5.0.2` | 20 LTS | 1.22, through `corepack enable` | the same |
+| 5.x, branch since 2026-08-03 | 24 LTS | 1.22.22, `npm install -g yarn@1.22.22`; `package.json` names `"packageManager": "yarn@1.22.22"` | "a version jump": only 24 LTS is tested for the branch's new `package.json` (Encore 5, Sass 1.77, CKEditor 5 v48; commit `27ff2ca`, planned release `v5.0.3.1`) |
 
 [nvm](https://github.com/nvm-sh/nvm) lets one machine keep several Node versions, which is useful when you build more
-than one line.
+than one line:
+
+```bash
+nvm install 20 && nvm install 24        # once
+nvm use 20 && node -v                   # v20.x.y: the 4.6.x build, the v5.0.2 build
+nvm use 24 && node -v                   # v24.x.y: the 5.x branch build
+```
+
+The wrong Node version rarely announces itself clearly. On 2.5, webpack 4 under Node 17 or later (OpenSSL 3) stops
+with `error:0308010C:digital envelope routines::unsupported`; on the newer lines a Node that is too old usually fails
+while Yarn installs packages, with `The engine "node" is incompatible with this module`. Check `node -v` first whenever
+an asset build fails.
 
 ## 2.8 Serving the site
 
 | Way | Needs | Chapter |
 |---|---|---|
-| **Exponential Velocity** (recommended) | PHP 8.1 or later with `pcntl`, `posix`, `sockets`, `openssl`; for the CGI mode also `php-cgi` | [6.3](06-serving-the-site.md#63-exponential-velocity) |
+| **Exponential Velocity** (recommended) | PHP 8.1 or later with `sockets` (required by the engine's `composer.json`), `pcntl` and `posix` (workers), `openssl` (HTTPS); for the CGI mode also `php-cgi` of the same PHP version; container images exist for PHP 8.2 to 8.5 | [6.3](06-serving-the-site.md#63-exponential-velocity) |
 | Apache 2.4 | `mod_rewrite`, `mod_env`, recommended `mod_setenvif`, `mod_expires`, `mod_headers`, `mod_deflate`; PHP-FPM through `mod_proxy_fcgi` (event or worker MPM) or `mod_php` (prefork) | [6.5](06-serving-the-site.md#65-apache-24) |
 | nginx | 1.18 or later, PHP-FPM | [6.6](06-serving-the-site.md#66-nginx) |
 | Symfony CLI | development only (`symfony server:start`) | [6.4](06-serving-the-site.md#64-the-symfony-cli-development-only) |
@@ -207,6 +241,22 @@ composer --version                            # 2.6: Composer 2.x
 mysql --version || psql --version || sqlite3 --version   # 2.5
 node -v && yarn -v                            # 2.7, only on the build machine
 ```
+
+What a server that passes looks like, for the 4.6.x line with MariaDB, and what each line checks:
+
+```text
+PHP 8.3.12 (cli) ...                         >= the floor of 2.2 (8.0 for 4.6.x)
+ctype curl gd iconv intl json mbstring ...   every extension of 2.3, including mysqli next to pdo_mysql
+memory_limit => 512M => 512M                 2.4; the CLI value (FPM's may differ)
+date.timezone => Europe/Berlin               set, not "no value"
+Composer version 2.8.x ...                   2.x
+mysql  Ver 15.1 Distrib 10.11.x-MariaDB      2.5: MariaDB 10.3 or later
+v20.18.x / 1.22.22                           2.7: Node 20, Yarn classic
+```
+
+The two failures this list catches most often are a missing `mysqli` (or `pgsql`, `sqlite3`) next to the PDO driver,
+which lets the new stack work while the legacy kernel fails with a database error, and a `date.timezone` that is set
+for the CLI but not for PHP-FPM, which shows warnings only on the web.
 
 ## 2.12 References
 
