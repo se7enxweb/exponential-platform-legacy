@@ -38,6 +38,12 @@ bridge command differs per line, both are given:
 | Platform install, reindex | `ezplatform:install`, `ezplatform:reindex` | `exponential:install`, `exponential:reindex` (3.x from kernel v1.3.45; `ibexa:*` before) |
 | Platform cron | `ezplatform:cron:run` | `ibexa:cron:run` (`ezplatform:cron:run` is an alias on 3.x and 4.6) |
 
+The old bridge names (`ezpublish:legacy:script` and the rest) work on **every** line and every bridge release, so
+scripts that must run on more than one line, and the Composer scripts of the 5 line, use them. The new names exist
+from bridge `v3.0.0.30` on 3.x (so in every release the line's `^3.0.0.35` allows), from `v4.0.0.2` on 4.6 (a 4.6 project still locked to bridge `v4.0.0.0` or
+`v4.0.0.1` knows only the old ones) and in every 5.x release. `php bin/console list exponential` shows which you
+have.
+
 There are **no** `ezpublish:legacy:clear-cache` or `ezpublish:legacy:generate-autoloads` commands on any line,
 although older documents of this repository use them; the bridge registers exactly six commands (`init`,
 `configure`, `install-extensions`, `symlink`, `assets-install`, `script`).
@@ -177,7 +183,7 @@ own cronjobs.
 |---|---|---|
 | Engine choice | `SEARCH_ENGINE`: `legacy` (SQL, default) or `solr` | `site.ini [SearchSettings] SearchEngine` |
 | 2.5 as shipped | `legacy` | the `ezplatformsearch` extension (package `netgen/ezplatformsearch`) is active and sets `SearchEngine=ezplatformsearch`: legacy searches and indexes through the platform's engine, so one index serves both |
-| 3.x as shipped | `legacy` | `ezplatformsearch` is in the injected `ActiveExtensions`, but the branch's `composer.json` does not require `netgen/ezplatformsearch`; install it or remove it from the list |
+| 3.x as shipped | `legacy` | legacy uses its own `ezsearch` engine. The branch does not require `netgen/ezplatformsearch`; up to tag `v3.3.44.7` the extension was nevertheless listed in the injected `ActiveExtensions` (`config/app/packages/legacy.yaml`) and in the legacy override, which commit `5ace002` of 5 October 2026 removed (in the next 3.x release, `v3.3.44.8`). On an older copy, delete both entries or install the package |
 | 4.6, 5.x as shipped | `legacy` | the package is installed but not activated by the recipe's injected `ActiveExtensions`: legacy uses its own `ezsearch` engine |
 
 Rebuild the platform index with `ezplatform:reindex` (2.5) or `exponential:reindex` (later); options include
@@ -247,8 +253,13 @@ assumption.
 In the order of their effect:
 
 1. **Production environment.** 2.5 decides the environment from `SYMFONY_ENV` (default `prod`) in `web/app.php`;
-   3.x and later from `APP_ENV`. Run `cache:warmup --env=prod` after each clear. Check that the web server does not
-   route to `app_dev.php` (the `web/.htaccess` of releases `v2.5.0.1` to `v2.5.0.3` does: see [13.2](13-security-hardening.md#132-what-the-web-server-must-never-hand-out)).
+   3.x and later from `APP_ENV`. Run `cache:warmup --env=prod` after each clear. Check that nothing forces `dev`:
+   the `web/.htaccess` of releases `v2.5.0.1` to `v2.5.0.3` routes every request to `app_dev.php` (corrected on
+   `master` in `fa091cd`), the `public/.htaccess` of the 3.x releases up to `v3.3.44.7` sets `APP_ENV=dev`
+   (corrected in `66f13e1`), and the `public/.htaccess` the 4.6 and 5 recipes write still sets it
+   ([13.4](13-security-hardening.md#134-debug-output-and-error-display)). A site in `dev` is several times slower,
+   because Symfony checks every configuration file for changes and collects profiler data on each request.
+   `curl -sI https://example.com/ | grep -i x-debug-token` prints nothing on a site in `prod`.
 2. **HTTP cache.** On 2.5 `web/app.php` wraps the kernel in `AppCache` (Symfony's reverse proxy) unless
    `SYMFONY_HTTP_CACHE` says otherwise or the environment is `dev`; behind Varnish switch it off and set
    `HTTPCACHE_PURGE_TYPE=http` and `HTTPCACHE_PURGE_SERVER` (singular) to Varnish's address.
@@ -280,9 +291,16 @@ $LS bin/php/ezcache.php --clear-id=content,template-block
 php bin/console fos:httpcache:invalidate:tag ez-all --env=prod   # only when an external proxy caches pages
 ```
 
-On 3.x and later add `php bin/console doctrine:migrations:migrate --no-interaction` when a release ships migrations,
-and on 2.5 the asset steps the README lists (`bazinga:js-translation:dump web/assets --merge-domains`,
-`assetic:dump`, `yarn encore production`) when front-end files changed.
+On 3.x and later add `php bin/console doctrine:migrations:migrate --no-interaction` when a release ships migrations.
+When front-end files changed, rebuild the assets: on 2.5 with the steps the README lists
+(`bazinga:js-translation:dump web/assets --merge-domains`, `assetic:dump`, `yarn encore production`), on 3.x with
+`composer ibexa-assets` (`yarn install`, then `bin/console ibexa:encore:compile`; the script exists from commit
+`21004ae` on, which the 3.x `Makefile` and deploy recipe call; in releases up to `v3.3.44.7` run the two commands by
+hand).
+
+Expected result of a deploy: `cache:clear` ends with `[OK] Cache for the "prod" environment (debug=false) was
+successfully cleared.`, the legacy clear prints the bridge's `Running script ...` line and one line per cleared
+cache, and the first page request after the reload is slow (the caches fill) while the following ones are not.
 
 Under Velocity the reload step is a restart of the Velocity workers, because each worker inherits the classes its
 parent loaded at warm-up and does not see changed PHP files until then. The Exponential 6 kernel's
