@@ -28,14 +28,15 @@ you do not name the version.
 
 The repository is [github.com/se7enxweb/exponential-platform-legacy](https://github.com/se7enxweb/exponential-platform-legacy);
 Packagist publishes it as [`se7enxweb/exponential-platform-legacy`](https://packagist.org/packages/se7enxweb/exponential-platform-legacy).
-Version numbers have four positions; only the last one counts up within a series (`v3.3.44.9` is followed by
-`v3.3.44.10`). Tags are permanent: a published tag is never moved or re-cut.
+Version numbers have four positions (the first 5.x tags, `v5.0.0` to `v5.0.3`, have three); only the last one counts
+up within a series (`v3.3.44.9` is followed by `v3.3.44.10`, never by `v3.3.45.0`). Tags are permanent: a published
+tag is never moved or re-cut, and a mistake in one is corrected by publishing the next version.
 
 | Line | Branch (Packagist dev version) | Tags (date of the tagged commit) |
 |---|---|---|
 | 2.5 | `master` (`dev-master`, alias `2.5.x-dev`) | `v2.5.0.0` (2025-08-25), `v2.5.0.1` (2025-09-14), `v2.5.0.2` (2026-04-10), `v2.5.0.3` (2026-04-21); also `v5.0.3` (2026-07-08), see below |
 | 3.x | `3.x` (`3.x-dev`) | `v3.0.0.0` to `v3.0.0.14` (2026-03-28 to 2026-04-03), `v3.3.44.0` to `v3.3.44.7` (2026-04-07 to 2026-04-12) |
-| 4.6.x | `4.6.x` (`4.6.x-dev`) | `v4.6.23.0` (2026-04-06), `v4.6.23.1` (2026-04-07), `v4.6.23.2` (2026-04-17) |
+| 4.6.x | `4.6.x` (`4.6.x-dev`) | `v4.6.23.0` (2026-04-06), `v4.6.23.1` (2026-04-07), `v4.6.23.2` (2026-04-16) |
 | 5.x | `5.x` (`5.x-dev`) | `v5.0.0` (2026-04-12), `v5.0.1` (2026-04-14), `v5.0.2` (2026-04-16) |
 | snapshots | `2.5.0.0` to `2.5.0.3` (`2.5.0.0-dev` ...) | branches frozen at each 2.5 release; use the tags |
 | history | `1.7` to `1.13`, `2.0`, `2.2` | upstream branches, not maintained (chapter 1, [1.4](01-introduction.md#the-old-branches)) |
@@ -45,13 +46,32 @@ required `se7enxweb/exponential-platform-dxp 4.6.x-dev`; from `v4.6.23.1` on the
 LegacyBridge branch `4.6.x-LB-dev` of that package. `v5.0.0` required LegacyBridge `^4.0.0.0`; from `v5.0.1` on it is
 `^5.0.0.0`.
 
+The next releases are planned as `v2.5.0.4`, `v3.3.44.8`, `v4.6.23.3` and `v5.0.3.1`. They are not tagged yet (checked
+on 2026-10-05); they will carry the branch fixes listed in chapter 1,
+[Fixes on the branches](01-introduction.md#fixes-on-the-branches-that-no-tag-carries-yet).
+
 To see what exists today rather than what this book saw, list the tags by version (a plain name sort puts `.10` before
 `.9`) and the releases:
 
 ```bash
-git ls-remote --tags https://github.com/se7enxweb/exponential-platform-legacy.git | sort -t/ -k3 -V
-gh release list -R se7enxweb/exponential-platform-legacy      # GitHub CLI, optional
+git ls-remote --tags https://github.com/se7enxweb/exponential-platform-legacy.git | sort -t/ -k3 -V | tail -5
+gh release list -R se7enxweb/exponential-platform-legacy --limit 5      # GitHub CLI, optional
 ```
+
+Output on 2026-10-05, hashes shortened. An annotated tag appears twice: once with the hash of the tag object and once,
+with `^{}`, with the hash of the commit it points to.
+
+```text
+923ddaa0...  refs/tags/v4.6.23.2^{}
+45a77c00...  refs/tags/v5.0.0
+955dc63b...  refs/tags/v5.0.1
+bfbe3daf...  refs/tags/v5.0.2
+43461d83...  refs/tags/v5.0.2^{}
+8479bb75...  refs/tags/v5.0.3
+```
+
+If a planned version from the list above appears there, it has been released; use it instead of the versions this
+chapter names.
 
 ### The v5.0.3 tag selects the 2.5 line
 
@@ -67,6 +87,11 @@ gh release list -R se7enxweb/exponential-platform-legacy      # GitHub CLI, opti
 The 5.x installation guide's own quick start (`composer create-project se7enxweb/exponential-platform-legacy
 my-project`, without a version) therefore does not give you 5.x. Name the line every time, as in section 3.4.
 
+How to tell afterwards which line you received: the 2.5 line has `app/` and `web/`, the others `config/` and
+`public/`; `grep legacy-bridge composer.json` prints `^2.1` for the 2.5 line. Once the planned `v5.0.3.1` is published
+it becomes the highest stable version (Composer compares `5.0.3.1` as greater than `5.0.3`), and an unconstrained
+`create-project` or `^5.0` then reaches the 5.x line again. Naming the line stays the safe habit.
+
 ## 3.2 Choosing a version constraint
 
 The argument after the package name and a colon is a Composer version constraint. These are the ones that select each
@@ -77,7 +102,7 @@ line, checked against the versions Packagist publishes:
 | 2.5 | `~2.5.0.3` (`v2.5.0.3` and later `2.5.0.x`) | `dev-master` or `2.5.x-dev` | `2.5.0.x-dev` (named in the 2.5 README and guide; no published version matches it); `^5.0` |
 | 3.x | `~3.3.44.7` | `3.x-dev` | `^3.0` resolves too, but also admits the older `v3.0.0.x` series; the tilde names the current series |
 | 4.6.x | `~4.6.23.2` | `4.6.x-dev` | `4.6.x-LB-dev` (that is a branch of `se7enxweb/exponential-platform-dxp`, not of this package) |
-| 5.x | `5.0.2` (exact) | `5.x-dev` | no constraint, `^5.0`, `~5.0.2`, `~5.0`: all reach `v5.0.3` |
+| 5.x | `5.0.2` (exact); after its release `~5.0.3.1` | `5.x-dev` | no constraint, `^5.0`, `~5.0.2`, `~5.0`: all reach `v5.0.3` as long as it is the newest stable version |
 
 A tilde with all four positions (`~2.5.0.3`) allows the last position to grow and nothing else: `>=2.5.0.3 <2.5.1`.
 
@@ -160,8 +185,9 @@ composer create-project se7enxweb/exponential-platform-legacy:~4.6.23.2 my_proje
 cd my_project
 ```
 
-The 4.6.x branch holds only `composer.json`, a README and an INSTALL guide. Everything else comes from the Symfony Flex
-recipe of `se7enxweb/exponential-platform-dxp` (folder `se7enxweb/exponential-platform-dxp/4.6.x-LB-dev` in
+The tag `v4.6.23.2` holds only `composer.json`, a README, an INSTALL guide and the licence files; the branch adds
+`config/packages/trusted_proxies.yaml` (commit `309785f`, section 3.4.5). Everything else comes from the Symfony Flex
+recipe of `se7enxweb/exponential-platform-dxp` (slot `se7enxweb/exponential-platform-dxp/1.2` in
 [sevenx-recipes](https://github.com/se7enxweb/sevenx-recipes)): `bin/install-legacy-links`, `config/`, `public/`
 (`index.php`, `.htaccess`, `index_rest.php`, `index_cluster.php`), `src/` (the installer type `exponential-oss`, the
 legacy request listeners, the injected-settings subscriber, `src/LegacySettings/` and `src/ezpublish_legacy/app/`),
@@ -169,10 +195,17 @@ the Encore configuration and `package.json`, the bundle list and the environment
 declares `"symlinks": {"web": "public"}`; Symfony Flex has no configurator of that name, so do not count on a `web`
 link existing: the web root is `public/`.
 
+Which recipe slot applies: Symfony Flex chooses the recipe by the version of the installed package. The branch
+`4.6.x-LB` of `se7enxweb/exponential-platform-dxp` carries the branch alias `1.2.x-dev` and the branch `5.x-LB` the
+alias `1.4.x-dev`, so Flex installs the slots `1.2` and `1.4` of the recipe repository. The folders named
+`4.6.x-LB-dev` and `5.0` in that repository look as if they belonged to these lines, but `index.json` does not list
+`4.6.x-LB-dev`, and neither is the slot Flex picks; read `1.2` and `1.4` when you want to know what a project receives.
+`composer recipes se7enxweb/exponential-platform-dxp` in your project shows the installed recipe version.
+
 Then `post-install-cmd` runs:
 
 1. `php bin/install-legacy-links`: links `ezpublish_legacy/extension/app`, `ezpublish_legacy/settings/override`, the
-   siteaccess settings directories (`site`, `legacy_site`, `legacy_admin`, `ngadminui`) and
+   siteaccess settings directories (`legacy_site`, `legacy_admin`, `ngadminui`) and
    `ezpublish_legacy/var/site/storage` to their sources under `src/` (chapter 5, [5.3](05-the-legacy-kernel-inside.md#53-where-the-legacy-files-live));
 2. the `auto-scripts`: JavaScript translations, `assets:install --symlink --relative public`,
    `ezpublish:legacy:assets_install --symlink --relative public`, `ezpublish:legacybundles:install_extensions --relative`,
@@ -188,10 +221,49 @@ composer create-project se7enxweb/exponential-platform-legacy:5.x-dev my_project
 cd my_project
 ```
 
-The same mechanism as 4.6.x, with the recipe folder `se7enxweb/exponential-platform-dxp/5.0`, Symfony 7.4 and
-LegacyBridge 5. The post-install scripts are those of 4.6.x without the final `assets:install public`.
+The same mechanism as 4.6.x, with the recipe slot `se7enxweb/exponential-platform-dxp/1.4`, Symfony 7.4 and
+LegacyBridge 5. What differs between the tag and the branch:
 
-### 3.4.5 Options worth knowing
+| | `5.0.2` | `5.x-dev` (branch, planned release `v5.0.3.1`) |
+|---|---|---|
+| Files in the skeleton besides `composer.json` and the documents | none | `config/services.yaml`, `config/packages/lexik_jwt_authentication.yaml`, `config/packages/trusted_proxies.yaml`, `package.json`, `webpack.config.js`, `yarn.lock` |
+| Post-install scripts | those of 4.6.x without the final `assets:install public` | the same as 4.6.x |
+| Node.js for the asset build | 20 LTS | 24 LTS |
+
+The branch's own files take precedence over the recipe's: Symfony Flex does not overwrite a file that already exists
+when it installs a recipe. Its `config/services.yaml` keeps `src/ezpublish_legacy/app/root/config.php` out of the
+service discovery, which otherwise stops `cache:clear` with a class error on a fresh install (commit `c98f567`).
+
+### 3.4.5 Files you may have to add to a project from an older tag
+
+A project created from `v4.6.23.2` or `v5.0.2` does not get the corrections made on the branches afterwards, because
+Composer copies the skeleton only once. The one that matters for most installations is the trusted-proxy file; create it
+yourself when a proxy, load balancer or Varnish is in front of the site ([chapter 6](06-serving-the-site.md#68-reverse-proxies-and-varnish)):
+
+```yaml
+# config/packages/trusted_proxies.yaml  (as on the 4.6.x and 5.x branches)
+framework:
+    trusted_proxies: '%env(default::TRUSTED_PROXIES)%'
+    trusted_headers: ['x-forwarded-for', 'x-forwarded-proto', 'x-forwarded-port']
+```
+
+The same applies to the other lines. What to take over from the branch into a project created from the newest tag:
+
+| Created from | Take over | Why |
+|---|---|---|
+| `v2.5.0.3` (or `v5.0.3`) | `web/.htaccess`, `web/app.php`, `web/app_dev.php` from `master` | the tagged files run every request in `dev` with debugging and display errors ([6.2.1](06-serving-the-site.md#621-shipped-files-to-check-before-production)) |
+| `v3.3.44.7` | `public/.htaccess`; the `trusted_proxies` lines of `config/packages/ezpublish.yaml`; the removal of `ezplatformsearch` from `config/app/packages/legacy.yaml` | the tagged `.htaccess` forces `dev`; `TRUSTED_PROXIES` is otherwise not read; the extension is not installed |
+| `v4.6.23.2`, `v5.0.2` | `config/packages/trusted_proxies.yaml` (above); remove the `APP_ENV` line of the recipe's `public/.htaccess` and set the recipe's `DebugOutput=enabled` to `disabled` | the recipe file forces `dev`, and the legacy debug report is on ([6.2.1](06-serving-the-site.md#621-shipped-files-to-check-before-production)) |
+
+To fetch one file of a branch without cloning, use its raw address and compare it with your copy before you replace
+it, because you may have changed yours:
+
+```bash
+curl -fsSL -o var/app.php.master https://raw.githubusercontent.com/se7enxweb/exponential-platform-legacy/master/web/app.php
+diff -u web/app.php var/app.php.master          # review, then copy it over web/app.php
+```
+
+### 3.4.6 Options worth knowing
 
 | Option | Effect |
 |---|---|
@@ -309,8 +381,24 @@ exclude what is generated or secret:
 | generated assets | `/web/bundles/`, `/web/assets/build/*`, `/web/design`, `/web/extension`, `/web/share`, `/web/var` | `/public/assets/`, `/public/design`, `/public/extension`, `/public/share`, `/public/var`, `/public/build/` |
 | runtime | `/var/*` except the placeholder files | `var/` (from the Symfony recipes) |
 
-One difference to decide on: the 2.5 `.gitignore` excludes `composer.lock` and `yarn.lock`. Commit them in your own
-project; without a lock file every install resolves the development branches anew (section 3.2).
+Two things to decide on for the 2.5 line:
+
+- **Lock files.** The 2.5 `.gitignore` excludes `composer.lock` and `yarn.lock`. Commit them in your own project;
+  without a lock file every install resolves the development branches anew (section 3.2). Remove the two lines from
+  `.gitignore` first, or `git add` skips them.
+- **`web/.htaccess`.** The 2.5 `.gitignore` also lists `/web/.htaccess`, although the skeleton ships that file (Git keeps tracking
+  a file once it is committed, even one an ignore rule matches). In a new repository of your own, `git add .` therefore
+  leaves it out, and a deployment from your repository has no rewrite rules: under Apache with `AllowOverride All`,
+  clean URLs such as `/legacy_admin/` then answer 404 because nothing sends them to `app.php`. Either delete the line from `.gitignore` or add the file explicitly with `git add -f web/.htaccess`.
+
+A first commit that avoids both traps:
+
+```bash
+git init
+sed -i -e '/^composer.lock$/d' -e '/^yarn.lock$/d' -e '/^\/web\/.htaccess$/d' .gitignore     # 2.5 only
+git add . && git status --short | grep -E 'composer.lock|web/.htaccess'                     # both must be listed
+git commit -m "Initial project from exponential-platform-legacy"
+```
 
 ## 3.9 References
 
