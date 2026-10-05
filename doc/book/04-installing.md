@@ -57,7 +57,13 @@ missing.
 - The PHP that runs `bin/console` is the one you checked in [chapter 2](02-requirements.md).
 - **Know which environment the console uses.** On 2.5 `bin/console` defaults to `dev` (`SYMFONY_ENV`, else `dev`),
   while `web/app.php` defaults to `prod`. From 3.x on both read `APP_ENV` from the environment or `.env.local`. Run
-  production commands with `--env=prod` or set the variable.
+  production commands with `--env=prod` or set the variable. The environment decides which configuration, and on 2.5
+  which SQLite file (`var/data_<env>.db`), a command uses, so a `dev` command against a `prod` site writes to the
+  wrong place without any error.
+- **Where Symfony's options go.** Write `--env` (and `--siteaccess`) **before** the command name:
+  `php bin/console --env=prod ezpublish:legacy:script bin/php/ezcache.php --clear-all`. Symfony would also find them
+  after the script path, but there the bridge passes them on to the legacy script, and most legacy scripts reject an
+  option they do not know (chapter 5, [5.7](05-the-legacy-kernel-inside.md#57-running-legacy-scripts-through-the-console)).
 - To see every command your installation has, use `php bin/console list` and, for one area,
   `php bin/console list ezpublish` or `php bin/console list exponential`. Command names in this chapter were checked
   against the source of each line; `list` is the authority for your installation.
@@ -150,6 +156,9 @@ DATABASE_URL="mysql://db_user:db_password@127.0.0.1:3306/exponential?serverVersi
 
 # REST API keys (section 4.7)
 JWT_PASSPHRASE=a-long-random-passphrase
+
+# Only when a proxy, load balancer or Varnish is in front (chapter 6, 6.8)
+# TRUSTED_PROXIES=127.0.0.1,10.0.0.0/8
 ```
 
 Notes per line:
@@ -164,6 +173,10 @@ Notes per line:
   `DATABASE_URL` in `.env.local` works for the Doctrine recipe's `url: '%env(resolve:DATABASE_URL)%'`.
 - **SQLite on 4.6.x and 5.x.** The guides add `MESSENGER_TRANSPORT_DSN=sync://` so that Symfony Messenger does not need
   a second database connection.
+- **`APP_ENV` under Apache.** A server variable wins over `.env.local`. The `public/.htaccess` of `v3.3.44.7` and of
+  the 4.6.x and 5.x recipe sets `APP_ENV=dev` for every request, so the value you write here is ignored by the web
+  server until that line is removed. The 3.x branch removed it (commit `66f13e1`, planned release `v3.3.44.8`); for
+  the recipe, chapter 6, [6.2.1](06-serving-the-site.md#621-shipped-files-to-check-before-production), shows the fix.
 - **`.env.local.php`.** For production, `composer dump-env prod` compiles the files into `.env.local.php`, which is
   faster to load ([Symfony documentation](https://symfony.com/doc/current/configuration.html#configuring-environment-variables-in-production)).
 
@@ -246,10 +259,11 @@ php bin/console ezpublish:legacybundles:install_extensions --relative
 php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php
 ```
 
-Command names: LegacyBridge 3, 4 and 5 call these commands `exponential:legacy:assets-install`,
-`exponential:legacy:install-extensions` and `exponential:legacy:script` and keep the `ezpublish:` names as aliases;
-LegacyBridge 2 (the 2.5 line) has only the `ezpublish:` names. The `ezpublish:` spellings above therefore work on every
-line. Two commands that the installation guides of 2.5, 3.x and 4.6.x mention, `ezpublish:legacy:clear-cache` and
+Command names: LegacyBridge 3 (every release the 3.x skeleton allows, from 3.0.0.35), 4 from 4.0.0.2 and 5 call these
+commands `exponential:legacy:assets-install`, `exponential:legacy:install-extensions` and `exponential:legacy:script`
+and keep the `ezpublish:` names as aliases. LegacyBridge 2 (the 2.5 line) and the releases 4.0.0.0 and 4.0.0.1 have
+only the `ezpublish:` names. The `ezpublish:` spellings above therefore work on every line and with every bridge
+release; `composer show se7enxweb/legacy-bridge` tells you which release you have. Two commands that the installation guides of 2.5, 3.x and 4.6.x mention, `ezpublish:legacy:clear-cache` and
 `ezpublish:legacy:generate-autoloads`, exist in no LegacyBridge release; use `ezpublish:legacy:script` with
 `bin/php/ezcache.php` and `bin/php/ezpgenerateautoloads.php` instead.
 
@@ -281,7 +295,8 @@ php bin/console list graphql                         # 4.6.x and 5.x: shows the 
 |---|---|---|
 | 2.5 | `nvm use 14 && yarn install && yarn encore production`; the site's own SCSS: `node_modules/.bin/encore production --config-name app` | `web/assets/build/`, `web/assets/ezplatform/build/`, `web/assets/app/` |
 | 3.x | `nvm use && yarn install && yarn build:prod && yarn ez` | `public/assets/`, the Admin UI build |
-| 4.6.x, 5.x | `nvm use 20 && corepack enable && yarn install && yarn build && yarn ibexa:build` | `public/assets/`, the Admin UI build |
+| 4.6.x, 5.x `v5.0.2` | `nvm use 20 && corepack enable && yarn install && yarn build && yarn ibexa:build` | `public/assets/`, the Admin UI build |
+| 5.x branch | `nvm use 24 && npm install -g yarn@1.22.22 && yarn install && yarn build && yarn ibexa:build` | the same |
 
 Then the JavaScript translations: `php bin/console bazinga:js-translation:dump web/assets --merge-domains` (2.5) or
 `... public/assets --merge-domains`. On 2.5 also `php bin/console assetic:dump --env=prod`.
@@ -290,7 +305,26 @@ The scripts come from each line's `package.json`: 3.x defines `build:dev`, `buil
 recipe defines `dev`, `build`, `watch`, `ibexa:dev`, `ibexa:build`. The `yarn ez` that the 4.6.x README shows does not
 exist on 4.6.x. The 2.5 `package.json` has no scripts; `yarn encore` calls the Encore binary directly.
 
-Build on a build machine or in CI and deploy the result if the production server has no Node.js.
+On the 3.x branch, `composer ibexa-assets` runs `yarn install` and `php bin/console ibexa:encore:compile`, the Admin UI
+build that the `Makefile` (`make build`) and the Deployer recipe call; the script was added on 2026-10-05 (commit
+`21004ae`, planned release `v3.3.44.8`), so with `v3.3.44.7` those two stop with `Command "ibexa-assets" is not
+defined` and you run the `yarn` commands of the table instead.
+
+Build on a build machine or in CI and deploy the result if the production server has no Node.js. What a successful
+build ends with, and the failures seen most often:
+
+```text
+ DONE  Compiled successfully in ...ms
+ ...
+ webpack compiled successfully
+```
+
+| Message | Cause | Fix |
+|---|---|---|
+| `error:0308010C:digital envelope routines::unsupported` | 2.5 built with Node 17 or later | `nvm use 14` |
+| `The engine "node" is incompatible with this module` | Node older than the line expects | the Node version of chapter 2, [2.7](02-requirements.md#27-nodejs-and-yarn) |
+| `error Command "ez" not found.` | a script name of another line (`yarn ez` or `yarn build:prod` exist on 3.x only) | the commands of the table above |
+| `JavaScript heap out of memory` | a full Admin UI build on a small machine | `NODE_OPTIONS=--max-old-space-size=4096 yarn ...` |
 
 ## 4.9 Permissions and caches
 
@@ -317,7 +351,7 @@ Clear both caches at the end:
 
 ```bash
 php bin/console cache:clear --env=prod
-php bin/console ezpublish:legacy:script bin/php/ezcache.php --clear-all
+php bin/console --env=prod ezpublish:legacy:script bin/php/ezcache.php --clear-all
 ```
 
 Why two commands: on every line LegacyBridge registers a Symfony cache clearer (`LegacyCachePurger`), so
@@ -371,10 +405,24 @@ LegacyBridge still contains a wizard route, `/ezsetup`, which is active only whe
 ## 4.12 Verify the installation
 
 ```bash
-php bin/console about
-php bin/console doctrine:query:sql "SELECT COUNT(*) AS objects FROM ezcontentobject"
-php bin/console ezpublish:legacy:script bin/php/ezcache.php --list-ids
+php bin/console --env=prod about
+php bin/console --env=prod doctrine:query:sql "SELECT COUNT(*) AS objects FROM ezcontentobject"
+php bin/console --env=prod ezpublish:legacy:script bin/php/ezcache.php --list-ids
 ```
+
+The last command shows the legacy side working. Its output looks like this (the list is longer and depends on the
+kernel version):
+
+```text
+Running script 'bin/php/ezcache.php' in eZ Publish legacy context
+The following ids are defined: (use --verbose for more details)
+content, global_ini, ini, codepage, expiry, classid, sortkey, urlalias, chartrans, imagealias, template,
+template-block, template-override, texttoimage, rss_cache, user_info_cache, content_tree_menu, ...
+```
+
+The first line is printed by the bridge's command, not by the legacy script: it proves the command exists and the
+legacy kernel was started. If you see ``bin/php/ezcache.php: invalid option `--env'`` instead, the option was written after the
+script path (section 4.2).
 
 What each one proves, and what to expect:
 
@@ -452,7 +500,7 @@ php bin/console lexik:jwt:generate-keypair
 php bin/console ezpublish:legacy:assets_install --symlink --relative public
 php bin/console ezpublish:legacybundles:install_extensions --relative
 php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php
-nvm use 20 && corepack enable && yarn install && yarn build && yarn ibexa:build
+nvm use 20 && corepack enable && yarn install && yarn build && yarn ibexa:build   # 5.x branch: nvm use 24, see 4.8
 php bin/console bazinga:js-translation:dump public/assets --merge-domains
 P="var public/var ezpublish_legacy/var src/LegacyRoot/var/site/storage"
 sudo setfacl -R -m u:www-data:rwX -m u:"$USER":rwX $P
