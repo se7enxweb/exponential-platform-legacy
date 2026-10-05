@@ -31,7 +31,7 @@ vendor: ## Run composer install
 .PHONY: ibexa-assets
 .ONESHELL:
 ibexa-assets: ## Generate Ibexa Admin UI assets
-	. ${NVM_DIR}/nvm.sh && nvm use || nvm install $(cat .nvmrc)
+	. ${NVM_DIR}/nvm.sh && nvm use || nvm install $$(cat .nvmrc)
 	$(COMPOSER_RUN) ibexa-assets
 
 .PHONY: exponential-platform-assets
@@ -40,21 +40,21 @@ exponential-platform-assets: ibexa-assets ## Alias: build Exponential Platform A
 .PHONY: assets
 .ONESHELL:
 assets: ## Build frontend assets for DEV environment
-	. ${NVM_DIR}/nvm.sh && nvm use || nvm install $(cat .nvmrc)
+	. ${NVM_DIR}/nvm.sh && nvm use || nvm install $$(cat .nvmrc)
 	yarn install
 	yarn build:dev
 
 .PHONY: assets-prod
 .ONESHELL:
 assets-prod: ## Build frontend assets for PROD environment
-	. ${NVM_DIR}/nvm.sh && nvm use || nvm install $(cat .nvmrc)
+	. ${NVM_DIR}/nvm.sh && nvm use || nvm install $$(cat .nvmrc)
 	yarn install
 	yarn build:prod
 
 .PHONY: assets-watch
 .ONESHELL:
 assets-watch: ## Watch frontend assets (during development)
-	. ${NVM_DIR}/nvm.sh && nvm use || nvm install $(cat .nvmrc)
+	. ${NVM_DIR}/nvm.sh && nvm use || nvm install $$(cat .nvmrc)
 	yarn install
 	yarn watch
 
@@ -70,10 +70,6 @@ clear-cache: ## Clear caches for specified environment (default: APP_ENV=dev)
 clear-all-cache: ## Clear all caches for specified environment (including eg. Redis) (default: APP_ENV=dev)
 	@$(MAKE) -s clear-cache
 	$(PHP_RUN) bin/console cache:pool:clear $(CACHE_POOL) --env=$(APP_ENV)
-
-.PHONY: images
-images: ## Generate most used image variations for all images for specified environment (default: APP_ENV=dev)
-	$(PHP_RUN) bin/console ngsite:content:generate-image-variations --variations=i30,i160,i320,i480,nglayouts_app_preview,ngcb_thumbnail --env=$(APP_ENV)
 
 .PHONY: migrations
 migrations: ## Run Doctrine migrations for specified environment (default: APP_ENV=dev)
