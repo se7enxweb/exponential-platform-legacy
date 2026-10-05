@@ -1049,8 +1049,9 @@ CREATE DATABASE exponential
   CHARACTER SET utf8mb4
   COLLATE utf8mb4_unicode_520_ci;
 
--- Grant access
-GRANT ALL PRIVILEGES ON exponential.* TO 'your_db_user'@'localhost' IDENTIFIED BY 'your_db_password';
+-- Create the user and grant access (two statements: MySQL 8.0 and later reject GRANT ... IDENTIFIED BY)
+CREATE USER 'your_db_user'@'localhost' IDENTIFIED BY 'your_db_password';
+GRANT ALL PRIVILEGES ON exponential.* TO 'your_db_user'@'localhost';
 FLUSH PRIVILEGES;
 
 -- PostgreSQL
