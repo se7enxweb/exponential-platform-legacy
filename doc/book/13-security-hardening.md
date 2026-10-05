@@ -1,0 +1,310 @@
+# 13. Security hardening
+
+A hybrid installation has two applications to harden, and they share more than a database: one session cookie, one
+secret, one storage directory and one web root. This chapter goes through them layer by layer: what the web server
+must never hand out, the secrets and where they come from, debug output, the two admin interfaces, sign-in, sessions
+and form tokens, trusted proxies on both sides (including the legacy kernel's `TrustedProxies[]` of Exponential
+6.0.15), headers and HTTPS, file permissions and keeping up to date. Several defaults committed to the 2.5 line are
+development settings; each is named here with the change production needs.
+
+[Previous: 12. Troubleshooting](12-troubleshooting.md) · [Contents](README.md)
+
+## Contents of this chapter
+
+- [13.1 The layers at a glance](#131-the-layers-at-a-glance)
+- [13.2 What the web server must never hand out](#132-what-the-web-server-must-never-hand-out)
+- [13.3 Secrets](#133-secrets)
+- [13.4 Debug output and error display](#134-debug-output-and-error-display)
+- [13.5 The admin siteaccesses](#135-the-admin-siteaccesses)
+- [13.6 Sign-in, sessions and cookies](#136-sign-in-sessions-and-cookies)
+- [13.7 Form tokens against cross-site request forgery](#137-form-tokens-against-cross-site-request-forgery)
+- [13.8 Headers and HTTPS](#138-headers-and-https)
+- [13.9 Behind a proxy: trusted proxies on both sides](#139-behind-a-proxy-trusted-proxies-on-both-sides)
+- [13.10 File permissions](#1310-file-permissions)
+- [13.11 Keeping up to date](#1311-keeping-up-to-date)
+- [13.12 Go-live checklist](#1312-go-live-checklist)
+- [References](#references)
+
+## 13.1 The layers at a glance
+
+| Layer | Symfony side | Legacy kernel | Shared |
+|---|---|---|---|
+| Entry point | `web/app.php` (2.5), `public/index.php` (later) | reached only through the Symfony front controller | the web root |
+| Secrets | `SYMFONY_SECRET` / `APP_SECRET`, JWT keys (3.x and later) | none of its own for forms: the bridge gives it Symfony's | `kernel.secret` |
+| Sign-in | Symfony security (`ezpublish_front` firewall on 2.5) | its own `user/login` on `legacy_mode` siteaccesses | the user table |
+| Session | Symfony's session | uses Symfony's session; its own cookie settings are switched off | one cookie |
+| Client address, HTTPS | Symfony's trusted proxies | `eZSys`, from 6.0.15 with `TrustedProxies[]` | `$_SERVER` |
+| Files | `var/`, `public/var` link | `ezpublish_legacy/var/` | the storage directory |
+
+## 13.2 What the web server must never hand out
+
+The web root (`web/` on 2.5, `public/` later) contains the front controllers, built assets and four links into the
+legacy kernel: `design`, `extension`, `share` and `var` ([8.6](08-configuration.md#86-designs-and-templates-on-both-sides)).
+Everything else, including `app/`, `config/`, `.env*`, `vendor/`, `src/` and the legacy kernel's `settings/`, is
+outside it, which is the first line of defence. The second line is the rewrite rules:
+
+**Production must run `app.php`, never `app_dev.php`.** What a production 2.5 site needs from its front controllers:
+
+| File | Production behaviour |
+|---|---|
+| `web/.htaccess` (or the vhost) | the final rule routes to `app.php` |
+| `web/app_dev.php` | refuses every client that is not local (`127.0.0.1`, `::1`, or the PHP built-in server), and is better not deployed at all |
+| `web/app.php` | does not force `display_errors` on; error display follows `php.ini` |
+
+The releases `v2.5.0.0` to `v2.5.0.3` (and `v5.0.3`, which carries the same files) do **not** behave like this. From
+`v2.5.0.1` on their `web/.htaccess` ends with
+
+```apache
+# Route everything else to app.php (prod)
+# RewriteRule ^(.*)$ app.php [QSA,L]
+
+# Optional: enable dev front controller if needed
+RewriteRule ^(.*)$ app_dev.php [QSA,L]
+```
+
+so every request runs the `dev` environment with the debug toolbar and full stack traces; in all of these releases
+`web/app_dev.php` has its IP check commented out and `web/app.php` begins with `ini_set('display_errors', 'On')`. These development settings
+are being corrected on `master`; until your copy has the correction, and in any copy you did not check yourself:
+
+1. Check what you have: `grep -n "QSA" web/.htaccess` shows which front controller is active
+   (the uncommented line wins); `grep -n "REMOTE_ADDR" web/app_dev.php` must show an active, not a commented, check;
+   `grep -n "display_errors" web/app.php` must not show `'On'`.
+2. Use the virtual host rules of [`doc/apache2/vhost.template`](../apache2/vhost.template) (or the nginx ones in
+   [`doc/nginx/`](../nginx/)) with `AllowOverride None`, which route to `app.php`; or make the `app.php` rule the active
+   one in `web/.htaccess`.
+3. Remove `web/app_dev.php` from the production deployment, or restore its IP check.
+4. Verify from outside: `curl -sI https://example.com/ | grep -i x-debug-token` must print nothing (the profiler adds
+   that header only in `dev`).
+
+**Only asset paths may be served directly.** The vhost template passes through the legacy asset patterns
+(`/design/<design>/(stylesheets|images|javascript|fonts)/`, `/extension/<ext>/design/<design>/(stylesheets|...)/`,
+`/var/<site>/storage/images/`, ...) and sends everything else to `app.php`. The `web/.htaccess` of these releases is wider: it
+passes `/(assets|bundles|design|extension)/...` through untouched, so any file in a legacy extension, including plain
+`.ini` settings files and PHP files, is reachable by URL. Prefer the narrower patterns.
+
+**No PHP from `var/`.** Uploaded files land under `var/<site>/storage/`. The vhost template has
+`RewriteRule ^var/.*(?i)\.(php3?|phar|phtml|sh|exe|pl|bin)$ - [F]`, but in a virtual host context the path starts
+with `/`, so this rule never matches as written (the template's other rules use `^/var/`). Write it as
+`RewriteRule ^/var/.*(?i)\.(php3?|phar|phtml|sh|exe|pl|bin)$ - [F]`, and make sure the PHP handler (`<FilesMatch
+\.php$> SetHandler ...`) cannot apply below `var/`. The Exponential 6 book, chapter 13.2, lists the same rules for
+the legacy kernel alone.
+
+## 13.3 Secrets
+
+| Secret | 2.5 | 3.x, 4.6, 5 | Shipped value, to replace |
+|---|---|---|---|
+| Framework secret (`kernel.secret`) | `env(SYMFONY_SECRET)` in `parameters.yml` | `APP_SECRET` | 2.5: `ThisEzPlatformTokenIsNotSoSecret_PleaseChangeIt`; 3.x: `ThisTokenIsNotSoSecretChangeIt` |
+| Database password | `env(DATABASE_PASSWORD)` | in `DATABASE_URL` | 3.x `.env`: a demonstration URL with user and password for `demo_platformlegacy` |
+| JWT for REST | none | `config/jwt/private.pem`, `JWT_PASSPHRASE` | 3.x: `ThisTokenIsNotSoSecretChangeIt` |
+| Varnish purge token | `HTTPCACHE_VARNISH_INVALIDATE_TOKEN` | same | empty |
+
+The framework secret is more than Symfony's: the bridge hands it to the legacy `ezformtoken` extension as the secret
+of the legacy form tokens ([13.7](#137-form-tokens-against-cross-site-request-forgery)), and it signs remember-me
+cookies and the CSRF tokens of Symfony forms. A known value lets anyone forge those.
+
+- Generate a value: `openssl rand -hex 32`.
+- 2.5: put secrets in `app/config/parameters.yml` (ignored by git through the shipped `.gitignore`) or, better, in the
+  environment of the PHP-FPM pool and the cron user.
+- 3.x and later: put them in `.env.local` (never in the committed `.env`) or use Symfony's secrets vault
+  (`php bin/console secrets:set APP_SECRET`, `secrets:generate-keys` for production keys).
+- After changing the framework secret, existing sessions' CSRF tokens and remember-me cookies become invalid; users
+  sign in again.
+- Never put database credentials into legacy INI files; the bridge injects them ([7.2](07-databases.md#72-how-the-bridge-hands-the-connection-to-the-legacy-kernel)).
+
+## 13.4 Debug output and error display
+
+| Where | Shipped | Production |
+|---|---|---|
+| 2.5 `web/app.php` | up to `v2.5.0.3`: `ini_set('display_errors', 'On')` and `ini_set('display_startup_errors', 1)` at the top | no forced display; set `display_errors=Off` in the PHP-FPM pool as well |
+| 2.5 environment | `SYMFONY_ENV` unset means `prod`, but up to `v2.5.0.3` the committed `.htaccess` routes to `app_dev.php`, which forces `dev` ([13.2](#132-what-the-web-server-must-never-hand-out)) | `prod`, `SYMFONY_DEBUG` unset or `0` |
+| 3.x and later | `APP_ENV=dev` in the committed `.env` | `APP_ENV=prod`, `APP_DEBUG=0` in `.env.local` or the environment |
+| Legacy kernel | master's override has `DebugOutput` and `Debug` commented out | keep `[DebugSettings] DebugOutput=disabled`; limit `DebugByIP` to your own addresses if you need it |
+
+With the debug toolbar or legacy debug output visible, a visitor sees SQL, settings, paths and sometimes credentials.
+
+## 13.5 The admin siteaccesses
+
+| Line | Platform admin | Legacy admin |
+|---|---|---|
+| 2.5 | `/admin/` (siteaccess `admin`, group `admin_group`) | `/legacy_admin/` (`legacy_mode: true`) |
+| 3.x | siteaccess `adminui` (`ngsite.admin_siteaccess_name`) | `legacy_admin`, and `ngadminui` |
+| 4.6, 5 | `/admin/` (siteaccess `admin`, group `admin_group`, added by the recipe's `ibexa_admin_ui.yaml`) | `/legacy_admin/` |
+
+1. **Change the seed's administrator password** at once (the guides of every line document the seed account as
+   `admin` / `publish`), in either admin; the user table is shared.
+2. **Give admins their own host name** with a `Map\Host` matcher instead of `URIElement`, so that the admin
+   siteaccesses do not answer on the public host ([8.5](08-configuration.md#85-siteaccesses-and-legacy_mode)).
+3. **Restrict that host at the web server**: an IP allow list or an extra HTTP authentication in front of the
+   application, which stops password guessing before PHP runs.
+4. **Roles**: the platform and the legacy kernel use the same roles and policies tables; review them in either admin.
+5. The legacy admin signs in with the legacy kernel's `user/login`. The kernel's sign-in lockout and password rules
+   (Exponential 6 book, chapter 13.6) apply there; the platform admin's sign-in is Symfony's.
+
+## 13.6 Sign-in, sessions and cookies
+
+- **One session.** The bridge passes Symfony's session to the legacy kernel and injects `false` for the legacy
+  `[Session] CookieTimeout`, `CookiePath`, `CookieDomain`, `CookieSecure` and `CookieHttponly`, so the legacy settings
+  for the cookie are ignored. Configure the cookie in Symfony:
+
+  ```yaml
+  # 2.5: app/config/config.yml (Symfony 3.4: cookie_secure is a boolean, cookie_samesite exists)
+  framework:
+      session:
+          cookie_secure: true          # the site runs on HTTPS only
+          cookie_httponly: true        # the default
+          cookie_samesite: lax
+  ```
+
+  A 4.6 installation's `framework.yaml` (written by Symfony's own Flex recipe) already has `cookie_secure: auto` and
+  `cookie_samesite: lax` (the value `auto`
+  exists from Symfony 4.2, so not on 2.5).
+- **Session name**: Symfony names the session per siteaccess (`eZSESSID` plus a hash) unless configured; the 3.x
+  configuration sets `eZSESSID` for its groups, so one sign-in covers them.
+- **Legacy sign-in on public siteaccesses is switched off.** On every siteaccess without `legacy_mode` the bridge
+  injects `SiteAccessRules` that disable the legacy modules `user/login` and `user/logout`, so there is only one
+  sign-in form to harden, Symfony's.
+- **Password reset** pages are outside the firewall on 2.5 (`ezpublish_forgot_password` with `security: false`);
+  they must still be served over HTTPS.
+
+## 13.7 Form tokens against cross-site request forgery
+
+When the legacy `ezformtoken` extension is present, the bridge configures it from Symfony at every kernel build: its
+secret becomes `kernel.secret` and its field name Symfony's CSRF field name, so forms built on one side validate on
+the other. If Symfony's form CSRF protection is disabled, the bridge disables the legacy form tokens too. Keep
+`framework.csrf_protection` enabled (2.5's `config.yml` has `csrf_protection: ~`, which enables it) and keep
+`ezformtoken` active in the legacy kernel.
+
+## 13.8 Headers and HTTPS
+
+Send the security headers from the web server or the reverse proxy, so that they cover both kernels and static
+files alike:
+
+```apache
+Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+Header always set X-Content-Type-Options "nosniff"
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+Header always set X-Frame-Options "SAMEORIGIN"
+```
+
+Add a `Content-Security-Policy` only after testing both admins: the legacy admin and the platform admin load inline
+scripts. Redirect plain HTTP to HTTPS at the web server. Behind a TLS-terminating proxy, both kernels must be told
+that the request was HTTPS, which is the next section.
+
+## 13.9 Behind a proxy: trusted proxies on both sides
+
+A reverse proxy, load balancer or CDN reports the visitor's address and scheme in `X-Forwarded-*` headers. Any visitor
+can send those headers too, so each application must believe them only from proxies it trusts. In this distribution
+there are **two** applications reading them, and each has its own setting: Symfony's `Request` (platform code,
+Symfony security, the HTTP cache) and the legacy kernel's `eZSys` (absolute URLs, redirects, `CookieSecure=auto`
+logic, `DebugByIP`, the sign-in lockout, the audit log), which reads `$_SERVER` directly even inside a bridged
+request.
+
+**Symfony side, per line** (verified in the code each line installs):
+
+| Line | Where the list comes from | Notes |
+|---|---|---|
+| 2.5 | environment variable `SYMFONY_TRUSTED_PROXIES`, read in `web/app.php`: a comma-separated list, or `TRUST_REMOTE` to trust whatever `REMOTE_ADDR` is | all `X-Forwarded-*` headers (`HEADER_X_FORWARDED_ALL`). `framework.trusted_proxies` in `config.yml`, shown in older guides, is deprecated since Symfony 3.3 and only triggers a deprecation notice; use the variable |
+| 3.x | `TRUSTED_PROXIES` (the `.env` sets `127.0.0.1`), read when the container is compiled by `EzPlatformCoreExtension` of `se7enxweb/ezplatform-core`, unless `kernel.trusted_proxies` is already set | trusts all forwarded headers except `X-Forwarded-Host`; recompile (`cache:clear`) after changing it |
+| 4.6 | nothing reads `TRUSTED_PROXIES` from `.env` (it is set to `127.0.0.1` there, but no configuration uses it) | add `framework: { trusted_proxies: '%env(TRUSTED_PROXIES)%' }` (upstream's own Platform.sh template for 4.6 does the same); the default `trusted_headers` are `x-forwarded-for`, `x-forwarded-port`, `x-forwarded-proto` |
+| 5 | Symfony 7's default for `framework.trusted_proxies` is the variable `SYMFONY_TRUSTED_PROXIES`; the `.env`'s `TRUSTED_PROXIES` is not read | set `SYMFONY_TRUSTED_PROXIES` (and `SYMFONY_TRUSTED_HEADERS` if needed), or configure `framework.trusted_proxies` |
+
+Check what is in effect: `php bin/console --env=prod debug:config framework trusted_proxies` (3.x and later).
+`TRUST_REMOTE` on 2.5 and a `0.0.0.0/0` range anywhere trust every visitor; use them only when the application is
+reachable exclusively through the proxy (firewall).
+
+**Legacy kernel: `[HTTPHeaderSettings] TrustedProxies[]` (Exponential 6.0.15).** From 6.0.15 the legacy kernel
+believes `X-Forwarded-Proto`, `-Port`, `-Server`, `-Host` and `-For` only when `REMOTE_ADDR` is a listed proxy; the
+default list is `127.0.0.1` and `::1`, and `ClientIpByCustomHTTPHeader` takes effect only for trusted proxies. The
+full description, with examples for Apache, nginx, Velocity and cloud load balancers, is the bc note
+[Forwarded headers are trusted only from configured proxies](https://github.com/se7enxweb/exponential/blob/main/doc/bc/6.0/trusted-proxies.md).
+For this distribution:
+
+- **Which installs have it**: lines 4.6 and 5 install `se7enxweb/exponential` from `dev-main` and get it with their
+  next update; lines 2.5 and 3.3 require `^6.0.12` and get it when 6.0.15 is tagged (the newest tag at the time of
+  writing is 6.0.14, which trusts the headers from anyone).
+- **Set the same list on both sides.** A proxy trusted by Symfony but not by the legacy kernel gives pages where the
+  Symfony parts use `https://` and the legacy parts `http://`.
+- **Where to set it**: in the legacy global override (`ezpublish_legacy/settings/override/site.ini.append.php`, on
+  4.6 and 5 `src/LegacySettings/override/site.ini.append.php`):
+
+  ```ini
+  [HTTPHeaderSettings]
+  TrustedProxies[]
+  TrustedProxies[]=10.0.0.0/16
+  ClientIpByCustomHTTPHeader=X-Forwarded-For
+  ```
+
+  or, on 3.x and later, as an injected merge setting
+  (`'site.ini/HTTPHeaderSettings/TrustedProxies': ['10.0.0.0/16']`, [8.4](08-configuration.md#84-injecting-your-own-legacy-settings)).
+  The empty `TrustedProxies[]` line first replaces the default list; omit it to add to `127.0.0.1` and `::1`.
+- **Velocity** in front works out the visitor's address itself from its own trusted list and passes it as
+  `REMOTE_ADDR`; configure proxies in front of Velocity there (the bc note's Velocity section).
+
+Test both sides from outside, without a proxy: a forged header must change nothing.
+
+```bash
+curl -s -o /dev/null -w '%{redirect_url}\n' -H 'X-Forwarded-Proto: https' http://example.com/legacy_admin/user/logout
+# expected: an http:// URL. An https:// URL means the legacy kernel trusted a header from you.
+```
+
+## 13.10 File permissions
+
+| Writable by the web server | Why |
+|---|---|
+| `var/` (Symfony cache, logs, sessions; SQLite file and its directory) | runtime |
+| `ezpublish_legacy/var/` (on 4.6 and 5 also `src/LegacyRoot/var/site/storage/`, which `var/site/storage` links to) | legacy cache, logs, uploaded files |
+| `web/var` / `public/var` | a link to `ezpublish_legacy/var/`; nothing to set on the link itself |
+
+Everything else, including `ezpublish_legacy/settings/`, `src/`, `config/` and `vendor/`, should be readable but not
+writable by the web server. Run console commands and cron as the same user as PHP-FPM (or give both write access with
+ACLs, as the README's `setfacl` lines do), never as root: root-owned cache files break the next request. Do not use
+`chmod -R 777`, which older guides offer as a fallback; it lets every local user change the code the site runs.
+
+## 13.11 Keeping up to date
+
+- Security reports: [`SECURITY.md`](../../SECURITY.md) (address and supported versions; it lists 2.5.x as supported).
+- Watch the releases of this repository, of [se7enxweb/LegacyBridge](https://github.com/se7enxweb/LegacyBridge) (Composer package `se7enxweb/legacy-bridge`) and
+  of [se7enxweb/exponential](https://github.com/se7enxweb/exponential) (legacy kernel security fixes, such as the
+  6.0.15 trusted proxies change).
+- `composer audit` lists known advisories for the installed packages; the 2.5 line also runs the SensioLabs security
+  checker in its Composer scripts (`bin/security-checker security:check`).
+- Read the legacy kernel's own hardening chapter for what is inside it: passwords and sign-in lockout, the audit log,
+  mail consent (Exponential 6 book, chapter 13).
+
+## 13.12 Go-live checklist
+
+- [ ] Web server routes to `app.php` / `index.php`, never `app_dev.php`; `app_dev.php` removed or IP-restricted
+- [ ] `display_errors` off (also in 2.5's `web/app.php`); `prod` environment; legacy `DebugOutput` disabled
+- [ ] Only legacy asset paths served directly; no PHP executable under `var/`
+- [ ] Framework secret, database password, JWT passphrase replaced; none in committed files
+- [ ] Seed administrator password changed; admin siteaccesses on their own host, restricted at the web server
+- [ ] Session cookie secure and HttpOnly; CSRF protection and `ezformtoken` enabled
+- [ ] HTTPS with HSTS; security headers sent by the web server
+- [ ] Trusted proxies configured on the Symfony side **and** in the legacy kernel's `TrustedProxies[]`; forged-header test passed
+- [ ] File permissions as in 13.10; cron and console as the site user
+- [ ] Backups and a tested restore ([9.7](09-operations.md#97-backups-and-restore))
+
+## References
+
+In this repository: [`web/.htaccess`](../../web/.htaccess), [`web/app.php`](../../web/app.php),
+[`web/app_dev.php`](../../web/app_dev.php), [`app/config/security.yml`](../../app/config/security.yml),
+[`app/config/config.yml`](../../app/config/config.yml), [`app/config/parameters.yml.dist`](../../app/config/parameters.yml.dist),
+[`doc/apache2/vhost.template`](../apache2/vhost.template), [`SECURITY.md`](../../SECURITY.md).
+
+The bridge: [se7enxweb/LegacyBridge](https://github.com/se7enxweb/LegacyBridge) (Composer package `se7enxweb/legacy-bridge`) (`bundle/LegacyMapper/Session.php`,
+`Security.php`, `Configuration.php`).
+
+The Exponential 6 book and notes:
+[chapter 13, security hardening](https://github.com/se7enxweb/exponential/blob/main/doc/install/13-security-hardening.md),
+[trusted proxies (6.0.15)](https://github.com/se7enxweb/exponential/blob/main/doc/bc/6.0/trusted-proxies.md).
+
+External: Symfony [How to configure Symfony to work behind a load balancer or a reverse proxy](https://symfony.com/doc/current/deployment/proxies.html)
+(and the [3.x version](https://symfony.com/doc/3.x/deployment/proxies.html) for the 2.5 line),
+[secrets management](https://symfony.com/doc/current/configuration/secrets.html),
+[security](https://symfony.com/doc/current/security.html),
+[CSRF protection](https://symfony.com/doc/current/security/csrf.html);
+PHP [session security](https://www.php.net/manual/en/session.security.php);
+upstream concepts [security checklist](https://doc.ibexa.co/en/latest/infrastructure_and_maintenance/security/security_checklist/);
+[OWASP Secure Headers Project](https://owasp.org/projects/secure-headers-project).
+
+[Previous: 12. Troubleshooting](12-troubleshooting.md) · [Contents](README.md)
