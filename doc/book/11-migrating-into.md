@@ -60,26 +60,66 @@ serves the site ([chapter 6](06-serving-the-site.md)).
 The legacy site keeps its kernel's world: its database, extensions and designs move into `ezpublish_legacy/`. What is
 added is the platform's schema state on top.
 
-1. **Bring the database to the 5.4 schema** with the legacy update chain and the repair scripts (Exponential 6 book,
-   chapter 14.5). Do not skip the charset and table type preparation (14.5.2): the 2.5 platform kernel creates
-   `utf8mb4` InnoDB tables and expects the same of the existing ones.
-2. **Apply the 2.5 platform kernel's update files**, which ship in `vendor/se7enxweb/ezpublish-kernel/data/update/<engine>/`
+The database work follows the two-phase method of chapter 14.5 of the Exponential 6 book, with the platform's files
+in the middle: **phase A** applies every SQL file, in order and with nothing in between; **phase B** runs the PHP
+repair scripts afterwards, against the finished schema, because today's kernel code describes today's schema.
+
+1. **Prepare the old database** (Exponential 6 book, 14.5.2 and 14.5.3): convert MyISAM tables to InnoDB
+   (`ezconvertmysqltabletype.php`), a non-UTF-8 database to UTF-8 (`ezconvertdbcharset.php`), and run the three
+   preflight queries (duplicate object remote ids, duplicate digest addresses, users without `ezuser_setting`); each
+   must return no rows before you go on. One difference to the Exponential 6 book: `ezconvertdbcharset.php` converts to
+   the 3-byte `utf8`, and that book keeps a legacy-only site there, but the 2.5 platform kernel creates `utf8mb4`
+   tables and this distribution's legacy override talks `utf8mb4` to the server ([7.4](07-databases.md#74-mysql-and-mariadb)).
+   Convert the remaining tables on to `utf8mb4` as well, once, after the chain (MySQL 5.7.7 or MariaDB 10.2.2 and
+   later, whose `DYNAMIC` row format allows the longer index keys):
+
+   ```sql
+   SELECT CONCAT('ALTER TABLE `', table_name, '` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;')
+     FROM information_schema.tables WHERE table_schema = DATABASE() AND table_collation NOT LIKE 'utf8mb4%';
+   ```
+
+   The query only prints the statements; review and run them on the copy.
+2. **Phase A, legacy chain to 5.4**: the files of chapter 14.5.5 of the Exponential 6 book from your version up to
+   `5.4/dbupdate-5.3.0-to-5.4.0.sql` (rows 1 to 13 of its table), plus the cluster files on a DFS database. Run
+   `updateimagesystem.php` before the 4.1 file only if `SELECT COUNT(*) FROM ezimage` is not 0. Take the files from
+   the current `se7enxweb/exponential` (`main`, or 6.0.15 once tagged): since October 2026 the MySQL files start with
+   `SET default_storage_engine=InnoDB`, which current servers accept, where older copies start with
+   `SET storage_engine`, which MySQL 5.7.5 and MariaDB 12.0 and later reject on the first line.
+3. **Phase A, the 2.5 platform kernel's update files**, which ship in `vendor/se7enxweb/ezpublish-kernel/data/update/<engine>/`
    (`mysql`, `postgres`): `dbupdate-5.4.0-to-6.13.0.sql`, then `dbupdate-6.13.0-to-7.5.0.sql` (and
    `dbupdate-7.1.0-to-7.2.0-dfs.sql` on a DFS cluster database), then `dbupdate-7.5.2-to-7.5.3.sql`,
-   `dbupdate-7.5.4-to-7.5.5.sql` and `dbupdate-7.5.6-to-7.5.7.sql`. The comment at the top of these files says they
-   cover the platform kernel only; the bundles of the 2.5 line add their own tables during install.
-3. **Apply the legacy kernel's 6.0 files last**: `update/database/<engine>/6.0/dbupdate-5.4.0-6.0.0.sql` and the
-   6.0.0 to 6.0.15 file, so that `ezsite_data` ends on the legacy kernel's version ([7.9](07-databases.md#79-the-version-rows-in-ezsite_data)).
-4. **Create the 2.5 project** ([chapter 4](04-installing.md)), point it at the migrated database **without** running
+   `dbupdate-7.5.4-to-7.5.5.sql` and `dbupdate-7.5.6-to-7.5.7.sql`. They widen `ezuser.password_hash`, add
+   `ezcontentobject_trash.trashed` and, on PostgreSQL, rename the sequences to `<table>_<column>_seq`. The comment at
+   the top of these files says they cover the platform kernel only; the bundles of the 2.5 line add their own tables
+   during install.
+4. **Phase A, the legacy kernel's 6.0 files last**: `update/database/<engine>/6.0/dbupdate-5.4.0-6.0.0.sql`
+   (`dbupdate-5.4-to-6.0.sql` on PostgreSQL) and `dbupdate-6.0.0-6.0.15.sql`, so that `ezsite_data` ends on the legacy
+   kernel's version ([7.9](07-databases.md#79-the-version-rows-in-ezsite_data)). The 2.5 line installs the legacy
+   kernel `v6.0.14`, which does not have the 6.0.15 file; take both files from `se7enxweb/exponential` `main` until
+   6.0.15 is tagged. In their current form they repeat the three changes of step 3 only where they are missing
+   ([10.7](10-upgrading-between-lines.md#107-the-legacy-kernel-inside-every-line)), so running them after the
+   platform's files is safe.
+5. **Create the 2.5 project** ([chapter 4](04-installing.md)), point it at the migrated database **without** running
    the installer (the installer drops and recreates the tables it knows), and move the storage directory to
    `ezpublish_legacy/var/site/storage` (or the directory your `var_dir` names).
-5. **Move the legacy configuration**: global overrides into `ezpublish_legacy/settings/override/`, siteaccess
+6. **Move the legacy configuration**: global overrides into `ezpublish_legacy/settings/override/`, siteaccess
    directories into `ezpublish_legacy/settings/siteaccess/`; remove `[DatabaseSettings]` connection values (the bridge
    injects them, [7.2](07-databases.md#72-how-the-bridge-hands-the-connection-to-the-legacy-kernel)).
-6. **Declare the siteaccesses in YAML** with the same names, give the legacy ones `legacy_mode: true`, and add every
+7. **Declare the siteaccesses in YAML** with the same names, give the legacy ones `legacy_mode: true`, and add every
    image alias the legacy designs use as an `image_variations` entry ([8.7](08-configuration.md#87-image-variations-and-image-aliases)).
-7. **Port your extensions to PHP 8** (Exponential 6 book, chapter 14.9) and activate them.
-8. Clear both sides' caches, reindex, verify.
+8. **Port your extensions to PHP 8** (Exponential 6 book, chapter 14.9) and activate them.
+9. **Phase B, the repair scripts** of every version you passed, in the order of chapter 14.5.6 of the Exponential 6
+   book, now that the schema is complete and the project can reach the database. Run them through the bridge
+   (`$LS update/common/scripts/4.1/addlockstategroup.php` and so on, `LS` as in [chapter 9](09-operations.md#conventions-in-this-chapter)),
+   with a dry run first where the script offers one.
+10. **Verify the schema** against the legacy kernel's reference with `ezsqldiff.php`, reference first
+    ([7.8](07-databases.md#78-which-tables-the-installer-creates)). `CREATE TABLE` and `ADD` lines in its output name a
+    missed step; `DROP` lines for platform-only tables are expected in this distribution.
+11. Clear both sides' caches, reindex, and run the checks of [11.8](#118-checklist).
+
+What can go wrong: a file of phase A stops half way. Restore the backup, fix the cause (usually a preflight case),
+and start again from the backup rather than continuing by hand; the `mysql` client stops at the first failing
+statement, `psql` does so with `-v ON_ERROR_STOP=1`.
 
 A legacy-only site that does not need the Symfony stack at all is better served by Exponential 6 alone; the hybrid
 pays for itself only when you want Symfony controllers, REST v2, GraphQL or the platform admin.
@@ -88,7 +128,20 @@ pays for itself only when you want Symfony controllers, REST v2, GraphQL or the 
 
 An eZ Publish 5.x site already has the shape of this distribution: a Symfony 2 application with an `ezpublish_legacy/`
 directory and the same shared database. Its database is the 5.4 schema (5.0 to 5.3 sites first need the legacy
-chain to 5.4), so the database steps are 2 and 3 of [11.3](#113-from-ez-publish-3x-and-4x).
+chain to 5.4), so the database steps are 3 and 4 of [11.3](#113-from-ez-publish-3x-and-4x), followed by the 5.x
+repair scripts of its phase B (step 9) and the schema check (step 10). Run the preflight queries of chapter 14.5.3 of
+the Exponential 6 book first all the same: the users-without-settings query concerns every 5.x site, because 6.0.15
+refuses to sign in an account without an `ezuser_setting` row.
+
+What chapter 15 of the Exponential 6 book adds for this case: which 5.x variant you run (15.2), the per-engine
+database steps (15.7), password hashes and sessions (15.9) and the image variations and aliases (15.10). What it says
+about removing the Symfony stack does not apply here; the Symfony stack stays and is replaced by the 2.5 line's. Two of
+its instructions are reversed for this distribution:
+
+| Chapter 15 says, for Exponential 6 alone | Here, arriving on the 2.5 line |
+|---|---|
+| Do **not** apply the platform kernel's `dbupdate-5.4.0-to-6.13.0.sql` | Apply it and the 7.5 files after it (step 3 of [11.3](#113-from-ez-publish-3x-and-4x)): the 2.5 platform kernel needs their schema changes |
+| Turn the YAML `image_variations` into `image.ini` aliases | Keep them in YAML: the bridge injects the legacy alias list from them ([8.7](08-configuration.md#87-image-variations-and-image-aliases)) |
 
 The configuration moves from the 5.x `ezpublish/config/ezpublish.yml` to `app/config/ezplatform.yml` of the 2.5 line;
 the `ezpublish:` key, `siteaccess:`, `system:` scopes and `legacy_mode` keep their meaning, and the 5.x bridge's
@@ -131,7 +184,8 @@ legacy kernel finds its shop, workflow, collaboration and notification tables mi
 2. **Create the legacy-only tables** from `ezpublish_legacy/kernel/sql/<engine>/` as [7.8](07-databases.md#78-which-tables-the-installer-creates)
    explains (on 5, the installer of a fresh project does this itself; on a migrated 5 database do it by hand with
    `CREATE TABLE IF NOT EXISTS`).
-3. **On a 5.0 database**, activate the translator extension first in `ActiveExtensions[]`
+3. **On a 5.0 database**, the translator extension must be the first entry of `ActiveExtensions[]`; the 5 line's
+   recipe writes it there, and a hand-made override must do the same
    ([10.6](10-upgrading-between-lines.md#106-from-33-to-46-and-from-46-to-5)). If the 5.0 database stores the new
    datatype identifiers (`ibexa_string` and the like), chapter 16.6.3 of the Exponential 6 book shows how to set
    them back; the translator also rewrites them in queries.
@@ -163,9 +217,11 @@ Symfony side; chapter 16.5.9 of the Exponential 6 book compares them.
 
 - [ ] Target line chosen from the source generation (11.1)
 - [ ] Exponential 6 book chapter for the source read; inventory of datatypes, extensions, designs, siteaccesses taken
-- [ ] Database converted to `utf8mb4`/InnoDB (MySQL), legacy chain to 5.4 applied where needed
-- [ ] Platform update files of the target line applied, legacy kernel 6.0 files applied last
-- [ ] Legacy-only tables present (7.8); translator active on 5
+- [ ] Preflight queries of the Exponential 6 book (14.5.3) return no rows
+- [ ] Database converted to `utf8mb4`/InnoDB (MySQL), legacy chain to 5.4 applied where needed; `pgcrypto` created (PostgreSQL, [7.5](07-databases.md#75-postgresql))
+- [ ] Platform update files of the target line applied, legacy kernel 6.0 files (current copies) applied last
+- [ ] Repair scripts of every version passed run through the bridge, after all SQL files
+- [ ] Legacy-only tables present (7.8), `ezsqldiff.php` shows no missing table or column; translator first on 5
 - [ ] Project of the target line created, installer **not** run against the data
 - [ ] Storage directory moved; web root's `var` link points to it
 - [ ] Legacy settings moved, connection values removed; siteaccesses declared in YAML with `legacy_mode`
