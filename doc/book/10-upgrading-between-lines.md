@@ -37,15 +37,36 @@ where the upstream documentation has to be followed instead.
 | Bridge (`se7enxweb/legacy-bridge`) | `^2.1` (`v2.1.10` to `v2.1.12`) | `^3.0.0.35` (to `v3.0.0.37`) | `^4.0.0.0` (`v4.0.0.0` to `v4.0.0.3`) | `^5.0.0.0` (`v5.0.0.0`, `v5.0.1` to `v5.0.10`) |
 | Legacy kernel | `se7enxweb/exponential ^6.0.12` | `^6.0.12` (through the bridge) | `dev-main` (through the bridge) | `dev-main` (through the bridge) |
 | Console | `bin/console` | `bin/console` | `bin/console` | `bin/console` |
-| Configuration | `app/config/*.yml`, `parameters.yml` | `config/`, `.env`, `.env.local` | `config/` from the Flex recipe `4.6.x-LB-dev` | `config/` from the Flex recipe `5.0` |
+| Configuration | `app/config/*.yml`, `parameters.yml` | `config/`, `.env`, `.env.local` | `config/` from the Flex recipe, slot `1.2` ([8.9](08-configuration.md#89-where-the-files-are-line-by-line)) | `config/` from the Flex recipe, slot `1.4` |
+| Next release (planned, not tagged at the time of writing) | `v2.5.0.4` | `v3.3.44.8` | `v4.6.23.3` | `v5.0.3.1` |
 | Web root | `web/` | `public/` | `public/` | `public/` |
 | Page building | none | none | Netgen Layouts `^1.4` | Netgen Layouts `^2.0` |
 | Table names | `ez*` | `ez*` | `ez*` | `ibexa_*`; the legacy kernel reads them through `sevenx_exponential_platform_v5_database_translator` |
 
-The 4.6.x and 5.x branches of this repository hold only `composer.json`, the README and the install guide; the
-project files (`config/`, `src/`, `bin/install-legacy-links`) are written by the Flex recipe in
+The 4.6.x and 5.x branches of this repository hold little more than `composer.json`, the README and the install guide:
+4.6.x adds `config/packages/trusted_proxies.yaml`, 5.x the same file plus `config/services.yaml`,
+`config/packages/lexik_jwt_authentication.yaml` and the front-end build files (`package.json`, `webpack.config.js`,
+`yarn.lock`). The rest of the project (`config/`, `src/`, `bin/install-legacy-links`) is written by the Flex recipe in
 [se7enxweb/sevenx-recipes](https://github.com/se7enxweb/sevenx-recipes) when Composer installs
-`se7enxweb/exponential-platform-dxp`.
+`se7enxweb/exponential-platform-dxp` (Flex leaves a file alone that the project already has).
+
+**What the planned releases contain.** The fixes committed on 5 October 2026 are on the branches and reach a tagged
+version only with the next release of each line (table above); until then, `dev-master`, `3.x-dev`, `4.6.x-dev` and
+`5.x-dev` have them and the newest tags do not:
+
+| Line | Commits | Effect |
+|---|---|---|
+| 2.5 | `fa091cd`, `d924ceb`, `7605f57` | `web/.htaccess` routes to `app.php`; `app_dev.php` answers only local requests again; `app.php` no longer switches error display on ([13.2](13-security-hardening.md#132-what-the-web-server-must-never-hand-out)) |
+| 2.5 | `01e4d59` | the Apache vhost template's rule against scripts under `var/` matches again |
+| 3.x | `66f13e1` | `public/.htaccess` no longer forces `APP_ENV=dev` |
+| 3.x | `d820756` | `TRUSTED_PROXIES` sets the proxies Symfony trusts ([13.9](13-security-hardening.md#139-behind-a-proxy-trusted-proxies-on-both-sides)) |
+| 3.x | `5ace002`, `21004ae` | `ezplatformsearch` no longer activated; `composer ibexa-assets` exists ([9.4](09-operations.md#94-search), [9.9](09-operations.md#99-deploying-a-change)) |
+| 3.x | `984732f` | the same vhost template fix as on 2.5 |
+| 4.6 | `309785f` | `TRUSTED_PROXIES` sets the proxies Symfony trusts |
+| 5 | `78e2848` | `TRUSTED_PROXIES` sets the proxies Symfony trusts |
+
+An existing project does not receive changes to files that Composer does not own (`web/`, `public/.htaccess`,
+`config/`): after updating, apply them to your copy by hand, using the commit as the recipe.
 
 The older `1.x` and `2.0`/`2.2` branches are the upstream `ezsystems/ezplatform-legacy` history (Symfony 2.8, kernel
 6.13 on `1.13`); they are not maintained and are not covered here.
@@ -115,7 +136,8 @@ site moves:
 2. **Inventory your own code**: Symfony bundles and templates in `src/` and `app/Resources/views/` or `templates/`,
    legacy extensions in `ezpublish_legacy/extension/` that do not come from Composer, legacy designs, the legacy
    `settings/override/` and `settings/siteaccess/` files, and the siteaccess YAML.
-3. **Bring the source to the last release of its line** (2.5: `v2.5.0.3`, kernel 7.5.x; 3.3: kernel 1.3.45) and the
+3. **Bring the source to the last release of its line** (2.5: `v2.5.0.3`, or `v2.5.0.4` once it is tagged, kernel
+   7.5.x; 3.3: kernel 1.3.45) and the
    legacy kernel to its latest 6.0.x with its update files applied.
 4. **Create the target project** from the target branch on a staging server, with a copy of the database.
 5. **Apply the platform's database update files** for every step between the lines, in order (below).
@@ -216,8 +238,18 @@ here is what differs for Exponential Platform Legacy.
   `se7enxweb/sevenx_exponential_platform_v5_database_translator`, a legacy extension that subclasses the legacy MySQL,
   PostgreSQL and SQLite drivers and rewrites every query (95 table and column mappings, for example `ezuser` to
   `ibexa_user`, `ezsite_data` to `ibexa_site_data`). It works only when it is in `ActiveExtensions[]`, **first** in
-  the list. The 5.0 recipe's `src/LegacySettings/override/site.ini.append.php` (sevenx-recipes `b4dd83a`) does not
-  list it; add it yourself:
+  the list, because it replaces the driver aliases before any other extension opens a connection. A 5 project gets
+  this from its recipe: Flex writes it from the `sevenx-recipes` folder `1.4` (the branch `5.x-LB` of
+  `se7enxweb/exponential-platform-dxp` is aliased `1.4.x-dev`), whose `src/LegacySettings/override/site.ini.append.php`
+  starts the list with the translator. Check your copy:
+
+  ```bash
+  grep -n -A2 '^ActiveExtensions\[\]$' src/LegacySettings/override/site.ini.append.php
+  # expected: the line after "ActiveExtensions[]" is "ActiveExtensions[]=sevenx_exponential_platform_v5_database_translator"
+  ```
+
+  A project that moved from 4.6 and kept its own override, or one written from the older folder `5.0` of the recipes
+  (whose override does not list the translator), needs it added by hand, as the first entry:
 
   ```ini
   [ExtensionSettings]
@@ -227,7 +259,9 @@ here is what differs for Exponential Platform Legacy.
   ...
   ```
 
-  Without it the legacy kernel fails with "table not found" errors on its first query.
+  Without it the legacy kernel fails with "table not found" errors on its first query. The project's injected
+  `ActiveExtensions` list (`app.legacy.injected_merge_settings` in `config/packages/ez_publish_legacy.yaml`) is
+  appended after the INI list, so it does not have to repeat the translator.
 - **Legacy-only tables.** The upstream script renames the platform's tables; the legacy-only tables keep their `ez*`
   names, and the translator leaves names it does not map alone.
 - **PHP 8.4 and Symfony 7.** Custom Symfony code needs the Symfony 7 changes; PHP must be 8.4 because of the bridge.
@@ -243,18 +277,41 @@ files of a line change:
 | 5.4 | `6.0/dbupdate-5.4.0-6.0.0.sql` (MySQL), `6.0/dbupdate-5.4-to-6.0.sql` (PostgreSQL) |
 | any 6.0.x | `6.0/dbupdate-6.0.0-6.0.15.sql` (MySQL, PostgreSQL, SQLite), present from Exponential 6.0.15 |
 
-The 6.0.15 file sets `ezpublish-version` to `6.0.15stable`, widens `ezuser.password_hash` to 255 characters and adds
-the tables and columns of 6.0.15's features (`expaudit_*`, `expmail_*`, `expbookmark_folder`,
-`ezrss_export_opml_item`, new columns on `ezpdf_export`, `ezrss_export` and `ezcontentbrowsebookmark`). Run it
-**once**: its own comments say that the statements adding columns stop with an error on a second run. If a run
-breaks off half way, compare the schema with the file and apply only the statements that are still missing. Lines 2.5 and 3.3 get 6.0.15 when it is tagged (they require `^6.0.12`); lines 4.6 and 5 track
-`dev-main` and get its code with their next update, so they need the file as soon as they update.
+What the files do, as revised on 5 October 2026 in `se7enxweb/exponential` (commits `9a58bb3`, `1cd5834` and
+`30b38a4` on `main`, part of the coming 6.0.15):
 
-On a 5 database apply the legacy file with care: it addresses the legacy table names (`ALTER TABLE ezuser ...`,
-`UPDATE ezsite_data ...`), and a SQL client does not go through the translator. For each statement on a table the
-5.0 schema renamed, use the new name from the translator's `classes/sql_rewriter.php` (for example `ibexa_user`,
-`ibexa_site_data`); statements on legacy-only tables run as they are. This mapping has not been tested end to end for
-this book; try it on a copy.
+| Change | `5.4.0-6.0.0` / `5.4-to-6.0` | `6.0.0-6.0.15` | Safe to run again? |
+|---|---|---|---|
+| version rows: `ezpublish-version` `6.0.0`, then `6.0.15stable` | yes | yes | yes |
+| MySQL: `SET default_storage_engine=InnoDB` instead of the `SET storage_engine` that MySQL 5.7.5 and MariaDB 12.0 reject | yes | not needed (each table names its engine) | yes |
+| `ezuser.password_hash` widened to 255 for the bcrypt hashes 6.0 writes at the first sign-in | MySQL, PostgreSQL | MySQL, PostgreSQL, first in the file | yes (same definition again) |
+| `ezcontentobject_trash.trashed`, without which moving content to the trash fails | MySQL, PostgreSQL | MySQL, PostgreSQL | yes (added only when missing) |
+| PostgreSQL: the 88 sequences `<table>_s` renamed to `<table>_<column>_seq`, the names the kernel reads new ids from | yes | yes | yes (renamed only when the old name exists) |
+| tables and columns of 6.0.15's features (`expaudit_*`, `expmail_*`, `expbookmark_folder`, `ezrss_export_opml_item`, columns on `ezpdf_export`, `ezrss_export`, `ezcontentbrowsebookmark`) | no | yes | **no**: the `ADD COLUMN` statements stop with "Duplicate column" on a second run |
+
+SQLite needs none of the first changes (its schema always had the column, it has no sequences and does not enforce
+`VARCHAR` lengths); its 6.0.15 file says so. Run the `6.0.0-6.0.15` file **once**. If a run breaks off half way,
+compare the schema with the file (or with `share/db_schema.dba`, [7.8](07-databases.md#78-which-tables-the-installer-creates))
+and apply only the statements that are still missing.
+
+Where the lines differ:
+
+- **2.5 and 3.3** require `^6.0.12` and get the 6.0.15 files when 6.0.15 is tagged (the newest tag is `v6.0.14`, whose
+  `update/database/` has neither the `6.0.0-6.0.15` file nor the revisions above). On 2.5 the platform kernel's own
+  `dbupdate-5.4.0-to-6.13.0.sql` and `dbupdate-6.13.0-to-7.5.0.sql` already widen `password_hash`, add `trashed` and
+  rename the PostgreSQL sequences; with the revised legacy files those statements do nothing a second time, so the
+  order "platform files first, legacy files last" ([7.9](07-databases.md#79-the-version-rows-in-ezsite_data)) is safe.
+  An older copy of the legacy files does not have them, which on 2.5 is harmless for the same reason.
+- **4.6 and 5** track `dev-main` and get the code with their next update, so they need the `6.0.0-6.0.15` file as soon
+  as they update. On 4.6, create the missing legacy-only tables first ([7.8](07-databases.md#78-which-tables-the-installer-creates)),
+  because the file alters `ezpdf_export` and `ezrss_export`.
+- **On a 5 database** apply the legacy file with care: it addresses the legacy table names (`ALTER TABLE ezuser ...`,
+  `UPDATE ezsite_data ...`), and a SQL client does not go through the translator. For each statement on a table the
+  5.0 schema renamed, use the new name from the translator's `classes/sql_rewriter.php` (for example `ezuser` is
+  `ibexa_user`, `ezsite_data` `ibexa_site_data`, `ezcontentobject_trash` `ibexa_content_trash`,
+  `ezcontentbrowsebookmark` `ibexa_content_bookmark`); statements on legacy-only tables run as they are. The
+  PostgreSQL sequence block changes nothing there, because the old names do not exist. This mapping has not been
+  tested end to end for this book; try it on a copy.
 
 Chapter 11 of the Exponential 6 book explains the legacy kernel's update chain from 3.x and 4.x and what changed in
 each 6.0.x release.
