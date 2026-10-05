@@ -3,7 +3,7 @@
 [![PHP](https://img.shields.io/badge/PHP-7.1.3%20→%208.2-8892BF?logo=php&logoColor=white)](https://php.net)
 [![Symfony](https://img.shields.io/badge/Symfony-3.4%20LTS-000000?logo=symfony&logoColor=white)](https://symfony.com)
 [![Platform](https://img.shields.io/badge/Platform-2.5%20OSS-orange)](https://github.com/se7enxweb)
-[![LegacyBridge](https://img.shields.io/badge/LegacyBridge-2.x-green)](https://github.com/se7enxweb/legacy-bridge)
+[![LegacyBridge](https://img.shields.io/badge/LegacyBridge-2.x-green)](https://github.com/se7enxweb/LegacyBridge)
 [![License: GPL v2 (or any later version)](https://img.shields.io/badge/License-GPL%20v2%20(or%20any%20later%20version)-blue.svg)](https://www.gnu.org/licenses/gpl-2.0)
 [![GitHub issues](https://img.shields.io/github/issues/se7enxweb/exponential-platform-legacy)](https://github.com/se7enxweb/exponential-platform-legacy/issues)
 [![GitHub stars](https://img.shields.io/github/stars/se7enxweb/exponential-platform-legacy?style=social)](https://github.com/se7enxweb/exponential-platform-legacy)
@@ -213,7 +213,14 @@ symfony server:start
   release lines (2.5, 3.3, 4.6, 5), from requirements and installing through databases, configuration (YAML and
   INI), operations, upgrading between lines and migrating in, to troubleshooting and security hardening.
 - [The short installation guide](doc/INSTALL.md) for the 2.5 line, with links into the book.
+- [Upgrade notes](UPGRADE.md): where the book covers updating within a line, moving between lines and migrating in.
+- Before going live: [chapter 13, security hardening](doc/book/13-security-hardening.md), with a go-live checklist.
+  The releases up to `v2.5.0.3` route every request to `app_dev.php`; read its section 13.2 first.
+- Server configuration examples: [Apache](doc/apache2/), [nginx](doc/nginx/), [Varnish](doc/varnish/varnish.md),
+  [Docker](doc/docker/README.md), [Platform.sh](doc/platformsh/README.md).
 - The legacy kernel inside: [the Exponential 6 book](https://github.com/se7enxweb/exponential/blob/main/doc/install/README.md).
+- The bridge: [se7enxweb/LegacyBridge](https://github.com/se7enxweb/LegacyBridge) (Composer package `se7enxweb/legacy-bridge`).
+- Reporting a security issue: [SECURITY.md](SECURITY.md).
 
 ---
 
@@ -375,7 +382,7 @@ yarn encore dev-server    # watch mode — auto-rebuild on change with HMR
 Submitting bugs, improvements and stories is possible on
 [https://github.com/se7enxweb/exponential-platform-legacy/issues](https://github.com/se7enxweb/exponential-platform-legacy/issues)
 
-If you discover a security issue, please responsibly report it via email to security@exponential.one
+If you discover a security issue, please report it privately by e-mail to [security@se7enx.com](mailto:security@se7enx.com), not in the issue tracker; see [SECURITY.md](SECURITY.md).
 
 ---
 
