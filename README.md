@@ -591,7 +591,7 @@ See [INSTALL.md](INSTALL.md) for the complete step-by-step guide with server con
 
 Submitting bugs, improvements and stories is possible on https://github.com/se7enxweb/exponential-platform-legacy/issues
 
-If you discover a security issue, please responsibly report such issues via email to [security@exponential.one](mailto:security@exponential.one)
+If you discover a security issue, please report it privately by e-mail to [security@se7enx.com](mailto:security@se7enx.com), not in the issue tracker; see [SECURITY.md](SECURITY.md).
 
 ---
 
