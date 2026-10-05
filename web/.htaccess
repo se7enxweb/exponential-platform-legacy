@@ -44,11 +44,12 @@ RewriteRule ^ - [L]
 #####
 #
 
-# Route everything else to app.php (prod)
-# RewriteRule ^(.*)$ app.php [QSA,L]
+# Dev front controller: reachable as /app_dev.php/... and refused by app_dev.php itself
+# unless the request comes from this machine (or SYMFONY_DEV_ALLOW_REMOTE=1 is set).
+RewriteRule ^app_dev\.php(/|$) - [L]
 
-# Optional: enable dev front controller if needed
-RewriteRule ^(.*)$ app_dev.php [QSA,L]
+# Route everything else to app.php (prod)
+RewriteRule ^(.*)$ app.php [QSA,L]
 
 ###
 # Fin
