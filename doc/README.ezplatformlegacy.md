@@ -1,9 +1,18 @@
 # eZ Platform
 
+> **Historical upstream README, kept for reference.** This is the README of the upstream eZ Platform 2.x
+> distribution that this project started from. Its installation commands install the upstream product
+> (`ezsystems/ezplatform`), not Exponential Platform Legacy, and several of its links (the Jira issue tracker,
+> `doc.ez.no`) no longer work. To install and run Exponential Platform Legacy, use [the short installation
+> guide](INSTALL.md) and [the book](book/README.md); report issues on
+> [GitHub](https://github.com/se7enxweb/exponential-platform-legacy/issues) and security problems as
+> [`SECURITY.md`](../SECURITY.md) says. The legacy bridge, described below as recommended only for migrations, is a
+> standard part of every Exponential Platform Legacy release line.
+
 [![Build Status](https://img.shields.io/travis/ezsystems/ezplatform.svg?style=flat-square)](https://travis-ci.org/ezsystems/ezplatform)
 [![Downloads](https://img.shields.io/packagist/dt/ezsystems/ezplatform.svg?style=flat-square)](https://packagist.org/packages/ezsystems/ezplatform)
 [![Latest release](https://img.shields.io/github/release/ezsystems/ezplatform.svg?style=flat-square)](https://github.com/ezsystems/ezplatform/releases)
-[![License](https://img.shields.io/packagist/l/ezsystems/ezplatform.svg?style=flat-square)](LICENSE)
+[![License](https://img.shields.io/packagist/l/ezsystems/ezplatform.svg?style=flat-square)](../LICENSE)
 
 ## What is eZ Platform ?
 *eZ Platform* is a 100% open source professional CMS (Content Management System) developed by eZ Systems and the eZ Community.
