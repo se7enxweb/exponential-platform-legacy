@@ -361,13 +361,13 @@ php bin/console lexik:jwt:generate-keypair              # generate RSA keypair f
 php bin/console exponential:legacy:script bin/php/ezcache.php --clear-all
 
 # Regenerate legacy autoload arrays (required after adding/removing legacy extensions)
-(cd ezpublish_legacy && php bin/php/ezpgenerateautoloads.php --extension)
+php bin/console exponential:legacy:script bin/php/ezpgenerateautoloads.php --extension
 
 # Run a legacy script (e.g. cronjob scripts, import scripts)
 php bin/console exponential:legacy:script <script-name>
 
-# Run legacy cronjobs directly (bypass Symfony, use in crontab)
-php ezpublish_legacy/runcronjobs.php --siteaccess legacy_admin
+# Run legacy cronjobs through the bridge (use in crontab; it passes the platform database settings)
+php bin/console --env=prod --siteaccess=legacy_admin exponential:legacy:script runcronjobs.php
 
 # Regenerate legacy autoloads from inside the legacy directory
 cd ezpublish_legacy && php bin/php/ezpgenerateautoloads.php
