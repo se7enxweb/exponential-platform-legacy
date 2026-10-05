@@ -555,7 +555,7 @@ HTTPCACHE_PURGE_TYPE=local         # or "varnish" when using Varnish
 HTTPCACHE_DEFAULT_TTL=86400
 HTTPCACHE_PURGE_SERVER=http://localhost:80
 # HTTPCACHE_VARNISH_INVALIDATE_TOKEN=<your-secret>
-# TRUSTED_PROXIES=127.0.0.1
+# TRUSTED_PROXIES=127.0.0.1         # proxies Symfony trusts (comma separated, or REMOTE_ADDR), read by config/packages/trusted_proxies.yaml
 ```
 
 ### Application cache backend
@@ -1518,6 +1518,7 @@ php bin/console cache:clear
    HTTPCACHE_PURGE_TYPE=varnish
    HTTPCACHE_PURGE_SERVER=http://127.0.0.1:6081
    HTTPCACHE_VARNISH_INVALIDATE_TOKEN=<your-secret>
+   # the address of Varnish; read by config/packages/trusted_proxies.yaml
    TRUSTED_PROXIES=127.0.0.1
    ```
 2. Set `APP_HTTP_CACHE=0` in your web server vhost (let Varnish handle caching).
