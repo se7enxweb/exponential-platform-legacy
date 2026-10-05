@@ -103,7 +103,7 @@ The Composer script `installIniSettings` of LegacyBridge 3 also copies the bridg
 |---|---|---|
 | `extension/app` | `src/ezpublish_legacy/app` | your legacy extension: designs, templates, extension settings |
 | `settings/override` | `src/LegacySettings/override` | global legacy INI overrides |
-| `settings/siteaccess/legacy_site`, `legacy_admin`, `ngadminui`, and on 4.6.x also `site` | `src/ezpublish_legacy/app/settings/siteaccess/<name>` | per-siteaccess INI files |
+| `settings/siteaccess/legacy_site`, `legacy_admin`, `ngadminui` (the slots 1.2 and 1.4 make no link for `site`) | `src/ezpublish_legacy/app/settings/siteaccess/<name>` | per-siteaccess INI files |
 | `var/site/storage` | `src/LegacyRoot/var/site/storage` | uploaded files, so they survive a reinstall of the kernel |
 
 It also links seven INI files of `legacy_admin` (`content`, `contentstructuremenu`, `dashboard`, `design`, `image`,
@@ -117,7 +117,7 @@ Check the links:
 php bin/install-legacy-links
 # Linked: ezpublish_legacy/extension/app -> ../../src/ezpublish_legacy/app
 # ...
-# Done: 14 link(s) created.        (13 on 5.x, which has no link for "site")
+# Done: 13 link(s) created.        (6 directories and 7 INI files, in the slots 1.2 and 1.4)
 find ezpublish_legacy -maxdepth 3 -type l -ls
 ```
 
@@ -251,14 +251,14 @@ Legacy scripts (`bin/php/*.php`, `extension/*/bin/php/*.php`, `runcronjobs.php`)
 injected settings. Run them through the bridge, which builds the legacy kernel exactly as for a web request:
 
 ```bash
-php bin/console ezpublish:legacy:script <path relative to ezpublish_legacy/> [legacy options]
+php bin/console [Symfony options] ezpublish:legacy:script <path relative to ezpublish_legacy/> [legacy options]
 ```
 
 ```bash
-php bin/console ezpublish:legacy:script bin/php/ezcache.php --clear-all
-php bin/console ezpublish:legacy:script bin/php/ezcache.php --clear-tag=template
-php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php
-php bin/console ezpublish:legacy:script bin/php/updatesearchindex.php --siteaccess=legacy_admin
+php bin/console --env=prod ezpublish:legacy:script bin/php/ezcache.php --clear-all
+php bin/console --env=prod ezpublish:legacy:script bin/php/ezcache.php --clear-tag=template
+php bin/console --env=prod ezpublish:legacy:script bin/php/ezpgenerateautoloads.php
+php bin/console --env=prod --siteaccess=legacy_admin ezpublish:legacy:script bin/php/updatesearchindex.php
 php bin/console ezpublish:legacy:script bin/php/ezcache.php --legacy-help     # the script's own help
 ```
 
@@ -266,12 +266,40 @@ Annotations:
 
 - The path is relative to the legacy root, not to the project root (`bin/php/ezcache.php`, not
   `ezpublish_legacy/bin/php/ezcache.php`).
-- Options after the script are passed to it unchanged; the command ignores options it does not know itself.
-- `--siteaccess=<name>` sets the Symfony siteaccess **and** is passed to the legacy script, so both kernels agree.
-- `--legacy-help` shows the legacy script's help; `--help` shows the Symfony command's.
+- Everything after the script path is handed to the legacy script unchanged. The bridge's command accepts any option
+  without complaint (it ignores validation errors), so a mistake there is reported by the legacy script, not by Symfony.
+- `--siteaccess=<name>` sets the Symfony siteaccess; the bridge then starts the legacy kernel with the same siteaccess
+  and also appends `--siteaccess=<name>` to the script's arguments, so both kernels agree.
 - `--env=prod` decides which Symfony configuration (and therefore which database) the script sees.
-- On LegacyBridge 3, 4 and 5 the canonical name is `exponential:legacy:script`; `ezpublish:legacy:script` is its alias
-  and works on every line.
+- `--legacy-help` shows the legacy script's help; `--help` shows the Symfony command's.
+- The canonical name is `exponential:legacy:script` on LegacyBridge 3, on 4 from 4.0.0.2 and on 5, with
+  `ezpublish:legacy:script` as its alias; LegacyBridge 2 and 4.0.0.0 to 4.0.0.1 have only `ezpublish:legacy:script`.
+  That spelling therefore works on every line.
+
+### 5.7.1 Where Symfony's options go
+
+Write `--env`, `--siteaccess` and `--no-debug` **before** the command name. Symfony's console finds its options
+anywhere on the command line, so `--env=prod` after the script path does select the `prod` configuration; but the
+bridge also passes it on to the legacy script, and what happens then depends on how that script reads its options:
+
+| Script | `--env=prod` after the script path |
+|---|---|
+| `bin/php/ezcache.php`, `updatesearchindex.php` and the other scripts that read their options with `eZScript::getOptions()` | the script stops before doing anything: ``bin/php/ezcache.php: invalid option `--env'`` |
+| `bin/php/ezpgenerateautoloads.php` (reads its options with `ezcConsoleInput`) | it prints that the option does not exist, then its help text, and generates nothing |
+| `runcronjobs.php` | works: it reads its own few options by hand and silently skips the ones it does not know |
+
+```text
+$ php bin/console ezpublish:legacy:script bin/php/ezcache.php --clear-all --env=prod     # wrong place
+Running script 'bin/php/ezcache.php' in eZ Publish legacy context
+bin/php/ezcache.php: invalid option `--env'
+$ php bin/console --env=prod ezpublish:legacy:script bin/php/ezcache.php --clear-all     # right place
+Running script 'bin/php/ezcache.php' in eZ Publish legacy context
+Clearing All cache:
+```
+
+The same rule holds on every line, because the bridge's command and the legacy option parser are the same in every
+LegacyBridge release. A cron line that has worked for years with `--env=prod` at the end of a `runcronjobs.php` call is
+therefore not proof that the same habit works for other scripts.
 
 **Why not `php ezpublish_legacy/bin/php/ezcache.php` directly?** Started that way, the legacy kernel reads only its INI
 files. It gets no injected database settings, so on a skeleton without `[DatabaseSettings]` in its INI files it cannot
@@ -289,9 +317,14 @@ keep the search index, notifications, workflows and clean-up going. Run them thr
 
 ```cron
 # as the site's user; adjust paths and the PHP binary
-*/5 * * * *  cd /var/www/my_project && php bin/console ezpublish:legacy:script runcronjobs.php --siteaccess=legacy_admin --env=prod > /dev/null 2>&1
-*/1 * * * *  cd /var/www/my_project && php bin/console ezpublish:legacy:script runcronjobs.php frequent --siteaccess=legacy_admin --env=prod > /dev/null 2>&1
+*/5 * * * *  cd /var/www/my_project && php bin/console --env=prod --siteaccess=legacy_admin ezpublish:legacy:script runcronjobs.php >> var/log/cron-legacy.log 2>&1
+*/1 * * * *  cd /var/www/my_project && php bin/console --env=prod --siteaccess=legacy_admin ezpublish:legacy:script runcronjobs.php frequent >> var/log/cron-legacy.log 2>&1
 ```
+
+The options stand before the command name, as section 5.7.1 recommends. `runcronjobs.php` would tolerate them at the
+end, but keeping one habit for every legacy script avoids the case where a copied line breaks another script. Write the
+output to a log rather than to `/dev/null`: a cronjob that fails every five minutes is otherwise invisible. The log
+directory is `var/logs/` on 2.5 and `var/log/` from 3.x on.
 
 The new stack has its own scheduler (`ezplatform:cron:run` on 2.5, from `se7enxweb/ezplatform-cron`; on the other lines
 `php bin/console list cron` shows its name);
@@ -300,9 +333,14 @@ schedule both. Which legacy parts exist, how long they run and how to keep them 
 The full schedule for both kernels is in [chapter 9](09-operations.md).
 
 > **Not verified for this book:** running `runcronjobs.php` through `ezpublish:legacy:script` was checked against the
-> bridge's command source (it includes any script relative to the legacy root and passes the options on), not run on a
-> live installation of each line. If a part misbehaves, run it once by hand with `--debug` and read
-> `ezpublish_legacy/var/site/log/`.
+> source of the bridge's command (it includes any script relative to the legacy root and passes the options on) and of
+> `runcronjobs.php` in the kernel releases the lines install (it reads `-s`/`--siteaccess <name>`, `--debug`, `--quiet`
+> and a few others by hand and skips unknown options), not run on a live installation of each line. If a part
+> misbehaves, run it once by hand with `--debug` at the end of the line and read `ezpublish_legacy/var/site/log/`:
+>
+> ```bash
+> php bin/console --env=prod --siteaccess=legacy_admin ezpublish:legacy:script runcronjobs.php frequent --debug
+> ```
 
 ## 5.9 Autoloads
 
@@ -310,7 +348,7 @@ The legacy kernel finds its classes through generated autoload arrays (`ezpublis
 `ezpublish_legacy/var/autoload/`). Regenerate them whenever an extension is added, removed, renamed or gains classes:
 
 ```bash
-php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php          # extensions (the default)
+php bin/console --env=prod ezpublish:legacy:script bin/php/ezpgenerateautoloads.php          # extensions (the default)
 ```
 
 The Composer scripts of every line run this after each `composer install` and `update`. A class that "is not found"
@@ -325,7 +363,7 @@ The legacy kernel keeps its caches below its var directory, `ezpublish_legacy/va
 | Command | Clears |
 |---|---|
 | `php bin/console cache:clear` | the Symfony cache (`var/cache/<env>/`); through LegacyBridge's `LegacyCachePurger` also the legacy **template, INI and i18n** caches; with `clear_all_spi_cache_on_symfony_clear_cache` the repository cache |
-| `php bin/console ezpublish:legacy:script bin/php/ezcache.php --clear-all` | every legacy cache: the content view cache, template blocks, compiled templates, INI and translation caches and the rest (`--list-ids` names them) |
+| `php bin/console --env=prod ezpublish:legacy:script bin/php/ezcache.php --clear-all` | every legacy cache: the content view cache, template blocks, compiled templates, INI and translation caches and the rest (`--list-ids` names them) |
 | `... ezcache.php --clear-tag=content` / `--clear-id=<id>` | one group or one cache |
 | `... ezcache.php --list-tags` / `--list-ids` | what exists |
 | the legacy admin, *Setup*, *Caches* | the same as `ezcache.php`, from the browser |
@@ -351,12 +389,21 @@ Then activate it. On 2.5 add it to `ezpublish_legacy/settings/override/site.ini.
 override file in `src/LegacySettings/override/` (4.6.x, 5.x). Finally regenerate the autoloads (section 5.9) and clear
 the caches (section 5.10).
 
+The opposite mistake is as common: an extension listed in `ActiveExtensions[]` that is not installed. The legacy
+kernel skips it without an error page, but its settings, templates and search engine are missing, and the debug output
+names it. The 3.x configuration had exactly this with `ezplatformsearch`, which the line does not install; the branch
+removed it from `config/app/packages/legacy.yaml` and from the legacy override file (commit `5ace002`, planned release
+`v3.3.44.8`). On a project created from `v3.3.44.7`, remove the entry yourself, or install `netgen/ezplatformsearch`
+if you want the legacy search to use the platform's engine ([chapter 9](09-operations.md#94-search)). To find such an
+entry, compare what is installed (`ls ezpublish_legacy/extension/`) with what is active (*Setup*, *Extensions* in the
+legacy admin, or *Setup*, *Ini settings* for `site.ini [ExtensionSettings] ActiveExtensions`).
+
 ```bash
 composer require se7enxweb/<extension>                                  # example
 $EDITOR config/packages/ez_publish_legacy.yaml                          # add it to ActiveExtensions
-php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php
-php bin/console cache:clear
-php bin/console ezpublish:legacy:script bin/php/ezcache.php --clear-all
+php bin/console --env=prod ezpublish:legacy:script bin/php/ezpgenerateautoloads.php
+php bin/console --env=prod cache:clear
+php bin/console --env=prod ezpublish:legacy:script bin/php/ezcache.php --clear-all
 ```
 
 If the extension brings database tables, install them as its documentation says. Which extensions exist, their order
@@ -367,7 +414,7 @@ and the traps of ordering: [the Exponential 6 book, 10.13](https://github.com/se
 The legacy admin is the siteaccess `legacy_admin`, reached at `/legacy_admin/` on every line. It runs entirely in the
 legacy kernel (`legacy_mode: true`) with the design chain set in its siteaccess settings: `admin3`, `admin2`, `admin`,
 `standard`, `base` on 2.5 (`ezpublish_legacy/settings/siteaccess/legacy_admin/site.ini.append.php`), `admin3`,
-`admin2`, `admin`, `standard` on 3.x (injected). It requires a login (`RequireUserLogin=true`) and opens the dashboard
+`admin2`, `admin`, `standard` on 3.x (injected per siteaccess from `config/app/packages/legacy.yaml`). It requires a login (`RequireUserLogin=true`) and opens the dashboard
 (`DefaultPage=content/dashboard`).
 
 What it is for, compared with the Admin UI:
@@ -394,8 +441,8 @@ In this repository:
 - On 3.x: [config/app/packages/legacy.yaml](https://github.com/se7enxweb/exponential-platform-legacy/blob/3.x/config/app/packages/legacy.yaml),
   [config/app/packages/ezpublish_siteaccess.yaml](https://github.com/se7enxweb/exponential-platform-legacy/blob/3.x/config/app/packages/ezpublish_siteaccess.yaml),
   [the injected settings bundle](https://github.com/se7enxweb/exponential-platform-legacy/tree/3.x/src/ExponentialPlatformLegacyInjectedSettings)
-- 4.6.x and 5.x recipe: [bin/install-legacy-links](https://github.com/se7enxweb/sevenx-recipes/blob/master/se7enxweb/exponential-platform-dxp/5.0/bin/install-legacy-links),
-  [config/packages/ez_publish_legacy.yaml](https://github.com/se7enxweb/sevenx-recipes/blob/master/se7enxweb/exponential-platform-dxp/5.0/config/packages/ez_publish_legacy.yaml)
+- 4.6.x and 5.x recipe: [bin/install-legacy-links](https://github.com/se7enxweb/sevenx-recipes/blob/master/se7enxweb/exponential-platform-dxp/1.4/bin/install-legacy-links),
+  [config/packages/ez_publish_legacy.yaml](https://github.com/se7enxweb/sevenx-recipes/blob/master/se7enxweb/exponential-platform-dxp/1.4/config/packages/ez_publish_legacy.yaml)
 
 External:
 
