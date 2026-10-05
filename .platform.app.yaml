@@ -40,7 +40,7 @@ variables:
         #"display_errors": "On"
     env:
         # Varnish in front of the app is the only proxy, trust it ("REMOTE_ADDR" is Symfony's
-        # placeholder for the address of the connecting proxy). Read as TRUSTED_PROXIES by the platform.
+        # placeholder for the address of the connecting proxy). Read by framework.trusted_proxies in config/packages/ezpublish.yaml.
         TRUSTED_PROXIES: "REMOTE_ADDR"
         # Change this if you use a different env then "prod", if you change this to "dev" remove "--no-dev" in build step
         APP_ENV: prod

@@ -468,6 +468,7 @@ SOLR_CORE=collection1
 HTTPCACHE_PURGE_TYPE=varnish
 HTTPCACHE_PURGE_SERVER=http://127.0.0.1:6081
 HTTPCACHE_VARNISH_INVALIDATE_TOKEN=<your-secret>
+# the address of Varnish; read by framework.trusted_proxies in config/packages/ezpublish.yaml
 TRUSTED_PROXIES=127.0.0.1
 ```
 
@@ -1161,6 +1162,7 @@ php bin/console cache:clear
    HTTPCACHE_PURGE_TYPE=varnish
    HTTPCACHE_PURGE_SERVER=http://127.0.0.1:6081
    HTTPCACHE_VARNISH_INVALIDATE_TOKEN=<your-secret>
+   # the address of Varnish; read by framework.trusted_proxies in config/packages/ezpublish.yaml
    TRUSTED_PROXIES=127.0.0.1
    ```
 2. Set `APP_HTTP_CACHE=0` in your web server vhost (let Varnish handle caching).
