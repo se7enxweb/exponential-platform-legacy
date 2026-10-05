@@ -198,7 +198,7 @@ php bin/console ezplatform:graphql:generate-schema
 
 # 9. Clear all caches (Symfony + Legacy kernel)
 php bin/console cache:clear
-php bin/console ezpublish:legacy:clear-cache
+php bin/console exponential:legacy:script bin/php/ezcache.php --clear-all
 
 # 10. Start
 symfony server:start
@@ -358,10 +358,10 @@ php bin/console lexik:jwt:generate-keypair              # generate RSA keypair f
 
 ```bash
 # Clear legacy kernel caches (template / ini / content / override)
-php bin/console ezpublish:legacy:clear-cache
+php bin/console exponential:legacy:script bin/php/ezcache.php --clear-all
 
 # Regenerate legacy autoload arrays (required after adding/removing legacy extensions)
-php bin/console ezpublish:legacy:generate-autoloads
+(cd ezpublish_legacy && php bin/php/ezpgenerateautoloads.php --extension)
 
 # Run a legacy script (e.g. cronjob scripts, import scripts)
 php bin/console exponential:legacy:script <script-name>
