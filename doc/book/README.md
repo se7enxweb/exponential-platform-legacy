@@ -32,18 +32,18 @@ In a hurry? [The short installation guide](../INSTALL.md) has the quick start an
 
 | Chapter | What it covers |
 |---|---|
-| [7. Databases](07-databases.md) | One database and two drivers, how the bridge hands the connection to the legacy kernel, `parameters.yml` against `DATABASE_URL`, MySQL/MariaDB, PostgreSQL, SQLite per line, Oracle, which tables each installer creates, the version rows, moving to another engine |
-| [8. Configuration: YAML and INI](08-configuration.md) | Everything the bridge injects, which side wins, injecting your own legacy settings, siteaccesses and `legacy_mode`, designs and templates on both sides, image variations against aliases, languages, where the files are |
+| [7. Databases](07-databases.md) | One database and two drivers, how the bridge hands the connection to the legacy kernel, `parameters.yml` against `DATABASE_URL`, checking the connection, MySQL/MariaDB, PostgreSQL (with `pgcrypto` and sequences), SQLite per line, Oracle, which tables each installer creates and how to find the missing ones, the version rows, moving to another engine |
+| [8. Configuration: YAML and INI](08-configuration.md) | Everything the bridge injects, which side wins, injecting your own legacy settings, siteaccesses and `legacy_mode`, designs and templates on both sides, image variations against aliases, languages, where the files are and which Flex recipe wrote them |
 | [9. Operations](09-operations.md) | Caches on both sides and the order to clear them, cron on both sides, Messenger workers, search and Solr, images, logs, backups, performance, deploying a change |
 
 ### Part IV: Keeping it running
 
 | Chapter | What it covers |
 |---|---|
-| [10. Upgrading between release lines](10-upgrading-between-lines.md) | The four lines side by side, the `v5.0.3` tag, updating within a line, the method for a line change, 2.5 to 3.3, 3.3 to 4.6, 4.6 to 5, the legacy kernel's own updates, verification and rollback |
-| [11. Migrating into Exponential Platform Legacy](11-migrating-into.md) | From eZ Publish 3.x/4.x and 5.x, eZ Platform 1.x to 3.x and Ibexa 4.x/5.x: the target line, what the Exponential 6 book's migration chapters cover, what is specific to the hybrid, a checklist |
+| [10. Upgrading between release lines](10-upgrading-between-lines.md) | The four lines side by side, the `v5.0.3` tag, the planned next releases and what they fix, updating within a line, the method for a line change, 2.5 to 3.3, 3.3 to 4.6, 4.6 to 5, the legacy kernel's own update files and what each changes, verification and rollback |
+| [11. Migrating into Exponential Platform Legacy](11-migrating-into.md) | From eZ Publish 3.x/4.x and 5.x, eZ Platform 1.x to 3.x and Ibexa 4.x/5.x: the target line, what the Exponential 6 book's migration chapters cover, the two-phase database method with the platform's files in the middle, what is specific to the hybrid, a checklist |
 | [12. Troubleshooting](12-troubleshooting.md) | Symptom, cause and fix for getting the code, console commands, the database, pages and admin, images, caches, cron and search, upgrades |
-| [13. Security hardening](13-security-hardening.md) | What the web server must never hand out, secrets, debug output, the admin siteaccesses, sessions and form tokens, headers, trusted proxies on both sides (Symfony and the legacy kernel's `TrustedProxies[]`), permissions, a go-live checklist |
+| [13. Security hardening](13-security-hardening.md) | What the web server must never hand out (with the 2.5 front controller corrections), secrets, debug output (including what `.htaccess` and the recipes force), the admin siteaccesses, sessions and form tokens, headers, trusted proxies on both sides (Symfony and the legacy kernel's `TrustedProxies[]`), permissions, a go-live checklist |
 
 ## Which chapters do I need?
 
@@ -66,6 +66,7 @@ In a hurry? [The short installation guide](../INSTALL.md) has the quick start an
 - [The project README](../../README.md): an overview, the technology stack of the 2.5 line and its command reference.
 - [The short installation guide](../INSTALL.md).
 - [Upgrade notes](../../UPGRADE.md).
+- Reporting a security issue: [SECURITY.md](../../SECURITY.md) (`security@se7enx.com`).
 - Server configuration examples: [Apache](../apache2/), [nginx](../nginx/), [Varnish](../varnish/varnish.md),
   [Docker](../docker/README.md), [Platform.sh](../platformsh/README.md).
 - The legacy kernel: [the Exponential 6 book](https://github.com/se7enxweb/exponential/blob/main/doc/install/README.md).
