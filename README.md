@@ -185,7 +185,7 @@ setfacl -dR -m u:www-data:rwX -m g:www-data:rwX var public/var ezpublish_legacy/
 nvm use 20 && yarn install && yarn build;
 
 # 6. Build Admin UI assets
-yarn ez
+yarn ibexa:build    # the scripts of this line: dev, build, watch, ibexa:dev, ibexa:build, ibexa:watch
 
 # 7. Clear all caches (Symfony + Legacy kernel)
 php bin/console cache:clear
