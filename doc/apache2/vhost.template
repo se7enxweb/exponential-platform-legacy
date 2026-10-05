@@ -77,7 +77,7 @@
         RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
         # Disable .php(3) and other executable extensions in the var directory
-        RewriteRule ^var/.*(?i)\.(php3?|phar|phtml|sh|exe|pl|bin)$ - [F]
+        RewriteRule ^/var/.*(?i)\.(php3?|phar|phtml|sh|exe|pl|bin)$ - [F]
 
         # Cluster/streamed files rewrite rules. Enable on cluster with DFS as a binary data handler
         RewriteCond %{ENV:BINARY_DATA_HANDLER} "dfs"
