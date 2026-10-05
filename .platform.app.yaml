@@ -2,7 +2,8 @@
 # in the same project.
 
 # Please see doc/platformsh/README.md and doc/platformsh/INSTALL.md
-# NB: Clustered eZ Platform setups are not tested and are likely to have issues.
+# NB: Clustered Exponential Platform setups are not tested and are likely to have issues.
+# This is the 3.x line: Symfony 5.4, document root public/, front controller public/index.php.
 
 # The name of this app. Must be unique within a project.
 name: app
@@ -12,7 +13,8 @@ dependencies:
       yarn: "*"
 
 # The type of the application to build.
-type: php:7.3
+# composer.json requires PHP ^8.0; 8.3 is the recommended runtime for the 3.x line.
+type: php:8.3
 build:
     # "none" means we're running composer manually, see build hook
     flavor: "none"
@@ -37,11 +39,13 @@ variables:
         # Example of setting php.ini config
         #"display_errors": "On"
     env:
-        # We disable Symfony Proxy, as we rather use Varnish
-        SYMFONY_HTTP_CACHE: 0
-        SYMFONY_TRUSTED_PROXIES: "TRUST_REMOTE"
+        # Varnish in front of the app is the only proxy, trust it ("REMOTE_ADDR" is Symfony's
+        # placeholder for the address of the connecting proxy). Read as TRUSTED_PROXIES by the platform.
+        TRUSTED_PROXIES: "REMOTE_ADDR"
         # Change this if you use a different env then "prod", if you change this to "dev" remove "--no-dev" in build step
-        SYMFONY_ENV: prod
+        APP_ENV: prod
+        APP_DEBUG: 0
+        COMPOSER_MEMORY_LIMIT: -1
         # Uncomment if you want to use DFS clustering:
         #PLATFORMSH_DFS_NFS_PATH: 'dfsdata'
 
@@ -50,9 +54,9 @@ web:
     locations:
         "/":
             # The public directory of the app, relative to its root.
-            root: "web"
+            root: "public"
             # The front-controller script to send non-static requests to.
-            passthru: "/app.php"
+            passthru: "/index.php"
             # The number of seconds whitelisted (static) content should be cache
             expires: 600
 
@@ -64,21 +68,25 @@ mounts:
     'var/cache':
         source: local
         source_path: cache
-    'var/logs':
+    'var/log':
         source: local
         source_path: logs
     'var/encore':
         source: local
         source_path: encore
-    'web/var':
+    'public/var':
         source: local
         source_path: var
     # To be prepared to move to cluster, please rather use e.g. persisted Redis instance.
-    'web/sessions':
+    'var/sessions':
         source: local
         source_path: sessions
+    # The GraphQL schema is generated here at deploy time (ibexa:graphql:generate-schema).
+    'config/graphql/types/ezplatform':
+        source: local
+        source_path: graphql_types
 # Uncomment if you need to use Kaliop Migrations on your setup and not able to get it to write to "var" dir.
-#    'src/AppBundle/MigrationVersions/References':
+#    'src/MigrationVersions/References':
 #        source: local
 #        source_path: MigrationVersionsReferences
 # Uncomment if you want to use DFS clustering, WARNING: Needs to be shared, contact Platform.sh support to set this up
@@ -97,7 +105,6 @@ hooks:
             composer config github-oauth.github.com $GITHUB_TOKEN
         fi
 
-        rm web/app_dev.php
         composer install --no-dev --prefer-dist --no-progress --no-interaction --optimize-autoloader
 
     # Deploy hook, access to services & done once (per cluster, not per node), only mounts are writable at this point
@@ -105,15 +112,15 @@ hooks:
     deploy: |
         set -e
         # Mainly relevant for eZ Platform demo usage, for own setup adapt this or remove and rely on migrations.
-        if [ ! -f web/var/.platform.installed ]; then
-            # To workaround issues with p.sh Varnish we clear container cache & temporary set Symfony Proxy
-            rm -Rf var/cache/$SYMFONY_ENV/*.*
-            HTTPCACHE_PURGE_TYPE="local" php -d memory_limit=-1 `which composer` ezplatform-install
-            touch web/var/.platform.installed
+        if [ ! -f public/var/.platform.installed ]; then
+            # To workaround issues with p.sh Varnish we clear container cache & temporary use local purge
+            rm -Rf var/cache/$APP_ENV/*.*
+            HTTPCACHE_PURGE_TYPE="local" php -d memory_limit=-1 bin/console ibexa:install --no-interaction
+            touch public/var/.platform.installed
         fi
 
         # Now that mounts are available, clear class/container cache. E.g. in case of interface changes on lazy proxies
-        rm -Rf var/cache/$SYMFONY_ENV/*.*
+        rm -Rf var/cache/$APP_ENV/*.*
 
         # With that done, make sure to clear + warmup all remaining caches to take proper env variables into account
         bin/console cache:clear
@@ -134,10 +141,10 @@ crons:
         # Except for PE. There crons can be run every minute.
         # So if you are not on PE please change specs to "*/5 * * * *" to avoid warning on each deploy.
         spec: "* * * * *"
-        cmd: "php bin/console ezplatform:cron:run"
+        cmd: "php bin/console ibexa:cron:run"
     weekly:
         spec: "0 0 * * 0"
-        cmd: "php bin/console ezplatform:check-urls --quiet"
+        cmd: "php bin/console ibexa:check-urls --quiet"
 
 runtime:
     extensions:
