@@ -98,3 +98,6 @@ framework:
     esi: true
     fragments: true
     http_method_override: true
+    # Proxies to trust (comma separated, or REMOTE_ADDR for the connecting proxy), from TRUSTED_PROXIES in .env
+    trusted_proxies: '%env(default::TRUSTED_PROXIES)%'
+    trusted_headers: ['x-forwarded-for', 'x-forwarded-proto', 'x-forwarded-port']
