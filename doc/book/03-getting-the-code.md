@@ -84,8 +84,9 @@ chapter names.
 | `... se7enxweb/exponential-platform-legacy:^5.0 my_project` | `v5.0.3`: the **2.5 line** |
 | `... se7enxweb/exponential-platform-legacy:~5.0.2 my_project` | `v5.0.3` as well (`~5.0.2` allows 5.0.3) |
 
-The 5.x installation guide's own quick start (`composer create-project se7enxweb/exponential-platform-legacy
-my-project`, without a version) therefore does not give you 5.x. Name the line every time, as in section 3.4.
+The 5.x installation guide's own quick start up to `v5.0.2` (`composer create-project se7enxweb/exponential-platform-legacy
+my-project`, without a version) therefore does not give you 5.x; the branch guide asks for `~5.0.3.1` since commit
+`54f90fb`. Name the line every time, as in section 3.4.
 
 How to tell afterwards which line you received: the 2.5 line has `app/` and `web/`, the others `config/` and
 `public/`; `grep legacy-bridge composer.json` prints `^2.1` for the 2.5 line. Once the planned `v5.0.3.1` is published
@@ -289,9 +290,10 @@ composer install
 | `3.x` | the same as `create-project` |
 | `4.6.x`, `5.x` | the branch holds only `composer.json`; Symfony Flex writes the recipe files during `composer install` because none of them is recorded in a `symfony.lock` yet |
 
-Two errors in the branch guides to avoid: the 4.6.x installation guide's "git clone" section says `git checkout 3.x`
-(use `4.6.x`), and the 3.x guide clones over SSH (`git@github.com:...`), which needs a GitHub account with a key; HTTPS
-works for everyone.
+Errors in the branch guides of the tags up to `v3.3.44.7`, `v4.6.23.2` and `v5.0.2`: the 4.6.x installation guide's
+"git clone" section says `git checkout 3.x` (use `4.6.x`), the 5.x guide's says `git checkout master` (use `5.x`),
+and the 3.x, 4.6.x and 5.x guides clone over SSH (`git@github.com:...`), which needs a GitHub account with a key;
+HTTPS works for everyone. The branches are corrected since 2026-10-05 (3.x `f557295`, 4.6.x `058646c`, 5.x `dc4080b`).
 
 To follow a release instead of a branch, check out its tag: `git checkout v4.6.23.2`.
 

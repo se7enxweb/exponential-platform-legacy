@@ -64,6 +64,9 @@ version only with the next release of each line (table above); until then, `dev-
 | 3.x | `984732f` | the same vhost template fix as on 2.5 |
 | 4.6 | `309785f` | `TRUSTED_PROXIES` sets the proxies Symfony trusts |
 | 5 | `78e2848` | `TRUSTED_PROXIES` sets the proxies Symfony trusts |
+| 2.5 | `523606a`, `6ba381b` | `web/.htaccess` no longer rewrites `content/treemenu` to the missing `index_treemenu.php`; `doc/apache2/.htaccess` is the same file as `web/.htaccess` ([6.5.1](06-serving-the-site.md#651-the-25-line-docapache2)) |
+| 3.x | `7248e69`, `ef13795` | the Apache examples in `doc/apache2` describe the `public/index.php` layout ([6.5.2](06-serving-the-site.md#652-3x-46x-and-5x-public)); the `.env`, Platform.sh and guide comments say what reads `TRUSTED_PROXIES` |
+| 3.x, 4.6, 5 | listed in [chapter 1](01-introduction.md#fixes-on-the-branches-that-no-tag-carries-yet) | the branch guides and READMEs: legacy commands that exist, cronjobs through the bridge, cloning over HTTPS on the line's own branch, `CREATE USER` before `GRANT`, the 4.6.x Admin UI build script, the 5.x INI order and version constraint, `security@se7enx.com` |
 
 An existing project does not receive changes to files that Composer does not own (`web/`, `public/.htaccess`,
 `config/`): after updating, apply them to your copy by hand, using the commit as the recipe.

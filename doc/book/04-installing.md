@@ -81,7 +81,8 @@ GRANT ALL PRIVILEGES ON exponential.* TO 'db_user'@'localhost';
 ```
 
 `CREATE USER` and `GRANT` are separate statements: MySQL 8.0 no longer accepts `GRANT ... IDENTIFIED BY`, which the
-4.6.x installation guide still shows.
+4.6.x and 5.x installation guides of `v4.6.23.2` and `v5.0.2` still show (the branches are corrected: 4.6.x `71fec70`,
+5.x `58287e0`).
 
 **PostgreSQL:**
 
@@ -263,9 +264,11 @@ Command names: LegacyBridge 3 (every release the 3.x skeleton allows, from 3.0.0
 commands `exponential:legacy:assets-install`, `exponential:legacy:install-extensions` and `exponential:legacy:script`
 and keep the `ezpublish:` names as aliases. LegacyBridge 2 (the 2.5 line) and the releases 4.0.0.0 and 4.0.0.1 have
 only the `ezpublish:` names. The `ezpublish:` spellings above therefore work on every line and with every bridge
-release; `composer show se7enxweb/legacy-bridge` tells you which release you have. Two commands that the installation guides of 2.5, 3.x and 4.6.x mention, `ezpublish:legacy:clear-cache` and
+release; `composer show se7enxweb/legacy-bridge` tells you which release you have. Two commands that the installation
+guides of the tags up to `v2.5.0.3`, `v3.3.44.7` and `v4.6.23.2` mention, `ezpublish:legacy:clear-cache` and
 `ezpublish:legacy:generate-autoloads`, exist in no LegacyBridge release; use `ezpublish:legacy:script` with
-`bin/php/ezcache.php` and `bin/php/ezpgenerateautoloads.php` instead.
+`bin/php/ezcache.php` and `bin/php/ezpgenerateautoloads.php` instead. The guides on the branches no longer name them
+(3.x commit `e278fde`, 4.6.x `4edf8a6`).
 
 `ezpublish:legacy:init` prepares a Symfony project that did not have the bridge before (it creates `src/legacy_files/`,
 adds the legacy Composer scripts and routes). The skeletons are already prepared; do not run it on them.
@@ -302,8 +305,9 @@ Then the JavaScript translations: `php bin/console bazinga:js-translation:dump w
 `... public/assets --merge-domains`. On 2.5 also `php bin/console assetic:dump --env=prod`.
 
 The scripts come from each line's `package.json`: 3.x defines `build:dev`, `build:prod` and `ez`; the 4.6.x and 5.x
-recipe defines `dev`, `build`, `watch`, `ibexa:dev`, `ibexa:build`. The `yarn ez` that the 4.6.x README shows does not
-exist on 4.6.x. The 2.5 `package.json` has no scripts; `yarn encore` calls the Encore binary directly.
+recipe defines `dev`, `build`, `watch`, `ibexa:dev`, `ibexa:build`. The `yarn ez` that the 4.6.x README of
+`v4.6.23.2` shows does not exist on 4.6.x; the branch README runs `yarn ibexa:build` since commit `eb63593`. The 2.5
+`package.json` has no scripts; `yarn encore` calls the Encore binary directly.
 
 On the 3.x branch, `composer ibexa-assets` runs `yarn install` and `php bin/console ibexa:encore:compile`, the Admin UI
 build that the `Makefile` (`make build`) and the Deployer recipe call; the script was added on 2026-10-05 (commit

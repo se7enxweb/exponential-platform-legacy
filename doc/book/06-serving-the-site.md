@@ -40,7 +40,7 @@ before any server is configured.
 | Separate web server | **no** | is the web server | is the web server | no |
 | HTTPS | **built in**: your certificate files, a self-signed one, or Let's Encrypt | `mod_ssl` plus certbot or a panel | `ssl` module plus certbot | local certificate of the CLI |
 | PHP needed | 8.1 or later | any the line supports | any the line supports | any the line supports |
-| Shipped example in this repository | none; configuration derived in 6.3 from the engine's documentation | `doc/apache2/` (2.5 layout; 3.x adds `media-site*.conf`) | `doc/nginx/` (2.5 layout; 3.x adds `media-site.conf`) | commands in the READMEs |
+| Shipped example in this repository | none; configuration derived in 6.3 from the engine's documentation | `doc/apache2/` (2.5 layout; on 3.x the `public/` layout from commit `7248e69`, plus `media-site*.conf`) | `doc/nginx/` (2.5 layout; 3.x adds `media-site.conf`) | commands in the READMEs |
 | Suits shared hosting | usually not (a long-running process) | yes | rarely | no |
 
 Use a traditional server when your hosting forbids long-running processes, when you run PHP 8.0 (4.6.x allows it;
@@ -527,19 +527,35 @@ curl -s -o /dev/null -w '%{http_code}\n' http://example.com/var/x.php    # 403: 
 ```
 
 If you use the shipped `web/.htaccess` instead (`AllowOverride All`), take the corrected file of the branch or correct
-it first (section 6.2.1). It has no `var/` rule of its own, so the narrowed handler above matters even more there. It
-also sends `content/treemenu` URLs to `index_treemenu.php`, a file that the bridge's `assets_install` does not create
-(it installs `index_rest.php` and `index_cluster.php` only); if the legacy admin's left-hand content tree stays empty,
-delete that rule so that those URLs reach `app.php` and the bridge's own tree menu route (**not verified** on a live
-installation).
+it first (section 6.2.1). It has no `var/` rule of its own, so the narrowed handler above matters even more there.
+Up to `v2.5.0.3` it also sends `content/treemenu` URLs to `index_treemenu.php`, the tree menu front controller of a
+stand-alone legacy kernel. Behind the bridge that file does not exist in `web/`: the bridge's `assets_install` writes
+only `index_rest.php` and `index_cluster.php` there. Those requests therefore end in a 404, and the legacy admin's
+left-hand content tree can stay empty. Commit `523606a` (2026-10-05, planned release `v2.5.0.4`) removes the rule, so
+the URLs reach `app.php`, where the bridge's route `_ezpublishLegacyTreeMenu`
+(`/content/treemenu/{nodeId}/{modified}/{expiry}/{perm}`, loaded through `_ezpublishLegacyRoutes` in
+`app/config/routing.yml`) answers them; on an older project delete the line
+`RewriteRule ^([^/]+/)?content/treemenu.* index_treemenu.php [L]` yourself. The rewrite was checked on a test Apache
+(the URL now reaches `app.php`), the tree menu itself not on a live installation. The example
+`doc/apache2/.htaccess` had the same rule and still sent every request to `app_dev.php`; since commit `6ba381b` it is
+the same file as `web/.htaccess`.
 
 ### 6.5.2 3.x, 4.6.x and 5.x: public/
 
-The `doc/apache2/vhost.template` on the 3.x branch is the 2.5 template (only its `var/` rule was corrected, in commit
-`984732f`) and does not fit these lines: it sets `DocumentRoot %BASEDIR%/web` and `DirectoryIndex app.php`, rewrites
-every URL to `/app.php`, and its DFS cluster rule sends images to `/app.php` as well. On 3.x, 4.6.x and 5.x there is
-no `web/` and no `app.php`, so a virtual host generated from it answers every dynamic URL with 404 (and serves
-nothing at all if `web/` does not exist). Do not use it for these lines until the branch is corrected. The 3.x branch adds `doc/apache2/media-site-vhost.conf` (rules inside, `DocumentRoot .../public`) and
+Up to `v3.3.44.7` the `doc/apache2/vhost.template` on the 3.x branch is the 2.5 template and does not fit these
+lines: it sets `DocumentRoot %BASEDIR%/web` and `DirectoryIndex app.php`, rewrites every URL to `/app.php`, and its
+DFS cluster rule sends images to `/app.php` as well. On 3.x, 4.6.x and 5.x there is no `web/` and no `app.php`, so a
+virtual host generated from it answers every dynamic URL with 404 (and serves nothing at all if `web/` does not
+exist). Commit `7248e69` on the 3.x branch (2026-10-05, planned release `v3.3.44.8`) replaces it with a template for
+`public/` and `public/index.php`: `APP_ENV`, `APP_DEBUG`, `APP_HTTP_CACHE` and `TRUSTED_PROXIES` from the
+placeholders `bin/vhost.sh` fills (its options keep their 2.5 names, `--sf-env` and so on, and it needs `--basedir`
+because it only detects the root by a `web/` folder), the legacy asset paths, `build/` and `images/`, the `var/` rule,
+404 for `index.php` in the URL and DFS images through `/index.php`. A virtual host generated from it passes
+`apachectl configtest`; on a test Apache dynamic URLs reached `index.php`, `/var/.../x.php` gave 403 and
+`/index.php/...` 404. The same commit rewrites the folder's `Readme.md` for this layout and makes its example
+`.htaccess` the same file as `public/.htaccess`. On 3.x that template is the most complete virtual host with the
+rules inside (the 4.6.x and 5.x branches ship no `doc/` folder). The 3.x branch also has
+`doc/apache2/media-site-vhost.conf` (rules inside, `DocumentRoot .../public`) and
 `media-site.conf` (`AllowOverride All`, relying on `public/.htaccess`). The rules in `media-site-vhost.conf` lack the
 legacy asset paths (`design/`, `extension/`, `share/icons/`, `var/.../cache/`), so the legacy admin loses its
 stylesheets with it. The simplest correct setup is therefore the `.htaccess` route, with `public/.htaccess` corrected

@@ -195,11 +195,15 @@ change to your own project.
 | 3.x | `5ace002` | the legacy settings no longer activate the extension `ezplatformsearch`, which the line does not install | [5.11](05-the-legacy-kernel-inside.md#511-legacy-extensions) |
 | 3.x | `aa00125`, `21004ae`, `8374e7c` | Platform.sh file for the 3.x layout on PHP 8.3; the Composer script `ibexa-assets`; Makefile fixes | 6.10, [4.8](04-installing.md#48-build-the-front-end-assets) |
 | 4.6.x, 5.x | `309785f`, `78e2848` | `config/packages/trusted_proxies.yaml` makes the framework read `TRUSTED_PROXIES` | 6.8 |
+| 2.5 | `523606a` | `web/.htaccess` no longer rewrites `content/treemenu` URLs to `index_treemenu.php`, a file the bridge never creates; the bridge's own route answers them | [6.5.1](06-serving-the-site.md#651-the-25-line-docapache2) |
+| 2.5 | `6ba381b` | the example `doc/apache2/.htaccess` is the same file as `web/.htaccess`; it still sent every request to `app_dev.php` | 6.5.1 |
+| 3.x | `7248e69` | `doc/apache2/vhost.template`, its `Readme.md` and the example `.htaccess` describe the `public/index.php` layout of the line instead of 2.5's `web/app.php` | [6.5.2](06-serving-the-site.md#652-3x-46x-and-5x-public) |
+| 3.x | `ef13795` | the comments in `.env`, `.platform.app.yaml` and the guide say what reads `TRUSTED_PROXIES` | 6.8 |
+| 3.x, 4.6.x, 5.x | 3.x `e278fde`, `f557295`, `9b626bc`; 4.6.x `4edf8a6`, `058646c`, `71fec70`, `eb63593`, `b24357c`, `01ab64b`, `a34bbc0`; 5.x `c85428c`, `54f90fb`, `dc4080b`, `58287e0`, `609d482`, `4989924`, `aad93de` | the branch guides and READMEs: legacy commands that exist instead of `ezpublish:legacy:clear-cache` and `ezpublish:legacy:generate-autoloads`; legacy cronjobs through the bridge; cloning over HTTPS and checking out the line's own branch; `CREATE USER` before `GRANT`; `yarn ibexa:build` instead of 4.6.x's `yarn ez`; the legacy INI order of the 5.x guide; an explicit `~5.0.3.1` in the 5.x `create-project`; `security@se7enx.com` and the same `SECURITY.md` as `master` on every branch | [3.5](03-getting-the-code.md#35-cloning-a-branch-with-git), [4.6](04-installing.md#46-wire-up-the-legacy-kernel) |
 
-Three things the corrections do **not** cover yet: the `public/.htaccess` that the Flex recipe installs on 4.6.x and
-5.x still forces `APP_ENV=dev`; the same recipe (slots 1.2 and 1.4) switches the legacy kernel's debug report on
-(`DebugOutput=enabled`), a correction that is pending; and the 3.x `doc/apache2/vhost.template` still describes the 2.5
-layout (`web/`, `app.php`). Section 6.2.1 shows what to change in your project.
+Two things the corrections do **not** cover yet: the `public/.htaccess` that the Flex recipe installs on 4.6.x and
+5.x still forces `APP_ENV=dev`; and the same recipe (slots 1.2 and 1.4) switches the legacy kernel's debug report on
+(`DebugOutput=enabled`), a correction that is pending. Section 6.2.1 shows what to change in your project.
 
 ### Which line is this project?
 

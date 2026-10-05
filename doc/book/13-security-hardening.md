@@ -76,6 +76,9 @@ release, `v2.5.0.4` (planned at the time of writing; `v5.0.3` keeps the old file
 | `d924ceb` | `web/app_dev.php` | the check is active again: requests from `127.0.0.1`, `::1` or the PHP built-in server pass, anything else, and anything carrying `X-Forwarded-For` or `Client-IP`, gets `403 Forbidden`. A development server you control can open it with `SYMFONY_DEV_ALLOW_REMOTE=1` in its environment; never set that on a production server |
 | `7605f57` | `web/app.php` | the `display_errors` lines are gone; with debugging off it sets `display_errors` and `display_startup_errors` to `0` itself, whatever `php.ini` says, so errors go to the log only |
 
+The example `.htaccess` in `doc/apache2/` had the same final rule to `app_dev.php`; since commit `6ba381b` it is the
+same file as `web/.htaccess`, so do not copy an older one into a site.
+
 These are files Composer does not manage: `composer update` does not bring them into an existing project. On every
 2.5 site, and on any copy you did not check yourself:
 
