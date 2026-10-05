@@ -52,8 +52,21 @@ Every setup must enforce the same rules, so they are stated once here. They come
 (`web/.htaccess` and `doc/apache2/vhost.template` for 2.5, `public/.htaccess` of 3.x and of the 4.6.x and 5.x recipe).
 
 1. **Only the front controller runs.** `web/app.php` (2.5) or `public/index.php`. Any other `.php` below the web root,
-   in particular under `var/`, must never run because its path was requested. The shipped rules forbid executable
-   extensions under `var/` (`RewriteRule ^var/.*(?i)\.(php3?|phar|phtml|sh|exe|pl|bin)$ - [F]`).
+   in particular under `var/`, must never run because its path was requested: `var/` holds uploaded files, and a
+   script that an editor managed to upload would otherwise run with the site's rights. The shipped rules forbid
+   executable extensions under `var/`, and how the rule is written depends on where it stands:
+
+   | Where | Rule | Why the difference |
+   |---|---|---|
+   | `.htaccess` (3.x `public/.htaccess`, the 4.6.x and 5.x recipe) | `RewriteRule ^var/.*(?i)\.(php3?\|phar\|phtml\|sh\|exe\|pl\|bin)$ - [F]` | in a directory context the path has no leading slash |
+   | virtual host (`doc/apache2/vhost.template`) | `RewriteRule ^/var/.*(?i)\.(...)$ - [F]` | in a server context the path starts with `/` |
+
+   The template carried the `.htaccess` spelling, which never matches in a virtual host, until 2026-10-05 (commits
+   `01e4d59` on `master`, `984732f` on 3.x; planned releases `v2.5.0.4`, `v3.3.44.8`). A virtual host generated from an
+   older template has no working protection: correct the line by hand. The 2.5 `web/.htaccess` has **no** such rule,
+   and its rule `RewriteCond %{REQUEST_URI} ^/(assets|bundles|design|extension)/` passes every file below `design/` and
+   `extension/` through unchanged, `.php` files included. Behind it, hand only the front controller to PHP
+   (section 6.5.1 shows how), so that a passed-through `.php` file is never executed.
 2. **Only listed files are sent as files.** The list:
 
    | Path | Why | Lines |
@@ -77,19 +90,49 @@ Every setup must enforce the same rules, so they are stated once here. They come
 3. **Pass the `Authorization` header** to PHP (REST API, basic auth). The shipped Apache rules do it with
    `RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]`.
 
-### 6.2.1 Shipped files to change before production
+### 6.2.1 Shipped files to check before production
 
-| File | What it does as shipped | Change it to |
-|---|---|---|
-| `web/.htaccess` (2.5) | the last rule sends **every request to `app_dev.php`**; the `app.php` rule is commented out | `RewriteRule ^(.*)$ app.php [QSA,L]` (and remove the `app_dev.php` line) |
-| `web/app_dev.php` (2.5) | its check that only allows `127.0.0.1` and `::1` is commented out, then it sets `SYMFONY_ENV=dev` and `SYMFONY_DEBUG=true` | delete it on production servers, or restore the check; never route to it |
-| `web/app.php` (2.5) | starts with `ini_set('display_errors', 'On')` | remove or set `Off`; errors belong in the log ([chapter 13](13-security-hardening.md)) |
-| `public/.htaccess` (3.x, 4.6.x and 5.x recipe) | `SetEnvIf Request_URI ".*" APP_ENV=dev`: every request under Apache runs in `dev`, whatever `.env.local` says | remove the line, or set `APP_ENV=prod` |
-| `doc/nginx/media-site.conf` (3.x) | `fastcgi_param APP_ENV dev;` and a PHP 7.3 socket | `prod` and your PHP-FPM socket |
+Several front-controller files were shipped with development settings. The branches were corrected on 2026-10-05; the
+published tags still contain the old files, and a project keeps whatever it was created from. Find your case in the
+table, then check your own copy with the commands below it.
+
+| File | Up to the newest tag | On the branch now (planned release) | What to do on a project from the tag |
+|---|---|---|---|
+| `web/.htaccess` (2.5) | `v2.5.0.1` to `v2.5.0.3` and `v5.0.3`: the last rule sends **every request to `app_dev.php`** | every request that is not a static file goes to `app.php`; `/app_dev.php/...` is passed through only when asked for by name (`fa091cd`, `v2.5.0.4`) | take the branch's file, or end the file with `RewriteRule ^(.*)$ app.php [QSA,L]` and nothing routing to `app_dev.php` |
+| `web/app_dev.php` (2.5) | the check that only allows the local machine is commented out, so anyone gets `dev` with debugging | the check is active: requests from `127.0.0.1`, `::1` or the PHP built-in server pass, others get `403 You are not allowed to access this file`; `SYMFONY_DEV_ALLOW_REMOTE=1` in the server's environment opens it on a development server (`d924ceb`, `v2.5.0.4`) | delete the file on production servers, or take the branch's file; never set `SYMFONY_DEV_ALLOW_REMOTE` in production |
+| `web/app.php` (2.5) | starts with `ini_set('display_errors', 'On')` for every request | sets nothing at the top; with debugging off it switches `display_errors` and `display_startup_errors` off (`7605f57`, `v2.5.0.4`) | take the branch's file; errors belong in the log ([chapter 13](13-security-hardening.md)) |
+| `public/.htaccess` (3.x) | `v3.3.44.7`: `SetEnvIf Request_URI ".*" APP_ENV=dev`, so every request under Apache runs in `dev` whatever `.env.local` says | the line is commented out and set to `prod`; the environment comes from the server, `.env.local` or `.env` (`66f13e1`, `v3.3.44.8`) | delete the line, or change it to `APP_ENV=prod` |
+| `public/.htaccess` (4.6.x, 5.x, from the Flex recipe) | `SetEnvIf Request_URI ".*" APP_ENV=dev` | unchanged: the recipe has not been corrected yet | delete the line, or change it to `APP_ENV=prod`; the recipe does not overwrite your file on later updates |
+| Legacy INI files of the 4.6.x and 5.x recipe (slots 1.2 and 1.4) | `[DebugSettings] DebugOutput=enabled`: slot 1.2 in `src/ezpublish_legacy/app/settings/siteaccess/legacy_site/site.ini.append.php`, slot 1.4 in that file, in `.../siteaccess/site/site.ini.append.php` and in the global `src/LegacySettings/override/site.ini.append.php` (which also sets `ShowUsedTemplates=enabled`) | unchanged; a recipe correction is pending | set `DebugOutput=disabled` (and `ShowUsedTemplates=disabled`) in those files: the legacy kernel then stops appending its debug report, with SQL, timings and file paths, to pages |
+| `doc/nginx/media-site.conf` (3.x) | `fastcgi_param APP_ENV dev;` and a PHP 7.3 socket | unchanged | `prod` and your PHP-FPM socket |
 
 Why this matters: in `dev` Symfony shows full stack traces with configuration values, enables the web profiler where
-it is installed and compiles the container on every change. Together with the commented-out guard in `app_dev.php`, a
-2.5 site served with the shipped `.htaccess` shows every visitor the debug toolbar.
+it is installed and compiles the container on every change. A 2.5 site served with the `.htaccess` of `v2.5.0.3`
+shows every visitor the debug toolbar, and the `SetEnvIf` line wins over `.env.local` because a server variable takes
+precedence over the `.env` files.
+
+Check your copy, from the project root:
+
+```bash
+# 2.5: the last rewrite rule must name app.php, and app_dev.php must contain an active check
+grep -n -E '^RewriteRule .*(app|app_dev)\.php' web/.htaccess
+grep -n -E '^/\*|^\*/|REMOTE_ADDR' web/app_dev.php
+grep -n "display_errors" web/app.php
+# 3.x, 4.6.x, 5.x: no line may force dev
+grep -n -E '^[^#]*APP_ENV=dev' public/.htaccess
+# 4.6.x, 5.x: the legacy debug report must be off
+grep -rn -E '^(DebugOutput|ShowUsedTemplates)=enabled' src/LegacySettings src/ezpublish_legacy/app/settings
+```
+
+Expected on a corrected 2.5 project: the last `.htaccess` line printed is `RewriteRule ^(.*)$ app.php [QSA,L]`;
+`app_dev.php` prints only the `REMOTE_ADDR` line, without the `/*` and `*/` lines around it that commented the check
+out in `v2.5.0.3`; `app.php` prints only `ini_set('display_errors', '0');`. Expected on the newer lines: no output from
+the last two commands. And from outside, against the live site:
+
+```bash
+curl -s -o /dev/null -w '%{http_code}\n' https://example.com/app_dev.php/        # 2.5: 403 (or 404 if deleted)
+curl -sI https://example.com/ | grep -i '^x-debug-token'                          # no output: not dev
+```
 
 ## 6.3 Exponential Velocity
 
@@ -140,21 +183,27 @@ answers:
 | Mode | How | Native `header()` | Cost | When |
 |---|---|---|---|---|
 | **CGI carve-out** | scripts matching `Q.webserver.cgi.patterns` run in a `php-cgi` process per request | works natively | about 50 ms of start-up per request (the engine's figure); static files and the server stay fast | the safe start; the mode the engine's documentation describes for Symfony, Laravel and WordPress |
-| **Persistent workers** with `--preset=symfony` | the engine rewrites the included PHP so that `header()` and 43 other functions reach the response, and restores static state between requests | shimmed | the fastest: the application stays loaded | after the checks of 6.3.8 pass on your site |
+| **Persistent workers** | the engine's compatibility layer (`Q.compat`) rewrites the included PHP so that `header()` and 43 other functions reach the response, and restores static state between requests | shimmed | the fastest: the application stays loaded | after the checks of 6.3.8 pass on your site |
 
-For the persistent mode two things are specific to this product:
+For the persistent mode three things are specific to this product:
 
 - The legacy kernel fills its datatype, workflow event and notification event registries once with `include_once`.
   Between requests the engine resets globals, so these must be **kept**, or publishing in the legacy kernel fails with
-  `Call to a member function initializeEvent() on null`. The engine's `exponential` preset keeps them; with the
-  `symfony` preset name them yourself with `--keep-globals` (the list below is the one the `exponential` preset uses).
+  `Call to a member function initializeEvent() on null`. The engine's `exponential` preset keeps them, but that preset
+  is written for the kernel served on its own (its file and script lists assume the kernel's root, not Symfony's web
+  root), so name the globals yourself, as `Q.webserver.keepGlobals` in the file or with `--keep-globals`.
 - Per-siteaccess injected settings leak between requests of one process (chapter 5, [5.5.2](05-the-legacy-kernel-inside.md#552-what-the-project-injects-3x-46x-5x)).
   The 4.6.x and 5.x recipe leaves them empty; on 3.x move them to INI files before using persistent workers.
+- Write the compatibility settings into the file rather than using `--preset=symfony`. That preset sets only the
+  front-controller rewrite to `index.php` and a few `ini` values, among them `upload_max_filesize=10M` and
+  `post_max_size=12M`, which the engine enforces when it parses uploads; and a preset is applied **after** the
+  configuration file, so it overrides your own values. The file of section 6.3.4 sets the same things with values that
+  suit this product, and with `app.php` on the 2.5 line.
 
 ### 6.3.4 The configuration file
 
 Keep the engine's configuration in a JSON file outside the web root, for example `velocity.json` in the project root.
-For **3.x, 4.6.x and 5.x**:
+For **3.x, 4.6.x and 5.x**, in the CGI mode:
 
 ```json
 {
@@ -177,8 +226,7 @@ For **3.x, 4.6.x and 5.x**:
     },
     "webserver": {
       "scripts": ["/index.php"],
-      "cgi": { "patterns": ["\\.php$"] },
-      "fallback": "index.php"
+      "cgi": { "patterns": ["\\.php$"] }
     }
   }
 }
@@ -188,16 +236,43 @@ What each part does:
 
 - `web.static.paths`: section 6.2, rule 2, as patterns. A file whose path matches is sent as it is; any other file,
   `ezpublish_legacy/var/site/log/error.log` reached through `public/var` included, goes to the front controller
-  instead. Without this key the engine hands out every file with a served extension.
+  instead. Without this key the engine hands out every file with a served extension. Anchor every pattern with `^/`:
+  an unanchored pattern matches anywhere in the path.
 - `web.cache.enabled: false`: the engine's own response cache is off by default since v0.0.4.39; saying so explicitly
   keeps a cache module enabled elsewhere in `/etc/qbix` from switching it on. Symfony's HTTP cache (2.5 `prod`) or
   Varnish does the page caching for this product.
 - `webserver.scripts`: only `index.php` runs when asked for by name; any other `.php` is treated as if it did not exist
   and goes to the front controller.
-- `webserver.cgi.patterns` and `fallback`: the CGI carve-out of section 6.3.3, and every URL that is not a file to
-  `index.php`. Leave out `cgi` to use persistent workers (section 6.3.5).
+- `webserver.cgi.patterns`: the CGI carve-out of section 6.3.3. Every URL that is neither a listed file nor a listed
+  script goes to `index.php`, the engine's default front controller, so no rewrite rule is needed.
 
-For the **2.5 line** the web root is `web/` and the front controller `app.php`; the list follows `web/.htaccess` and
+Do **not** add `Q.webserver.fallback` (shown in some engine examples for single-page applications): it is meant for a
+static file, and in the engine's code up to v0.0.4.43 a string or `file` fallback calls a method that does not exist,
+so a request that reaches it ends in an error instead of a page.
+
+For the **persistent mode**, replace the `cgi` block with the compatibility settings and the kept globals:
+
+```json
+    "compat": {
+      "rewrite": "index.php",
+      "ini": { "upload_max_filesize": "48M", "post_max_size": "48M", "memory_limit": "512M" }
+    },
+    "webserver": {
+      "scripts": ["/index.php"],
+      "keepGlobals": [
+        "eZDataTypes", "eZDataTypeObjects", "eZDataTypeAllowedTypes",
+        "eZWorkflowTypes", "eZWorkflowTypeObjects", "eZWorkflowAllowedTypes",
+        "eZNotificationEventTypes", "eZNotificationEventTypeObjects", "eZNotificationEventTypeAllowedTypes"
+      ]
+    }
+```
+
+`compat` stands next to `web` and `webserver` inside `Q`. The `ini` values are what the application sees through
+`ini_get()` and what the engine applies to uploads; the process's real limits come from the `php.ini` of the PHP CLI
+that runs the engine, so set `memory_limit` there as well.
+
+For the **2.5 line** the web root is `web/` and the front controller is `app.php`, which the engine does not know by
+default. `webserver.frontControllers` names it; the static list follows `web/.htaccess` and
 `doc/apache2/vhost.template`:
 
 ```json
@@ -223,20 +298,24 @@ For the **2.5 line** the web root is `web/` and the front controller `app.php`; 
     },
     "webserver": {
       "scripts": ["/app.php"],
-      "cgi": { "patterns": ["\\.php$"] },
-      "fallback": "app.php"
+      "frontControllers": { "^/": "app.php" },
+      "cgi": { "patterns": ["\\.php$"] }
     }
   }
 }
 ```
 
-The engine also reads `.htaccess` rules; correct `web/.htaccess` first (section 6.2.1), so that nothing can route to
-`app_dev.php`.
+In the persistent mode on 2.5, `compat.rewrite` is `app.php`. `app_dev.php` is not in `scripts`, so a request for it
+goes to `app.php` like any other unknown script: the development front controller is unreachable under this
+configuration, which is what production needs. Do not rely on `web/.htaccess` under Velocity: the engine's
+documentation states that a pooled worker runs the script the server chose and does not read `.htaccess` to choose
+it. The JSON file is the routing.
 
 ### 6.3.5 Start it
 
-The CGI mode needs `php-cgi` (the engine finds it on the `PATH`; `Q.webserver.cgi.binary` names another one). Start on
-a high port for the first test:
+The CGI mode needs `php-cgi` of the same PHP version (the engine looks for `php-cgi`, `php-cgi8.3`, `php-cgi8.2` and
+`php-cgi8.1` on the `PATH`; for any other name or version set `Q.webserver.cgi.binary`). Start on a high port for the
+first test:
 
 ```bash
 cd /var/www/my_project
@@ -244,12 +323,10 @@ qbixserver --root=public --config=velocity.json --host=127.0.0.1 --port=8080 --p
 #          --root=web for the 2.5 line
 ```
 
-Persistent workers instead of CGI (remove the `cgi` block from the file first):
+Persistent workers instead of CGI, with the file's `compat` and `keepGlobals` of section 6.3.4:
 
 ```bash
-qbixserver --root=public --config=velocity.json --host=127.0.0.1 --port=8080 --pid=var/velocity.pid \
-  --preset=symfony --workers=8 \
-  --keep-globals=eZDataTypes,eZDataTypeObjects,eZDataTypeAllowedTypes,eZWorkflowTypes,eZWorkflowTypeObjects,eZWorkflowAllowedTypes,eZNotificationEventTypes,eZNotificationEventTypeObjects,eZNotificationEventTypeAllowedTypes
+qbixserver --root=public --config=velocity.json --host=127.0.0.1 --port=8080 --pid=var/velocity.pid --workers=8
 ```
 
 Options used (`qbixserver --help` lists them all):
@@ -262,8 +339,7 @@ Options used (`qbixserver --help` lists them all):
 | `--pid` | pid file, used by `--stop` and `--reload` |
 | `--workers` | size of the worker pool; the default is what fits in memory, at most 8 per core and 64 in all, never fewer than 4 |
 | `--user`, `--group` | when started as root (ports below 1024): who the workers become; default the owner of the document root, never root |
-| `--preset` | `symfony` loads the compatibility settings for a Symfony front controller |
-| `--keep-globals` | globals kept between requests (section 6.3.3) |
+| `--keep-globals` | globals kept between requests, the same as `Q.webserver.keepGlobals` (section 6.3.3) |
 | `--layout` | print which configuration files would be loaded, and exit: run it once, because the engine also reads `/etc/qbix` (and the `/etc/vc` overlay) when they exist |
 | `-t` | test the configuration and exit |
 | `--stop`, `--reload` | stop gracefully, or re-execute the server keeping its socket |
@@ -307,8 +383,10 @@ match its key is never shown to visitors. On start the console prints a line suc
 The same subject for Exponential 6, with the `/etc/vc` configuration tree, is in
 [the Exponential 6 book, 8.3.9](https://github.com/se7enxweb/exponential/blob/main/doc/install/08-serving-the-site.md#839-https-served-by-velocity-itself).
 
-Tell Symfony the requests arrive over HTTPS from Velocity itself: no trusted-proxy setting is needed when Velocity
-terminates TLS, because PHP sees the request directly. A proxy in front of Velocity is section 6.8.
+When Velocity terminates TLS itself, Symfony needs no trusted-proxy setting: the engine sets `HTTPS=on` and
+`REQUEST_SCHEME=https` for a request that arrived over TLS, and PHP sees the visitor's address as `REMOTE_ADDR`.
+Symfony therefore builds `https://` links and secure cookies without being told anything. A proxy or load balancer in
+front of Velocity is section 6.8.
 
 ### 6.3.7 Running it as a service
 
@@ -367,17 +445,21 @@ What can go wrong:
 
 | Symptom | Cause | Fix |
 |---|---|---|
-| every page `200` but empty, or without `Set-Cookie` and `Location` | persistent mode without the shims: headers sent with `header()` are lost | use `--preset=symfony`, or the CGI mode |
-| `Call to a member function initializeEvent() on null` when publishing in the legacy admin | persistent mode without `--keep-globals` | add the list of 6.3.5 |
+| every page `200` but empty, or without `Set-Cookie` and `Location` | persistent mode with the compatibility layer switched off (`Q.compat.skipSourceCodeTransform: true` somewhere in the loaded configuration): headers sent with `header()` are lost | remove that setting (`--layout` shows where it comes from), or use the CGI mode |
+| `Call to a member function initializeEvent() on null` when publishing in the legacy admin | persistent mode without the kept globals | add `keepGlobals` of 6.3.4 |
+| 2.5: every clean URL answers the engine's 404 page, `/app.php` works | no front controller named: the engine looks for `index.php`, which `web/` does not have | `"frontControllers": { "^/": "app.php" }` (6.3.4) |
+| a 500 or a closed connection for URLs that are not files | `Q.webserver.fallback` set to a file name (section 6.3.4) | remove `fallback` |
+| uploads above 10 MB arrive with an upload error, or the whole form arrives empty above 12 MB | `--preset=symfony` sets `upload_max_filesize=10M` and wins over the file | drop the preset, set `Q.compat.ini` (6.3.4) |
 | legacy admin without stylesheets | `ezpublish:legacy:assets_install` was not run, or a static path is missing | chapter 4, [4.6](04-installing.md#46-wire-up-the-legacy-kernel); compare the failing URL with 6.3.4 |
 | `php-cgi: not found` | the CGI mode without the `php-cgi` binary | install it (`php-cgi`, `php8.3-cgi`, ...) or set `Q.webserver.cgi.binary` |
-| the start stops with a bind error | another server owns the port | `ss -ltnp | grep ':80 '` |
+| the start stops with a bind error | another server owns the port | `ss -ltnp` lists who listens on `:80` and `:443` |
 | settings you did not write are active | the engine also loaded `/etc/qbix` or `/etc/vc` | `qbixserver --layout ...` shows the files |
 
 > **Not verified for this book:** the configuration of this section is derived from the engine's documentation and
 > code and was not run against a live installation of each line. The engine's documentation names Symfony among the
-> applications it serves in both modes; the legacy kernel inside Symfony adds the two points of 6.3.3. Report results
-> and corrections to the project's issue tracker.
+> applications it serves in both modes; the legacy kernel inside Symfony adds the points of 6.3.3. Report results
+> and corrections to the project's issue tracker; report anything that exposes a site by e-mail to
+> `security@se7enx.com` instead ([13.11](13-security-hardening.md#1311-keeping-up-to-date)).
 
 ## 6.4 The Symfony CLI (development only)
 
@@ -419,20 +501,45 @@ What the template does, rule by rule: sets `SYMFONY_ENV` with `SetEnvIf` (so rew
 the URL with 404, and rewrites everything else to `/app.php`. It also sets ten-year expiry on stored images (their URLs
 change when they change) and gzip for text types.
 
-The template uses `ServerName`, `DocumentRoot %BASEDIR%/web` and `DirectoryIndex app.php`. Before you reload:
+The template uses `ServerName`, `DocumentRoot %BASEDIR%/web` and `DirectoryIndex app.php`. Two lines to check in the
+generated file before you use it:
+
+- **The `var/` rule.** It must read `RewriteRule ^/var/.*(?i)\.(php3?|phar|phtml|sh|exe|pl|bin)$ - [F]`, with the
+  slash after `^`. Templates before commit `01e4d59` (2026-10-05, planned release `v2.5.0.4`) wrote `^var/`, which
+  never matches in a virtual host (section 6.2, rule 1).
+- **The PHP handler.** The template hands every `.php` file below `web/` to PHP-FPM (`<FilesMatch \.php$>`). Only
+  `app.php` needs to run; narrowing the match to it means that a `.php` file which a rewrite rule passes through as a
+  static path (anything below `design/`, `extension/`, `var/storage/images/`) can never be executed:
+
+  ```apache
+  <FilesMatch "^app\.php$">
+      SetHandler "proxy:unix:/run/php-fpm/www.sock|fcgi://localhost/"
+  </FilesMatch>
+  ```
+
+Before you reload:
 
 ```bash
 apachectl configtest                 # Syntax OK
 systemctl reload apache2             # httpd on Red Hat style systems
-curl -sI http://example.com/ | head -1
+curl -sI http://example.com/ | head -1                                   # HTTP/1.1 200 OK (or a redirect)
+curl -s -o /dev/null -w '%{http_code}\n' http://example.com/var/x.php    # 403: the var/ rule works
 ```
 
-If you use the shipped `web/.htaccess` instead (`AllowOverride All`), correct it first (section 6.2.1).
+If you use the shipped `web/.htaccess` instead (`AllowOverride All`), take the corrected file of the branch or correct
+it first (section 6.2.1). It has no `var/` rule of its own, so the narrowed handler above matters even more there. It
+also sends `content/treemenu` URLs to `index_treemenu.php`, a file that the bridge's `assets_install` does not create
+(it installs `index_rest.php` and `index_cluster.php` only); if the legacy admin's left-hand content tree stays empty,
+delete that rule so that those URLs reach `app.php` and the bridge's own tree menu route (**not verified** on a live
+installation).
 
 ### 6.5.2 3.x, 4.6.x and 5.x: public/
 
-The `doc/apache2/vhost.template` on the 3.x branch is unchanged from the 2.5 layout (`web/`, `app.php`) and does not
-fit these lines. The 3.x branch adds `doc/apache2/media-site-vhost.conf` (rules inside, `DocumentRoot .../public`) and
+The `doc/apache2/vhost.template` on the 3.x branch is the 2.5 template (only its `var/` rule was corrected, in commit
+`984732f`) and does not fit these lines: it sets `DocumentRoot %BASEDIR%/web` and `DirectoryIndex app.php`, rewrites
+every URL to `/app.php`, and its DFS cluster rule sends images to `/app.php` as well. On 3.x, 4.6.x and 5.x there is
+no `web/` and no `app.php`, so a virtual host generated from it answers every dynamic URL with 404 (and serves
+nothing at all if `web/` does not exist). Do not use it for these lines until the branch is corrected. The 3.x branch adds `doc/apache2/media-site-vhost.conf` (rules inside, `DocumentRoot .../public`) and
 `media-site.conf` (`AllowOverride All`, relying on `public/.htaccess`). The rules in `media-site-vhost.conf` lack the
 legacy asset paths (`design/`, `extension/`, `share/icons/`, `var/.../cache/`), so the legacy admin loses its
 stylesheets with it. The simplest correct setup is therefore the `.htaccess` route, with `public/.htaccess` corrected
@@ -452,7 +559,8 @@ Apache PHP-FPM handler:
         Require all granted
     </Directory>
 
-    <FilesMatch \.php$>
+    # Only the front controller runs (section 6.2, rule 1)
+    <FilesMatch "^index\.php$">
         SetHandler "proxy:unix:/run/php-fpm/www.sock|fcgi://localhost"
     </FilesMatch>
 
@@ -572,10 +680,28 @@ workers afterwards.
 When a proxy or load balancer terminates TLS or caches in front of the application, Symfony must trust it, or it
 builds `http://` links and sees the proxy's address as the client's.
 
-| Line | Trust the proxy | Disable Symfony's own HTTP cache |
-|---|---|---|
-| 2.5 | environment variable `SYMFONY_TRUSTED_PROXIES` (comma-separated, or `TRUST_REMOTE`), read by `web/app.php` | `SYMFONY_HTTP_CACHE=0` |
-| 3.x, 4.6.x, 5.x | `TRUSTED_PROXIES` in `.env.local` (the shipped `.env` sets `127.0.0.1`) | the purge type and HTTP cache settings in [chapter 8](08-configuration.md) |
+| Line | Trust the proxy | Who reads it | Disable Symfony's own HTTP cache |
+|---|---|---|---|
+| 2.5 | environment variable `SYMFONY_TRUSTED_PROXIES` (comma-separated, or `TRUST_REMOTE` for whatever address connects) | `web/app.php`, with all `X-Forwarded-*` headers | `SYMFONY_HTTP_CACHE=0` |
+| 3.x | `TRUSTED_PROXIES` in `.env.local` (the shipped `.env` sets `127.0.0.1`); `REMOTE_ADDR` trusts the connecting address | on the branch, `framework.trusted_proxies` in `config/packages/ezpublish.yaml` with the headers `x-forwarded-for`, `-proto`, `-port` (commit `d820756`, planned `v3.3.44.8`); with `v3.3.44.7` only the platform's deprecated fallback read it | the purge type and HTTP cache settings in [chapter 8](08-configuration.md) |
+| 4.6.x, 5.x | `TRUSTED_PROXIES` in `.env.local` (the recipe's `.env` sets `127.0.0.1`) | on the branches, `config/packages/trusted_proxies.yaml` (commits `309785f`, `78e2848`; planned `v4.6.23.3`, `v5.0.3.1`); with `v4.6.23.2` and `v5.0.2` **nothing** reads it, so add that file (chapter 3, [3.4.5](03-getting-the-code.md#345-files-you-may-have-to-add-to-a-project-from-an-older-tag)) | the same |
+
+Check what is in effect, from 3.x on: `php bin/console --env=prod debug:config framework trusted_proxies` must print
+your proxies, not `null` or an empty value. What goes wrong without it: links and redirects point to `http://` behind an
+HTTPS proxy (a redirect loop when the proxy forces HTTPS), the login cookie is not marked secure, and the logs and the
+legacy kernel's user sessions see the proxy's address for every visitor.
+
+**A proxy in front of Velocity.** Velocity then resolves the forwarded headers itself before PHP sees the request: it
+replaces `REMOTE_ADDR` with the visitor's address and sets `HTTPS` only when the connection comes from an address in
+`Q.webserver.proxy.trusted` (default `127.0.0.1` and `::1`; add your load balancer's addresses there). Symfony then
+sees a direct HTTPS request and needs no trusted proxy of its own. Up to Velocity v0.0.4.43 the engine took
+`X-Forwarded-Proto` from **any** client; from commit `380a64d` (2026-10-05, after v0.0.4.43, in the engine's next
+release) it reads `X-Forwarded-Proto`, `CloudFront-Forwarded-Proto` and `CF-Visitor` only from trusted proxies, the
+same list that decides `REMOTE_ADDR`, while a TLS connection to Velocity is HTTPS whoever makes it:
+
+```json
+{ "Q": { "webserver": { "proxy": { "trusted": ["127.0.0.1", "::1", "10.0.0.0/8"] } } } }
+```
 
 **Varnish.** [doc/varnish/varnish.md](../varnish/varnish.md) requires Varnish 5.1 or later (6.0 LTS recommended) with
 the `xkey` module from varnish-modules. The VCL is `doc/varnish/vcl/varnish4_xkey.vcl`, with the backend and the ACLs of
@@ -583,8 +709,9 @@ purgers and debuggers in `doc/varnish/vcl/parameters.vcl` (edit `.host` and `.po
 On 2.5 switch the purge type at compile time with the environment variable `HTTPCACHE_PURGE_TYPE=varnish` (or `http`)
 and name Varnish in `HTTPCACHE_PURGE_SERVER`; `app/config/env/generic.php` and `default_parameters.yml` read exactly
 these names. The 2.5 installation guide's section on Varnish names `env(PURGE_TYPE)` and `env(HTTPCACHE_PURGE_SERVERS)`,
-which no configuration reads, and `framework.trusted_proxies`, which `web/app.php` does not use. Purge all:
-`php bin/console fos:httpcache:invalidate:path / --all`.
+which no configuration reads, and `framework.trusted_proxies`, which `web/app.php` does not use. Purge everything with
+`php bin/console --env=prod fos:httpcache:invalidate:tag ez-all`: every page the platform caches carries the tag
+`ez-all`. (`fos:httpcache:invalidate:path` takes a list of paths and has no `--all` option.)
 
 The legacy kernel's content view cache is invalidated by the legacy kernel itself when content is published in the
 legacy admin; HTTP cache purges for content published there go through the bridge's HTTP cache purger. Test a publish
@@ -617,20 +744,25 @@ The database runs in its own container or outside.
 ## 6.10 Platform.sh
 
 `.platform.app.yaml`, `.platform/` and [doc/platformsh/](../platformsh/README.md) (2.5 and 3.x) are the upstream
-Platform.sh files, marked "Beta" in their README. As shipped, `.platform.app.yaml` declares `type: php:7.3`, web root
-`web` and `passthru: "/app.php"`, on the 3.x branch too, where the web root is `public/` and the front controller
-`index.php`. They need at least the PHP version and, on 3.x, the web root and front controller changed before a
-deployment can work. The 4.6.x and 5.x lines ship no Platform.sh files. This book does not cover Platform.sh further.
+Platform.sh files, marked "Beta" in their README. What the application file declares:
+
+| | Newest tag (`v2.5.0.3`, `v3.3.44.7`) | Branch now (planned release) |
+|---|---|---|
+| 2.5 | `type: php:7.3`, web root `web`, `passthru: "/app.php"`, `SYMFONY_ENV: prod`, `SYMFONY_TRUSTED_PROXIES: TRUST_REMOTE` | the same with `type: php:8.2` (commit `b41967c`, `v2.5.0.4`) |
+| 3.x | the 2.5 file unchanged: PHP 7.3, `web`, `app.php`, `SYMFONY_*` variables, a `composer ezplatform-install` step that does not exist on 3.x | `type: php:8.3`, web root `public`, `passthru: "/index.php"`, `APP_ENV: prod`, `APP_DEBUG: 0`, `TRUSTED_PROXIES: REMOTE_ADDR`, install with `bin/console ibexa:install` (the default install type), cron `ibexa:cron:run` (commit `aa00125`, `v3.3.44.8`) |
+
+A deployment from the newest tag cannot work on either line (PHP 7.3 cannot install them); use the branch's file. The
+4.6.x and 5.x lines ship no Platform.sh files. This book does not cover Platform.sh further.
 
 ## 6.11 Checklist
 
 - [ ] The shipped development settings are corrected (section 6.2.1).
-- [ ] Only the front controller runs; only the listed paths are files (section 6.2; the checks of 6.3.8).
+- [ ] Only the front controller runs: a request for `/var/x.php` answers 403 or 404, never runs (section 6.2); only the listed paths are files (the checks of 6.3.8).
 - [ ] `APP_ENV=prod` (3.x and later) or no `SYMFONY_ENV=dev` (2.5); no `X-Debug-Token` header.
 - [ ] HTTPS works, and plain HTTP redirects to it.
 - [ ] The writable directories are writable by the server's user, nothing else is (section 6.7).
 - [ ] Both admins load with their stylesheets; publishing works in both.
-- [ ] A proxy in front is trusted (section 6.8), and purges reach it.
+- [ ] A proxy in front is trusted (section 6.8: `debug:config framework trusted_proxies`, or `Q.webserver.proxy.trusted` for Velocity), and purges reach it.
 - [ ] The server starts at boot (6.3.7, or the distribution's Apache or nginx unit).
 
 ## 6.12 References
@@ -646,7 +778,15 @@ In this repository:
   [doc/platformsh/INSTALL.md](../platformsh/INSTALL.md), [.platform.app.yaml](../../.platform.app.yaml)
 - On 3.x: [doc/apache2/media-site-vhost.conf](https://github.com/se7enxweb/exponential-platform-legacy/blob/3.x/doc/apache2/media-site-vhost.conf),
   [doc/nginx/media-site.conf](https://github.com/se7enxweb/exponential-platform-legacy/blob/3.x/doc/nginx/media-site.conf),
-  [public/.htaccess](https://github.com/se7enxweb/exponential-platform-legacy/blob/3.x/public/.htaccess)
+  [public/.htaccess](https://github.com/se7enxweb/exponential-platform-legacy/blob/3.x/public/.htaccess),
+  [doc/apache2/vhost.template](https://github.com/se7enxweb/exponential-platform-legacy/blob/3.x/doc/apache2/vhost.template)
+- The 4.6.x and 5.x recipe's [public/.htaccess](https://github.com/se7enxweb/sevenx-recipes/blob/master/se7enxweb/exponential-platform-dxp/1.4/public/.htaccess);
+  the branch fixes of 2026-10-05: [fa091cd](https://github.com/se7enxweb/exponential-platform-legacy/commit/fa091cd),
+  [d924ceb](https://github.com/se7enxweb/exponential-platform-legacy/commit/d924ceb),
+  [7605f57](https://github.com/se7enxweb/exponential-platform-legacy/commit/7605f57),
+  [66f13e1](https://github.com/se7enxweb/exponential-platform-legacy/commit/66f13e1),
+  [d820756](https://github.com/se7enxweb/exponential-platform-legacy/commit/d820756),
+  [309785f](https://github.com/se7enxweb/exponential-platform-legacy/commit/309785f)
 
 External:
 
@@ -656,7 +796,10 @@ External:
   [HTTPS](https://github.com/se7enxweb/exponential-velocity/blob/main/docs/https.md),
   [response cache](https://github.com/se7enxweb/exponential-velocity/blob/main/docs/cache.md),
   [Docker images](https://github.com/se7enxweb/exponential-velocity/blob/main/docs/docker.md),
-  [requirements](https://github.com/se7enxweb/exponential-velocity/blob/main/docs/requirements.md)
+  [requirements](https://github.com/se7enxweb/exponential-velocity/blob/main/docs/requirements.md),
+  [the proxy header handling](https://github.com/se7enxweb/exponential-velocity/blob/main/src/Q/WebServer/Proxy.php) and
+  [commit 380a64d](https://github.com/se7enxweb/exponential-velocity/commit/380a64d6dc9a55c047b7d850556fcb17352a5abc)
+  (forwarded protocol only from trusted proxies)
 - The Exponential 6 book: [8. Serving the site](https://github.com/se7enxweb/exponential/blob/main/doc/install/08-serving-the-site.md),
   [13. Security hardening](https://github.com/se7enxweb/exponential/blob/main/doc/install/13-security-hardening.md)
 - Symfony: [configuring a web server](https://symfony.com/doc/current/setup/web_server_configuration.html),
@@ -675,7 +818,7 @@ External:
 - Upstream concepts: [HTTP cache](https://doc.ibexa.co/en/latest/infrastructure_and_maintenance/cache/http_cache/http_cache/),
   [reverse proxy](https://doc.ibexa.co/en/latest/infrastructure_and_maintenance/cache/http_cache/reverse_proxy/)
 - Let's Encrypt: [challenge types](https://letsencrypt.org/docs/challenge-types/)
-- systemd: [systemd.service](https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html)
+- systemd: [systemd.service(5)](https://man7.org/linux/man-pages/man5/systemd.service.5.html)
 
 [Previous: 5. The legacy kernel inside](05-the-legacy-kernel-inside.md) · [Next: 7. Databases](07-databases.md) ·
 [Contents](README.md)
