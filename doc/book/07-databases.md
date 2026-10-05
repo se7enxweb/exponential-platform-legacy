@@ -74,9 +74,11 @@ Three consequences follow, and they explain most database trouble in this distri
 1. **Injected settings win over INI files.** `eZINI` checks its injected settings before the values read from
    `settings/override/` or `settings/siteaccess/` (`lib/ezutils/classes/ezini.php`, `$injectedSettings`). A
    `[DatabaseSettings]` block in a legacy override is therefore ignored for every request and every console command
-   that goes through the bridge. The overrides the distribution ships accordingly carry no connection: master's
-   `ezpublish_legacy/settings/override/site.ini.append.php` has `Charset=utf8mb4` and two commented lines, the 4.6
-   and 5.x recipes' `src/LegacySettings/override/site.ini.append.php` has `Charset=utf8mb4` only.
+   that goes through the bridge. The overrides the distribution ships accordingly carry no connection: the
+   `[DatabaseSettings]` block of master's `ezpublish_legacy/settings/override/site.ini.append.php` has
+   `Charset=utf8mb4` and two commented SQLite lines; the one in `src/LegacySettings/override/site.ini.append.php` of
+   the 4.6 line's recipe has `Charset=utf8mb4` only, and the 5 line's recipe adds the same two SQLite lines,
+   commented out. Uncommenting them changes nothing on a bridged request.
 2. **A legacy script started directly does not get the connection.** `php ezpublish_legacy/runcronjobs.php` or
    `cd ezpublish_legacy && php bin/php/ezcache.php` bypasses the bridge, so the legacy kernel falls back to the
    defaults of `settings/site.ini` and cannot reach the site's database. Run legacy scripts through the bridge:
@@ -150,6 +152,33 @@ has them commented out); with the URL form they are not used for the connection.
 The shipped `.env` of the 3.x branch contains a working-looking demonstration URL with a user and password for a
 database called `demo_platformlegacy`. Replace it in `.env.local`; never deploy with it.
 
+**Special characters in the password.** The value is parsed as a URL, so a password containing `@`, `:`, `/`, `#`,
+`?` or `%` must be percent-encoded (`@` becomes `%40`). Because of `resolve:`, Symfony also reads `%...%` as a
+parameter reference, so write each `%` of an encoded character twice (`p%%40ss` for `p@ss`). The simplest way out
+is a password of letters and digits only.
+
+### Checking the connection on both sides
+
+After writing the connection, check it from the Symfony side first and then through the bridge:
+
+```bash
+php bin/console --env=prod doctrine:query:sql "SELECT name, value FROM ezsite_data"       # 2.5, 3.x, 4.6
+php bin/console --env=prod doctrine:query:sql "SELECT name, value FROM ibexa_site_data"   # 5
+```
+
+The command prints the rows of [7.9](#79-the-version-rows-in-ezsite_data), for example `ezpublish-version` with
+its value, which proves that Doctrine reaches the database (3.x and later also know it as `dbal:run-sql`). Then
+open `/legacy_admin/`: the legacy kernel is built with the injected connection, and a failure shows up as "Could not
+map database driver" in the Symfony log or as a connection error in `ezpublish_legacy/var/log/error.log`.
+
+What can go wrong:
+
+- `SQLSTATE[HY000] [2002] No such file or directory` on MySQL: `localhost` makes PDO use the Unix socket. Write
+  `127.0.0.1` to connect over TCP, or give the socket path (`unix_socket`, which the bridge also injects).
+- `Access denied for user ...` although the password is right: an unencoded special character (above).
+- The Symfony side works, a legacy script does not: the script was started without the bridge (point 2 of
+  [7.2](#72-how-the-bridge-hands-the-connection-to-the-legacy-kernel)).
+
 ## 7.4 MySQL and MariaDB
 
 Create the database with the character set and collation the schema bundle uses:
@@ -173,6 +202,27 @@ GRANT ALL PRIVILEGES ON exponential.* TO 'exponential'@'localhost';
 ```sql
 CREATE USER exponential WITH PASSWORD '<password>';
 CREATE DATABASE exponential OWNER exponential ENCODING 'UTF8';
+\c exponential
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+```
+
+**pgcrypto is needed by the legacy kernel, and nobody else creates it here.** The legacy PostgreSQL driver computes
+MD5 values in SQL as `encode(digest(..., 'md5'), 'hex')` (`eZPostgreSQLDB::md5()`, in every 6.0.x release), and
+`digest()` comes from the `pgcrypto` extension; the URL alias code uses it. The Exponential 6 installer creates the
+extension, but in this distribution the platform's installer creates the database, and none of the platform kernels
+does. Without it the platform side works and the legacy side fails with `function digest(text, unknown) does not
+exist`. Create it once per database, as above (as the owner or a superuser; it is a trusted extension from
+PostgreSQL 13 on); if the server lacks it, install the distribution's PostgreSQL contrib package first.
+
+**Sequences.** Both kernels read the id of a new row from sequences named `<table>_<column>_seq` (for example
+`ezcontentobject_id_seq`). A fresh install creates them with those names. A database that comes from eZ Publish 5.x
+has the old names `<table>_s`; on the 2.5 line the platform kernel's `dbupdate-6.13.0-to-7.5.0.sql` renames them,
+and since October 2026 the legacy kernel's 6.0 update files do the same, each rename only where the old name still
+exists ([10.7](10-upgrading-between-lines.md#107-the-legacy-kernel-inside-every-line)). After loading rows with explicit
+ids, move each sequence past the highest id, or the next insert fails with a duplicate key:
+
+```sql
+SELECT setval('ezcontentobject_id_seq', (SELECT max(id) FROM ezcontentobject));
 ```
 
 Set the driver to `pdo_pgsql` (2.5) or use a `pgsql://` URL (3.x and later); the legacy kernel then runs on
@@ -235,11 +285,38 @@ A site **upgraded** from 2.5 keeps its legacy tables: the upstream 2.5 to 3.0 up
 drops no table (see [chapter 10](10-upgrading-between-lines.md)).
 
 To find out what is missing, compare the table list of the database with the `CREATE TABLE` statements of the legacy
-kernel's schema file for your engine: `ezpublish_legacy/kernel/sql/mysql/kernel_schema.sql` (118 tables in 6.0.14),
-`ezpublish_legacy/kernel/sql/postgresql/kernel_schema.sql` or `ezpublish_legacy/kernel/sql/sqlite/schema.sql`. Those
-files use plain `CREATE TABLE`, so do not run them against an installed database as they are: take only the
-statements for tables that are missing, review them, and run them on a copy first. Symptoms of missing tables are
-SQL errors such as "Table ... doesn't exist" in `ezpublish_legacy/var/log/error.log` as soon as somebody uses the
+kernel's schema file for your engine: `ezpublish_legacy/kernel/sql/mysql/kernel_schema.sql` (118 tables in 6.0.14,
+128 on `dev-main`), `ezpublish_legacy/kernel/sql/postgresql/kernel_schema.sql` or
+`ezpublish_legacy/kernel/sql/sqlite/schema.sql`. On MySQL, one command lists the tables the legacy kernel expects and
+the database lacks:
+
+```bash
+comm -23 \
+  <(grep -oE '^CREATE TABLE [a-z0-9_]+' ezpublish_legacy/kernel/sql/mysql/kernel_schema.sql | awk '{print $3}' | sort -u) \
+  <(mysql -N -u exponential -p exponential -e 'SHOW TABLES' | sort -u)
+```
+
+Expected output on a 2.5 install: nothing, or only the tables newer than the platform's schema (the `exp*` tables of
+6.0.15). On a fresh 4.6 install: several dozen names, starting with `ezbasket`.
+
+For columns as well as tables, the legacy kernel's own `ezsqldiff.php` compares the database with the reference
+schema `share/db_schema.dba`. Give the reference first and the database second, as chapter 14.12 of the
+Exponential 6 book does; it takes the credentials on the command line, so it can run without the bridge:
+
+```bash
+cd ezpublish_legacy
+php bin/php/ezsqldiff.php --type=mysql --user=exponential --password=<password> share/db_schema.dba exponential
+```
+
+Its output is SQL, not a report: `CREATE TABLE` and `ADD` lines name what the legacy kernel misses; `DROP` lines name
+what only the database has, which in this distribution includes every platform-only table and column (`ibexa_setting`,
+`nglayouts_*`, `ezcontentclass_attribute.is_thumbnail`, ...). Read it, never run it as it is. On the 5 line, whose
+platform tables carry `ibexa_*` names, both methods report every renamed table as missing; there, check only the
+names the translator does not map ([10.6](10-upgrading-between-lines.md#106-from-33-to-46-and-from-46-to-5)).
+
+The schema files use plain `CREATE TABLE`, so do not run them against an installed database as they are: take only
+the statements for tables that are missing, review them, and run them on a copy first. Symptoms of missing tables
+are SQL errors such as "Table ... doesn't exist" in `ezpublish_legacy/var/log/error.log` as soon as somebody uses the
 legacy shop, workflows, collaboration, information collection, notifications, RSS or PDF export.
 
 Exponential 6.0.15 adds tables of its own (the audit log `expaudit_*`, mail preferences `expmail_*`,
@@ -247,6 +324,11 @@ Exponential 6.0.15 adds tables of its own (the audit log `expaudit_*`, mail pref
 `update/database/<engine>/6.0/dbupdate-6.0.0-6.0.15.sql` of the legacy kernel. Lines that install
 `se7enxweb/exponential` from `dev-main` (4.6 and 5.x through their bridge) pick up the code that uses them on their
 next update and need that file applied too; see [10.7](10-upgrading-between-lines.md#107-the-legacy-kernel-inside-every-line).
+The order matters on a 4.6 install whose legacy-only tables are missing: the update file alters some of them
+(`ezpdf_export`, `ezrss_export`, `ezcontentbrowsebookmark`) and stops when they do not exist. Create the missing
+tables first, from the `kernel_schema.sql` of the legacy kernel you have installed; on `dev-main` that file already
+contains the 6.0.15 tables and columns (128 `CREATE TABLE` statements against 118 in 6.0.14), so tables created
+from it need no update file afterwards.
 
 ## 7.9 The version rows in ezsite_data
 
@@ -305,7 +387,8 @@ php bin/console ezplatform:reindex                             # 2.5; exponentia
 
 (There is no Doctrine migrations bundle on the 2.5 line; `doctrine:migrations:migrate` exists from 3.x on.) Check
 the site, the platform admin and the legacy admin, then sequences: PostgreSQL sequences must be past the highest id of
-each table, or the next insert fails with a duplicate key.
+each table, or the next insert fails with a duplicate key (the `setval` statement of [7.5](#75-postgresql)). A
+conversion to PostgreSQL also needs the `pgcrypto` extension in the new database ([7.5](#75-postgresql)).
 
 ## References
 
@@ -326,6 +409,8 @@ The Exponential 6 book (the legacy kernel):
 - [Chapter 9: Databases](https://github.com/se7enxweb/exponential/blob/main/doc/install/09-databases.md): every legacy driver,
   SQLite with WAL and queued writes, MySQL, PostgreSQL, Oracle, cross-engine notes
 - [Chapter 11: Upgrading](https://github.com/se7enxweb/exponential/blob/main/doc/install/11-upgrading.md): the legacy kernel's update files
+- [Chapter 14: Migrating from the 4.x line](https://github.com/se7enxweb/exponential/blob/main/doc/install/14-migrating-from-4x.md),
+  section 14.12: comparing a database with the reference schema (`ezsqldiff.php`)
 
 External:
 
@@ -335,7 +420,9 @@ External:
 - Upstream concepts: [Ibexa DXP database requirements](https://doc.ibexa.co/en/latest/getting_started/requirements/)
 - PHP: [PDO](https://www.php.net/manual/en/book.pdo.php), [SQLite3](https://www.php.net/manual/en/book.sqlite3.php)
 - MySQL: [utf8mb4](https://dev.mysql.com/doc/refman/8.4/en/charset-unicode-utf8mb4.html); PostgreSQL:
-  [CREATE DATABASE](https://www.postgresql.org/docs/current/sql-createdatabase.html); SQLite: [WAL](https://www.sqlite.org/wal.html)
+  [CREATE DATABASE](https://www.postgresql.org/docs/current/sql-createdatabase.html),
+  [pgcrypto](https://www.postgresql.org/docs/current/pgcrypto.html),
+  [sequence functions](https://www.postgresql.org/docs/current/functions-sequence.html); SQLite: [WAL](https://www.sqlite.org/wal.html)
 
 [Previous: 6. Serving the site](06-serving-the-site.md) ·
 [Next: 8. Configuration: YAML and INI](08-configuration.md) · [Contents](README.md)
