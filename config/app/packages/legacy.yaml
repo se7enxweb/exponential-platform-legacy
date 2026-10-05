@@ -37,7 +37,6 @@ parameters:
             - app
             - ngsymfonytools
             - ezrichtext
-            - ezplatformsearch
             - ezjscore
             - ezoe
         'site.ini/SiteAccessRules/Rules':

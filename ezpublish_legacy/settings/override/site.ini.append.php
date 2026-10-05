@@ -18,7 +18,6 @@ ActiveExtensions[]=ngsymfonytools
 ActiveExtensions[]=sevenx_themes_simple
 ActiveExtensions[]=bcwebsitestatistics
 ActiveExtensions[]=ezrichtext
-ActiveExtensions[]=ezplatformsearch
 ActiveExtensions[]=ezdemo
 ActiveExtensions[]=ezjscore
 ActiveExtensions[]=ezoe
