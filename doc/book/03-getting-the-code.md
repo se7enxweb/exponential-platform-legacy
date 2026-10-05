@@ -165,8 +165,9 @@ recipe of `se7enxweb/exponential-platform-dxp` (folder `se7enxweb/exponential-pl
 [sevenx-recipes](https://github.com/se7enxweb/sevenx-recipes)): `bin/install-legacy-links`, `config/`, `public/`
 (`index.php`, `.htaccess`, `index_rest.php`, `index_cluster.php`), `src/` (the installer type `exponential-oss`, the
 legacy request listeners, the injected-settings subscriber, `src/LegacySettings/` and `src/ezpublish_legacy/app/`),
-the Encore configuration and `package.json`, the bundle list and the environment variables for `.env`. The recipe also
-creates the symbolic link `web` to `public`.
+the Encore configuration and `package.json`, the bundle list and the environment variables for `.env`. The recipe manifest also
+declares `"symlinks": {"web": "public"}`; Symfony Flex has no configurator of that name, so do not count on a `web`
+link existing: the web root is `public/`.
 
 Then `post-install-cmd` runs:
 
@@ -289,7 +290,7 @@ my_project/
 │   ├── LegacySettings/override/          global legacy INI overrides (linked into ezpublish_legacy/settings/override)
 │   ├── LegacyRoot/var/site/storage/      uploaded files (linked into ezpublish_legacy/var/site/storage)
 │   └── ezpublish_legacy/app/             the "app" extension and the siteaccess settings
-├── public/                               the web root (and web -> public)
+├── public/                               the web root
 ├── templates/, assets/, package.json, webpack.config.js
 ├── var/
 └── .env, .env.local

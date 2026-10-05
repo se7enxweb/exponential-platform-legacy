@@ -105,8 +105,9 @@ Why both PDO and the native drivers: the new stack talks to the database through
 through its own drivers. LegacyBridge maps the Doctrine driver to the legacy implementation when it injects the
 connection (`pdo_mysql` to `ezmysqli`, `pdo_pgsql` to `ezpostgresql`, `oci8` to `ezoracle`, `pdo_sqlite` to
 `sqlite3`; `bundle/LegacyMapper/Configuration.php` of LegacyBridge). The PHP extension behind each legacy driver must
-therefore be loaded too. On the 5.x line the extension `sevenx_exponential_platform_v5_database_translator` provides
-`QueryTranslator*` drivers that the legacy kernel uses instead ([chapter 5](05-the-legacy-kernel-inside.md)).
+therefore be loaded too. According to the 5.x installation guide, the extension
+`sevenx_exponential_platform_v5_database_translator` (active first in the list) registers `QueryTranslator*` drivers
+as `ImplementationAlias` for those names, so the legacy kernel uses them instead ([chapter 5](05-the-legacy-kernel-inside.md)).
 
 ```bash
 php -m | grep -i -E '^(ctype|curl|gd|imagick|iconv|intl|json|mbstring|xml|xsl|pdo_mysql|mysqli|pdo_pgsql|pgsql|pdo_sqlite|sqlite3|zip|fileinfo|opcache|pcntl|posix|sockets|openssl)$'
@@ -230,7 +231,7 @@ External:
   [`--ignore-platform-reqs`](https://getcomposer.org/doc/03-cli.md#install-i)
 - Upstream requirements for comparison: [Ibexa DXP requirements](https://doc.ibexa.co/en/latest/getting_started/requirements/)
 - Exponential Velocity: [requirements](https://github.com/se7enxweb/exponential-velocity/blob/main/docs/requirements.md)
-- Node.js: [nvm](https://github.com/nvm-sh/nvm), [corepack](https://nodejs.org/api/corepack.html)
+- Node.js: [nvm](https://github.com/nvm-sh/nvm), [corepack](https://github.com/nodejs/corepack)
 
 [Previous: 1. Introduction](01-introduction.md) · [Next: 3. Getting the code](03-getting-the-code.md) ·
 [Contents](README.md)

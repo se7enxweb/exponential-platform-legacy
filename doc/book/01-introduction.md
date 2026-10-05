@@ -143,7 +143,7 @@ from the configuration the skeleton or its Symfony Flex recipe installs.
 | Legacy kernel (`se7enxweb/exponential`) | `^6.0.12`, required directly | `^6.0.12`, through the bridge | `dev-main`, through the bridge | `dev-main`, through the bridge |
 | PHP in `composer.json` | `^7.1.3 \|\| ^8.1 \|\| ^8.2` | `^8.0` | `^7.4 \|\| ^8.0 ... \|\| ^8.5` | `>=8.3` |
 | PHP that resolves in practice | **8.1 or later** (6.0.10 to 6.0.14 of the kernel declare `^8.1`) | **8.1 or later** (same kernel range) | **8.0 or later** (LegacyBridge 4 declares `^8.0`) | **8.4 or later** (LegacyBridge 5 declares `^8.4`) |
-| Web root | `web/` | `public/` | `public/` (the recipe also links `web` to `public`) | `public/` |
+| Web root | `web/` | `public/` | `public/` | `public/` |
 | Front controller | `web/app.php` (and `web/app_dev.php`) | `public/index.php` | `public/index.php` (Symfony Runtime) | `public/index.php` (Symfony Runtime) |
 | Console | `bin/console` | `bin/console` | `bin/console` | `bin/console` |
 | Environment and secrets | `app/config/parameters.yml`, `SYMFONY_ENV`, `SYMFONY_DEBUG` | `.env`, `.env.local`, `APP_ENV`, `APP_SECRET` | the same | the same |
