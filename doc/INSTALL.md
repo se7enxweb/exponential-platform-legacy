@@ -214,7 +214,7 @@ working state without redoing completed work.
 #### Step 1 — Clone the repository
 
 ```bash
-git clone git@github.com:se7enxweb/exponential-platform-legacy.git
+git clone https://github.com/se7enxweb/exponential-platform-legacy.git
 cd exponential-platform-legacy
 
 # Check out the Platform v3 branch

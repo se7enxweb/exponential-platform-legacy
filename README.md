@@ -272,7 +272,7 @@ composer create-project se7enxweb/exponential-platform-legacy:3.x-dev exponentia
 Or clone directly from GitHub:
 
 ```bash
-git clone git@github.com:se7enxweb/exponential-platform-legacy.git
+git clone https://github.com/se7enxweb/exponential-platform-legacy.git
 cd exponential-platform-legacy
 git checkout 3.x
 composer install
