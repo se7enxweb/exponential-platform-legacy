@@ -12,7 +12,8 @@ dependencies:
       yarn: "*"
 
 # The type of the application to build.
-type: php:7.3
+# composer.json allows ^7.1.3 || ^8.1; 8.2 is the newest PHP this 2.5 line lists as tested.
+type: php:8.2
 build:
     # "none" means we're running composer manually, see build hook
     flavor: "none"
