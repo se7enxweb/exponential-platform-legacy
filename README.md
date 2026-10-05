@@ -354,7 +354,7 @@ php bin/console ezpublish:legacy:script bin/php/ezcache.php --clear-all
 (cd ezpublish_legacy && php bin/php/ezpgenerateautoloads.php --extension)
 
 # Run a legacy script (e.g. cronjob scripts, import scripts)
-php bin/console exponential:legacy:script <script-name>
+php bin/console ezpublish:legacy:script <script-name>
 
 # Run legacy cronjobs directly (bypass Symfony, use in crontab)
 php ezpublish_legacy/runcronjobs.php --siteaccess legacy_admin
