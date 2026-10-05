@@ -202,6 +202,26 @@ symfony server:start
 
 ---
 
+## Documentation
+
+- **[The book: installing and running Exponential Platform Legacy](doc/book/README.md)**: thirteen chapters on all four
+  release lines (2.5, 3.3, 4.6, 5), from requirements and installing through databases, configuration (YAML and
+  INI), operations, upgrading between lines and migrating in, to troubleshooting and security hardening. This copy is
+  on the 4.6.x branch; the newest copy is on master: [doc/book/README.md](https://github.com/se7enxweb/exponential-platform-legacy/blob/master/doc/book/README.md).
+- [The installation guide of the 4.6 line](INSTALL.md), step by step with Git save points;
+  [doc/INSTALL.md](doc/INSTALL.md) is a copy of master's short guide, which installs the 2.5 line.
+- Updating within the line and moving between lines: [chapter 10 of the book](doc/book/10-upgrading-between-lines.md).
+- Before going live: [chapter 13, security hardening](doc/book/13-security-hardening.md), with a go-live checklist.
+  The `public/.htaccess` that the Flex recipe installs forces the `dev` environment, and `v4.6.23.2` and earlier do not
+  read `TRUSTED_PROXIES`; read its sections 13.4 and 13.9 first.
+- Serving the site (Exponential Velocity, Apache, nginx, Varnish): [chapter 6 of the book](doc/book/06-serving-the-site.md);
+  this branch ships no server configuration files of its own.
+- The legacy kernel inside: [the Exponential 6 book](https://github.com/se7enxweb/exponential/blob/main/doc/install/README.md).
+- The bridge: [se7enxweb/LegacyBridge](https://github.com/se7enxweb/LegacyBridge) (Composer package `se7enxweb/legacy-bridge`).
+- Reporting a security issue: [SECURITY.md](SECURITY.md).
+
+---
+
 ## Main Exponential Platform Legacy Features
 
 - User defined content classes and objects
