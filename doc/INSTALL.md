@@ -28,7 +28,10 @@ cd exponential_website
 ```
 
 Always give the version. Without one, Composer takes the newest stable tag, `v5.0.3`, which (by a release mistake)
-contains this 2.5 line; for the 5 line use `:5.x-dev` or `:v5.0.2` ([chapter 10.1](book/10-upgrading-between-lines.md#101-the-release-lines)).
+contains this 2.5 line; for the 5 line use `:5.x-dev` or `:v5.0.2` ([chapter 3.1](book/03-getting-the-code.md#the-v503-tag-selects-the-25-line),
+[chapter 10.1](book/10-upgrading-between-lines.md#101-the-release-lines)). The next 2.5 release is planned as
+`v2.5.0.4`; until it is tagged, `~2.5.0.3` installs `v2.5.0.3`, whose front controllers still carry development
+settings that the branch has since corrected (step 7).
 `2.5.0.x-dev`, used by older guides, matches nothing on Packagist. Use `--ignore-platform-reqs` only for a platform
 requirement you have checked is irrelevant.
 
@@ -109,7 +112,7 @@ If Composer ran its scripts, most of this is done; run it after a `--no-scripts`
 php bin/console assets:install --symlink --relative web
 php bin/console ezpublish:legacy:assets_install --symlink --relative web       # web/design, extension, share, var
 php bin/console ezpublish:legacybundles:install_extensions
-(cd ezpublish_legacy && php bin/php/ezpgenerateautoloads.php --extension)       # legacy autoloads
+php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php     # legacy autoloads
 
 nvm use 14 && yarn install && yarn encore production                          # web/assets/build, web/assets/ezplatform/build
 node_modules/.bin/encore production --config-name app                         # the project's SCSS, web/assets/app
@@ -122,16 +125,24 @@ php bin/console --env=prod ezpublish:legacy:script bin/php/ezcache.php --clear-a
 
 There are no `ezpublish:legacy:clear-cache` or `ezpublish:legacy:generate-autoloads` commands; older guides that
 use them are wrong. Run legacy scripts through `ezpublish:legacy:script`, so that they get the database settings, and
-put Symfony's options (`--env`, `--siteaccess`) before the command name. The project's stylesheet is linked in Twig
+put Symfony's options (`--env`, `--siteaccess`) before the command name: written after the script path they are
+also handed to the legacy script, and `ezcache.php` then stops with ``invalid option `--env'``
+([chapter 5.7.1](book/05-the-legacy-kernel-inside.md#571-where-symfonys-options-go)). The project's stylesheet is linked in Twig
 with `{{ encore_entry_link_tags('index', null, 'app') }}`. Chapters: [5](book/05-the-legacy-kernel-inside.md),
 [9.1](book/09-operations.md#91-caches-on-both-sides).
 
 ## 7. Serve the site
 
 Point the web server at `web/`. Production must route to `web/app.php`, never to `web/app_dev.php`; use the rules in
-[`doc/apache2/vhost.template`](apache2/vhost.template) or [`doc/nginx/`](nginx/), and see
-[chapter 13.2](book/13-security-hardening.md#132-what-the-web-server-must-never-hand-out) for what the committed
-`web/.htaccess` does. For a local test, `symfony serve --document-root=web` is enough.
+[`doc/apache2/vhost.template`](apache2/vhost.template) or [`doc/nginx/`](nginx/). On this branch the front controllers
+are safe as committed (2026-10-05): `web/.htaccess` routes to `app.php`, `web/app_dev.php` refuses every client that
+is not the local machine, and `web/app.php` no longer switches `display_errors` on. A project created from `v2.5.0.3`
+(or `v5.0.3`) still has the old files, which route every request to `app_dev.php` with its check disabled; replace
+them with the branch's files ([chapter 6.2.1](book/06-serving-the-site.md#621-shipped-files-to-check-before-production),
+[chapter 13.2](book/13-security-hardening.md#132-what-the-web-server-must-never-hand-out)). A virtual host generated
+from a template older than 2026-10-05 has a `var/` rule that never matches; check it as chapter
+[6.5.1](book/06-serving-the-site.md#651-the-25-line-docapache2) shows. For a local test,
+`symfony serve --document-root=web` is enough.
 
 | Address (siteaccess matching `URIElement: 1`) | What |
 |---|---|
@@ -181,7 +192,7 @@ The 2.5 line has no Doctrine migrations. Database updates, line changes and the 
 
 | Problem | First thing to check |
 |---|---|
-| Blank page or 500 | `var/logs/prod.log` (written only on `critical` entries), the PHP-FPM log, `ezpublish_legacy/var/log/error.log`; for a stack trace run once with `SYMFONY_ENV=dev SYMFONY_DEBUG=1` on a non-public host |
+| Blank page or 500 | `var/logs/prod.log` (written only on `critical` entries), the PHP-FPM log, `ezpublish_legacy/var/site/log/error.log`; for a stack trace run once with `SYMFONY_ENV=dev SYMFONY_DEBUG=1` on a non-public host |
 | "Connection refused" / "Unknown database" | the `DATABASE_*` values and that the server runs |
 | Node/Yarn build fails | `node -v` must be 14 |
 | Legacy class not found | regenerate the legacy autoloads (step 6) |
