@@ -211,6 +211,24 @@ symfony server:start
 
 ---
 
+## Documentation
+
+- **[The book: installing and running Exponential Platform Legacy](doc/book/README.md)**: thirteen chapters on all four
+  release lines (2.5, 3.3, 4.6, 5), from requirements and installing through databases, configuration (YAML and
+  INI), operations, upgrading between lines and migrating in, to troubleshooting and security hardening. This copy is
+  on the 3.x branch; the newest copy is on master: [doc/book/README.md](https://github.com/se7enxweb/exponential-platform-legacy/blob/master/doc/book/README.md).
+- [The installation guide of the 3.x line](doc/INSTALL.md), step by step with Git save points.
+- Updating within the line and moving between lines: [chapter 10 of the book](doc/book/10-upgrading-between-lines.md).
+- Before going live: [chapter 13, security hardening](doc/book/13-security-hardening.md), with a go-live checklist.
+  Up to `v3.3.44.7` the shipped `public/.htaccess` forces the `dev` environment; read its section 13.4 first.
+- Server configuration examples: [Apache](doc/apache2/), [nginx](doc/nginx/), [Varnish](doc/varnish/varnish.md),
+  [Docker](doc/docker/README.md), [Platform.sh](doc/platformsh/README.md).
+- The legacy kernel inside: [the Exponential 6 book](https://github.com/se7enxweb/exponential/blob/main/doc/install/README.md).
+- The bridge: [se7enxweb/LegacyBridge](https://github.com/se7enxweb/LegacyBridge) (Composer package `se7enxweb/legacy-bridge`).
+- Reporting a security issue: [SECURITY.md](SECURITY.md).
+
+---
+
 ## Main Exponential Platform Legacy Features
 
 - User defined content classes and objects
