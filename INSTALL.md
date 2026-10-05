@@ -634,13 +634,19 @@ The database to use is configured in `[DatabaseSettings]` of `site.ini.append.ph
 
 ### 3f. Legacy INI Settings & Overrides
 
-The legacy kernel reads INI configuration from a layered override system. Files are loaded from most-specific to least-specific; later files override earlier ones for matching keys.
+The legacy kernel reads INI configuration from a layered override system. Files are read from the least to the most
+important; a later file overrides an earlier one for matching keys, and arrays are merged unless a file empties them
+first (an empty `Key[]` line).
 
-Override file load order (most → least specific):
-1. `ezpublish_legacy/settings/siteaccess/{siteaccess}/*.ini.append.php` — siteaccess-specific overrides
-2. `ezpublish_legacy/settings/override/*.ini.append.php` — global project overrides
-3. `ezpublish_legacy/extension/{name}/settings/` — extension defaults
-4. `ezpublish_legacy/settings/` — base kernel defaults
+Read order (first read → last read, so the last one wins):
+1. `ezpublish_legacy/settings/` — base kernel defaults
+2. `ezpublish_legacy/extension/{name}/settings/` — extension defaults (when two extensions set the same value, the one earlier in `ActiveExtensions[]` wins)
+3. `ezpublish_legacy/settings/siteaccess/{siteaccess}/*.ini.append.php` — siteaccess-specific overrides
+4. `ezpublish_legacy/settings/override/*.ini.append.php` — global project overrides, read **last**: they win over the siteaccess files as well
+
+Values that the bridge injects from the Symfony configuration (the database, the var directory, image settings, and
+`app.legacy.injected_settings`) win over every INI file. A value that must differ per siteaccess therefore cannot also be
+set in `settings/override/`, because the global override would win; set it only in the siteaccess files.
 
 The most important file is `src/LegacySettings/override/site.ini.append.php` (which Flex installs/symlinks to `ezpublish_legacy/settings/override/`). It controls siteaccess lists, active extensions, session handling, mail, and feature flags.
 
