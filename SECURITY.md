@@ -2,21 +2,28 @@
 
 ## Supported Versions
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+Exponential Platform Legacy has four maintained release lines. Security fixes are made on their branches and
+published with the next release of the line.
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 2.5.x   | :white_check_mark: |
-| 1.x.x   | :x:                |
+| Release line | Branch | Supported          |
+| ------------ | ------ | ------------------ |
+| 2.5.0.x      | master | :white_check_mark: |
+| 3.3.44.x     | 3.x    | :white_check_mark: |
+| 4.6.23.x     | 4.6.x  | :white_check_mark: |
+| 5.0.x        | 5.x    | :white_check_mark: |
+| 3.0.0.x, 1.x and older upstream branches | | :x: |
+
+The legacy kernel inside every line is Exponential 6.0 (`se7enxweb/exponential`); report issues in it to the same
+address. Hardening advice for each line is in
+[chapter 13 of the book](doc/book/13-security-hardening.md).
 
 ## Reporting a Vulnerability
 
-Use this section to tell people how to report a vulnerability.
+Please report security issues privately by e-mail to security@se7enx.com, not in the public issue tracker or the
+discussions. You can expect a first answer within one business day.
 
-Please responsibly report security issues to security@se7enx.com 
-You can expect your contact to be returned within 1 business day.
+Include the release line and version (`composer show se7enxweb/exponential-platform-legacy se7enxweb/legacy-bridge
+se7enxweb/exponential`), what an attacker can do, and the steps to reproduce it. Leave out passwords, secrets and
+personal data.
 
-We rely on our users to responsibly submit a
-reported vulnerability expect that if the vulnerability is accepted or
-declined, etc you will be promptly. updated.
+You will be told whether the report is accepted or declined, and kept informed while a fix is prepared.
