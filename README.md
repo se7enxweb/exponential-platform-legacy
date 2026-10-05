@@ -116,7 +116,7 @@ Exponential Platform Legacy is database, platform and browser independent. Becau
 | **App Cache** | Filesystem (default) · Redis 4+ (optional) |
 | **Database** | MySQL 5.7+ · MariaDB 10.0+ · PostgreSQL 9.5+ · SQLite 3.35+ (dev / testing) |
 | **API** | REST API v2 · GraphQL ^1.0 |
-| **Admin UI (legacy)** | Exponential (Legacy) Admin (`/ezpublish_legacy/`) |
+| **Admin UI (legacy)** | Exponential (Legacy) Admin (`/legacy_admin/`) |
 | **Admin UI (new stack)** | eZ Platform 2.5 Admin UI (`/admin/`) |
 | **Dependency Mgmt** | Composer 2.x · Yarn 1.x |
 
@@ -156,7 +156,7 @@ Exponential Platform Legacy is database, platform and browser independent. Becau
 
 ```bash
 # 1. Create project
-composer create-project se7enxweb/exponential-platform-legacy:2.5.0.x-dev exponential_website
+composer create-project se7enxweb/exponential-platform-legacy:~2.5.0.3 exponential_website
 cd exponential_website
 
 # 2. Configure environment
@@ -200,7 +200,7 @@ php bin/console ezpublish:legacy:script bin/php/ezcache.php --clear-all
 symfony server:start
 # → http://127.0.0.1:8000                    (site / hybrid-kernel frontend)
 # → http://127.0.0.1:8000/admin/             (eZ Platform 2.5 Admin UI — admin / publish)
-# → http://127.0.0.1:8000/ezpublish_legacy/  (Legacy Admin — admin / publish)
+# → http://127.0.0.1:8000/legacy_admin/      (Legacy Admin — admin / publish)
 ```
 
 > See [doc/INSTALL.md](doc/INSTALL.md) for the complete step-by-step guide with server configuration, Solr, Varnish, and production deployment.
@@ -248,8 +248,12 @@ symfony server:start
 Create a new project using Composer:
 
 ```bash
-composer create-project se7enxweb/exponential-platform-legacy:2.5.0.x-dev exponential_website
+composer create-project se7enxweb/exponential-platform-legacy:~2.5.0.3 exponential_website
 ```
+
+Always name the version. The other release lines are `:3.x-dev`, `:4.6.x-dev` and, for Symfony 7, `:5.x-dev` (or the
+tag `:v5.0.2`). Without a version, or with `^5.0`, Composer currently picks the tag `v5.0.3`, which contains this 2.5
+line; see [the book, chapter 10.1](doc/book/10-upgrading-between-lines.md#101-the-release-lines).
 
 The installation guide covers environment configuration, database setup (MySQL, MariaDB, PostgreSQL, and **SQLite zero-config**), web server configuration, asset builds, legacy bundle setup, search indexing, cron jobs, Solr, Varnish, production deployment, and **database conversion** between engines.
 
@@ -274,7 +278,7 @@ Both the Symfony new-stack and the Exponential (Legacy) kernel share the same `.
 > **Not recommended for production** — SQLite does not support concurrent writes under load.
 > Use MySQL/MariaDB or PostgreSQL for any multi-user or public-facing deployment.
 
-See [doc/INSTALL.md — Section 4c](doc/INSTALL.md#4c-sqlite-zero-config-database) for the full SQLite install walkthrough and [Section 18](doc/INSTALL.md#18-database-conversion) for converting between database engines.
+See [doc/INSTALL.md](doc/INSTALL.md) and [the book, chapter 7.6](doc/book/07-databases.md#76-sqlite) for the SQLite install on each release line, and [chapter 7.10](doc/book/07-databases.md#710-moving-a-site-to-another-engine) for converting between database engines.
 
 ---
 
@@ -294,12 +298,9 @@ php bin/console debug:config <bundle>                        # dump resolved bun
 php bin/console assets:install --symlink --relative web      # publish bundle assets into web/
 ```
 
-### Doctrine / Migrations
+### Doctrine
 
 ```bash
-php bin/console doctrine:migration:migrate --allow-no-migration   # run pending migrations
-php bin/console doctrine:migration:status                          # show migration status
-php bin/console doctrine:migration:diff                            # generate a new migration
 php bin/console doctrine:schema:validate                           # validate entity mappings
 ```
 
@@ -312,7 +313,7 @@ php bin/console ezplatform:reindex --iteration-count=50      # incremental reind
 php bin/console ezplatform:cron:run                          # run the Platform cron scheduler
 php bin/console ezplatform:graphql:generate-schema           # regenerate GraphQL schema
 php bin/console bazinga:js-translation:dump web/assets --merge-domains   # JS i18n
-php bin/console fos:httpcache:invalidate:path / --all        # purge HTTP cache paths
+php bin/console fos:httpcache:invalidate:tag ez-all          # purge the whole HTTP cache
 php bin/console assetic:dump                                 # dump assetic assets
 ```
 
@@ -328,11 +329,8 @@ php bin/console ezpublish:legacybundles:install_extensions
 # Regenerate legacy autoload arrays (required after adding/removing extensions)
 (cd ezpublish_legacy && php bin/php/ezpgenerateautoloads.php --extension)
 
-# Run legacy cronjobs (use in crontab targeting legacy_admin siteaccess)
-php ezpublish_legacy/runcronjobs.php --siteaccess legacy_admin
-
-# Legacy console (direct access to legacy internals)
-php ezpublish_legacy/bin/php/ezcli.php <command>
+# Run legacy cronjobs (use in crontab targeting legacy_admin siteaccess; add the parts frequent and infrequent)
+php bin/console --siteaccess=legacy_admin ezpublish:legacy:script runcronjobs.php            # through the bridge, with the platform database settings
 ```
 
 ### Admin & Site URLs
@@ -340,7 +338,7 @@ php ezpublish_legacy/bin/php/ezcli.php <command>
 | URL | Purpose |
 |---|---|
 | `/admin/` | eZ Platform 2.5 Admin UI (new stack) |
-| `/ezpublish_legacy/` | Legacy Admin interface (classic) |
+| `/legacy_admin/` | Legacy Admin interface (classic) |
 | `/` | Public site (hybrid-kernel Twig + Legacy TPL) |
 | `/api/ezp/v2/` | REST API v2 |
 | `/graphql` | GraphQL endpoint |
