@@ -312,7 +312,8 @@ For a complete walkthrough of Legacy Bridge installation, configuration, URL rou
 
 ```bash
 # 1. Create project from the DXP skeleton (includes Legacy Bridge by default)
-composer create-project se7enxweb/exponential-platform-legacy \
+# (always give the version: the tag v5.0.3 holds the 2.5 line; ~5.0.3.1 is the 5.x line, 5.x-dev its branch head)
+composer create-project se7enxweb/exponential-platform-legacy:~5.0.3.1 \
     exponential_website
 cd exponential_website
 
@@ -426,8 +427,13 @@ See [INSTALL.md](INSTALL.md) for the complete step-by-step guide including Legac
 Create a new project using Composer:
 
 ```bash
-composer create-project se7enxweb/exponential-platform-legacy exponential_website
+composer create-project se7enxweb/exponential-platform-legacy:~5.0.3.1 exponential_website
 ```
+
+Always give the version constraint. The package holds four release lines, and the tag `v5.0.3` was cut from the 2.5
+line by mistake (published tags never move, so it stays). `~5.0.3.1` installs `v5.0.3.1`, the first correct 5.x
+release since `v5.0.2`, and later `5.0.3.x` releases, never `v5.0.3`; `5.x-dev` installs the head of the `5.x`
+branch.
 
 The `se7enxweb/legacy-bridge` package and all Legacy Bridge configuration are included automatically. After `composer create-project` completes, the legacy bridge is installed, legacy extension symlinks are created, and autoloads are generated — no manual steps needed.
 

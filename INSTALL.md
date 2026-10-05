@@ -778,10 +778,15 @@ Steps 2–5 are run automatically by the `post-install-cmd` / `post-update-cmd` 
 ### 4a. Composer create-project (recommended)
 
 ```bash
-composer create-project se7enxweb/exponential-platform-legacy \
+composer create-project se7enxweb/exponential-platform-legacy:~5.0.3.1 \
     my-project
 cd my-project
 ```
+
+Always give the version constraint. The package holds four release lines, and the tag `v5.0.3` was cut from the 2.5
+line by mistake (published tags never move, so it stays). `~5.0.3.1` installs `v5.0.3.1`, the first correct 5.x
+release since `v5.0.2`, and later `5.0.3.x` releases, never `v5.0.3`; `5.x-dev` installs the head of the `5.x`
+branch.
 
 Composer will:
 
