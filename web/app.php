@@ -1,15 +1,8 @@
 <?php
 
 // ##########
-// 7x Exponential Platform : app.php - Front Index
-// ##########
-
-ini_set('display_errors', 'On');
-ini_set('display_startup_errors', 1);
-ini_set('error_reporting', "E_COMPILE_ERROR|E_RECOVERABLE_ERROR|E_ERROR|E_CORE_ERROR" );
-
-// phpinfo();
-
+// 7x Exponential Platform : app.php - Front Index (production front controller)
+// Errors are never displayed here unless debugging is on; see app_dev.php for the dev environment.
 // ##########
 
 use Symfony\Component\HttpFoundation\Request;
@@ -51,6 +44,10 @@ if (($useDebugging = getenv('SYMFONY_DEBUG')) === false || $useDebugging === '')
 
 if ($useDebugging) {
     Debug::enable();
+} else {
+    // Production: never show errors to visitors, whatever php.ini says; they still go to the log.
+    ini_set('display_errors', '0');
+    ini_set('display_startup_errors', '0');
 }
 
 $kernel = new AppKernel($environment, $useDebugging);
