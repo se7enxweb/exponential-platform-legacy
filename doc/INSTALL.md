@@ -1,3 +1,7 @@
+> This guide lives on the 3.x branch (the 3.3 line). The book in [doc/book](book/README.md) covers every release line;
+> the newest copy of the book, and the short installation guide of the 2.5 line, are on master:
+> [https://github.com/se7enxweb/exponential-platform-legacy/blob/master/doc/book/README.md](https://github.com/se7enxweb/exponential-platform-legacy/blob/master/doc/book/README.md).
+
 # Exponential Platform Legacy v3.x (Platform v3) — Installation & Operations Guide
 
 > **Platform v3** is the foundational pure-platform release: Exponential (Legacy) 6.x kernel +
