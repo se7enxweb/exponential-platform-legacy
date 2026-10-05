@@ -207,6 +207,16 @@ symfony server:start
 
 ---
 
+## Documentation
+
+- **[The book: installing and running Exponential Platform Legacy](doc/book/README.md)**: thirteen chapters on all four
+  release lines (2.5, 3.3, 4.6, 5), from requirements and installing through databases, configuration (YAML and
+  INI), operations, upgrading between lines and migrating in, to troubleshooting and security hardening.
+- [The short installation guide](doc/INSTALL.md) for the 2.5 line, with links into the book.
+- The legacy kernel inside: [the Exponential 6 book](https://github.com/se7enxweb/exponential/blob/main/doc/install/README.md).
+
+---
+
 ## Main Exponential Platform Legacy Features
 
 - User defined content classes and objects
