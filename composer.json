@@ -116,6 +116,10 @@
             "@auto-scripts",
             "@project-scripts"
         ],
+        "ibexa-assets": [
+            "yarn install",
+            "@php bin/console ibexa:encore:compile"
+        ],
         "phpstan": "@php vendor/bin/phpstan analyse -c phpstan.neon --level=8 --ansi src tests"
     },
     "conflict": {
