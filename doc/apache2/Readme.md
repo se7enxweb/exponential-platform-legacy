@@ -1,176 +1,72 @@
-Apache 2.4 configuration
-========================
+Apache 2.4 configuration (3.x line)
+===================================
 
-For recommended versions of [Apache](https://httpd.apache.org/), see [online eZ requirements](https://doc.ezplatform.com/en/latest/getting_started/requirements/).
+On the 3.x line the web root is `public/` and the front controller is `public/index.php`. (The 2.5 line, on
+`master`, uses `web/` and `app.php`; its files do not fit this line.) The book's chapter 6, "Serving the site",
+explains every option in detail: [doc/book/06-serving-the-site.md](../book/06-serving-the-site.md).
 
 
 Prerequisites
 -------------
 - Some general knowledge of how to install and configure Apache
-- Apache 2.4 must be installed using one of the following Multi-Processing Modules (MPM):
-    - [Event](https://httpd.apache.org/docs/2.4/mod/event.html), or alternatively [Worker](https://httpd.apache.org/docs/2.4/mod/worker.html), for use with `php-fpm` over FastCGI.
-    - [Prefork](https://httpd.apache.org/docs/2.4/mod/prefork.html), together with `mod_php`, running PHP as an Apache module.
-       - Useful for Backwards compatibility or simple needs. For better performance _(less memory usage)_ pick a setup with `Event` MPM instead.
+- Apache 2.4 with the [Event](https://httpd.apache.org/docs/2.4/mod/event.html) MPM (or
+  [Worker](https://httpd.apache.org/docs/2.4/mod/worker.html)) and PHP-FPM over FastCGI (`mod_proxy_fcgi`).
 - Apache modules installed and enabled:
- - required: `mod_rewrite`, `mod_env`
- - recommended: `mod_setenvif`, `mod_expires`
- - If you use "Apache MPM Prefork": `mod_php`
+ - required: `mod_rewrite`, `mod_env`, `mod_setenvif`, `mod_proxy`, `mod_proxy_fcgi`
+ - recommended: `mod_expires`, `mod_deflate`
+
+
+Files in this folder
+--------------------
+
+| File | Use |
+|---|---|
+| `vhost.template` | the full virtual host with the rewrite rules inside (`AllowOverride None`); fill it in by hand or with `bin/vhost.sh` |
+| `media-site-vhost.conf` | a shorter virtual host with the rules inside; it lacks the legacy asset rules (`design/`, `extension/`, `share/icons/`, `var/.../cache/`), so add them from `vhost.template` if you use the legacy admin |
+| `media-site.conf` | a virtual host with `AllowOverride All`, which relies on `public/.htaccess` |
+| `.htaccess` | the same rules as `public/.htaccess`, for reference |
 
 
 Configure
 ---------
-These examples are simplified to get you up and running, see [Virtual host template](#virtual-host-template) for more options and details on best practice.
 
-#### Virtual Host
-
-1. Place virtualhost config *(example below)* in a suitable Apache config folder, typically:
-   - Debian/Ubuntu: `/etc/apache2/sites-enabled/<yoursite>.conf`
+1. Place the virtual host in a suitable Apache config folder, typically:
+   - Debian/Ubuntu: `/etc/apache2/sites-available/<yoursite>.conf`, then `a2ensite <yoursite>`
    - RHEL/CentOS/Amazon-Linux: `/etc/httpd/conf.d/<yoursite>.conf`
 2. Adjust the basics to your setup:
    - [VirtualHost](https://httpd.apache.org/docs/2.4/en/mod/core.html#virtualhost): IP and port number to listen to.
-   - [ServerName](https://httpd.apache.org/docs/2.4/en/mod/core.html#servername): Your host name, example `ez.no`.
-    - Or for local dev for instance `ezinstall.localhost`, with corresponding entry in your [hosts file](https://en.wikipedia.org/wiki/Hosts_file).
-   - [ServerAlias](https://httpd.apache.org/docs/2.4/en/mod/core.html#serveralias): Optional host alias list, example `www.ez.no login.ez.no`, or `*.ez.no`.
-   - [DocumentRoot](https://httpd.apache.org/docs/2.4/en/mod/core.html#documentroot): Point this and *Directory* to `web` directory of eZ installation.
-   - If you can't install `mod_setenvif`, adjust the "Environment" section like described inline.
-3. Restart Apache, as follows:
-   - Debian/Ubuntu: `sudo service apache2 restart`
-   - RHEL/CentOS/Amazon-Linux: `sudo service httpd restart`
-
-Example config for Apache 2.4 in prefork mode:
-
-    <VirtualHost *:80>
-        ServerName localhost
-        #ServerAlias *.localhost
-        DocumentRoot /var/www/ezinstall/web
-        DirectoryIndex app.php
-
-        # Set default timeout to 90s, and max upload to 48mb
-        TimeOut 90
-        LimitRequestBody 50331648
-
-        <Directory /var/www/ezinstall/web>
-            Options FollowSymLinks
-            AllowOverride None
-            # Depending on your global Apache settings, you may need to comment this:
-            Require all granted
-        </Directory>
-
-        # As we require ´mod_rewrite´  this is on purpose not placed in a <IfModule mod_rewrite.c> block
-        RewriteEngine On
-
-        # Environment.
-        # Possible values: "prod" and "dev" out-of-the-box, other values possible with proper configuration
-        # Defaults to "prod" if omitted. If Apache complains about this line and you can't install `mod_setenvif` then
-        # comment out "%{ENV:SYMFONY_ENV}" line below, and comment this out or set via: SetEnv SYMFONY_ENV "prod"
-        SetEnvIf Request_URI ".*" SYMFONY_ENV=prod
-
-        # Sets the HTTP_AUTHORIZATION header sometimes removed by Apache
-        RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-
-        # Disable .php(3) and other executable extensions in the var directory
-        RewriteRule ^var/.*(?i)\.(php3?|phar|phtml|sh|exe|pl|bin)$ - [F]
-
-        # Access to repository images in single server setup
-        RewriteRule ^/var/([^/]+/)?storage/images(-versioned)?/.* - [L]
-
-        # Legacy rewrite rules
-        RewriteRule ^/var/([^/]+/)?cache/(texttoimage|public)/.* - [L]
-        RewriteRule ^/design/[^/]+/(stylesheets|images|javascript|fonts)/.* - [L]
-        RewriteRule ^/share/icons/.* - [L]
-        RewriteRule ^/extension/[^/]+/design/[^/]+/(stylesheets|flash|images|lib|javascripts?)/.* - [L]
-        RewriteRule ^/packages/styles/.+/(stylesheets|images|javascript)/[^/]+/.* - [L]
-        RewriteRule ^/packages/styles/.+/thumbnail/.* - [L]
-        RewriteRule ^/var/storage/packages/.* - [L]
-
-        RewriteRule ^/favicon\.ico - [L]
-        RewriteRule ^/robots\.txt - [L]
-
-        # The following rules are needed to correctly display bundle and project assets
-        RewriteRule ^/bundles/ - [L]
-        RewriteRule ^/assets/ - [L]
-
-        # Additional Assetic rules for environments different from dev,
-        # remember to run php bin/console assetic:dump --env=prod
-        RewriteCond %{ENV:SYMFONY_ENV} !^(dev)
-        RewriteRule ^/(css|js|fonts?)/.*\.(css|js|otf|eot|ttf|svg|woff) - [L]
-
-        RewriteRule .* /app.php
-    </VirtualHost>
-
-
-#### .htaccess
-
-If you do not have an access to use virtualhost config, use the `.htaccess` file in a simplified form. It must be placed in the  `web/` folder to make it running. *This will not work if Apache is configured with the `AllowOverride None` for this directory.*
-
-    DirectoryIndex app.php
-
-    # Set default timeout to 90s, and max upload to 48mb
-    TimeOut 90
-    LimitRequestBody 50331648
-
-    # Disabling MultiViews prevents unwanted negotiation, e.g. "/app" should not resolve
-    # to the front controller "/app.php" but be rewritten to "/app.php/app".
-    <IfModule mod_negotiation.c>
-        Options -MultiViews
-    </IfModule>
-
-    # As we require ´mod_rewrite´  this is on purpose not placed in a <IfModule mod_rewrite.c> block
-    RewriteEngine On
-
-    # Environment.
-    # Possible values: "prod" and "dev" out-of-the-box, other values possible with proper configuration
-    # Defaults to "prod" if omitted.
-    SetEnv SYMFONY_ENV "prod"
-
-    # Sets the HTTP_AUTHORIZATION header sometimes removed by Apache
-    RewriteCond %{HTTP:Authorization} .
-    RewriteRule ^ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-
-    # Disable .php(3) and other executable extensions in the var directory
-    RewriteRule ^var/.*(?i)\.(php3?|phar|phtml|sh|exe|pl|bin)$ - [F]
-
-    # Makes it possible to placed your favicon and robots.txt at the root of your web folder
-    RewriteRule ^favicon\.ico - [L]
-    RewriteRule ^robots\.txt - [L]
-
-    # To display assets from eZ / Symfony bundles
-    RewriteRule ^bundles/ - [L]
-
-    # Access to repository images in single server setup
-    RewriteRule ^var/([^/]+/)?storage/images(-versioned)?/.* - [L]
-
-    # Legacy rewrite rules
-    RewriteRule ^/var/([^/]+/)?cache/(texttoimage|public)/.* - [L]
-    RewriteRule ^/design/[^/]+/(stylesheets|images|javascript|fonts)/.* - [L]
-    RewriteRule ^/share/icons/.* - [L]
-    RewriteRule ^/extension/[^/]+/design/[^/]+/(stylesheets|flash|images|lib|javascripts?)/.* - [L]
-    RewriteRule ^/packages/styles/.+/(stylesheets|images|javascript)/[^/]+/.* - [L]
-    RewriteRule ^/packages/styles/.+/thumbnail/.* - [L]
-    RewriteRule ^/var/storage/packages/.* - [L]
-
-    # Additional Assetic rules for prod environments
-    # ! Remember to run php ezpublish/console assetic:dump --env=prod on changes
-    # ! Or if SYMFONY_ENV is set to "dev", comment this out!
-    RewriteRule ^(css|js|fonts?)/.*\.(css|js|otf|eot|ttf|svg|woff) - [L]
-
-    # Rewrite all other queries to the front controller.
-    RewriteRule .* app.php
+   - [ServerName](https://httpd.apache.org/docs/2.4/en/mod/core.html#servername) and
+     [ServerAlias](https://httpd.apache.org/docs/2.4/en/mod/core.html#serveralias): your host names.
+   - [DocumentRoot](https://httpd.apache.org/docs/2.4/en/mod/core.html#documentroot) and `<Directory>`: the `public`
+     directory of the installation.
+   - `SetHandler "proxy:unix:<socket>|fcgi://localhost/"`: the socket of your PHP-FPM pool.
+3. Set `APP_ENV=prod` (in `.env.local`, or with the `SetEnvIf` line of the template) on production.
+4. Check and reload Apache:
+   - `apachectl configtest`
+   - Debian/Ubuntu: `sudo systemctl reload apache2`; RHEL/CentOS/Amazon-Linux: `sudo systemctl reload httpd`
 
 
 Virtual host template
 ---------------------
-This folder contains `vhost.template` which provides more features you can enable in your virtual host configuration.
-You may also use this file as a `.htaccess` config. However,
-you will need to adjust rewrite rules to remove `/` like in the example above.
 
-*Note: vhost.template uses `mod_setenvif`, adapt it as indicated inline if you can't install it.*
+`vhost.template` contains placeholders such as `%BASEDIR%`, `%HOST_NAME%` and `%FASTCGI_PASS%`. The script
+`bin/vhost.sh` fills them in; run it from the installation root (`./bin/vhost.sh -h` shows the options). The PHP-FPM
+socket has no option of its own; give it in the environment variable `FASTCGI_PASS`:
 
-Bash script *(Unix/Linux/OS X)* exists to be able to generate the configuration. To display help text, execute the
-following from the eZ installation root:
 ```bash
-./bin/vhost.sh -h
+FASTCGI_PASS=unix:/run/php/php8.3-fpm.sock ./bin/vhost.sh --basedir=/var/www/exponential_website \
+  --template-file=doc/apache2/vhost.template \
+  --host-name=example.com \
+  --sf-env=prod \
+  | sudo tee /etc/apache2/sites-available/exponential.conf > /dev/null
 ```
+
+The script keeps the option names of the 2.5 line (`--sf-env`, `--sf-debug`, `--sf-http-cache`,
+`--sf-trusted-proxies`); in this template they set `APP_ENV`, `APP_DEBUG`, `APP_HTTP_CACHE` and `TRUSTED_PROXIES`.
+Always pass `--basedir`: the script detects the installation root by itself only when a `web/` folder exists.
+
+`TRUSTED_PROXIES` is read by `framework.trusted_proxies` in `config/packages/ezpublish.yaml`; set it (in
+`.env.local` or the virtual host) to the addresses of Varnish, a load balancer or a TLS proxy in front of Apache.
 
 #### Common issues
 

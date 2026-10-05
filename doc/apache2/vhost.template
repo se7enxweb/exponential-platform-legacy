@@ -1,14 +1,17 @@
-# Official VirtualHost configuration for Apache 2.4 template
+# VirtualHost configuration template for Apache 2.4, 3.x line (public/ web root, public/index.php front controller)
 # See Readme.md for how to generate your config manually, or in automated deployments.
 # Note: This is meant to be manually tailored for your needs, expires headers might for instance not work for your dev setup.
+# bin/vhost.sh fills the placeholders. It still names its options --sf-env, --sf-debug, --sf-http-cache and
+# --sf-trusted-proxies (placeholders %SYMFONY_*%); on this line they set APP_ENV, APP_DEBUG, APP_HTTP_CACHE and
+# TRUSTED_PROXIES. Pass --basedir=<project root> to it: it only detects the root by itself when a web/ folder exists.
 
 # NameVirtualHost %IP_ADDRESS%
 
 <VirtualHost %IP_ADDRESS%:%PORT%>
     ServerName %HOST_NAME%
     ServerAlias %HOST_ALIAS%
-    DocumentRoot %BASEDIR%/web
-    DirectoryIndex app.php
+    DocumentRoot %BASEDIR%/public
+    DirectoryIndex index.php
 
     # Request size limit in bytes, 0 to disable
     LimitRequestBody %BODY_SIZE_LIMIT%
@@ -19,17 +22,16 @@
     # Enabled for Dev environment
     #LogLevel debug
 
-    # "web" folder is what we expose to the world, all rewrite rules further down is relative to it.
-    <Directory %BASEDIR%/web>
+    # "public" folder is what we expose to the world, all rewrite rules further down are relative to it.
+    <Directory %BASEDIR%/public>
         <FilesMatch \.php$>
             # For serving php files configure mod_proxy to talk to php-fpm using Apache 2.4.10 and higher.
             # See: https://wiki.apache.org/httpd/PHP-FPM#apache_httpd_2.4
 
-            # For best performance, prefer socket use. This requires Linux, and that both Apache and PHP has access to
-            # the socket file `/var/run/php5-fpm.sock` via local file system and hence run on the same machine.
-            #SetHandler "proxy:unix:/var/run/php5-fpm.sock|fcgi://localhost/"
+            # For best performance, prefer socket use. This requires Linux, and that both Apache and PHP have access to
+            # the socket file via the local file system and hence run on the same machine, for example:
+            #SetHandler "proxy:unix:/run/php/php8.3-fpm.sock|fcgi://localhost/"
             # For TCP usage, if you're not on Linux, or Apache and PHP are on separate machines, instead use fcgi: form.
-            # (Optionally hint php-fpm processes count using: https://wiki.apache.org/httpd/PHP-FPM#Proxy_via_handler)
             #SetHandler "proxy:fcgi://localhost/:9000"
 
             SetHandler "proxy:%FASTCGI_PASS%|fcgi://localhost/"
@@ -40,35 +42,40 @@
         Require all granted
     </Directory>
 
-    ## eZ Platform/Symfony ENVIRONMENT variables, for customizing app.php* execution
-    # * Only SYMFONY_ENV and SYMFONY_DEBUG supported by console command, rest are eZ Platform features in app.php.
+    ## Symfony ENVIRONMENT variables, for customizing public/index.php execution
+    # * APP_ENV and APP_DEBUG are also read by the console from .env.local; set them there too so that cronjobs
+    #   and console commands run with the same values.
 
     # Environment.
     # Possible values: "prod" and "dev" out-of-the-box, other values possible with proper configuration
-    # Defaults to "prod" if omitted (uses SetEnvIf so value can be used in rewrite rules)
-    #if[SYMFONY_ENV] SetEnvIf Request_URI ".*" SYMFONY_ENV=%SYMFONY_ENV%
+    # When omitted, APP_ENV comes from the server environment, then .env.local, then .env.
+    # (uses SetEnvIf so the value can be used in rewrite rules)
+    #if[SYMFONY_ENV] SetEnvIf Request_URI ".*" APP_ENV=%SYMFONY_ENV%
 
     # Optional: Whether to use debugging.
     # Possible values: 0, 1 or ""
-    # Defaults to enabled if SYMFONY_ENV is set to "dev" if env value is omitted or empty
-    #if[SYMFONY_DEBUG] SetEnv SYMFONY_DEBUG "%SYMFONY_DEBUG%"
+    # Defaults to enabled if APP_ENV is "dev" and this value is omitted or empty
+    #if[SYMFONY_DEBUG] SetEnv APP_DEBUG "%SYMFONY_DEBUG%"
 
     # Optional: Whether to use Symfony's builtin HTTP Caching Proxy.
     # Disable it if you are using an external reverse proxy (e.g. Varnish)
     # Possible values: 0, 1 or ""
-    # Defaults to disabled if SYMFONY_ENV is set to "dev" or SYMFONY_TRUSTED_PROXIES is set,
-    # and if this env value is omitted or empty
-    #if[SYMFONY_HTTP_CACHE] SetEnv SYMFONY_HTTP_CACHE "%SYMFONY_HTTP_CACHE%"
+    #if[SYMFONY_HTTP_CACHE] SetEnv APP_HTTP_CACHE "%SYMFONY_HTTP_CACHE%"
 
-    # Optional: Defines the proxies to trust
-    # Needed when using Varnish as proxy, if so disable SYMFONY_HTTP_CACHE.
-    # Separate entries by a comma, example: "ip1,ip2"
-    # Defaults to not be set if env value is omitted or empty
-    #if[SYMFONY_TRUSTED_PROXIES] SetEnv SYMFONY_TRUSTED_PROXIES "%SYMFONY_TRUSTED_PROXIES%"
+    # Optional: Defines the proxies to trust, read by framework.trusted_proxies in config/packages/ezpublish.yaml
+    # Needed behind Varnish, a load balancer or a TLS proxy; if Varnish caches, disable APP_HTTP_CACHE.
+    # Separate entries by a comma, example: "ip1,ip2"; "REMOTE_ADDR" trusts whatever address connects.
+    # Defaults to TRUSTED_PROXIES of .env.local / .env (127.0.0.1) if omitted
+    #if[SYMFONY_TRUSTED_PROXIES] SetEnv TRUSTED_PROXIES "%SYMFONY_TRUSTED_PROXIES%"
+    # (the HTTP cache switch and the proxies are read by PHP, so SetEnv is enough for them)
 
-    # TIP: There are many more environment variables supported by eZ Platform. However unlike those listed above
-    #      they should in most cases rather be set in the environment then in vhost config to make sure cronjobs
-    #      and cli command usage takes them into account as well.
+    # Optional: The binary data handler of a cluster setup ("dfs" serves images through index.php below)
+    # (uses SetEnvIf so the value is set before the rewrite rules run)
+    #if[BINARY_DATA_HANDLER] SetEnvIf Request_URI ".*" BINARY_DATA_HANDLER=%BINARY_DATA_HANDLER%
+
+    # TIP: There are many more environment variables supported by the platform. However unlike those listed above
+    #      they should in most cases rather be set in the environment or .env.local than in the vhost config, to
+    #      make sure cronjobs and console commands take them into account as well.
 
     <IfModule mod_rewrite.c>
         RewriteEngine On
@@ -76,20 +83,25 @@
         # For FastCGI mode or when using PHP-FPM, to get basic auth working.
         RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
+        # Let's Encrypt support
+        RewriteRule ^/\.well-known/acme-challenge/ - [L]
+
         # Disable .php(3) and other executable extensions in the var directory
         RewriteRule ^/var/.*(?i)\.(php3?|phar|phtml|sh|exe|pl|bin)$ - [F]
 
         # Cluster/streamed files rewrite rules. Enable on cluster with DFS as a binary data handler
         RewriteCond %{ENV:BINARY_DATA_HANDLER} "dfs"
-        RewriteRule ^/var/([^/]+/)?storage/images(-versioned)?/.* /app.php [L]
+        RewriteRule ^/var/([^/]+/)?storage/images(-versioned)?/.* /index.php [L]
 
         RewriteRule ^/var/([^/]+/)?storage/images(-versioned)?/.* - [L]
+        RewriteRule ^/var/([^/]+/)?storage/original/image/(.*)\.svg - [L]
 
-        # Legacy rewrite rules
+        # Legacy kernel assets (public/design, public/extension, public/share and public/var are links into
+        # ezpublish_legacy/, made by exponential:legacy:assets-install)
         RewriteRule ^/var/([^/]+/)?cache/(texttoimage|public)/.* - [L]
         RewriteRule ^/design/[^/]+/(stylesheets|images|javascript|fonts)/.* - [L]
         RewriteRule ^/share/icons/.* - [L]
-        RewriteRule ^/extension/[^/]+/design/[^/]+/(stylesheets|flash|images|lib|javascripts?)/.* - [L]
+        RewriteRule ^/extension/[^/]+/design/[^/]+/(stylesheets|flash|images|fonts|lib|javascripts?)/.* - [L]
         RewriteRule ^/packages/styles/.+/(stylesheets|images|javascript)/[^/]+/.* - [L]
         RewriteRule ^/packages/styles/.+/thumbnail/.* - [L]
         RewriteRule ^/var/storage/packages/.* - [L]
@@ -98,18 +110,15 @@
         RewriteRule ^/robots\.txt - [L]
 
         # The following rules are needed to correctly display bundle and project assets
+        RewriteRule ^/images/ - [L]
         RewriteRule ^/bundles/ - [L]
         RewriteRule ^/assets/ - [L]
+        RewriteRule ^/build/ - [L]
 
-        # Additional Assetic rules for environments different from dev,
-        # remember to run php bin/console assetic:dump --env=prod
-        RewriteCond %{ENV:SYMFONY_ENV} !^(dev)
-        RewriteRule ^/(css|js|fonts?)/.*\.(css|js|otf|eot|ttf|svg|woff) - [L]
+        # Prevent access to website with direct usage of index.php in URL
+        RewriteRule ^/([^/]+/)?index\.php([/?#]|$) - [R=404,L]
 
-        # Prevent access to website with direct usage of app.php in URL
-        RewriteRule ^/(.+/)?app\.php - [R=404,L]
-
-        RewriteRule .* /app.php
+        RewriteRule .* /index.php
     </IfModule>
 
     # Everything below is optional to improve performance by forcing
@@ -117,8 +126,8 @@
     # to suite project needs.
     <IfModule mod_expires.c>
         <LocationMatch "^/var/[^/]+/storage/images/.*">
-            # eZ Platform appends the version number to image URL (ezimage
-            # datatype) so when an image is updated, its URL changes too
+            # The platform appends the version number to image URLs (ezimage
+            # field type) so when an image is updated, its URL changes too
             ExpiresActive on
             ExpiresDefault "now plus 10 years"
         </LocationMatch>
