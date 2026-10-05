@@ -14,7 +14,8 @@ RewriteEngine On
 
 ## RewriteRule ^api/ index_rest.php [L]
 ## RewriteRule ^index_rest\.php - [L]
-RewriteRule ^([^/]+/)?content/treemenu.* index_treemenu.php [L]
+# content/treemenu URLs are not rewritten: the bridge answers them with its own route (_ezpublishLegacyTreeMenu),
+# and index_treemenu.php does not exist in the web root (assets_install creates only index_rest.php and index_cluster.php).
 RewriteRule ^var/([^/]+/)?storage/images(-versioned)?/.* - [L]
 RewriteRule ^var/([^/]+/)?cache/(texttoimage|public)/.* - [L]
 RewriteRule ^design/[^/]+/(stylesheets|images|javascript|fonts)/.* - [L]
