@@ -62,7 +62,7 @@ Every setup must enforce the same rules, so they are stated once here. They come
    | virtual host (`doc/apache2/vhost.template`) | `RewriteRule ^/var/.*(?i)\.(...)$ - [F]` | in a server context the path starts with `/` |
 
    The template carried the `.htaccess` spelling, which never matches in a virtual host, until 2026-10-05 (commits
-   `01e4d59` on `master`, `984732f` on 3.x; planned releases `v2.5.0.4`, `v3.3.44.8`). A virtual host generated from an
+   `01e4d59` on `master`, `984732f` on 3.x; released in `v2.5.0.4` and `v3.3.44.8`). A virtual host generated from an
    older template has no working protection: correct the line by hand. The 2.5 `web/.htaccess` has **no** such rule,
    and its rule `RewriteCond %{REQUEST_URI} ^/(assets|bundles|design|extension)/` passes every file below `design/` and
    `extension/` through unchanged, `.php` files included. Behind it, hand only the front controller to PHP
@@ -92,11 +92,11 @@ Every setup must enforce the same rules, so they are stated once here. They come
 
 ### 6.2.1 Shipped files to check before production
 
-Several front-controller files were shipped with development settings. The branches were corrected on 2026-10-05; the
-published tags still contain the old files, and a project keeps whatever it was created from. Find your case in the
+Several front-controller files were shipped with development settings. The branches were corrected on 2026-10-05, and the
+releases of that day carry the corrections (`v2.5.0.4`, `v3.3.44.8`); the older tags still contain the old files, and a project keeps whatever it was created from. Find your case in the
 table, then check your own copy with the commands below it.
 
-| File | Up to the newest tag | On the branch now (planned release) | What to do on a project from the tag |
+| File | Up to `v2.5.0.3` / `v3.3.44.7`, or as the recipe writes it | On the branch and since the release named | What to do on a project from the tag |
 |---|---|---|---|
 | `web/.htaccess` (2.5) | `v2.5.0.1` to `v2.5.0.3` and `v5.0.3`: the last rule sends **every request to `app_dev.php`** | every request that is not a static file goes to `app.php`; `/app_dev.php/...` is passed through only when asked for by name (`fa091cd`, `v2.5.0.4`) | take the branch's file, or end the file with `RewriteRule ^(.*)$ app.php [QSA,L]` and nothing routing to `app_dev.php` |
 | `web/app_dev.php` (2.5) | the check that only allows the local machine is commented out, so anyone gets `dev` with debugging | the check is active: requests from `127.0.0.1`, `::1` or the PHP built-in server pass, others get `403 You are not allowed to access this file`; `SYMFONY_DEV_ALLOW_REMOTE=1` in the server's environment opens it on a development server (`d924ceb`, `v2.5.0.4`) | delete the file on production servers, or take the branch's file; never set `SYMFONY_DEV_ALLOW_REMOTE` in production |
@@ -505,7 +505,7 @@ The template uses `ServerName`, `DocumentRoot %BASEDIR%/web` and `DirectoryIndex
 generated file before you use it:
 
 - **The `var/` rule.** It must read `RewriteRule ^/var/.*(?i)\.(php3?|phar|phtml|sh|exe|pl|bin)$ - [F]`, with the
-  slash after `^`. Templates before commit `01e4d59` (2026-10-05, planned release `v2.5.0.4`) wrote `^var/`, which
+  slash after `^`. Templates before commit `01e4d59` (2026-10-05, released in `v2.5.0.4`) wrote `^var/`, which
   never matches in a virtual host (section 6.2, rule 1).
 - **The PHP handler.** The template hands every `.php` file below `web/` to PHP-FPM (`<FilesMatch \.php$>`). Only
   `app.php` needs to run; narrowing the match to it means that a `.php` file which a rewrite rule passes through as a
@@ -531,7 +531,7 @@ it first (section 6.2.1). It has no `var/` rule of its own, so the narrowed hand
 Up to `v2.5.0.3` it also sends `content/treemenu` URLs to `index_treemenu.php`, the tree menu front controller of a
 stand-alone legacy kernel. Behind the bridge that file does not exist in `web/`: the bridge's `assets_install` writes
 only `index_rest.php` and `index_cluster.php` there. Those requests therefore end in a 404, and the legacy admin's
-left-hand content tree can stay empty. Commit `523606a` (2026-10-05, planned release `v2.5.0.4`) removes the rule, so
+left-hand content tree can stay empty. Commit `523606a` (2026-10-05, released in `v2.5.0.4`) removes the rule, so
 the URLs reach `app.php`, where the bridge's route `_ezpublishLegacyTreeMenu`
 (`/content/treemenu/{nodeId}/{modified}/{expiry}/{perm}`, loaded through `_ezpublishLegacyRoutes` in
 `app/config/routing.yml`) answers them; on an older project delete the line
@@ -546,7 +546,7 @@ Up to `v3.3.44.7` the `doc/apache2/vhost.template` on the 3.x branch is the 2.5 
 lines: it sets `DocumentRoot %BASEDIR%/web` and `DirectoryIndex app.php`, rewrites every URL to `/app.php`, and its
 DFS cluster rule sends images to `/app.php` as well. On 3.x, 4.6.x and 5.x there is no `web/` and no `app.php`, so a
 virtual host generated from it answers every dynamic URL with 404 (and serves nothing at all if `web/` does not
-exist). Commit `7248e69` on the 3.x branch (2026-10-05, planned release `v3.3.44.8`) replaces it with a template for
+exist). Commit `7248e69` on the 3.x branch (2026-10-05, released in `v3.3.44.8`) replaces it with a template for
 `public/` and `public/index.php`: `APP_ENV`, `APP_DEBUG`, `APP_HTTP_CACHE` and `TRUSTED_PROXIES` from the
 placeholders `bin/vhost.sh` fills (its options keep their 2.5 names, `--sf-env` and so on, and it needs `--basedir`
 because it only detects the root by a `web/` folder), the legacy asset paths, `build/` and `images/`, the `var/` rule,
@@ -699,8 +699,8 @@ builds `http://` links and sees the proxy's address as the client's.
 | Line | Trust the proxy | Who reads it | Disable Symfony's own HTTP cache |
 |---|---|---|---|
 | 2.5 | environment variable `SYMFONY_TRUSTED_PROXIES` (comma-separated, or `TRUST_REMOTE` for whatever address connects) | `web/app.php`, with all `X-Forwarded-*` headers | `SYMFONY_HTTP_CACHE=0` |
-| 3.x | `TRUSTED_PROXIES` in `.env.local` (the shipped `.env` sets `127.0.0.1`); `REMOTE_ADDR` trusts the connecting address | on the branch, `framework.trusted_proxies` in `config/packages/ezpublish.yaml` with the headers `x-forwarded-for`, `-proto`, `-port` (commit `d820756`, planned `v3.3.44.8`); with `v3.3.44.7` only the platform's deprecated fallback read it | the purge type and HTTP cache settings in [chapter 8](08-configuration.md) |
-| 4.6.x, 5.x | `TRUSTED_PROXIES` in `.env.local` (the recipe's `.env` sets `127.0.0.1`) | on the branches, `config/packages/trusted_proxies.yaml` (commits `309785f`, `78e2848`; planned `v4.6.23.3`, `v5.0.3.1`); with `v4.6.23.2` and `v5.0.2` **nothing** reads it, so add that file (chapter 3, [3.4.5](03-getting-the-code.md#345-files-you-may-have-to-add-to-a-project-from-an-older-tag)) | the same |
+| 3.x | `TRUSTED_PROXIES` in `.env.local` (the shipped `.env` sets `127.0.0.1`); `REMOTE_ADDR` trusts the connecting address | on the branch, `framework.trusted_proxies` in `config/packages/ezpublish.yaml` with the headers `x-forwarded-for`, `-proto`, `-port` (commit `d820756`, released in `v3.3.44.8`); with `v3.3.44.7` only the platform's deprecated fallback read it | the purge type and HTTP cache settings in [chapter 8](08-configuration.md) |
+| 4.6.x, 5.x | `TRUSTED_PROXIES` in `.env.local` (the recipe's `.env` sets `127.0.0.1`) | on the branches, `config/packages/trusted_proxies.yaml` (commits `309785f`, `78e2848`; released in `v4.6.23.3`, `v5.0.3.1`); with `v4.6.23.2` and `v5.0.2` **nothing** reads it, so add that file (chapter 3, [3.4.5](03-getting-the-code.md#345-files-you-may-have-to-add-to-a-project-from-an-older-tag)) | the same |
 
 Check what is in effect, from 3.x on: `php bin/console --env=prod debug:config framework trusted_proxies` must print
 your proxies, not `null` or an empty value. What goes wrong without it: links and redirects point to `http://` behind an
@@ -762,12 +762,13 @@ The database runs in its own container or outside.
 `.platform.app.yaml`, `.platform/` and [doc/platformsh/](https://github.com/se7enxweb/exponential-platform-legacy/blob/master/doc/platformsh/README.md) (2.5 and 3.x) are the upstream
 Platform.sh files, marked "Beta" in their README. What the application file declares:
 
-| | Newest tag (`v2.5.0.3`, `v3.3.44.7`) | Branch now (planned release) |
+| | Up to `v2.5.0.3`, `v3.3.44.7` | On the branch and since the release named |
 |---|---|---|
 | 2.5 | `type: php:7.3`, web root `web`, `passthru: "/app.php"`, `SYMFONY_ENV: prod`, `SYMFONY_TRUSTED_PROXIES: TRUST_REMOTE` | the same with `type: php:8.2` (commit `b41967c`, `v2.5.0.4`) |
 | 3.x | the 2.5 file unchanged: PHP 7.3, `web`, `app.php`, `SYMFONY_*` variables, a `composer ezplatform-install` step that does not exist on 3.x | `type: php:8.3`, web root `public`, `passthru: "/index.php"`, `APP_ENV: prod`, `APP_DEBUG: 0`, `TRUSTED_PROXIES: REMOTE_ADDR`, install with `bin/console ibexa:install` (the default install type), cron `ibexa:cron:run` (commit `aa00125`, `v3.3.44.8`) |
 
-A deployment from the newest tag cannot work on either line (PHP 7.3 cannot install them); use the branch's file. The
+A deployment from the older tags cannot work on either line (PHP 7.3 cannot install them); use the file of `v2.5.0.4`,
+`v3.3.44.8` or the branch. The
 4.6.x and 5.x lines ship no Platform.sh files. This book does not cover Platform.sh further.
 
 ## 6.11 Checklist

@@ -43,7 +43,7 @@ In a hurry? [The short installation guide](../INSTALL.md) has the quick start an
 
 | Chapter | What it covers |
 |---|---|
-| [10. Upgrading between release lines](10-upgrading-between-lines.md) | The four lines side by side, the `v5.0.3` tag, the planned next releases and what they fix, updating within a line, the method for a line change, 2.5 to 3.3, 3.3 to 4.6, 4.6 to 5, the legacy kernel's own update files and what each changes, verification and rollback |
+| [10. Upgrading between release lines](10-upgrading-between-lines.md) | The four lines side by side, the `v5.0.3` tag, the releases of 2026-10-05 and what they fix, updating within a line, the method for a line change, 2.5 to 3.3, 3.3 to 4.6, 4.6 to 5, the legacy kernel's own update files and what each changes, verification and rollback |
 | [11. Migrating into Exponential Platform Legacy](11-migrating-into.md) | From eZ Publish 3.x/4.x and 5.x, eZ Platform 1.x to 3.x and Ibexa 4.x/5.x: the target line, what the Exponential 6 book's migration chapters cover, the two-phase database method with the platform's files in the middle, what is specific to the hybrid, a checklist |
 | [12. Troubleshooting](12-troubleshooting.md) | Symptom, cause and fix for getting the code, console commands, the database, pages and admin, images, caches, cron and search, upgrades |
 | [13. Security hardening](13-security-hardening.md) | What the web server must never hand out (with the 2.5 front controller corrections), secrets, debug output (including what `.htaccess` and the recipes force), the admin siteaccesses, sessions and form tokens, headers, trusted proxies on both sides (Symfony and the legacy kernel's `TrustedProxies[]`), permissions, a go-live checklist |
