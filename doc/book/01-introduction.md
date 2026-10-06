@@ -144,8 +144,8 @@ from the configuration the skeleton or its Symfony Flex recipe installs.
 | | **2.5** | **3.x** | **4.6.x** | **5.x** |
 |---|---|---|---|---|
 | Branch | `master` | `3.x` | `4.6.x` | `5.x` |
-| Newest tag of the line | `v2.5.0.3` | `v3.3.44.7` | `v4.6.23.2` | `v5.0.2` (read [the note on v5.0.3](#the-tag-v503)) |
-| Next release, planned, not yet tagged | `v2.5.0.4` | `v3.3.44.8` | `v4.6.23.3` | `v5.0.3.1` |
+| Newest release of the line (2026-10-05) | [`v2.5.0.4`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v2.5.0.4) | [`v3.3.44.8`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v3.3.44.8) | [`v4.6.23.3`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v4.6.23.3) | [`v5.0.3.1`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v5.0.3.1) (read [the note on v5.0.3](#the-tag-v503)) |
+| Release before it | `v2.5.0.3` | `v3.3.44.7` | `v4.6.23.2` | `v5.0.2` |
 | Symfony | 3.4 LTS (`se7enxweb/symfony ^3.4.50`) | 5.4 LTS (`se7enxweb/symfony 5.4.x-dev`, `symfony/framework-bundle 5.4.*`) | 5.4 LTS (`extra.symfony.require ^5.3`; LegacyBridge 4 requires `^5.4`) | 7.4 (`se7enxweb/exponential-platform-dxp` and LegacyBridge 5 require `symfony/framework-bundle ^7.4`) |
 | Platform new stack | `se7enxweb/ezpublish-kernel ~7.5.33` | `se7enxweb/oss ~3.3.0.0`, `se7enxweb/ezplatform-kernel ~1.3.43` | `se7enxweb/exponential-platform-dxp 4.6.x-LB-dev` | `se7enxweb/exponential-platform-dxp dev-5.x-LB` |
 | Upstream it was built from | eZ Platform 2.5 | Ibexa OSS 3.3 | Ibexa DXP 4.6 (OSS) | Ibexa DXP 5.0 (OSS) |
@@ -161,7 +161,7 @@ from the configuration the skeleton or its Symfony Flex recipe installs.
 | New-stack admin (siteaccess) | `/admin/` (`admin`) | `/adminui/` (`adminui`) | `/admin/` (`admin`, per the recipe) | `/admin/` (`admin`, per the recipe) |
 | Legacy admin (siteaccess) | `/legacy_admin/` | `/legacy_admin/` | `/legacy_admin/` | `/legacy_admin/` |
 | Netgen Layouts | no | no | `netgen/layouts-ibexa ^1.4` | `netgen/layouts-ibexa ^2.0` |
-| Node.js for asset builds | 14 LTS | 18 LTS (`.nvmrc`) | 20 LTS | 20 LTS for `v5.0.2`; 24 LTS on the branch since 2026-08-03 (commit `27ff2ca`) |
+| Node.js for asset builds | 14 LTS | 18 LTS (`.nvmrc`) | 20 LTS | 20 LTS for `v5.0.2`; 24 LTS from `v5.0.3.1` on (commit `27ff2ca`, on the branch since 2026-08-03) |
 | Status | maintained | maintained | maintained | maintained, newest |
 
 How the two PHP rows relate: Composer accepts a PHP version only if **every** package agrees. The skeleton's own
@@ -175,13 +175,16 @@ installs (`config/packages/ibexa_admin_ui.yaml` and `config/packages/ibexa.yaml`
 `URIElement: 1` matching, which puts it at `/admin/`. Check your installation with
 `php bin/console debug:config ibexa siteaccess` ([chapter 4](04-installing.md#410-first-login)).
 
-### Fixes on the branches that no tag carries yet
+### Fixes released on 2026-10-05
 
-On 2026-10-05 a series of corrections went onto the four branches. They change how a fresh project behaves out of
-the box, so this book describes the corrected behaviour and says, where it matters, how the newest tag still behaves.
-None of them is in a tag yet; they will reach Composer users with the planned releases named in the table above. Until
-then you get them by installing the branch (`dev-master`, `3.x-dev`, `4.6.x-dev`, `5.x-dev`) or by applying the same
-change to your own project.
+On 2026-10-05 a series of corrections went onto the four branches, and the same day each line published a release
+that carries them: [`v2.5.0.4`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v2.5.0.4) (2.5), [`v3.3.44.8`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v3.3.44.8) (3.x), [`v4.6.23.3`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v4.6.23.3) (4.6.x) and [`v5.0.3.1`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v5.0.3.1) (5.x). They change how a fresh project behaves out of
+the box, so this book describes the corrected behaviour and says, where it matters, how the older tags (`v2.5.0.3`,
+`v3.3.44.7`, `v4.6.23.2`, `v5.0.2`, `v5.0.3`) still behave. A project created from one of the new releases or from a
+branch (`dev-master`, `3.x-dev`, `4.6.x-dev`, `5.x-dev`) has them; a project created from an older tag keeps its old
+files, because Composer copies the skeleton only once, so apply the same change to your own project (chapter 3,
+[3.4.5](03-getting-the-code.md#345-files-you-may-have-to-add-to-a-project-from-an-older-tag)). Each commit below is
+in the release of its line.
 
 | Line | Commit | What changed | Book section |
 |---|---|---|---|
@@ -234,13 +237,15 @@ reference and are not maintained; Packagist still lists them as `1.7.x-dev` to `
 
 ### The tag v5.0.3
 
-The tag `v5.0.3` (GitHub release of 2026-08-03, marked "Latest") points at a commit on `master`, the **2.5 line**: its
+The tag `v5.0.3` (GitHub release of 2026-08-03, marked "Latest" until 2026-10-05) points at a commit on `master`, the **2.5 line**: its
 `composer.json` requires Symfony 3.4, `se7enxweb/ezpublish-kernel ~7.5.33` and LegacyBridge `^2.1`, and carries the
-branch alias `dev-master: 2.5.x-dev`. Its release notes describe 5.x changes. Because it is the highest stable version
-number, **Composer picks it whenever no version or a range such as `^5.0` is given**, and you get the 2.5 line under a
-5.x number. Its tree is `v2.5.0.3` plus one commit, so it also carries the development settings of the 2.5 front
+branch alias `dev-master: 2.5.x-dev`. Its release notes describe 5.x changes. While it was the highest stable version
+number, from 2026-08-03 to 2026-10-05, **Composer picked it whenever no version or a range such as `^5.0` was given**,
+and you got the 2.5 line under a 5.x number. Its tree is `v2.5.0.3` plus one commit, so it also carries the development settings of the 2.5 front
 controllers that the branch fixed later (see above). Published tags are never moved, so the tag stays as it is: the
-correction is to publish the next version, not to change this one. Always name the line explicitly when you create a
+correction is to publish the next version, not to change this one. That version is [`v5.0.3.1`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v5.0.3.1), published on 2026-10-05
+on the 5.x branch: Composer compares `5.0.3.1` as greater than `5.0.3`, so an unconstrained `create-project` and
+`^5.0` reach the 5.x line again. Naming `5.0.3` exactly still installs the 2.5 line. Always name the line explicitly when you create a
 project ([chapter 3](03-getting-the-code.md#34-composer-create-project-per-line)).
 
 ## 1.5 Which line to choose

@@ -22,16 +22,16 @@ Details: [chapter 2](book/02-requirements.md).
 ## 2. Get the code
 
 ```bash
-composer create-project se7enxweb/exponential-platform-legacy:~2.5.0.3 exponential_website   # the v2.5.0.3 release
+composer create-project se7enxweb/exponential-platform-legacy:~2.5.0.4 exponential_website   # the v2.5.0.4 release
 # or the branch head: se7enxweb/exponential-platform-legacy:dev-master  (also known as 2.5.x-dev)
 cd exponential_website
 ```
 
-Always give the version. Without one, Composer takes the newest stable tag, `v5.0.3`, which (by a release mistake)
-contains this 2.5 line; for the 5 line use `:5.x-dev` or `:v5.0.2` ([chapter 3.1](book/03-getting-the-code.md#the-v503-tag-selects-the-25-line),
-[chapter 10.1](book/10-upgrading-between-lines.md#101-the-release-lines)). The next 2.5 release is planned as
-`v2.5.0.4`; until it is tagged, `~2.5.0.3` installs `v2.5.0.3`, whose front controllers still carry development
-settings that the branch has since corrected (step 7).
+Always give the version. Without one, Composer takes the newest stable tag: until 2026-10-05 that was `v5.0.3`, which
+(by a release mistake) contains this 2.5 line; since then it is [`v5.0.3.1`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v5.0.3.1), the 5 line. For the 5 line use `:5.x-dev` or
+`:~5.0.3.1` ([chapter 3.1](book/03-getting-the-code.md#the-v503-tag-selects-the-25-line),
+[chapter 10.1](book/10-upgrading-between-lines.md#101-the-release-lines)). The 2.5 release [`v2.5.0.4`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v2.5.0.4) (2026-10-05)
+carries the corrected front controllers (step 7); `v2.5.0.3` and earlier still have development settings.
 `2.5.0.x-dev`, used by older guides, matches nothing on Packagist. Use `--ignore-platform-reqs` only for a platform
 requirement you have checked is irrelevant.
 
@@ -136,7 +136,7 @@ with `{{ encore_entry_link_tags('index', null, 'app') }}`. Chapters: [5](book/05
 Point the web server at `web/`. Production must route to `web/app.php`, never to `web/app_dev.php`; use the rules in
 [`doc/apache2/vhost.template`](apache2/vhost.template) or [`doc/nginx/`](nginx/). On this branch the front controllers
 are safe as committed (2026-10-05): `web/.htaccess` routes to `app.php`, `web/app_dev.php` refuses every client that
-is not the local machine, and `web/app.php` no longer switches `display_errors` on. A project created from `v2.5.0.3`
+is not the local machine, and `web/app.php` no longer switches `display_errors` on. The release `v2.5.0.4` has the same files. A project created from `v2.5.0.3`
 (or `v5.0.3`) still has the old files, which route every request to `app_dev.php` with its check disabled; replace
 them with the branch's files ([chapter 6.2.1](book/06-serving-the-site.md#621-shipped-files-to-check-before-production),
 [chapter 13.2](book/13-security-hardening.md#132-what-the-web-server-must-never-hand-out)). A virtual host generated

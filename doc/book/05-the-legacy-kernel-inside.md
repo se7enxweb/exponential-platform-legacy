@@ -235,7 +235,7 @@ settings, then siteaccess settings, and **`settings/override/` last, so it wins 
 set the same value, the one earlier in `ActiveExtensions[]` wins. The Exponential 6 book explains the order and its
 traps: [10.13 Extension management](https://github.com/se7enxweb/exponential/blob/main/doc/install/10-after-installing.md#1013-extension-management).
 The 5.x installation guide up to `v5.0.2` lists the order the other way round (siteaccess files as the most specific;
-corrected on the branch in commit `c85428c`); the legacy kernel's `eZINI` reads `settings/override/` last.
+corrected in commit `c85428c`, released in `v5.0.3.1`); the legacy kernel's `eZINI` reads `settings/override/` last.
 
 And YAML itself? The new stack does not read INI files. A setting that both kernels need (languages, image variations,
 the var directory) is configured in YAML and reaches the legacy kernel only where the bridge injects it (section 5.5.1).
@@ -305,7 +305,8 @@ therefore not proof that the same habit works for other scripts.
 files. It gets no injected database settings, so on a skeleton without `[DatabaseSettings]` in its INI files it cannot
 connect, or connects to a different database than the site uses if old values are still there. The guides of the
 tags up to `v2.5.0.3`, `v3.3.44.7` and `v4.6.23.2` show direct calls in a few places (`runcronjobs.php`, `ezcli.php`;
-the branch guides run the cronjobs through the bridge since 5 October 2026); prefer the bridge in every case. The legacy
+the branch guides run the cronjobs through the bridge since 5 October 2026, and so do those of `v3.3.44.8`,
+`v4.6.23.3` and `v5.0.3.1`); prefer the bridge in every case. The legacy
 scripts themselves, their options and what they do: [the Exponential 6 book, chapter 10](https://github.com/se7enxweb/exponential/blob/main/doc/install/10-after-installing.md).
 
 Run the console as the site's user, not as root: files the scripts create (caches, logs, generated images) must
@@ -393,7 +394,7 @@ the caches (section 5.10).
 The opposite mistake is as common: an extension listed in `ActiveExtensions[]` that is not installed. The legacy
 kernel skips it without an error page, but its settings, templates and search engine are missing, and the debug output
 names it. The 3.x configuration had exactly this with `ezplatformsearch`, which the line does not install; the branch
-removed it from `config/app/packages/legacy.yaml` and from the legacy override file (commit `5ace002`, planned release
+removed it from `config/app/packages/legacy.yaml` and from the legacy override file (commit `5ace002`, released in
 `v3.3.44.8`). On a project created from `v3.3.44.7`, remove the entry yourself, or install `netgen/ezplatformsearch`
 if you want the legacy search to use the platform's engine ([chapter 9](09-operations.md#94-search)). To find such an
 entry, compare what is installed (`ls ezpublish_legacy/extension/`) with what is active (*Setup*, *Extensions* in the

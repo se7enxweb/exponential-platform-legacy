@@ -29,8 +29,8 @@ where the upstream documentation has to be followed instead.
 | | 2.5 | 3.3 | 4.6 | 5 |
 |---|---|---|---|---|
 | Branch | `master` | `3.x` | `4.6.x` | `5.x` |
-| Tags | `v2.5.0.0` to `v2.5.0.3` | `v3.0.0.0` to `v3.0.0.14`, `v3.3.44.0` to `v3.3.44.7` | `v4.6.23.0` to `v4.6.23.2` | `v5.0.0` to `v5.0.2` (and see the note on `v5.0.3`) |
-| Composer constraint for a new project | `dev-master` (alias `2.5.x-dev`) or `v2.5.0.3` | `3.x-dev` or `v3.3.44.7` | `4.6.x-dev` or `v4.6.23.2` | `5.x-dev` or `v5.0.2` |
+| Tags | `v2.5.0.0` to `v2.5.0.4` | `v3.0.0.0` to `v3.0.0.14`, `v3.3.44.0` to `v3.3.44.8` | `v4.6.23.0` to `v4.6.23.3` | `v5.0.0` to `v5.0.2`, `v5.0.3.1` (and see the note on `v5.0.3`) |
+| Composer constraint for a new project | `dev-master` (alias `2.5.x-dev`) or `v2.5.0.4` | `3.x-dev` or `v3.3.44.8` | `4.6.x-dev` or `v4.6.23.3` | `5.x-dev` or `v5.0.3.1` |
 | PHP (`composer.json`) | `^7.1.3 \|\| ^8.1 \|\| ^8.2` | `^8.0` | `^7.4` to `^8.5` (the bridge `^4.0.0.0` itself needs `^8.0`) | `>=8.3` (the bridge `^5.0.0.0` needs `^8.4`, so 8.4 in practice) |
 | Symfony | 3.4 (`se7enxweb/symfony ^3.4.50`) | 5.4 | 5.4 | 7.x (`symfony/runtime ^7.3`; the bridge requires `symfony/framework-bundle ^7.4`) |
 | Platform kernel | `se7enxweb/ezpublish-kernel ~7.5.33` | `se7enxweb/ezplatform-kernel ~1.3.43`, `se7enxweb/oss ~3.3.0.0` | `se7enxweb/exponential-platform-dxp 4.6.x-LB-dev` (kernel `se7enxweb/exponential-platform-dxp-core`) | `se7enxweb/exponential-platform-dxp dev-5.x-LB` |
@@ -38,7 +38,7 @@ where the upstream documentation has to be followed instead.
 | Legacy kernel | `se7enxweb/exponential ^6.0.12` | `^6.0.12` (through the bridge) | `dev-main` (through the bridge) | `dev-main` (through the bridge) |
 | Console | `bin/console` | `bin/console` | `bin/console` | `bin/console` |
 | Configuration | `app/config/*.yml`, `parameters.yml` | `config/`, `.env`, `.env.local` | `config/` from the Flex recipe, slot `1.2` ([8.9](08-configuration.md#89-where-the-files-are-line-by-line)) | `config/` from the Flex recipe, slot `1.4` |
-| Next release (planned, not tagged at the time of writing) | `v2.5.0.4` | `v3.3.44.8` | `v4.6.23.3` | `v5.0.3.1` |
+| Newest release (2026-10-05) | [`v2.5.0.4`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v2.5.0.4) | [`v3.3.44.8`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v3.3.44.8) | [`v4.6.23.3`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v4.6.23.3) | [`v5.0.3.1`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v5.0.3.1) |
 | Web root | `web/` | `public/` | `public/` | `public/` |
 | Page building | none | none | Netgen Layouts `^1.4` | Netgen Layouts `^2.0` |
 | Table names | `ez*` | `ez*` | `ez*` | `ibexa_*`; the legacy kernel reads them through `sevenx_exponential_platform_v5_database_translator` |
@@ -50,9 +50,10 @@ The 4.6.x and 5.x branches of this repository hold little more than `composer.js
 [se7enxweb/sevenx-recipes](https://github.com/se7enxweb/sevenx-recipes) when Composer installs
 `se7enxweb/exponential-platform-dxp` (Flex leaves a file alone that the project already has).
 
-**What the planned releases contain.** The fixes committed on 5 October 2026 are on the branches and reach a tagged
-version only with the next release of each line (table above); until then, `dev-master`, `3.x-dev`, `4.6.x-dev` and
-`5.x-dev` have them and the newest tags do not:
+**What the releases of 2026-10-05 contain.** The fixes committed on 5 October 2026 reached a tagged version the same
+day, in the release of each line (table above): [`v2.5.0.4`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v2.5.0.4) for 2.5, [`v3.3.44.8`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v3.3.44.8) for 3.x, [`v4.6.23.3`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v4.6.23.3) for 4.6 and [`v5.0.3.1`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v5.0.3.1)
+for 5. The branches have them as well; the tags before (`v2.5.0.3`, `v3.3.44.7`, `v4.6.23.2`, `v5.0.2`, `v5.0.3`)
+do not:
 
 | Line | Commits | Effect |
 |---|---|---|
@@ -66,7 +67,7 @@ version only with the next release of each line (table above); until then, `dev-
 | 5 | `78e2848` | `TRUSTED_PROXIES` sets the proxies Symfony trusts |
 | 2.5 | `523606a`, `6ba381b` | `web/.htaccess` no longer rewrites `content/treemenu` to the missing `index_treemenu.php`; `doc/apache2/.htaccess` is the same file as `web/.htaccess` ([6.5.1](06-serving-the-site.md#651-the-25-line-docapache2)) |
 | 3.x | `7248e69`, `ef13795` | the Apache examples in `doc/apache2` describe the `public/index.php` layout ([6.5.2](06-serving-the-site.md#652-3x-46x-and-5x-public)); the `.env`, Platform.sh and guide comments say what reads `TRUSTED_PROXIES` |
-| 3.x, 4.6, 5 | listed in [chapter 1](01-introduction.md#fixes-on-the-branches-that-no-tag-carries-yet) | the branch guides and READMEs: legacy commands that exist, cronjobs through the bridge, cloning over HTTPS on the line's own branch, `CREATE USER` before `GRANT`, the 4.6.x Admin UI build script, the 5.x INI order and version constraint, `security@se7enx.com` |
+| 3.x, 4.6, 5 | listed in [chapter 1](01-introduction.md#fixes-released-on-2026-10-05) | the branch guides and READMEs: legacy commands that exist, cronjobs through the bridge, cloning over HTTPS on the line's own branch, `CREATE USER` before `GRANT`, the 4.6.x Admin UI build script, the 5.x INI order and version constraint, `security@se7enx.com` |
 
 An existing project does not receive changes to files that Composer does not own (`web/`, `public/.htaccess`,
 `config/`): after updating, apply them to your copy by hand, using the commit as the recipe.
@@ -76,17 +77,16 @@ The older `1.x` and `2.0`/`2.2` branches are the upstream `ezsystems/ezplatform-
 
 **The tag `v5.0.3` is not on the 5.x line.** It was published on 2026-08-03 with release notes about 5.x fixes, but it
 points to commit `8479bb7` on `master`, whose `composer.json` is the 2.5 line's (`se7enxweb/ezpublish-kernel
-~7.5.33`, bridge `^2.1`). Packagist lists it as the newest stable version, so `composer create-project
-se7enxweb/exponential-platform-legacy` **without a version** installs the 2.5 skeleton. Published tags are never moved
-in this project, so the tag stays as it is. A constraint such as `^5.0` therefore currently resolves to `v5.0.3` and
-installs 2.5. The maintainers plan a corrected release on the 5.x branch, `v5.0.3.1`, which sorts after `v5.0.3` and
-will make `^5.0` resolve to the 5 line again; check `gh release list -R se7enxweb/exponential-platform-legacy` or
-Packagist for it. Until it is published, always name the version or branch you want:
+~7.5.33`, bridge `^2.1`). Packagist listed it as the newest stable version until 2026-10-05, so until then `composer create-project
+se7enxweb/exponential-platform-legacy` **without a version**, or with `^5.0`, installed the 2.5 skeleton. Published
+tags are never moved in this project, so the tag stays as it is. The correction is the release [`v5.0.3.1`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v5.0.3.1) on
+the 5.x branch (2026-10-05), which sorts after `v5.0.3` and makes `^5.0` and an unconstrained `create-project` resolve
+to the 5 line again; naming `5.0.3` exactly still installs 2.5. Always name the version or branch you want:
 
 ```bash
 composer create-project se7enxweb/exponential-platform-legacy:5.x-dev my-site    # the 5 line, branch head
-composer create-project se7enxweb/exponential-platform-legacy:v5.0.2 my-site     # the 5 line, newest 5.x tag
-composer create-project se7enxweb/exponential-platform-legacy:~2.5.0.3 my-site   # the 2.5 line (v2.5.0.3)
+composer create-project se7enxweb/exponential-platform-legacy:~5.0.3.1 my-site  # the 5 line, v5.0.3.1 and later 5.0.3.x
+composer create-project se7enxweb/exponential-platform-legacy:~2.5.0.4 my-site   # the 2.5 line (v2.5.0.4)
 ```
 
 Check the result before going on: `grep '"se7enxweb/legacy-bridge"' my-site/composer.json` must show `^5.0.0.0` for
@@ -139,7 +139,7 @@ site moves:
 2. **Inventory your own code**: Symfony bundles and templates in `src/` and `app/Resources/views/` or `templates/`,
    legacy extensions in `ezpublish_legacy/extension/` that do not come from Composer, legacy designs, the legacy
    `settings/override/` and `settings/siteaccess/` files, and the siteaccess YAML.
-3. **Bring the source to the last release of its line** (2.5: `v2.5.0.3`, or `v2.5.0.4` once it is tagged, kernel
+3. **Bring the source to the last release of its line** (2.5: `v2.5.0.4`, kernel
    7.5.x; 3.3: kernel 1.3.45) and the
    legacy kernel to its latest 6.0.x with its update files applied.
 4. **Create the target project** from the target branch on a staging server, with a copy of the database.

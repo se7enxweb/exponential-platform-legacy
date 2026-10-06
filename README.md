@@ -156,7 +156,7 @@ Exponential Platform Legacy is database, platform and browser independent. Becau
 
 ```bash
 # 1. Create project
-composer create-project se7enxweb/exponential-platform-legacy:~2.5.0.3 exponential_website
+composer create-project se7enxweb/exponential-platform-legacy:~2.5.0.4 exponential_website
 cd exponential_website
 
 # 2. Configure environment
@@ -215,7 +215,7 @@ symfony server:start
 - [The short installation guide](doc/INSTALL.md) for the 2.5 line, with links into the book.
 - [Upgrade notes](UPGRADE.md): where the book covers updating within a line, moving between lines and migrating in.
 - Before going live: [chapter 13, security hardening](doc/book/13-security-hardening.md), with a go-live checklist.
-  The releases up to `v2.5.0.3` route every request to `app_dev.php`; read its section 13.2 first.
+  The releases up to `v2.5.0.3` route every request to `app_dev.php` (corrected in [`v2.5.0.4`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v2.5.0.4)); read its section 13.2 first.
 - Server configuration examples: [Apache](doc/apache2/), [nginx](doc/nginx/), [Varnish](doc/varnish/varnish.md),
   [Docker](doc/docker/README.md), [Platform.sh](doc/platformsh/README.md).
 - The legacy kernel inside: [the Exponential 6 book](https://github.com/se7enxweb/exponential/blob/main/doc/install/README.md).
@@ -265,12 +265,12 @@ symfony server:start
 Create a new project using Composer:
 
 ```bash
-composer create-project se7enxweb/exponential-platform-legacy:~2.5.0.3 exponential_website
+composer create-project se7enxweb/exponential-platform-legacy:~2.5.0.4 exponential_website
 ```
 
 Always name the version. The other release lines are `:3.x-dev`, `:4.6.x-dev` and, for Symfony 7, `:5.x-dev` (or the
-tag `:v5.0.2`). Without a version, or with `^5.0`, Composer currently picks the tag `v5.0.3`, which contains this 2.5
-line; see [the book, chapter 10.1](doc/book/10-upgrading-between-lines.md#101-the-release-lines).
+release `:~5.0.3.1`). Until 2026-10-05, without a version or with `^5.0`, Composer picked the tag `v5.0.3`, which
+contains this 2.5 line; since [`v5.0.3.1`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v5.0.3.1) was published it picks that 5.x release; see [the book, chapter 10.1](doc/book/10-upgrading-between-lines.md#101-the-release-lines).
 
 The installation guide covers environment configuration, database setup (MySQL, MariaDB, PostgreSQL, and **SQLite zero-config**), web server configuration, asset builds, legacy bundle setup, search indexing, cron jobs, Solr, Varnish, production deployment, and **database conversion** between engines.
 

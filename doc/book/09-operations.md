@@ -183,7 +183,7 @@ own cronjobs.
 |---|---|---|
 | Engine choice | `SEARCH_ENGINE`: `legacy` (SQL, default) or `solr` | `site.ini [SearchSettings] SearchEngine` |
 | 2.5 as shipped | `legacy` | the `ezplatformsearch` extension (package `netgen/ezplatformsearch`) is active and sets `SearchEngine=ezplatformsearch`: legacy searches and indexes through the platform's engine, so one index serves both |
-| 3.x as shipped | `legacy` | legacy uses its own `ezsearch` engine. The branch does not require `netgen/ezplatformsearch`; up to tag `v3.3.44.7` the extension was nevertheless listed in the injected `ActiveExtensions` (`config/app/packages/legacy.yaml`) and in the legacy override, which commit `5ace002` of 5 October 2026 removed (in the next 3.x release, `v3.3.44.8`). On an older copy, delete both entries or install the package |
+| 3.x as shipped | `legacy` | legacy uses its own `ezsearch` engine. The branch does not require `netgen/ezplatformsearch`; up to tag `v3.3.44.7` the extension was nevertheless listed in the injected `ActiveExtensions` (`config/app/packages/legacy.yaml`) and in the legacy override, which commit `5ace002` of 5 October 2026 removed (released in `v3.3.44.8`). On an older copy, delete both entries or install the package |
 | 4.6, 5.x as shipped | `legacy` | the package is installed but not activated by the recipe's injected `ActiveExtensions`: legacy uses its own `ezsearch` engine |
 
 Rebuild the platform index with `ezplatform:reindex` (2.5) or `exponential:reindex` (later); options include
@@ -255,8 +255,8 @@ In the order of their effect:
 1. **Production environment.** 2.5 decides the environment from `SYMFONY_ENV` (default `prod`) in `web/app.php`;
    3.x and later from `APP_ENV`. Run `cache:warmup --env=prod` after each clear. Check that nothing forces `dev`:
    the `web/.htaccess` of releases `v2.5.0.1` to `v2.5.0.3` routes every request to `app_dev.php` (corrected on
-   `master` in `fa091cd`), the `public/.htaccess` of the 3.x releases up to `v3.3.44.7` sets `APP_ENV=dev`
-   (corrected in `66f13e1`), and the `public/.htaccess` the 4.6 and 5 recipes write still sets it
+   `master` in `fa091cd`, released in `v2.5.0.4`), the `public/.htaccess` of the 3.x releases up to `v3.3.44.7` sets `APP_ENV=dev`
+   (corrected in `66f13e1`, released in `v3.3.44.8`), and the `public/.htaccess` the 4.6 and 5 recipes write still sets it
    ([13.4](13-security-hardening.md#134-debug-output-and-error-display)). A site in `dev` is several times slower,
    because Symfony checks every configuration file for changes and collects profiler data on each request.
    `curl -sI https://example.com/ | grep -i x-debug-token` prints nothing on a site in `prod`.
@@ -295,7 +295,7 @@ On 3.x and later add `php bin/console doctrine:migrations:migrate --no-interacti
 When front-end files changed, rebuild the assets: on 2.5 with the steps the README lists
 (`bazinga:js-translation:dump web/assets --merge-domains`, `assetic:dump`, `yarn encore production`), on 3.x with
 `composer ibexa-assets` (`yarn install`, then `bin/console ibexa:encore:compile`; the script exists from commit
-`21004ae` on, which the 3.x `Makefile` and deploy recipe call; in releases up to `v3.3.44.7` run the two commands by
+`21004ae` on (release `v3.3.44.8`), which the 3.x `Makefile` and deploy recipe call; in releases up to `v3.3.44.7` run the two commands by
 hand).
 
 Expected result of a deploy: `cache:clear` ends with `[OK] Cache for the "prod" environment (debug=false) was
