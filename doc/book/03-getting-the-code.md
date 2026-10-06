@@ -34,10 +34,10 @@ tag is never moved or re-cut, and a mistake in one is corrected by publishing th
 
 | Line | Branch (Packagist dev version) | Tags (date of the tagged commit) |
 |---|---|---|
-| 2.5 | `master` (`dev-master`, alias `2.5.x-dev`) | `v2.5.0.0` (2025-08-25), `v2.5.0.1` (2025-09-14), `v2.5.0.2` (2026-04-10), `v2.5.0.3` (2026-04-21); also `v5.0.3` (2026-07-08), see below |
-| 3.x | `3.x` (`3.x-dev`) | `v3.0.0.0` to `v3.0.0.14` (2026-03-28 to 2026-04-03), `v3.3.44.0` to `v3.3.44.7` (2026-04-07 to 2026-04-12) |
-| 4.6.x | `4.6.x` (`4.6.x-dev`) | `v4.6.23.0` (2026-04-06), `v4.6.23.1` (2026-04-07), `v4.6.23.2` (2026-04-16) |
-| 5.x | `5.x` (`5.x-dev`) | `v5.0.0` (2026-04-12), `v5.0.1` (2026-04-14), `v5.0.2` (2026-04-16) |
+| 2.5 | `master` (`dev-master`, alias `2.5.x-dev`) | `v2.5.0.0` (2025-08-25), `v2.5.0.1` (2025-09-14), `v2.5.0.2` (2026-04-10), `v2.5.0.3` (2026-04-21), `v2.5.0.4` (2026-10-05); also `v5.0.3` (2026-07-08), see below |
+| 3.x | `3.x` (`3.x-dev`) | `v3.0.0.0` to `v3.0.0.14` (2026-03-28 to 2026-04-03), `v3.3.44.0` to `v3.3.44.7` (2026-04-07 to 2026-04-12), `v3.3.44.8` (2026-10-05) |
+| 4.6.x | `4.6.x` (`4.6.x-dev`) | `v4.6.23.0` (2026-04-06), `v4.6.23.1` (2026-04-07), `v4.6.23.2` (2026-04-16), `v4.6.23.3` (2026-10-05) |
+| 5.x | `5.x` (`5.x-dev`) | `v5.0.0` (2026-04-12), `v5.0.1` (2026-04-14), `v5.0.2` (2026-04-16), `v5.0.3.1` (2026-10-05) |
 | snapshots | `2.5.0.0` to `2.5.0.3` (`2.5.0.0-dev` ...) | branches frozen at each 2.5 release; use the tags |
 | history | `1.7` to `1.13`, `2.0`, `2.2` | upstream branches, not maintained (chapter 1, [1.4](01-introduction.md#the-old-branches)) |
 
@@ -46,9 +46,8 @@ required `se7enxweb/exponential-platform-dxp 4.6.x-dev`; from `v4.6.23.1` on the
 LegacyBridge branch `4.6.x-LB-dev` of that package. `v5.0.0` required LegacyBridge `^4.0.0.0`; from `v5.0.1` on it is
 `^5.0.0.0`.
 
-The next releases are planned as `v2.5.0.4`, `v3.3.44.8`, `v4.6.23.3` and `v5.0.3.1`. They are not tagged yet (checked
-on 2026-10-05); they will carry the branch fixes listed in chapter 1,
-[Fixes on the branches](01-introduction.md#fixes-on-the-branches-that-no-tag-carries-yet).
+The releases of 2026-10-05, [`v2.5.0.4`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v2.5.0.4), [`v3.3.44.8`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v3.3.44.8), [`v4.6.23.3`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v4.6.23.3) and [`v5.0.3.1`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v5.0.3.1), carry the branch fixes listed in
+chapter 1, [Fixes released on 2026-10-05](01-introduction.md#fixes-released-on-2026-10-05).
 
 To see what exists today rather than what this book saw, list the tags by version (a plain name sort puts `.10` before
 `.9`) and the releases:
@@ -58,40 +57,41 @@ git ls-remote --tags https://github.com/se7enxweb/exponential-platform-legacy.gi
 gh release list -R se7enxweb/exponential-platform-legacy --limit 5      # GitHub CLI, optional
 ```
 
-Output on 2026-10-05, hashes shortened. An annotated tag appears twice: once with the hash of the tag object and once,
+Output on 2026-10-05 after that day's releases, hashes shortened. An annotated tag appears twice: once with the hash of the tag object and once,
 with `^{}`, with the hash of the commit it points to.
 
 ```text
-923ddaa0...  refs/tags/v4.6.23.2^{}
-45a77c00...  refs/tags/v5.0.0
-955dc63b...  refs/tags/v5.0.1
 bfbe3daf...  refs/tags/v5.0.2
 43461d83...  refs/tags/v5.0.2^{}
 8479bb75...  refs/tags/v5.0.3
+4477aaee...  refs/tags/v5.0.3.1
+20a922b6...  refs/tags/v5.0.3.1^{}
 ```
 
-If a planned version from the list above appears there, it has been released; use it instead of the versions this
-chapter names.
+If a newer version of a series appears there, it was released after this book was written; the constraints of
+section 3.2 pick it up.
 
 ### The v5.0.3 tag selects the 2.5 line
 
 `v5.0.3` was tagged on `master`. Its `composer.json` is the 2.5 line's (Symfony 3.4, `se7enxweb/ezpublish-kernel
-~7.5.33`, LegacyBridge `^2.1`, web root `web/`). It is the highest stable version on Packagist, so:
+~7.5.33`, LegacyBridge `^2.1`, web root `web/`). It was the highest stable version on Packagist from 2026-08-03 until
+[`v5.0.3.1`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v5.0.3.1), tagged on the 5.x branch, was published on 2026-10-05:
 
-| You type | Composer installs |
-|---|---|
-| `composer create-project se7enxweb/exponential-platform-legacy my_project` | `v5.0.3`: the **2.5 line** |
-| `... se7enxweb/exponential-platform-legacy:^5.0 my_project` | `v5.0.3`: the **2.5 line** |
-| `... se7enxweb/exponential-platform-legacy:~5.0.2 my_project` | `v5.0.3` as well (`~5.0.2` allows 5.0.3) |
+| You type | Composer installed until 2026-10-05 | Composer installs since |
+|---|---|---|
+| `composer create-project se7enxweb/exponential-platform-legacy my_project` | `v5.0.3`: the **2.5 line** | `v5.0.3.1`: the 5.x line |
+| `... se7enxweb/exponential-platform-legacy:^5.0 my_project` | `v5.0.3`: the **2.5 line** | `v5.0.3.1`: the 5.x line |
+| `... se7enxweb/exponential-platform-legacy:~5.0.2 my_project` | `v5.0.3` as well (`~5.0.2` allows 5.0.3) | `v5.0.3.1`: the 5.x line |
+| `... se7enxweb/exponential-platform-legacy:5.0.3 my_project` | `v5.0.3`: the **2.5 line** | `v5.0.3`: the **2.5 line** |
 
 The 5.x installation guide's own quick start up to `v5.0.2` (`composer create-project se7enxweb/exponential-platform-legacy
 my-project`, without a version) therefore does not give you 5.x; the branch guide asks for `~5.0.3.1` since commit
-`54f90fb`. Name the line every time, as in section 3.4.
+`54f90fb` (released in `v5.0.3.1`). Name the line every time, as in section 3.4.
 
 How to tell afterwards which line you received: the 2.5 line has `app/` and `web/`, the others `config/` and
-`public/`; `grep legacy-bridge composer.json` prints `^2.1` for the 2.5 line. Once the planned `v5.0.3.1` is published
-it becomes the highest stable version (Composer compares `5.0.3.1` as greater than `5.0.3`), and an unconstrained
-`create-project` or `^5.0` then reaches the 5.x line again. Naming the line stays the safe habit.
+`public/`; `grep legacy-bridge composer.json` prints `^2.1` for the 2.5 line. Since `v5.0.3.1` was published on
+2026-10-05 it is the highest stable version (Composer compares `5.0.3.1` as greater than `5.0.3`), and an unconstrained
+`create-project` or `^5.0` reaches the 5.x line again. Naming the line stays the safe habit.
 
 ## 3.2 Choosing a version constraint
 
@@ -100,10 +100,10 @@ line, checked against the versions Packagist publishes:
 
 | Line | A stable release | The branch (newest commits) | Do not use |
 |---|---|---|---|
-| 2.5 | `~2.5.0.3` (`v2.5.0.3` and later `2.5.0.x`) | `dev-master` or `2.5.x-dev` | `2.5.0.x-dev` (named in the 2.5 README and guide; no published version matches it); `^5.0` |
-| 3.x | `~3.3.44.7` | `3.x-dev` | `^3.0` resolves too, but also admits the older `v3.0.0.x` series; the tilde names the current series |
-| 4.6.x | `~4.6.23.2` | `4.6.x-dev` | `4.6.x-LB-dev` (that is a branch of `se7enxweb/exponential-platform-dxp`, not of this package) |
-| 5.x | `5.0.2` (exact); after its release `~5.0.3.1` | `5.x-dev` | no constraint, `^5.0`, `~5.0.2`, `~5.0`: all reach `v5.0.3` as long as it is the newest stable version |
+| 2.5 | `~2.5.0.4` (`v2.5.0.4` and later `2.5.0.x`) | `dev-master` or `2.5.x-dev` | `2.5.0.x-dev` (named in the 2.5 README and guide; no published version matches it); `^5.0` |
+| 3.x | `~3.3.44.8` | `3.x-dev` | `^3.0` resolves too, but also admits the older `v3.0.0.x` series; the tilde names the current series |
+| 4.6.x | `~4.6.23.3` | `4.6.x-dev` | `4.6.x-LB-dev` (that is a branch of `se7enxweb/exponential-platform-dxp`, not of this package) |
+| 5.x | `~5.0.3.1` (`v5.0.3.1` and later `5.0.3.x`) | `5.x-dev` | `5.0.3` (exact): the 2.5 line. No constraint, `^5.0`, `~5.0.2` and `~5.0` reach `v5.0.3.1` since 2026-10-05; before that they reached `v5.0.3` |
 
 A tilde with all four positions (`~2.5.0.3`) allows the last position to grow and nothing else: `>=2.5.0.3 <2.5.1`.
 
@@ -131,7 +131,7 @@ first install writes (section 3.8) to make later installs repeatable.
 ### 3.4.1 The 2.5 line
 
 ```bash
-composer create-project se7enxweb/exponential-platform-legacy:~2.5.0.3 my_project
+composer create-project se7enxweb/exponential-platform-legacy:~2.5.0.4 my_project
 cd my_project
 ```
 
@@ -161,7 +161,7 @@ before you do the same.
 ### 3.4.2 The 3.x line
 
 ```bash
-composer create-project se7enxweb/exponential-platform-legacy:~3.3.44.7 my_project
+composer create-project se7enxweb/exponential-platform-legacy:~3.3.44.8 my_project
 cd my_project
 ```
 
@@ -182,12 +182,12 @@ runs:
 ### 3.4.3 The 4.6.x line
 
 ```bash
-composer create-project se7enxweb/exponential-platform-legacy:~4.6.23.2 my_project
+composer create-project se7enxweb/exponential-platform-legacy:~4.6.23.3 my_project
 cd my_project
 ```
 
-The tag `v4.6.23.2` holds only `composer.json`, a README, an INSTALL guide and the licence files; the branch adds
-`config/packages/trusted_proxies.yaml` (commit `309785f`, section 3.4.5). Everything else comes from the Symfony Flex
+The tags up to `v4.6.23.2` hold only `composer.json`, a README, an INSTALL guide and the licence files; `v4.6.23.3`
+and the branch add `config/packages/trusted_proxies.yaml` (commit `309785f`, section 3.4.5). Everything else comes from the Symfony Flex
 recipe of `se7enxweb/exponential-platform-dxp` (slot `se7enxweb/exponential-platform-dxp/1.2` in
 [sevenx-recipes](https://github.com/se7enxweb/sevenx-recipes)): `bin/install-legacy-links`, `config/`, `public/`
 (`index.php`, `.htaccess`, `index_rest.php`, `index_cluster.php`), `src/` (the installer type `exponential-oss`, the
@@ -216,16 +216,16 @@ Then `post-install-cmd` runs:
 ### 3.4.4 The 5.x line
 
 ```bash
-composer create-project se7enxweb/exponential-platform-legacy:5.0.2 my_project
+composer create-project se7enxweb/exponential-platform-legacy:~5.0.3.1 my_project
 # or the branch, with every fix since:
 composer create-project se7enxweb/exponential-platform-legacy:5.x-dev my_project
 cd my_project
 ```
 
 The same mechanism as 4.6.x, with the recipe slot `se7enxweb/exponential-platform-dxp/1.4`, Symfony 7.4 and
-LegacyBridge 5. What differs between the tag and the branch:
+LegacyBridge 5. What differs between the older tag and the current release:
 
-| | `5.0.2` | `5.x-dev` (branch, planned release `v5.0.3.1`) |
+| | `v5.0.2` | `v5.0.3.1` and the branch `5.x-dev` |
 |---|---|---|
 | Files in the skeleton besides `composer.json` and the documents | none | `config/services.yaml`, `config/packages/lexik_jwt_authentication.yaml`, `config/packages/trusted_proxies.yaml`, `package.json`, `webpack.config.js`, `yarn.lock` |
 | Post-install scripts | those of 4.6.x without the final `assets:install public` | the same as 4.6.x |
@@ -248,7 +248,9 @@ framework:
     trusted_headers: ['x-forwarded-for', 'x-forwarded-proto', 'x-forwarded-port']
 ```
 
-The same applies to the other lines. What to take over from the branch into a project created from the newest tag:
+The same applies to the other lines. What to take over from the branch into a project created from a tag before the
+releases of 2026-10-05 (`v2.5.0.4`, `v3.3.44.8`, `v4.6.23.3` and `v5.0.3.1` ship these files; the recipe changes in
+the last row apply to projects created from `v4.6.23.3` and `v5.0.3.1` as well):
 
 | Created from | Take over | Why |
 |---|---|---|

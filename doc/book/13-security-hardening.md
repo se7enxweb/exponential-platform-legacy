@@ -5,8 +5,8 @@ secret, one storage directory and one web root. This chapter goes through them l
 must never hand out, the secrets and where they come from, debug output, the two admin interfaces, sign-in, sessions
 and form tokens, trusted proxies on both sides (including the legacy kernel's `TrustedProxies[]` of Exponential
 6.0.15), headers and HTTPS, file permissions and keeping up to date. Several defaults in the published releases are
-development settings; most were corrected on the branches on 5 October 2026 and reach a tag with the next release of
-each line, and the 4.6 and 5 recipes still carry two of them. Each is named here, with the commit that corrects it and
+development settings; most were corrected on the branches on 5 October 2026 and published the same day in the releases
+`v2.5.0.4`, `v3.3.44.8`, `v4.6.23.3` and `v5.0.3.1`; the 4.6 and 5 recipes still carry two of them. Each is named here, with the commit that corrects it and
 the change an existing site needs, because files outside `vendor/` are not updated by Composer.
 
 [Previous: 12. Troubleshooting](12-troubleshooting.md) · [Contents](README.md)
@@ -67,8 +67,8 @@ RewriteRule ^(.*)$ app_dev.php [QSA,L]
 so every request runs the `dev` environment with the debug toolbar and full stack traces; in all of these releases
 `web/app_dev.php` has its IP check commented out and `web/app.php` begins with `ini_set('display_errors', 'On')`.
 
-**The correction is on `master`** since 5 October 2026, in three commits, and reaches a tag with the next 2.5
-release, `v2.5.0.4` (planned at the time of writing; `v5.0.3` keeps the old files, because published tags never move):
+**The correction is on `master`** since 5 October 2026, in three commits, and is in the 2.5
+release [`v2.5.0.4`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v2.5.0.4) of the same day (`v5.0.3` keeps the old files, because published tags never move):
 
 | Commit | File | Now |
 |---|---|---|
@@ -119,7 +119,7 @@ the same file, and keep `assets` and `bundles` (Symfony's built assets) as they 
 **No PHP from `var/`.** Uploaded files land under `var/<site>/storage/`. In a virtual host the path a `RewriteRule`
 sees starts with `/`. The vhost template of the releases up to `v2.5.0.3` (and of the 3.x releases up to
 `v3.3.44.7`) has `RewriteRule ^var/.*(?i)\.(php3?|phar|phtml|sh|exe|pl|bin)$ - [F]`, which therefore never matches,
-so a PHP file uploaded under `var/` could be requested. Commit `01e4d59` on `master` (`984732f` on 3.x) corrects it to
+so a PHP file uploaded under `var/` could be requested. Commit `01e4d59` on `master` (`984732f` on 3.x; released in `v2.5.0.4` and `v3.3.44.8`) corrects it to
 
 ```apache
 RewriteRule ^/var/.*(?i)\.(php3?|phar|phtml|sh|exe|pl|bin)$ - [F]
@@ -156,9 +156,9 @@ cookies and the CSRF tokens of Symfony forms. A known value lets anyone forge th
 
 | Where | Shipped | Production |
 |---|---|---|
-| 2.5 `web/app.php` | up to `v2.5.0.3`: `ini_set('display_errors', 'On')` and `ini_set('display_startup_errors', 1)` at the top; from `7605f57` on `master`: error display switched off whenever debugging is off | the `master` file; set `display_errors=Off` in the PHP-FPM pool as well |
-| 2.5 environment | `SYMFONY_ENV` unset means `prod`, but up to `v2.5.0.3` the committed `.htaccess` routes to `app_dev.php`, which forces `dev` (corrected in `fa091cd`, [13.2](#132-what-the-web-server-must-never-hand-out)) | `prod`, `SYMFONY_DEBUG` unset or `0` |
-| 3.x `public/.htaccess` | up to `v3.3.44.7`: `SetEnvIf Request_URI ".*" APP_ENV=dev`, which beats `.env.local`; from `66f13e1` on the `3.x` branch: commented out | not forced in `.htaccess` |
+| 2.5 `web/app.php` | up to `v2.5.0.3`: `ini_set('display_errors', 'On')` and `ini_set('display_startup_errors', 1)` at the top; from `7605f57` on `master` (`v2.5.0.4`): error display switched off whenever debugging is off | the `master` file; set `display_errors=Off` in the PHP-FPM pool as well |
+| 2.5 environment | `SYMFONY_ENV` unset means `prod`, but up to `v2.5.0.3` the committed `.htaccess` routes to `app_dev.php`, which forces `dev` (corrected in `fa091cd`, released in `v2.5.0.4`, [13.2](#132-what-the-web-server-must-never-hand-out)) | `prod`, `SYMFONY_DEBUG` unset or `0` |
+| 3.x `public/.htaccess` | up to `v3.3.44.7`: `SetEnvIf Request_URI ".*" APP_ENV=dev`, which beats `.env.local`; from `66f13e1` on the `3.x` branch (`v3.3.44.8`): commented out | not forced in `.htaccess` |
 | 4.6 and 5 `public/.htaccess` (written by the recipe) | `SetEnvIf Request_URI ".*" APP_ENV=dev`: every request through Apache runs in `dev`, whatever `.env.local` says. A correction of the recipes is pending the maintainers' approval | comment the line out, or set it to `prod` |
 | 3.x and later `.env` | `APP_ENV=dev` in the committed `.env` | `APP_ENV=prod`, `APP_DEBUG=0` in `.env.local` or the environment |
 | Legacy kernel, 2.5 and 3.x | master's override has `DebugOutput` and `Debug` commented out | keep `[DebugSettings] DebugOutput=disabled`; limit `DebugByIP` to your own addresses if you need it |
@@ -259,9 +259,9 @@ sets to `127.0.0.1`; since 5 October 2026 each branch has a framework configurat
 | Line | Where the list comes from | Headers trusted |
 |---|---|---|
 | 2.5 | environment variable `SYMFONY_TRUSTED_PROXIES`, read in `web/app.php`: a comma-separated list, or `TRUST_REMOTE` to trust whatever `REMOTE_ADDR` is. `framework.trusted_proxies` in `config.yml`, shown in older guides, is deprecated since Symfony 3.3 and only triggers a deprecation notice; use the variable | all `X-Forwarded-*` (`HEADER_X_FORWARDED_ALL`) |
-| 3.x | `framework.trusted_proxies: '%env(default::TRUSTED_PROXIES)%'` in `config/packages/ezpublish.yaml` (commit `d820756`). Before it, and in the releases up to `v3.3.44.7`, only the deprecated fallback of `EzPlatformCoreExtension` (`se7enxweb/ezplatform-core`) read the variable, at container compile time and only when nothing else had set the proxies | `x-forwarded-for`, `x-forwarded-proto`, `x-forwarded-port` (the fallback: all but `X-Forwarded-Host`) |
-| 4.6 | `config/packages/trusted_proxies.yaml` of the branch (commit `309785f`), with the same two lines. Before it nothing read `TRUSTED_PROXIES` | `x-forwarded-for`, `x-forwarded-proto`, `x-forwarded-port` |
-| 5 | `config/packages/trusted_proxies.yaml` of the branch (commit `78e2848`). Before it Symfony 7's default applied, which reads `SYMFONY_TRUSTED_PROXIES`, a variable the project does not set | `x-forwarded-for`, `x-forwarded-proto`, `x-forwarded-port` |
+| 3.x | `framework.trusted_proxies: '%env(default::TRUSTED_PROXIES)%'` in `config/packages/ezpublish.yaml` (commit `d820756`, released in `v3.3.44.8`). Before it, and in the releases up to `v3.3.44.7`, only the deprecated fallback of `EzPlatformCoreExtension` (`se7enxweb/ezplatform-core`) read the variable, at container compile time and only when nothing else had set the proxies | `x-forwarded-for`, `x-forwarded-proto`, `x-forwarded-port` (the fallback: all but `X-Forwarded-Host`) |
+| 4.6 | `config/packages/trusted_proxies.yaml` of the branch and of `v4.6.23.3` (commit `309785f`), with the same two lines. Before it nothing read `TRUSTED_PROXIES` | `x-forwarded-for`, `x-forwarded-proto`, `x-forwarded-port` |
+| 5 | `config/packages/trusted_proxies.yaml` of the branch and of `v5.0.3.1` (commit `78e2848`). Before it Symfony 7's default applied, which reads `SYMFONY_TRUSTED_PROXIES`, a variable the project does not set | `x-forwarded-for`, `x-forwarded-proto`, `x-forwarded-port` |
 
 A 4.6 or 5 project created before these commits does not have the file; create it with the content of the commit:
 
