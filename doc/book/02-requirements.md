@@ -38,7 +38,7 @@ checklist you can run on a fresh machine.
 | PostgreSQL | 9.5+ | 14+ | 14+ | 14+ |
 | SQLite | 3.35+ (development, tests) | 3.35+ | 3.35+ | 3.35+ |
 | Composer | 2.x | 2.x | 2.x | 2.x |
-| Node.js / Yarn (asset build only) | 14 LTS / 1.22 | 18 LTS / 1.22 | 20 LTS / 1.22 | 20 LTS / 1.22 (`v5.0.2`); 24 LTS / 1.22 (branch) |
+| Node.js / Yarn (asset build only) | 14 LTS / 1.22 | 18 LTS / 1.22 | 20 LTS / 1.22 | 20 LTS / 1.22 (`v5.0.2`); 24 LTS / 1.22 (`v5.0.3.1`, branch) |
 | Serving | Exponential Velocity (PHP 8.1+), or Apache 2.4 / nginx 1.18+ with PHP-FPM | the same | the same (Velocity needs PHP 8.1+) | the same |
 
 The database versions and memory figures are those each line's README and installation guide state; the PHP floors
@@ -138,7 +138,7 @@ php -m | grep -i -E '^(ctype|curl|gd|imagick|iconv|intl|json|mbstring|xml|xsl|pd
 | `upload_max_filesize`, `post_max_size` | your largest upload | the shipped Apache and nginx examples allow 48 MB request bodies |
 | `opcache.enable` | `1` | performance; for Velocity see [chapter 6](06-serving-the-site.md) |
 | `realpath_cache_size` | 4096K or more | Symfony recommends it for the many files of a full stack |
-| `display_errors` | `Off` on production | errors belong in the log; on 2.5 `web/app.php` switches display off itself when debugging is off (branch commit `7605f57`, planned release `v2.5.0.4`), while `v2.5.0.3` and earlier switched it **on** for every request |
+| `display_errors` | `Off` on production | errors belong in the log; on 2.5 `web/app.php` switches display off itself when debugging is off (commit `7605f57`, released in `v2.5.0.4`), while `v2.5.0.3` and earlier switched it **on** for every request |
 
 The CLI and the web server may read different `php.ini` files (`php --ini` shows the CLI's). Set the values for both.
 Exponential Velocity is a third place. Its workers are started by the PHP **CLI**, so they read the CLI's `php.ini`,
@@ -182,7 +182,7 @@ production server that receives built assets.
 | 3.x | 18 LTS | 1.22 | the project has `.nvmrc` with `v18`, so `nvm use` picks it |
 | 4.6.x | 20 LTS | 1.22, through `corepack enable` | "only 20 LTS is tested" |
 | 5.x, release `v5.0.2` | 20 LTS | 1.22, through `corepack enable` | the same |
-| 5.x, branch since 2026-08-03 | 24 LTS | 1.22.22, `npm install -g yarn@1.22.22`; `package.json` names `"packageManager": "yarn@1.22.22"` | "a version jump": only 24 LTS is tested for the branch's new `package.json` (Encore 5, Sass 1.77, CKEditor 5 v48; commit `27ff2ca`, planned release `v5.0.3.1`) |
+| 5.x, branch since 2026-08-03, release `v5.0.3.1` | 24 LTS | 1.22.22, `npm install -g yarn@1.22.22`; `package.json` names `"packageManager": "yarn@1.22.22"` | "a version jump": only 24 LTS is tested for the branch's new `package.json` (Encore 5, Sass 1.77, CKEditor 5 v48; commit `27ff2ca`, released in `v5.0.3.1`) |
 
 [nvm](https://github.com/nvm-sh/nvm) lets one machine keep several Node versions, which is useful when you build more
 than one line:

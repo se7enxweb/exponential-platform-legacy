@@ -81,8 +81,8 @@ GRANT ALL PRIVILEGES ON exponential.* TO 'db_user'@'localhost';
 ```
 
 `CREATE USER` and `GRANT` are separate statements: MySQL 8.0 no longer accepts `GRANT ... IDENTIFIED BY`, which the
-4.6.x and 5.x installation guides of `v4.6.23.2` and `v5.0.2` still show (the branches are corrected: 4.6.x `71fec70`,
-5.x `58287e0`).
+4.6.x and 5.x installation guides of `v4.6.23.2` and `v5.0.2` still show (corrected in `v4.6.23.3`, commit `71fec70`,
+and in `v5.0.3.1`, commit `58287e0`).
 
 **PostgreSQL:**
 
@@ -176,7 +176,7 @@ Notes per line:
   a second database connection.
 - **`APP_ENV` under Apache.** A server variable wins over `.env.local`. The `public/.htaccess` of `v3.3.44.7` and of
   the 4.6.x and 5.x recipe sets `APP_ENV=dev` for every request, so the value you write here is ignored by the web
-  server until that line is removed. The 3.x branch removed it (commit `66f13e1`, planned release `v3.3.44.8`); for
+  server until that line is removed. The 3.x branch removed it (commit `66f13e1`, released in `v3.3.44.8`); for
   the recipe, chapter 6, [6.2.1](06-serving-the-site.md#621-shipped-files-to-check-before-production), shows the fix.
 - **`.env.local.php`.** For production, `composer dump-env prod` compiles the files into `.env.local.php`, which is
   faster to load ([Symfony documentation](https://symfony.com/doc/current/configuration.html#configuring-environment-variables-in-production)).
@@ -268,7 +268,7 @@ release; `composer show se7enxweb/legacy-bridge` tells you which release you hav
 guides of the tags up to `v2.5.0.3`, `v3.3.44.7` and `v4.6.23.2` mention, `ezpublish:legacy:clear-cache` and
 `ezpublish:legacy:generate-autoloads`, exist in no LegacyBridge release; use `ezpublish:legacy:script` with
 `bin/php/ezcache.php` and `bin/php/ezpgenerateautoloads.php` instead. The guides on the branches no longer name them
-(3.x commit `e278fde`, 4.6.x `4edf8a6`).
+(3.x commit `e278fde`, released in `v3.3.44.8`; 4.6.x `4edf8a6`, released in `v4.6.23.3`).
 
 `ezpublish:legacy:init` prepares a Symfony project that did not have the bridge before (it creates `src/legacy_files/`,
 adds the legacy Composer scripts and routes). The skeletons are already prepared; do not run it on them.
@@ -299,19 +299,19 @@ php bin/console list graphql                         # 4.6.x and 5.x: shows the 
 | 2.5 | `nvm use 14 && yarn install && yarn encore production`; the site's own SCSS: `node_modules/.bin/encore production --config-name app` | `web/assets/build/`, `web/assets/ezplatform/build/`, `web/assets/app/` |
 | 3.x | `nvm use && yarn install && yarn build:prod && yarn ez` | `public/assets/`, the Admin UI build |
 | 4.6.x, 5.x `v5.0.2` | `nvm use 20 && corepack enable && yarn install && yarn build && yarn ibexa:build` | `public/assets/`, the Admin UI build |
-| 5.x branch | `nvm use 24 && npm install -g yarn@1.22.22 && yarn install && yarn build && yarn ibexa:build` | the same |
+| 5.x `v5.0.3.1` and branch | `nvm use 24 && npm install -g yarn@1.22.22 && yarn install && yarn build && yarn ibexa:build` | the same |
 
 Then the JavaScript translations: `php bin/console bazinga:js-translation:dump web/assets --merge-domains` (2.5) or
 `... public/assets --merge-domains`. On 2.5 also `php bin/console assetic:dump --env=prod`.
 
 The scripts come from each line's `package.json`: 3.x defines `build:dev`, `build:prod` and `ez`; the 4.6.x and 5.x
 recipe defines `dev`, `build`, `watch`, `ibexa:dev`, `ibexa:build`. The `yarn ez` that the 4.6.x README of
-`v4.6.23.2` shows does not exist on 4.6.x; the branch README runs `yarn ibexa:build` since commit `eb63593`. The 2.5
+`v4.6.23.2` shows does not exist on 4.6.x; the branch README runs `yarn ibexa:build` since commit `eb63593` (released in `v4.6.23.3`). The 2.5
 `package.json` has no scripts; `yarn encore` calls the Encore binary directly.
 
 On the 3.x branch, `composer ibexa-assets` runs `yarn install` and `php bin/console ibexa:encore:compile`, the Admin UI
 build that the `Makefile` (`make build`) and the Deployer recipe call; the script was added on 2026-10-05 (commit
-`21004ae`, planned release `v3.3.44.8`), so with `v3.3.44.7` those two stop with `Command "ibexa-assets" is not
+`21004ae`, released in `v3.3.44.8`), so with `v3.3.44.7` those two stop with `Command "ibexa-assets" is not
 defined` and you run the `yarn` commands of the table instead.
 
 Build on a build machine or in CI and deploy the result if the production server has no Node.js. What a successful
