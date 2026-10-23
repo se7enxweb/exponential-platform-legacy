@@ -20,7 +20,7 @@
         "se7enxweb/ngsymfonytools": "^4.0.0.0",
         "se7enxweb/richtext-datatype-bundle": "*",
         "se7enxweb/ezplatform-xmltext-fieldtype": "4.x-dev",
-        "se7enxweb/site-legacy-bundle": "^2.0",
+        "se7enxweb/site-legacy-bundle": "^2.0.0.1",
         "symfony/flex": "^2",
         "symfony/runtime": "^5.3"
     },
@@ -68,22 +68,24 @@
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
         "project-scripts": [
+            "@php bin/console ezpublish:legacybundles:install_extensions --relative",
             "@php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php"
         ],
         "post-install-cmd": [
             "php bin/install-legacy-links",
-            "@auto-scripts",
-            "@project-scripts"
+            "@project-scripts",
+            "@auto-scripts"
         ],
         "post-update-cmd": [
             "php bin/install-legacy-links",
-            "@auto-scripts",
-            "@project-scripts"
+            "@project-scripts",
+            "@auto-scripts"
         ],
         "phpstan": "@php vendor/bin/phpstan analyse -c phpstan.neon --level=8 --ansi src tests"
     },
     "conflict": {
-        "symfony/symfony": "*"
+        "symfony/symfony": "*",
+        "twig/twig": ">=3.31"
     },
     "minimum-stability": "dev",
     "prefer-stable": false,
