@@ -78,6 +78,14 @@ Real environment variables of the same names override these values. For SQLite s
 environment variable `DATABASE_PATH`. The legacy kernel needs no database settings of its own: the bridge passes the
 platform's connection to it ([chapter 7.2](book/07-databases.md#72-how-the-bridge-hands-the-connection-to-the-legacy-kernel)).
 
+When `composer install` or `create-project` ran with `--no-interaction`, its scripts have already compiled the
+container with the `parameters.yml.dist` defaults (`pdo_mysql`). Clear the cache after editing the file, or step 4
+still connects with the old values:
+
+```bash
+php bin/console --env=prod cache:clear
+```
+
 Optional settings, as environment variables (defaults in `app/config/default_parameters.yml`):
 
 | Variable | Default | Meaning |
@@ -105,7 +113,9 @@ php bin/console ezplatform:install clean              # or: ezplatform:install e
 ```
 
 The installer drops and recreates its tables: run it only on an empty database. `exponential-oss` builds SQLite
-tables with correct composite primary keys. The seed's administrator is `admin` / `publish`; change the password at
+tables with correct composite primary keys. Both types add the tables and columns of the installed legacy kernel's
+own schema (`ezpublish_legacy/share/db_schema.dba`) that the platform schema lacks, such as the bookmark folders of
+kernel 6.0.15, so the legacy admin finds every table it reads on every engine. The seed's administrator is `admin` / `publish`; change the password at
 once. Chapters: [4.5](book/04-installing.md#45-run-the-platform-installer), [7](book/07-databases.md).
 
 ## 5. Permissions
