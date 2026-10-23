@@ -124,7 +124,7 @@ Exponential Platform Legacy is database, platform and browser independent. Becau
 | **Database** | MySQL 8.0+ · MariaDB 10.3+ · PostgreSQL 14+ · SQLite 3.x (dev / testing) |
 | **API** | REST API v2 · GraphQL (schema auto-generated) · JWT auth |
 | **Admin UI (legacy)** | Exponential (Legacy) Admin (`/ezpublish_legacy/` design) |
-| **Admin UI (new stack)** | Platform v4 Admin UI (`/adminui/`) |
+| **Admin UI (new stack)** | Platform v4 Admin UI (`/admin/`) |
 | **Dependency Mgmt** | Composer 2.x · Yarn 1.x |
 
 ---
@@ -194,7 +194,7 @@ php bin/console ezpublish:legacy:script bin/php/ezcache.php --clear-all
 # 8. Start
 symfony server:start
 # → https://127.0.0.1:8000                  (site / hybrid-kernel frontend)
-# → https://127.0.0.1:8000/adminui/         (Platform v4 Admin UI — admin / publish)
+# → https://127.0.0.1:8000/admin/         (Platform v4 Admin UI — admin / publish)
 # → https://127.0.0.1:8000/ezpublish_legacy/ (Legacy Admin — admin / publish)
 ```
 
@@ -263,7 +263,7 @@ symfony server:start
 - **Netgen Layouts 1.4+** — advanced layout-driven page building engine included in this LB release
 - **GraphQL API** — auto-generated schema per content model via `ezplatform:graphql:generate-schema`
 - **JWT Authentication** — REST API secured by RSA keypairs (`lexik/jwt-authentication-bundle`)
-- **Platform v4 Admin UI** — React-powered editorial interface at `/adminui/` alongside the classic Legacy Admin
+- **Platform v4 Admin UI** — React-powered editorial interface at `/admin/` alongside the classic Legacy Admin
 - **Exponential (Legacy) Admin** — the original, feature-complete administration interface for legacy content types, modules, and workflows
 - **Webpack Encore** — modern asset pipeline with HMR dev server and production minification
 - **Design Engine** — `@ezdesign` Twig namespace with theme fallback chain (theme → standard) for clean template inheritance
@@ -361,7 +361,7 @@ php bin/console ezplatform:graphql:generate-schema            # regenerate Graph
 php bin/console ezplatform:solr:create-core --cores=default   # set up Solr core (not yet migrated)
 php bin/console bazinga:js-translation:dump public/assets --merge-domains   # JS i18n
 php bin/console fos:httpcache:invalidate:path / --all         # purge HTTP cache paths
-php bin/console lexik:jwt:generate-keypair                    # generate RSA keypair for REST API auth
+# REST API tokens are signed with APP_SECRET (HS256): no keypair to generate (INSTALL.md section 13)
 ```
 
 ### Exponential (Legacy) Kernel (LegacyBridge)
@@ -390,7 +390,7 @@ php ezpublish_legacy/bin/php/ezcli.php <command>
 
 | URL | Purpose |
 |---|---|
-| `/adminui/` | Platform v4 Admin UI (new stack, React) |
+| `/admin/` | Platform v4 Admin UI (new stack, React) |
 | `/ezpublish_legacy/index.php` | Legacy Admin interface (classic) |
 | `/` | Public site (hybrid-kernel Twig + Legacy TPL) |
 | `/api/ezp/v2/` | REST API v2 |

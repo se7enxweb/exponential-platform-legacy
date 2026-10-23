@@ -169,7 +169,7 @@ constraint is the widest statement; a required package can narrow it. On the 2.5
 `^7.1.3`, but the legacy kernel releases it resolves to need PHP 8.1, so PHP 7 cannot install it. On the 5.x line the
 skeleton says `>=8.3`, but every LegacyBridge 5 release needs 8.4. [Chapter 2](02-requirements.md) has the details.
 
-The admin paths of 4.6.x and 5.x: the READMEs of both branches name `/adminui/`. The configuration their Flex recipe
+The admin paths of 4.6.x and 5.x: their READMEs named `/adminui/` until October 2026. The configuration their Flex recipe
 installs (`config/packages/ibexa_admin_ui.yaml` and `config/packages/ibexa.yaml` in
 [se7enxweb/sevenx-recipes](https://github.com/se7enxweb/sevenx-recipes)) defines the admin siteaccess as `admin` with
 `URIElement: 1` matching, which puts it at `/admin/`. Check your installation with

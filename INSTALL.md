@@ -270,7 +270,7 @@ Browser Request
   public/index.php (Symfony Entry Point)
       │
       ├─── Symfony Kernel (Platform v4 OSS — Symfony 5.4 LTS)
-      │         ├── Exponential Platform v4 Admin UI (/adminui/)
+      │         ├── Exponential Platform v4 Admin UI (/admin/)
       │         ├── REST API v2 (/api/ezp/v2/)
       │         ├── GraphQL API (/graphql)
       │         ├── Netgen Layouts 1.4+ (page building engine)
@@ -405,11 +405,11 @@ php bin/console assets:install --symlink --relative public
 yarn ibexa:build
 ```
 
-#### Step 8 — Generate JWT keypair
+#### Step 8 — REST API tokens (nothing to generate)
 
-```bash
-php bin/console lexik:jwt:generate-keypair
-```
+This line signs the REST API's JSON Web Tokens with `APP_SECRET` (HS256, see
+[Section 13](#13-jwt-authentication-rest-api)), so there is no keypair to generate: a set
+`APP_SECRET` in `.env.local` is all it needs.
 
 #### Step 9 — Regenerate legacy autoloads
 
@@ -453,7 +453,7 @@ Access points after install:
 | URL | What you get |
 |---|---|
 | `https://127.0.0.1:8000/` | Public site (hybrid Twig + Legacy TPL) |
-| `https://127.0.0.1:8000/adminui/` | Platform v4 Admin UI (React) |
+| `https://127.0.0.1:8000/admin/` | Platform v4 Admin UI (React) |
 | `https://127.0.0.1:8000/legacy_admin/` | Legacy Admin UI (classic) |
 | `https://127.0.0.1:8000/api/ezp/v2/` | REST API v2 |
 | `https://127.0.0.1:8000/graphql` | GraphQL endpoint |
@@ -491,10 +491,9 @@ DATABASE_VERSION=mariadb-10.6.0    # e.g. mariadb-10.6.0, or 8.0 for MySQL
 # You may also set it directly as a full DSN:
 # DATABASE_URL="mysql://user:pass@127.0.0.1:3306/dbname?serverVersion=8.0&charset=utf8mb4"
 
-# JWT (REST API authentication)
-JWT_SECRET_KEY=%kernel.project_dir%/config/jwt/private.pem
-JWT_PUBLIC_KEY=%kernel.project_dir%/config/jwt/public.pem
-JWT_PASSPHRASE=<random-64-char-hex-string>
+# JWT (REST API authentication): signed with APP_SECRET (HS256), see Section 13.
+# The JWT_SECRET_KEY, JWT_PUBLIC_KEY and JWT_PASSPHRASE lines the recipe writes into .env
+# are not read by this line's configuration.
 ```
 
 ### PostgreSQL (alternative to MySQL)
@@ -1162,11 +1161,11 @@ php bin/console cache:clear
 
 ### Netgen Layouts Admin UI
 
-Netgen Layouts is accessible via the Platform v4 Admin UI at `/adminui/`.
+Netgen Layouts is accessible via the Platform v4 Admin UI at `/admin/`.
 
 ### Creating your first layout
 
-1. Go to `/adminui/` and log in as `admin`
+1. Go to `/admin/` and log in as `admin`
 2. Navigate to **Layouts** in the left menu
 3. Create a new layout, assign it to URL conditions
 4. Add blocks from the Block panel and map them to zones
@@ -1177,25 +1176,23 @@ Netgen Layouts is accessible via the Platform v4 Admin UI at `/adminui/`.
 
 ## 13. JWT Authentication (REST API)
 
-JWT keypairs are required for the REST API to function. They are **not** included in
-the repository (they are git-ignored). Generate them on every fresh install:
+The REST API's JSON Web Tokens are signed with `APP_SECRET` using HS256: the recipe's
+`config/packages/lexik_jwt_authentication.yaml` sets `secret_key: '%env(APP_SECRET)%'` and
+`signature_algorithm: HS256`. There is **no keypair to generate** on this line;
+`php bin/console lexik:jwt:generate-keypair` stops with *The "lexik_jwt_authentication.secret_key"
+and "lexik_jwt_authentication.public_key" config options must not be empty*, because no key
+files are configured.
 
-```bash
-php bin/console lexik:jwt:generate-keypair
-# Writes:
-#   config/jwt/private.pem
-#   config/jwt/public.pem
-```
+What this means in practice:
 
-On key rotation (renew without breaking existing tokens):
-
-```bash
-php bin/console lexik:jwt:generate-keypair --overwrite
-php bin/console cache:clear
-```
-
-Back up `config/jwt/private.pem` and `config/jwt/public.pem` securely. If they are
-lost, all existing tokens are invalidated and clients must re-authenticate.
+- Set a long random `APP_SECRET` in `.env.local` (`openssl rand -hex 32`) and keep it with the
+  server's secrets.
+- Changing `APP_SECRET` invalidates every issued token (and the Symfony sessions and CSRF
+  tokens); clients must authenticate again. Run `php bin/console cache:clear` afterwards.
+- To sign with an RSA keypair instead, set `secret_key`, `public_key` and `pass_phrase` in
+  `config/packages/lexik_jwt_authentication.yaml` (for example to `%env(resolve:JWT_SECRET_KEY)%`,
+  `%env(resolve:JWT_PUBLIC_KEY)%` and `%env(JWT_PASSPHRASE)%`), remove `signature_algorithm: HS256`,
+  then run `php bin/console lexik:jwt:generate-keypair`.
 
 ---
 
@@ -1627,8 +1624,11 @@ setfacl -dR -m u:www-data:rwX -m g:www-data:rwX var/ public/var/ ezpublish_legac
 
 ### JWT authentication errors (REST API)
 
+Tokens are signed with `APP_SECRET` (Section 13): check that `APP_SECRET` is set and the same on
+every web server, then clear the cache. A token issued before `APP_SECRET` changed is no longer valid.
+
 ```bash
-php bin/console lexik:jwt:generate-keypair --overwrite
+php bin/console debug:container --env-var=APP_SECRET   # is it set? (prints the value: run it privately)
 php bin/console cache:clear
 ```
 
@@ -2291,7 +2291,7 @@ php bin/console exponential:reindex
 
 # 8. Smoke-test the site
 curl -I http://localhost/
-curl -I http://localhost/adminui/
+curl -I http://localhost/admin/
 curl -I http://localhost/legacy_admin/
 
 # 9. If using SQLite as target — fix file permissions
@@ -2371,8 +2371,8 @@ php bin/console messenger:consume --limit=10     # consume then exit
 php bin/console messenger:stop-workers           # signal all workers to stop
 
 # ── JWT ────────────────────────────────────────────────────────────────────
-php bin/console lexik:jwt:generate-keypair               # generate RSA keypair
-php bin/console lexik:jwt:generate-keypair --overwrite   # rotate keypair
+# Tokens are signed with APP_SECRET (HS256): no keypair to generate (Section 13).
+# lexik:jwt:generate-keypair applies only after configuring RSA key files there.
 ```
 
 ---

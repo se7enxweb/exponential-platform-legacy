@@ -42,7 +42,7 @@ sequence per line as one script to copy.
 | Legacy links | not used | not used | `php bin/install-legacy-links` | `php bin/install-legacy-links` |
 | Legacy assets into the web root | `ScriptHandler::installAssets` (Composer) | `ezpublish:legacy:assets_install` | the same | the same |
 | Legacy autoloads | `ezpublish:legacy:script bin/php/ezpgenerateautoloads.php` | the same | the same | the same |
-| REST keys (JWT) | not used | `lexik:jwt:generate-keypair` | the same | the same |
+| REST keys (JWT) | not used | `lexik:jwt:generate-keypair` | none: signed with `APP_SECRET` (4.7) | the same as 4.6.x |
 | Front-end build | `yarn encore production` | `yarn build:prod`, `yarn ez` | `yarn build`, `yarn ibexa:build` | the same as 4.6.x |
 | Writable directories | `var/`, `web/var/`, `ezpublish_legacy/var/` | `var/`, `public/var/`, `ezpublish_legacy/var/` | the same plus `src/LegacyRoot/var/site/storage/` | the same as 4.6.x |
 
@@ -155,7 +155,7 @@ DATABASE_URL="mysql://db_user:db_password@127.0.0.1:3306/exponential?serverVersi
 # PostgreSQL:  DATABASE_URL="postgresql://db_user:db_password@127.0.0.1:5432/exponential?serverVersion=16&charset=utf8"
 # SQLite:      DATABASE_URL="sqlite:///%kernel.project_dir%/var/data_%kernel.environment%.db"
 
-# REST API keys (section 4.7)
+# REST API keys, 3.x only (section 4.7; 4.6.x and 5.x sign with APP_SECRET)
 JWT_PASSPHRASE=a-long-random-passphrase
 
 # Only when a proxy, load balancer or Varnish is in front (chapter 6, 6.8)
@@ -275,7 +275,9 @@ adds the legacy Composer scripts and routes). The skeletons are already prepared
 
 ## 4.7 REST keys and the GraphQL schema
 
-From 3.x on the REST API authenticates with JSON Web Tokens signed by a key pair (LexikJWTAuthenticationBundle):
+From 3.x on the REST API authenticates with JSON Web Tokens (LexikJWTAuthenticationBundle).
+
+On 3.x they are signed by a key pair:
 
 ```bash
 php bin/console lexik:jwt:generate-keypair          # writes config/jwt/private.pem and public.pem
@@ -284,6 +286,11 @@ php bin/console lexik:jwt:generate-keypair --overwrite   # to rotate them
 
 The keys are excluded from git; back them up with the server's secrets. `JWT_PASSPHRASE` in `.env.local` protects the
 private key.
+
+On 4.6.x and 5.x the recipe's `config/packages/lexik_jwt_authentication.yaml` signs them with `APP_SECRET` (HS256):
+there is no key pair, and `lexik:jwt:generate-keypair` stops with "config options must not be empty". Keep
+`APP_SECRET` long, random and secret; changing it invalidates every issued token. The `JWT_*` lines the recipe writes
+into `.env` are not read.
 
 The GraphQL schema is generated from the content types and must be regenerated whenever they change:
 
@@ -373,7 +380,7 @@ guide; **change it at the first login**.
 |---|---|---|---|
 | 2.5 | `/admin/` | `/legacy_admin/` | `/` |
 | 3.x | `/adminui/` | `/legacy_admin/` | `/` |
-| 4.6.x, 5.x | `/admin/` per the recipe's `admin` siteaccess (the READMEs say `/adminui/`) | `/legacy_admin/` | `/`; the legacy front end at `/legacy_site/` |
+| 4.6.x, 5.x | `/admin/`, the recipe's `admin` siteaccess | `/legacy_admin/` | `/`; the legacy front end at `/legacy_site/` |
 
 The paths follow from the siteaccess names because all lines match siteaccesses by the first URL segment
 (`URIElement: 1`). To read them from your installation:
@@ -500,7 +507,6 @@ mysql -u root -p -e "CREATE DATABASE exponential CHARACTER SET utf8mb4 COLLATE u
 $EDITOR .env.local                                     # 4.4.2
 php bin/install-legacy-links
 php bin/console exponential:install exponential-oss
-php bin/console lexik:jwt:generate-keypair
 php bin/console ezpublish:legacy:assets_install --symlink --relative public
 php bin/console ezpublish:legacybundles:install_extensions --relative
 php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php

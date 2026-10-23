@@ -136,7 +136,7 @@ delete it. The Exponential 6 book, chapter 13.2, lists the same rules for the le
 |---|---|---|---|
 | Framework secret (`kernel.secret`) | `env(SYMFONY_SECRET)` in `parameters.yml` | `APP_SECRET` | 2.5: `ThisEzPlatformTokenIsNotSoSecret_PleaseChangeIt`; 3.x: `ThisTokenIsNotSoSecretChangeIt` |
 | Database password | `env(DATABASE_PASSWORD)` | in `DATABASE_URL` | 3.x `.env`: a demonstration URL with user and password for `demo_platformlegacy` |
-| JWT for REST | none | `config/jwt/private.pem`, `JWT_PASSPHRASE` | 3.x: `ThisTokenIsNotSoSecretChangeIt` |
+| JWT for REST | none | 3.x: `config/jwt/private.pem`, `JWT_PASSPHRASE`; 4.6, 5: `APP_SECRET` (HS256) | 3.x: `ThisTokenIsNotSoSecretChangeIt` |
 | Varnish purge token | `HTTPCACHE_VARNISH_INVALIDATE_TOKEN` | same | empty |
 
 The framework secret is more than Symfony's: the bridge hands it to the legacy `ezformtoken` extension as the secret
