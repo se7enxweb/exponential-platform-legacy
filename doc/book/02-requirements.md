@@ -61,11 +61,17 @@ Notes:
 - `^8.1` in Composer means 8.1 up to, but not including, 9.0, so the constraint itself does not stop PHP 8.3 or 8.5 on
   the 2.5 line. The installation guide published with `v2.5.0.3` says "tested through 8.2", the README recommends 8.3.
   Treat 8.1 and 8.2 as tested and newer versions as accepted.
-- The installation guide published with `v2.5.0.3` added `--ignore-platform-reqs` to every Composer command; the
-  current short guide on `master` ([doc/INSTALL.md](../INSTALL.md)) no longer does. That switch skips the PHP and
-  extension checks entirely, so Composer can then install packages your PHP cannot run, and the failure only shows up
-  later as a fatal error in a request. Use it only after you checked the requirements yourself, never to get around a
-  PHP version that is too old.
+- **On 2.5 every Composer command needs `--ignore-platform-req=php+`** (Composer 2.2 or later; or
+  `export COMPOSER_IGNORE_PLATFORM_REQ=php+`). The floor is 8.1, but packages of this line still declare a ceiling below
+  PHP 8: `friendsofsymfony/http-cache-bundle` 1.3 (required by `se7enxweb/ezplatform-http-cache` 0.9 and the platform
+  kernel) and `overblog/graphiql-bundle` 0.1 say `^5.4 || ^7.0`, and `cron/cron`, `doctrine/orm` 2.7,
+  `symfony-cmf/routing` 2.2 and others `^7.1`. No PHP version satisfies both sides, so a plain
+  `composer create-project se7enxweb/exponential-platform-legacy:v2.5.0.4` stops on every PHP: on 8.1 with
+  `overblog/graphiql-bundle v0.1.2 requires php ^5.6 || ^7.0 -> your php version (8.1.34) does not satisfy that
+  requirement`, on 7.4 with `se7enxweb/exponential[v6.0.12, ..., 6.0.14.x-dev] require php ^8.1 ...` (verified
+  2026-10-23). The `+` ignores only those upper bounds: a PHP below a package's minimum is still refused and the
+  extension checks still run. The broader `--ignore-platform-reqs`, which the guide published with `v2.5.0.3` added to
+  every command, skips all of these checks, so Composer can then install packages your PHP cannot run; do not use it.
 - Exponential Velocity needs PHP 8.1 or later (its `composer.json`: `php >=8.1`), so on 4.6.x with PHP 8.0 you serve
   the site with Apache or nginx ([chapter 6](06-serving-the-site.md)).
 - The legacy kernel's own view of PHP versions, including what changed between 8.0 and 8.5, is in the Exponential 6

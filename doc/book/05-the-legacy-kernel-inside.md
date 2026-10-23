@@ -67,6 +67,12 @@ Every siteaccess must exist on **both** sides: in the Symfony siteaccess list an
 (`app.legacy.injected_merge_settings`, section 5.5). When you add a siteaccess, add it in both places and create its
 legacy settings directory `ezpublish_legacy/settings/siteaccess/<name>/` (on 4.6.x and 5.x under `src/`, section 5.3).
 
+On 2.5 the public siteaccess `site` has no legacy mode, but every address Symfony has no route for still reaches the
+legacy kernel (legacy modules such as `/content/search`, and unknown addresses). The kernel's own `site.ini` says
+`RequireUserLogin=true`, so until the project shipped `ezpublish_legacy/settings/siteaccess/site/site.ini.append.php`
+with `RequireUserLogin=false` each of those answered with the login form and status 200, an unknown address included;
+with it, an unknown address gets the 404 page.
+
 How siteaccesses work in the legacy kernel itself (matching, designs, languages, `RelatedSiteAccessList`):
 [the Exponential 6 book, 10.2 Siteaccesses and site addresses](https://github.com/se7enxweb/exponential/blob/main/doc/install/10-after-installing.md#102-siteaccesses-and-site-addresses).
 Behind the bridge, the legacy `MatchOrder` does not route requests; Symfony's matcher does.

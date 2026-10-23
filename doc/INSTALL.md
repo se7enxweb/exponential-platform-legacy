@@ -9,11 +9,11 @@ book's [chapter 4.13](book/04-installing.md#413-the-whole-install-per-line) inst
 
 | | 2.5 line |
 |---|---|
-| PHP | `^7.1.3 \|\| ^8.1 \|\| ^8.2` (`composer.json`), with `curl`, `intl`, `mbstring`, `pdo` plus the PDO driver of your database, `xml`, `xsl`, `zip`, `fileinfo`, `gd` or `imagick`; for SQLite both `pdo_sqlite` and `sqlite3` |
+| PHP | 8.1 or later (the skeleton says `^7.1.3 \|\| ^8.1 \|\| ^8.2`, but the legacy kernel `se7enxweb/exponential ^6.0.12` needs `^8.1`), with `curl`, `intl`, `mbstring`, `pdo` plus the PDO driver of your database, `xml`, `xsl`, `zip`, `fileinfo`, `gd` or `imagick`; for SQLite both `pdo_sqlite` and `sqlite3` |
 | `memory_limit` | 256M at least; both kernels run in one process |
 | `date.timezone` | set in `php.ini` |
 | Database | MySQL 5.7+ / MariaDB 10.0+ (`utf8mb4`), PostgreSQL 9.5+, or SQLite 3.35+ for development and tests |
-| Composer | 2.x |
+| Composer | 2.2 or later (step 2 uses `--ignore-platform-req=php+`) |
 | Asset build | Node.js 14 LTS and Yarn 1.22 (Webpack Encore 1.8.2 and webpack 4.46 do not build on Node.js 16 and later) |
 | Web server | Exponential Velocity, Apache 2.4 or nginx with PHP-FPM ([book, chapter 6](book/06-serving-the-site.md)) |
 
@@ -22,18 +22,26 @@ Details: [chapter 2](book/02-requirements.md).
 ## 2. Get the code
 
 ```bash
-composer create-project se7enxweb/exponential-platform-legacy:~2.5.0.4 exponential_website   # the v2.5.0.4 release
+composer create-project --ignore-platform-req=php+ se7enxweb/exponential-platform-legacy:~2.5.0.4 exponential_website
 # or the branch head: se7enxweb/exponential-platform-legacy:dev-master  (also known as 2.5.x-dev)
 cd exponential_website
 ```
+
+**`--ignore-platform-req=php+` is needed on every PHP version**, for `create-project`, `install` and `update` alike
+(or set it once in the shell: `export COMPOSER_IGNORE_PLATFORM_REQ=php+`). The legacy kernel needs PHP 8.1 or later,
+while packages this line depends on still declare an upper bound below PHP 8: `friendsofsymfony/http-cache-bundle` 1.3
+(through `se7enxweb/ezplatform-http-cache` 0.9 and the platform kernel) and `overblog/graphiql-bundle` 0.1 say
+`^5.4 || ^7.0`, several others `^7.1`. Without the switch Composer stops on PHP 8.1 with "your php version (8.1...) does
+not satisfy that requirement", and on PHP 7.4 because the legacy kernel needs 8.1. The `+` ignores only those upper
+bounds: a PHP older than a package's minimum is still refused, and the extension checks still run. Do not use the
+broader `--ignore-platform-reqs`.
 
 Always give the version. Without one, Composer takes the newest stable tag: until 2026-10-05 that was `v5.0.3`, which
 (by a release mistake) contains this 2.5 line; since then it is [`v5.0.3.1`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v5.0.3.1), the 5 line. For the 5 line use `:5.x-dev` or
 `:~5.0.3.1` ([chapter 3.1](book/03-getting-the-code.md#the-v503-tag-selects-the-25-line),
 [chapter 10.1](book/10-upgrading-between-lines.md#101-the-release-lines)). The 2.5 release [`v2.5.0.4`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v2.5.0.4) (2026-10-05)
 carries the corrected front controllers (step 7); `v2.5.0.3` and earlier still have development settings.
-`2.5.0.x-dev`, used by older guides, matches nothing on Packagist. Use `--ignore-platform-reqs` only for a platform
-requirement you have checked is irrelevant.
+`2.5.0.x-dev`, used by older guides, matches nothing on Packagist.
 
 `composer install` runs the project's scripts: it builds `app/config/parameters.yml` from `parameters.yml.dist`
 (asking for values unless `--no-interaction`), clears the cache, installs bundle assets, links the legacy kernel's
@@ -180,7 +188,7 @@ Chapter: [9.4](book/09-operations.md#94-search) and [9.8](book/09-operations.md#
 ## 10. Updating and troubleshooting
 
 ```bash
-git pull --ff-only && composer install
+git pull --ff-only && composer install --ignore-platform-req=php+
 php bin/console --env=prod cache:clear
 php bin/console --env=prod ezpublish:legacy:script bin/php/ezcache.php --clear-all
 ```

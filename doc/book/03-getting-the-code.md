@@ -131,7 +131,7 @@ first install writes (section 3.8) to make later installs repeatable.
 ### 3.4.1 The 2.5 line
 
 ```bash
-composer create-project se7enxweb/exponential-platform-legacy:~2.5.0.4 my_project
+composer create-project --ignore-platform-req=php+ se7enxweb/exponential-platform-legacy:~2.5.0.4 my_project
 cd my_project
 ```
 
@@ -153,10 +153,14 @@ What happens, from the 2.5 `composer.json`:
 3. `post-create-project-cmd` prints the welcome text.
 
 The script group runs `yarn`, so Node.js 14 and Yarn must be on the `PATH` (chapter 2, [2.7](02-requirements.md#27-nodejs-and-yarn)).
-Without them, or to run each step yourself, pass `--no-scripts` and follow [chapter 4](04-installing.md).
+Without them, or to run each step yourself, pass `--no-scripts` and follow [chapter 4](04-installing.md). The project
+has no `yarn.lock`, so `package.json` keeps the newest releases off what Node.js 14 can run: `sass` stays below 1.100
+(1.100 and later need Node.js 20.19) and a `resolutions` entry holds `node-releases` at 2.0.44 (later releases declare
+Node.js 18). Before that, `yarn install` stopped with `The engine "node" is incompatible with this module. Expected
+version ">=18". Got "14.21.3"`.
 
-The 2.5 guide adds `--ignore-platform-reqs` to every Composer command. Read chapter 2, [2.2](02-requirements.md#22-php-versions-per-line)
-before you do the same.
+`--ignore-platform-req=php+` is required on this line, for `install` and `update` too; chapter 2,
+[2.2](02-requirements.md#22-php-versions-per-line), says why it is the `php+` form and not `--ignore-platform-reqs`.
 
 ### 3.4.2 The 3.x line
 

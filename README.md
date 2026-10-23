@@ -1,6 +1,6 @@
 # Exponential Platform Legacy 2.5.0.x (Stable; Open Source; Starter Skeleton)
 
-[![PHP](https://img.shields.io/badge/PHP-7.1.3%20→%208.2-8892BF?logo=php&logoColor=white)](https://php.net)
+[![PHP](https://img.shields.io/badge/PHP-8.1%20→%208.2-8892BF?logo=php&logoColor=white)](https://php.net)
 [![Symfony](https://img.shields.io/badge/Symfony-3.4%20LTS-000000?logo=symfony&logoColor=white)](https://symfony.com)
 [![Platform](https://img.shields.io/badge/Platform-2.5%20OSS-orange)](https://github.com/se7enxweb)
 [![LegacyBridge](https://img.shields.io/badge/LegacyBridge-2.x-green)](https://github.com/se7enxweb/LegacyBridge)
@@ -8,7 +8,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/se7enxweb/exponential-platform-legacy)](https://github.com/se7enxweb/exponential-platform-legacy/issues)
 [![GitHub stars](https://img.shields.io/github/stars/se7enxweb/exponential-platform-legacy?style=social)](https://github.com/se7enxweb/exponential-platform-legacy)
 
-> **Exponential Platform Legacy** is a hybrid-kernel open-source Digital Experience Platform (DXP/CMS) built on the **Exponential (Legacy) 6.x kernel** bridged to Symfony 3.4 LTS via LegacyBridge 2.x. This is the **2.5.0.x** skeleton release — pairing the proven Legacy kernel with the eZ Platform 2.5 new stack, with PHP 7.1.3 through 8.2 compatibility running in a single application.
+> **Exponential Platform Legacy** is a hybrid-kernel open-source Digital Experience Platform (DXP/CMS) built on the **Exponential (Legacy) 6.x kernel** bridged to Symfony 3.4 LTS via LegacyBridge 2.x. This is the **2.5.0.x** skeleton release — pairing the proven Legacy kernel with the eZ Platform 2.5 new stack, running on PHP 8.1 and later (8.1 and 8.2 tested) in a single application.
 
 This is a website skeleton for Exponential Platform Legacy (Stable; Open Source).
 
@@ -103,7 +103,7 @@ Exponential Platform Legacy is database, platform and browser independent. Becau
 
 | Layer | Technology |
 |---|---|
-| **Language** | PHP 7.1.3 → 8.2 |
+| **Language** | PHP 8.1 → 8.2 (tested) |
 | **Framework** | Symfony 3.4 LTS |
 | **CMS Core (legacy)** | Exponential (Legacy) 6.x (`ezpublish_legacy/`) |
 | **CMS Core (new stack)** | eZ Platform 2.5 (`se7enxweb/ezpublish-kernel ~7.5.33`) |
@@ -124,11 +124,11 @@ Exponential Platform Legacy is database, platform and browser independent. Becau
 
 ## Requirements
 
-- PHP 7.1.3+ or 8.1 / 8.2 / 8.3 (8.3 recommended)
+- PHP 8.1 or later (8.1 and 8.2 tested; the legacy kernel needs 8.1)
 - Required PHP extensions: `curl`, `intl`, `mbstring`, `pdo`, `pdo_mysql` or `pdo_pgsql` or `pdo_sqlite`, `xml`, `zip`, `fileinfo`, `imagick` or `gd`, `xsl`
 - A web server: Apache 2.4 or Nginx 1.18+
 - A database server: MySQL 5.7+, MariaDB 10.0+, PostgreSQL 9.5+, or **SQLite 3.35+** (zero-config; dev / testing only — requires `pdo_sqlite` + `sqlite3` PHP extensions)
-- Composer 2.x
+- Composer 2.2 or later (the install uses `--ignore-platform-req=php+`, see [doc/INSTALL.md](doc/INSTALL.md) step 2)
 - Node.js 14 LTS (via nvm recommended)
 - Yarn 1.22.x
 
@@ -136,8 +136,8 @@ Exponential Platform Legacy is database, platform and browser independent. Becau
 
 | Requirement | Minimum | Recommended |
 |---|---|---|
-| PHP | 7.1.3 | 8.3 |
-| Composer | 2.x | latest 2.x |
+| PHP | 8.1 | 8.2 |
+| Composer | 2.2 | latest 2.x |
 | Node.js | 12 | 14 LTS (via nvm) |
 | Yarn | 1.x | 1.22.x |
 | MySQL | 5.7 | 8.0+ (utf8mb4) |
@@ -156,7 +156,7 @@ Exponential Platform Legacy is database, platform and browser independent. Becau
 
 ```bash
 # 1. Create project
-composer create-project se7enxweb/exponential-platform-legacy:~2.5.0.4 exponential_website
+composer create-project --ignore-platform-req=php+ se7enxweb/exponential-platform-legacy:~2.5.0.4 exponential_website
 cd exponential_website
 
 # 2. Configure environment
@@ -265,7 +265,7 @@ symfony server:start
 Create a new project using Composer:
 
 ```bash
-composer create-project se7enxweb/exponential-platform-legacy:~2.5.0.4 exponential_website
+composer create-project --ignore-platform-req=php+ se7enxweb/exponential-platform-legacy:~2.5.0.4 exponential_website
 ```
 
 Always name the version. The other release lines are `:3.x-dev`, `:4.6.x-dev` and, for Symfony 7, `:5.x-dev` (or the
