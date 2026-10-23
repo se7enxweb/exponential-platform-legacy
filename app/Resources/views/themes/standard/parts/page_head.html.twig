@@ -26,8 +26,7 @@
     <script src="/design/standard/javascript/lib/ezjslibimagepreloader.js"></script>
     <script src="/design/admin/javascript/popupmenu/ezpopupmenu.js"></script>
     <script src="/design/admin/javascript/contentstructuremenu_dynamic.js"></script>
-    <script src="/design/admin/javascript/fixed_toolbar.js"></script>
-    <script src="/design/admin/javascript/ezmodalwindow.js"></script>
-    <script src="/design/admin/javascript/ezajaxuploader.js"></script>
-    <script src="/design/admin/javascript/ezcollapsiblemenu.js"></script>
+    {# fixed_toolbar.js, ezmodalwindow.js, ezajaxuploader.js and ezcollapsiblemenu.js are YUI 3 modules
+       (YUI(YUI3_config).add(...)) of the legacy admin. This head loads only the YUI 2 loader, so each of them
+       stopped with "YUI is not defined" on every page, and nothing on these pages uses them. #}
 </head>
