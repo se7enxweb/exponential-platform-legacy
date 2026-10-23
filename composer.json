@@ -14,11 +14,13 @@
         "ext-xml": "*",
         "ext-intl": "*",
         "ext-mbstring": "*",
+        "netgen/layouts-ibexa": "^2.0",
+        "netgen/layouts-standard": "^2.0",
         "nyholm/psr7": "^1.0",
         "se7enxweb/exponential-platform-dxp": "dev-5.x-LB",
         "se7enxweb/legacy-bridge": "^5.0.0.0",
-        "netgen/layouts-ibexa": "^2.0",
-        "netgen/layouts-standard": "^2.0",
+        "se7enxweb/richtext-datatype-bundle": "^5.0",
+        "se7enxweb/site-legacy-bundle": "^5.0",
         "symfony/flex": "^2",
         "symfony/runtime": "^7.3"
     },
@@ -66,21 +68,24 @@
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
         "project-scripts": [
+            "@php bin/console ezpublish:legacybundles:install_extensions --relative",
             "@php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php"
         ],
         "post-install-cmd": [
             "php bin/install-legacy-links",
-            "@auto-scripts",
-            "@project-scripts"
+            "@project-scripts",
+            "@auto-scripts"
         ],
         "post-update-cmd": [
             "php bin/install-legacy-links",
-            "@auto-scripts",
-            "@project-scripts"
+            "@project-scripts",
+            "@auto-scripts"
         ]
     },
     "conflict": {
-        "symfony/symfony": "*"
+        "netgen/ibexa-site-api": "7.0.1 || 7.0.2",
+        "symfony/symfony": "*",
+        "twig/twig": "3.x-dev"
     },
     "minimum-stability": "dev",
     "prefer-stable": false,
