@@ -30,6 +30,11 @@ services:
         arguments:
             $params: '%ezrepoforms.user_register.registration_content_types%'
 
+    # ezplatform:install: adds the tables and columns of the legacy kernel's own schema
+    AppBundle\EventSubscriber\LegacyKernelSchemaSubscriber:
+        arguments:
+            $schemaFile: '%ezpublish_legacy.root_dir%/share/db_schema.dba'
+
     # exp_legacy_jquery_scripts(): the jQuery files of the installed legacy kernel
     AppBundle\Twig\LegacyScriptsExtension:
         arguments:
