@@ -131,13 +131,14 @@ first install writes (section 3.8) to make later installs repeatable.
 ### 3.4.1 The 2.5 line
 
 ```bash
-composer create-project --ignore-platform-req=php+ se7enxweb/exponential-platform-legacy:~2.5.0.4 my_project
+composer create-project --ignore-platform-req=php+ se7enxweb/exponential-platform-legacy:~2.5.0.6 my_project
 cd my_project
 ```
 
 What happens, from the 2.5 `composer.json`:
 
-1. Composer installs the packages, among them `se7enxweb/exponential ^6.0.12`, which the legacy installer plugin puts in
+1. Composer installs the packages, among them `se7enxweb/exponential ^6.0.12` (on PHP 8.0 its 6.0.x line, 6.0.15; on 8.1
+   and later its newest release; [chapter 2.2](02-requirements.md#22-php-versions-per-line)), which the legacy installer plugin puts in
    `ezpublish_legacy/` (`extra.ezpublish-legacy-dir`).
 2. `post-install-cmd` runs the `symfony-scripts` group:
    - `Incenteev\ParameterHandler\ScriptHandler::buildParameters` creates `app/config/parameters.yml` from

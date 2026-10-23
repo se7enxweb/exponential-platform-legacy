@@ -31,9 +31,9 @@ where the upstream documentation has to be followed instead.
 | Branch | `master` | `3.x` | `4.6.x` | `5.x` |
 | Tags | `v2.5.0.0` to `v2.5.0.4` | `v3.0.0.0` to `v3.0.0.14`, `v3.3.44.0` to `v3.3.44.8` | `v4.6.23.0` to `v4.6.23.3` | `v5.0.0` to `v5.0.2`, `v5.0.3.1` (and see the note on `v5.0.3`) |
 | Composer constraint for a new project | `dev-master` (alias `2.5.x-dev`) or `v2.5.0.4` | `3.x-dev` or `v3.3.44.8` | `4.6.x-dev` or `v4.6.23.3` | `5.x-dev` or `v5.0.3.1` |
-| PHP (`composer.json`) | `^7.1.3 \|\| ^8.1 \|\| ^8.2` | `^8.0` | `^7.4` to `^8.5` (the bridge `^4.0.0.0` itself needs `^8.0`) | `>=8.3` (the bridge `^5.0.0.0` needs `^8.4`, so 8.4 in practice) |
+| PHP (`composer.json`) | `^7.1.3 \|\| ^8.0` (`^7.1.3 \|\| ^8.1 \|\| ^8.2` up to `v2.5.0.5`) | `^8.0` | `^7.4` to `^8.5` (the bridge `^4.0.0.0` itself needs `^8.0`) | `>=8.3` (the bridge `^5.0.0.0` needs `^8.4`, so 8.4 in practice) |
 | Symfony | 3.4 (`se7enxweb/symfony ^3.4.50`) | 5.4 | 5.4 | 7.x (`symfony/runtime ^7.3`; the bridge requires `symfony/framework-bundle ^7.4`) |
-| Platform kernel | `se7enxweb/ezpublish-kernel ~7.5.33` | `se7enxweb/ezplatform-kernel ~1.3.43`, `se7enxweb/oss ~3.3.0.0` | `se7enxweb/exponential-platform-dxp 4.6.x-LB-dev` (kernel `se7enxweb/exponential-platform-dxp-core`) | `se7enxweb/exponential-platform-dxp dev-5.x-LB` |
+| Platform kernel | `se7enxweb/ezpublish-kernel ~7.5.42` | `se7enxweb/ezplatform-kernel ~1.3.43`, `se7enxweb/oss ~3.3.0.0` | `se7enxweb/exponential-platform-dxp 4.6.x-LB-dev` (kernel `se7enxweb/exponential-platform-dxp-core`) | `se7enxweb/exponential-platform-dxp dev-5.x-LB` |
 | Bridge (`se7enxweb/legacy-bridge`) | `^2.1` (`v2.1.10` to `v2.1.12`) | `^3.0.0.35` (to `v3.0.0.37`) | `^4.0.0.0` (`v4.0.0.0` to `v4.0.0.3`) | `^5.0.0.0` (`v5.0.0.0`, `v5.0.1` to `v5.0.10`) |
 | Legacy kernel | `se7enxweb/exponential ^6.0.12` | `^6.0.12` (through the bridge) | `dev-main` (through the bridge) | `dev-main` (through the bridge) |
 | Console | `bin/console` | `bin/console` | `bin/console` | `bin/console` |
@@ -86,7 +86,7 @@ to the 5 line again; naming `5.0.3` exactly still installs 2.5. Always name the 
 ```bash
 composer create-project se7enxweb/exponential-platform-legacy:5.x-dev my-site    # the 5 line, branch head
 composer create-project se7enxweb/exponential-platform-legacy:~5.0.3.1 my-site  # the 5 line, v5.0.3.1 and later 5.0.3.x
-composer create-project se7enxweb/exponential-platform-legacy:~2.5.0.4 my-site   # the 2.5 line (v2.5.0.4)
+composer create-project se7enxweb/exponential-platform-legacy:~2.5.0.6 my-site   # the 2.5 line (v2.5.0.6 and later; PHP 8.0 too)
 ```
 
 Check the result before going on: `grep '"se7enxweb/legacy-bridge"' my-site/composer.json` must show `^5.0.0.0` for

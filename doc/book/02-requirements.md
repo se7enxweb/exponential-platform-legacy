@@ -32,14 +32,14 @@ checklist you can run on a fresh machine.
 
 | | **2.5** | **3.x** | **4.6.x** | **5.x** |
 |---|---|---|---|---|
-| PHP | 8.1 or later (tested 8.1 and 8.2) | 8.1 or later | 8.0 or later | 8.4 or later |
+| PHP | 8.0 or later (from `v2.5.0.6`; tested 8.0, 8.1 and 8.2) | 8.1 or later | 8.0 or later | 8.4 or later |
 | `memory_limit` (project docs) | 256M, 512M recommended | 256M | 512M | 256M, 512M recommended |
 | MySQL / MariaDB | MySQL 5.7+ / MariaDB 10.0+ | MySQL 8.0+ / MariaDB 10.3+ | MySQL 8.0+ / MariaDB 10.3+ | MySQL 8.0+ / MariaDB 10.3+ |
 | PostgreSQL | 9.5+ | 14+ | 14+ | 14+ |
 | SQLite | 3.35+ (development, tests) | 3.35+ | 3.35+ | 3.35+ |
 | Composer | 2.x | 2.x | 2.x | 2.x |
 | Node.js / Yarn (asset build only) | 14 LTS / 1.22 | 18 LTS / 1.22 | 20 LTS / 1.22 | 20 LTS / 1.22 (`v5.0.2`); 24 LTS / 1.22 (`v5.0.3.1`, branch) |
-| Serving | Exponential Velocity (PHP 8.1+), or Apache 2.4 / nginx 1.18+ with PHP-FPM | the same | the same (Velocity needs PHP 8.1+) | the same |
+| Serving | Exponential Velocity (PHP 8.1+), or Apache 2.4 / nginx 1.18+ with PHP-FPM | the same | the same | the same |
 
 The database versions and memory figures are those each line's README and installation guide state; the PHP floors
 come from the Composer metadata (section 2.2). Databases are covered in depth in [chapter 7](07-databases.md).
@@ -51,18 +51,28 @@ states the widest range; required packages narrow it.
 
 | Line | Skeleton `composer.json` | Narrowed by | Floor in practice |
 |---|---|---|---|
-| 2.5 | `^7.1.3 \|\| ^8.1 \|\| ^8.2` | `se7enxweb/exponential ^6.0.12`: the releases it allows, 6.0.12 to 6.0.14, declare `^8.1 \|\| ... \|\| ^8.8` | **8.1** |
+| 2.5 | `^7.1.3 \|\| ^8.0` (from `v2.5.0.6`; `^7.1.3 \|\| ^8.1 \|\| ^8.2` before) | `se7enxweb/exponential ^6.0.12`: the releases 6.0.12 to 6.0.14 declare `^8.1 \|\| ... \|\| ^8.8`, the 6.0.x line (`main`, 6.0.15) `^8.0 \|\| ... \|\| ^8.8` | **8.0** (8.1 up to `v2.5.0.5`) |
 | 3.x | `^8.0` | the same kernel range, through LegacyBridge 3 (`se7enxweb/exponential ^6.0.12`) | **8.1** |
 | 4.6.x | `^7.4 \|\| ^8.0 \|\| ... \|\| ^8.5` | LegacyBridge 4 (`php ^8.0`); the kernel's `dev-main` declares `^8.0 ...` | **8.0** |
 | 5.x | `>=8.3` | LegacyBridge 5 (`php ^8.4`, every release from 5.0.0.0 to 5.0.10) | **8.4** |
 
 Notes:
 
-- `^8.1` in Composer means 8.1 up to, but not including, 9.0, so the constraint itself does not stop PHP 8.3 or 8.5 on
+- **Which legacy kernel the 2.5 line gets depends on the PHP that runs Composer.** `^6.0.12` allows the releases 6.0.12
+  to 6.0.14 and the 6.0.x development line (`main`, branch alias `6.0.x-dev`, which becomes 6.0.15). The releases
+  declare `^8.1`, the development line `^8.0`. On PHP 8.1 and later Composer installs the newest release (it prefers
+  stable versions); on PHP 8.0 no release fits, and because the project allows development versions
+  (`minimum-stability: dev`) Composer installs the 6.0.x line, 6.0.15 (verified 2026-10-23: `se7enxweb/exponential`
+  `dev-main` on PHP 8.0.30, `v6.0.14` on 8.1). Once 6.0.15 is tagged, PHP 8.0 gets that release.
+- From `v2.5.0.6` the packages of the 2.5 stack that skipped PHP 8.0 (`^7.1 || ^8.1 || ^8.2`) allow it: the platform
+  kernel 7.5.42, Admin UI 1.5.34, repository forms 2.5.21, the core, user, rich text and Solr bundles, the Doctrine
+  schema package, the support and Symfony tools and xrowextract 2.5.20. `v2.5.0.5` and earlier cannot be installed on
+  PHP 8.0.
+- `^8.0` in Composer means 8.0 up to, but not including, 9.0, so the constraint itself does not stop PHP 8.3 or 8.5 on
   the 2.5 line. The installation guide published with `v2.5.0.3` says "tested through 8.2", the README recommends 8.3.
-  Treat 8.1 and 8.2 as tested and newer versions as accepted.
+  Treat 8.0, 8.1 and 8.2 as tested and newer versions as accepted.
 - **On 2.5 every Composer command needs `--ignore-platform-req=php+`** (Composer 2.2 or later; or
-  `export COMPOSER_IGNORE_PLATFORM_REQ=php+`). The floor is 8.1, but packages of this line still declare a ceiling below
+  `export COMPOSER_IGNORE_PLATFORM_REQ=php+`). The floor is 8.0, but packages of this line still declare a ceiling below
   PHP 8: `friendsofsymfony/http-cache-bundle` 1.3 (required by `se7enxweb/ezplatform-http-cache` 0.9 and the platform
   kernel) and `overblog/graphiql-bundle` 0.1 say `^5.4 || ^7.0`, and `cron/cron`, `doctrine/orm` 2.7,
   `symfony-cmf/routing` 2.2 and others `^7.1`. No PHP version satisfies both sides, so a plain
@@ -72,8 +82,8 @@ Notes:
   2026-10-23). The `+` ignores only those upper bounds: a PHP below a package's minimum is still refused and the
   extension checks still run. The broader `--ignore-platform-reqs`, which the guide published with `v2.5.0.3` added to
   every command, skips all of these checks, so Composer can then install packages your PHP cannot run; do not use it.
-- Exponential Velocity needs PHP 8.1 or later (its `composer.json`: `php >=8.1`), so on 4.6.x with PHP 8.0 you serve
-  the site with Apache or nginx ([chapter 6](06-serving-the-site.md)).
+- Exponential Velocity needs PHP 8.1 or later (its `composer.json`: `php >=8.1`), so on 2.5 or 4.6.x with PHP 8.0 you
+  serve the site with Apache or nginx ([chapter 6](06-serving-the-site.md)).
 - The legacy kernel's own view of PHP versions, including what changed between 8.0 and 8.5, is in the Exponential 6
   book, [2. Requirements](https://github.com/se7enxweb/exponential/blob/main/doc/install/02-requirements.md).
 

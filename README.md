@@ -1,6 +1,6 @@
 # Exponential Platform Legacy 2.5.0.x (Stable; Open Source; Starter Skeleton)
 
-[![PHP](https://img.shields.io/badge/PHP-8.1%20→%208.2-8892BF?logo=php&logoColor=white)](https://php.net)
+[![PHP](https://img.shields.io/badge/PHP-8.0%20→%208.2-8892BF?logo=php&logoColor=white)](https://php.net)
 [![Symfony](https://img.shields.io/badge/Symfony-3.4%20LTS-000000?logo=symfony&logoColor=white)](https://symfony.com)
 [![Platform](https://img.shields.io/badge/Platform-2.5%20OSS-orange)](https://github.com/se7enxweb)
 [![LegacyBridge](https://img.shields.io/badge/LegacyBridge-2.x-green)](https://github.com/se7enxweb/LegacyBridge)
@@ -8,7 +8,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/se7enxweb/exponential-platform-legacy)](https://github.com/se7enxweb/exponential-platform-legacy/issues)
 [![GitHub stars](https://img.shields.io/github/stars/se7enxweb/exponential-platform-legacy?style=social)](https://github.com/se7enxweb/exponential-platform-legacy)
 
-> **Exponential Platform Legacy** is a hybrid-kernel open-source Digital Experience Platform (DXP/CMS) built on the **Exponential (Legacy) 6.x kernel** bridged to Symfony 3.4 LTS via LegacyBridge 2.x. This is the **2.5.0.x** skeleton release — pairing the proven Legacy kernel with the eZ Platform 2.5 new stack, running on PHP 8.1 and later (8.1 and 8.2 tested) in a single application.
+> **Exponential Platform Legacy** is a hybrid-kernel open-source Digital Experience Platform (DXP/CMS) built on the **Exponential (Legacy) 6.x kernel** bridged to Symfony 3.4 LTS via LegacyBridge 2.x. This is the **2.5.0.x** skeleton release — pairing the proven Legacy kernel with the eZ Platform 2.5 new stack, running on PHP 8.0 and later (8.0, 8.1 and 8.2 tested) in a single application.
 
 This is a website skeleton for Exponential Platform Legacy (Stable; Open Source).
 
@@ -45,11 +45,11 @@ This is an independent, 7x + community-driven continuation of the platform. The 
 
 ## Exponential Platform Legacy Project Status
 
-**Exponential Platform Legacy has made it beyond its end of life in 2021 and survived. Current releases are primarily aimed at easing the requirements to support current versions of the PHP language like PHP 8.1, 8.2, and beyond.**
+**Exponential Platform Legacy has made it beyond its end of life in 2021 and survived. Current releases are primarily aimed at easing the requirements to support current versions of the PHP language like PHP 8.0, 8.1, 8.2, and beyond.**
 
-The platform is under active maintenance and targeted improvement. The **2.5.0.x** release line is based on the eZ Platform 2.5 kernel (`se7enxweb/ezpublish-kernel ~7.5.33`) bridged to Symfony 3.4 LTS via LegacyBridge 2.x. Ongoing work focuses on:
+The platform is under active maintenance and targeted improvement. The **2.5.0.x** release line is based on the eZ Platform 2.5 kernel (`se7enxweb/ezpublish-kernel ~7.5.42`) bridged to Symfony 3.4 LTS via LegacyBridge 2.x. Ongoing work focuses on:
 
-- Continued PHP 8.x compatibility (8.1 and 8.2 tested and supported)
+- Continued PHP 8.x compatibility (8.0, 8.1 and 8.2 tested and supported)
 - Exponential (Legacy) kernel patches for PHP 8.x runtime compatibility
 - LegacyBridge 2.x compatibility maintenance for Symfony 3.4 LTS alignment
 - Dependency upgrades across Composer and Yarn package ecosystems
@@ -103,10 +103,10 @@ Exponential Platform Legacy is database, platform and browser independent. Becau
 
 | Layer | Technology |
 |---|---|
-| **Language** | PHP 8.1 → 8.2 (tested) |
+| **Language** | PHP 8.0 → 8.2 (tested) |
 | **Framework** | Symfony 3.4 LTS |
 | **CMS Core (legacy)** | Exponential (Legacy) 6.x (`ezpublish_legacy/`) |
-| **CMS Core (new stack)** | eZ Platform 2.5 (`se7enxweb/ezpublish-kernel ~7.5.33`) |
+| **CMS Core (new stack)** | eZ Platform 2.5 (`se7enxweb/ezpublish-kernel ~7.5.42`) |
 | **Bridge** | LegacyBridge 2.x (`se7enxweb/legacy-bridge`) |
 | **ORM** | Doctrine ORM 2.x |
 | **Template Engine** | Legacy TPL (legacy kernel) + Twig 2.x (new stack) |
@@ -124,7 +124,7 @@ Exponential Platform Legacy is database, platform and browser independent. Becau
 
 ## Requirements
 
-- PHP 8.1 or later (8.1 and 8.2 tested; the legacy kernel needs 8.1)
+- PHP 8.0 or later (8.0, 8.1 and 8.2 tested; on PHP 8.0 Composer installs the legacy kernel's 6.0.x line, 6.0.15, on 8.1 and later its newest release; see [doc/INSTALL.md](doc/INSTALL.md) step 2)
 - Required PHP extensions: `curl`, `intl`, `mbstring`, `pdo`, `pdo_mysql` or `pdo_pgsql` or `pdo_sqlite`, `xml`, `zip`, `fileinfo`, `imagick` or `gd`, `xsl`
 - A web server: Apache 2.4 or Nginx 1.18+
 - A database server: MySQL 5.7+, MariaDB 10.0+, PostgreSQL 9.5+, or **SQLite 3.35+** (zero-config; dev / testing only — requires `pdo_sqlite` + `sqlite3` PHP extensions)
@@ -136,7 +136,7 @@ Exponential Platform Legacy is database, platform and browser independent. Becau
 
 | Requirement | Minimum | Recommended |
 |---|---|---|
-| PHP | 8.1 | 8.2 |
+| PHP | 8.0 | 8.2 |
 | Composer | 2.2 | latest 2.x |
 | Node.js | 12 | 14 LTS (via nvm) |
 | Yarn | 1.x | 1.22.x |
@@ -156,7 +156,7 @@ Exponential Platform Legacy is database, platform and browser independent. Becau
 
 ```bash
 # 1. Create project
-composer create-project --ignore-platform-req=php+ se7enxweb/exponential-platform-legacy:~2.5.0.4 exponential_website
+composer create-project --ignore-platform-req=php+ se7enxweb/exponential-platform-legacy:~2.5.0.6 exponential_website
 cd exponential_website
 
 # 2. Configure environment
@@ -265,7 +265,7 @@ symfony server:start
 Create a new project using Composer:
 
 ```bash
-composer create-project --ignore-platform-req=php+ se7enxweb/exponential-platform-legacy:~2.5.0.4 exponential_website
+composer create-project --ignore-platform-req=php+ se7enxweb/exponential-platform-legacy:~2.5.0.6 exponential_website
 ```
 
 Always name the version. The other release lines are `:3.x-dev`, `:4.6.x-dev` and, for Symfony 7, `:5.x-dev` (or the

@@ -43,7 +43,7 @@ before any server is configured.
 | Shipped example in this repository | none; configuration derived in 6.3 from the engine's documentation | `doc/apache2/` (2.5 layout; on 3.x the `public/` layout from commit `7248e69`, plus `media-site*.conf`) | `doc/nginx/` (2.5 layout; 3.x adds `media-site.conf`) | commands in the READMEs |
 | Suits shared hosting | usually not (a long-running process) | yes | rarely | no |
 
-Use a traditional server when your hosting forbids long-running processes, when you run PHP 8.0 (4.6.x allows it;
+Use a traditional server when your hosting forbids long-running processes, when you run PHP 8.0 (2.5 and 4.6.x allow it;
 Velocity needs 8.1), or when you already run a tuned Apache or nginx you want to keep.
 
 ## 6.2 What the web root may hand out

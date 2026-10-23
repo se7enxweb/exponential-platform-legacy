@@ -147,12 +147,12 @@ from the configuration the skeleton or its Symfony Flex recipe installs.
 | Newest release of the line (2026-10-05) | [`v2.5.0.4`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v2.5.0.4) | [`v3.3.44.8`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v3.3.44.8) | [`v4.6.23.3`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v4.6.23.3) | [`v5.0.3.1`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v5.0.3.1) (read [the note on v5.0.3](#the-tag-v503)) |
 | Release before it | `v2.5.0.3` | `v3.3.44.7` | `v4.6.23.2` | `v5.0.2` |
 | Symfony | 3.4 LTS (`se7enxweb/symfony ^3.4.50`) | 5.4 LTS (`se7enxweb/symfony 5.4.x-dev`, `symfony/framework-bundle 5.4.*`) | 5.4 LTS (`extra.symfony.require ^5.3`; LegacyBridge 4 requires `^5.4`) | 7.4 (`se7enxweb/exponential-platform-dxp` and LegacyBridge 5 require `symfony/framework-bundle ^7.4`) |
-| Platform new stack | `se7enxweb/ezpublish-kernel ~7.5.33` | `se7enxweb/oss ~3.3.0.0`, `se7enxweb/ezplatform-kernel ~1.3.43` | `se7enxweb/exponential-platform-dxp 4.6.x-LB-dev` | `se7enxweb/exponential-platform-dxp dev-5.x-LB` |
+| Platform new stack | `se7enxweb/ezpublish-kernel ~7.5.42` | `se7enxweb/oss ~3.3.0.0`, `se7enxweb/ezplatform-kernel ~1.3.43` | `se7enxweb/exponential-platform-dxp 4.6.x-LB-dev` | `se7enxweb/exponential-platform-dxp dev-5.x-LB` |
 | Upstream it was built from | eZ Platform 2.5 | Ibexa OSS 3.3 | Ibexa DXP 4.6 (OSS) | Ibexa DXP 5.0 (OSS) |
 | LegacyBridge (`se7enxweb/legacy-bridge`) | `^2.1` (2.1.x) | `^3.0.0.35` (3.0.0.x) | `^4.0.0.0` (4.0.0.x) | `^5.0.0.0` (5.0.x) |
 | Legacy kernel (`se7enxweb/exponential`) | `^6.0.12`, required directly | `^6.0.12`, through the bridge | `dev-main`, through the bridge | `dev-main`, through the bridge |
-| PHP in `composer.json` | `^7.1.3 \|\| ^8.1 \|\| ^8.2` | `^8.0` | `^7.4 \|\| ^8.0 ... \|\| ^8.5` | `>=8.3` |
-| PHP that resolves in practice | **8.1 or later** (the kernel releases 6.0.12 to 6.0.14 that `^6.0.12` allows declare `^8.1 \|\| ... \|\| ^8.8`) | **8.1 or later** (same kernel range) | **8.0 or later** (LegacyBridge 4 declares `^8.0`) | **8.4 or later** (LegacyBridge 5 declares `^8.4`) |
+| PHP in `composer.json` | `^7.1.3 \|\| ^8.0` (`^7.1.3 \|\| ^8.1 \|\| ^8.2` up to `v2.5.0.5`) | `^8.0` | `^7.4 \|\| ^8.0 ... \|\| ^8.5` | `>=8.3` |
+| PHP that resolves in practice | **8.0 or later** from `v2.5.0.6` (on 8.0 Composer installs the kernel's 6.0.x line, 6.0.15, which declares `^8.0`; on 8.1 and later the newest release, as 6.0.12 to 6.0.14 declare `^8.1 \|\| ... \|\| ^8.8`) | **8.1 or later** (same kernel range) | **8.0 or later** (LegacyBridge 4 declares `^8.0`) | **8.4 or later** (LegacyBridge 5 declares `^8.4`) |
 | Web root | `web/` | `public/` | `public/` | `public/` |
 | Front controller | `web/app.php` (and `web/app_dev.php`) | `public/index.php` | `public/index.php` (Symfony Runtime) | `public/index.php` (Symfony Runtime) |
 | Console | `bin/console` | `bin/console` | `bin/console` | `bin/console` |
@@ -166,7 +166,7 @@ from the configuration the skeleton or its Symfony Flex recipe installs.
 
 How the two PHP rows relate: Composer accepts a PHP version only if **every** package agrees. The skeleton's own
 constraint is the widest statement; a required package can narrow it. On the 2.5 line the skeleton still lists
-`^7.1.3`, but the legacy kernel releases it resolves to need PHP 8.1, so PHP 7 cannot install it. On the 5.x line the
+`^7.1.3`, but the legacy kernel needs PHP 8.0 (its 6.0.x line; its releases up to 6.0.14 need 8.1), so PHP 7 cannot install it. On the 5.x line the
 skeleton says `>=8.3`, but every LegacyBridge 5 release needs 8.4. [Chapter 2](02-requirements.md) has the details.
 
 The admin paths of 4.6.x and 5.x: the READMEs of both branches name `/adminui/`. The configuration their Flex recipe
@@ -238,7 +238,7 @@ reference and are not maintained; Packagist still lists them as `1.7.x-dev` to `
 ### The tag v5.0.3
 
 The tag `v5.0.3` (GitHub release of 2026-08-03, marked "Latest" until 2026-10-05) points at a commit on `master`, the **2.5 line**: its
-`composer.json` requires Symfony 3.4, `se7enxweb/ezpublish-kernel ~7.5.33` and LegacyBridge `^2.1`, and carries the
+`composer.json` requires Symfony 3.4, `se7enxweb/ezpublish-kernel ~7.5.42` and LegacyBridge `^2.1`, and carries the
 branch alias `dev-master: 2.5.x-dev`. Its release notes describe 5.x changes. While it was the highest stable version
 number, from 2026-08-03 to 2026-10-05, **Composer picked it whenever no version or a range such as `^5.0` was given**,
 and you got the 2.5 line under a 5.x number. Its tree is `v2.5.0.3` plus one commit, so it also carries the development settings of the 2.5 front

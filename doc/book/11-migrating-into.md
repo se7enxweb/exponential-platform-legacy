@@ -156,7 +156,7 @@ A site on eZ Platform 1.x or 2.x is the closest source, especially one that alre
 | Upstream package | Exponential package |
 |---|---|
 | `ezsystems/ezplatform` (+ `ezsystems/legacy-bridge`) | this project, 2.5 line |
-| `ezsystems/ezpublish-kernel` | `se7enxweb/ezpublish-kernel ~7.5.33` |
+| `ezsystems/ezpublish-kernel` | `se7enxweb/ezpublish-kernel ~7.5.42` |
 | `ezsystems/legacy-bridge` | `se7enxweb/legacy-bridge ^2.1` |
 | `ezsystems/ezpublish-legacy` | `se7enxweb/exponential ^6.0.12`, installed into `ezpublish_legacy/` by `se7enxweb/exponential-legacy-installer` |
 
