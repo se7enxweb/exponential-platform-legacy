@@ -1,0 +1,4 @@
+# NetgenInformationCollectionBundle is installed through se7enxweb/site-legacy-bundle (netgen/site-bundle)
+# and adds its entries to the Platform admin menu, which link to these routes.
+netgen_information_collection:
+    resource: "@NetgenInformationCollectionBundle/Resources/config/routing.yaml"

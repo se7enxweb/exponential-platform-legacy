@@ -1,0 +1,3 @@
+# NetgenTagsBundle is registered by the project and adds the Tags entries to the Platform admin menu.
+netgen_tags:
+    resource: "@NetgenTagsBundle/Resources/config/routing.yaml"
