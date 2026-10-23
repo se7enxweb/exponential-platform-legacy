@@ -30,6 +30,12 @@ services:
         arguments:
             $params: '%ezrepoforms.user_register.registration_content_types%'
 
+    # exp_legacy_jquery_scripts(): the jQuery files of the installed legacy kernel
+    AppBundle\Twig\LegacyScriptsExtension:
+        arguments:
+            $legacyConfigResolver: '@ezpublish_legacy.config.resolver'
+            $legacyRootDir: '%ezpublish_legacy.root_dir%'
+
     AppBundle\Twig\ChildrenExtension:
         arguments:
             $repository: '@ezpublish.api.repository'

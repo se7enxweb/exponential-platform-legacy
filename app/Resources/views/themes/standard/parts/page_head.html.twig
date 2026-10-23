@@ -7,26 +7,18 @@
     <link rel="stylesheet" href="/design/admin/stylesheets/pagelayout.css">
     <link rel="stylesheet" href="/design/admin/stylesheets/content.css">
     <link rel="stylesheet" href="/design/admin/stylesheets/theme/rounded.css">
-    <link rel="stylesheet" href="/design/admin/stylesheets/theme/yui_datatable.css">
-    <link rel="stylesheet" href="/design/admin/stylesheets/theme/yui_menu.css">
-    <link rel="stylesheet" href="/design/admin/stylesheets/theme/yui_container.css">
     <link rel="stylesheet" href="/design/admin/stylesheets/theme/modalwindow.css">
-    <script src="/extension/ezjscore/design/standard/javascript/jquery-3.7.1.min.js"></script>
-    <script src="/extension/ezjscore/design/standard/javascript/jquery-migrate-1.2.1.min.js"></script>
-    <script src="/extension/ezjscore/design/standard/lib/yui/2.8.2/build/yuiloader/yuiloader-min.js"></script>
-    <script>
-        var YUI2_config = {
-            base: '/extension/ezjscore/design/standard/lib/yui/2.8.2/build/',
-            loadOptional: true,
-            combine: false
-        };
-        var YUILoader = new YAHOO.util.YUILoader(YUI2_config);
-    </script>
+    {# jQuery (and jQuery Migrate, when the kernel names one) as the installed legacy kernel ships it:
+       jQuery 3.7.1 with kernel 6.0.14, jQuery 4.0.0 + Migrate 4.0.2 with kernel 6.0.15.
+       The YUI 2 loader and the yui_*.css themes are gone: nothing on these pages uses YUI, and
+       kernel 6.0.15 no longer ships YUI. #}
+    {% for script in exp_legacy_jquery_scripts() %}
+    <script src="{{ script }}"></script>
+    {% endfor %}
     <script src="/design/standard/javascript/tools/ezjsselection.js"></script>
     <script src="/design/standard/javascript/lib/ezjslibimagepreloader.js"></script>
     <script src="/design/admin/javascript/popupmenu/ezpopupmenu.js"></script>
     <script src="/design/admin/javascript/contentstructuremenu_dynamic.js"></script>
     {# fixed_toolbar.js, ezmodalwindow.js, ezajaxuploader.js and ezcollapsiblemenu.js are YUI 3 modules
-       (YUI(YUI3_config).add(...)) of the legacy admin. This head loads only the YUI 2 loader, so each of them
-       stopped with "YUI is not defined" on every page, and nothing on these pages uses them. #}
+       (YUI(YUI3_config).add(...)) of the legacy admin. Nothing on these pages uses them. #}
 </head>
