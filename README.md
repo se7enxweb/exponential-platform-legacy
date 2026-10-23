@@ -124,8 +124,8 @@ Browser Request
       ▼
   public/index.php  ──  Symfony Kernel (Platform v5 OSS — Symfony 7.4 LTS)
       │
-      ├── URI: /adminui/**           → Platform v5 Admin UI (React)       ← siteaccess: admin
-      ├── URI: /api/ezp/v2/**        → REST API v2                         ← siteaccess: admin
+      ├── URI: /admin/**             → Platform v5 Admin UI (React)       ← siteaccess: admin
+      ├── URI: /api/ibexa/v2/**      → REST API v2                         ← siteaccess: admin
       ├── URI: /graphql              → GraphQL API                         ← siteaccess: admin
       │
       ├── URI: /legacy_admin/**      → Legacy Bridge → Legacy Kernel       ← siteaccess: legacy_admin
@@ -150,8 +150,8 @@ All of the following URLs work out of the box after a fresh install with no addi
 
 | URL | Description |
 |---|---|
-| `http://localhost/adminui/` | **Platform v5 Admin UI** — React editorial interface (admin / publish) |
-| `http://localhost/api/ezp/v2/` | **REST API v2** — full content API (JWT-authenticated) |
+| `http://localhost/admin/` | **Platform v5 Admin UI** — React editorial interface (admin / publish) |
+| `http://localhost/api/ibexa/v2/` | **REST API v2** — full content API (JWT-authenticated) |
 | `http://localhost/graphql` | **GraphQL** — auto-generated content schema |
 | `http://localhost/graphql/explorer` | GraphiQL browser explorer (APP_ENV=dev only) |
 
@@ -268,13 +268,13 @@ For a complete walkthrough of Legacy Bridge installation, configuration, URL rou
 | CMS Core | Exponential Platform v5 OSS |
 | ORM / DBAL | Doctrine ORM 2.x + DBAL 3.x |
 | Template Engine | Twig 3.x |
-| Frontend Build | Webpack Encore + Yarn 1.x + Node.js 20 LTS |
+| Frontend Build | Webpack Encore + Yarn 1.x + Node.js 24 LTS |
 | Search | Legacy search (default) · Solr 8.x (optional) |
 | HTTP Cache | Symfony HttpCache (default) · Varnish 6/7 (optional) |
 | App Cache | Filesystem (default) · Redis 6+ (optional) |
 | Database | MySQL 8.0+ · MariaDB 10.3+ · PostgreSQL 14+ · SQLite 3.35+ (dev/testing) |
 | API | REST API v2 · GraphQL (schema auto-generated) · JWT auth |
-| Admin UI | Platform v5 Admin UI (/adminui/) |
+| Admin UI | Platform v5 Admin UI (/admin/) |
 | Dependency Mgmt | Composer 2.x · Yarn 1.x |
 
 ---
@@ -285,7 +285,7 @@ For a complete walkthrough of Legacy Bridge installation, configuration, URL rou
 - A web server: Apache 2.4 or Nginx 1.18+
 - A database server: MySQL 8.0+, MariaDB 10.3+, PostgreSQL 14+, or SQLite 3.35+ (dev/testing)
 - Composer 2.x
-- Node.js 20 LTS (via nvm recommended)
+- Node.js 24 LTS (via nvm recommended)
 - Yarn 1.22.x
 
 ### Full Requirements Summary
@@ -336,7 +336,7 @@ setfacl -R  -m u:www-data:rwX -m g:www-data:rwX var/
 setfacl -dR -m u:www-data:rwX -m g:www-data:rwX var/
 
 # 5. Build frontend assets
-source ~/.nvm/nvm.sh && nvm use 20
+source ~/.nvm/nvm.sh && nvm use 24
 yarn install && yarn build
 
 # 6. Publish bundle assets, install legacy extension symlinks, and build Admin UI
@@ -366,8 +366,8 @@ After install, all of the following are live and ready to use:
 | `https://127.0.0.1:8000/legacy_site/ezinfo/about` | Legacy system info |
 | `https://127.0.0.1:8000/legacy_admin/` | **Legacy Admin interface** (`legacy_admin` siteaccess) |
 | `https://127.0.0.1:8000/legacy_admin/content/dashboard` | Legacy admin content dashboard |
-| `https://127.0.0.1:8000/adminui/` | **Platform v5 Admin UI** (React) |
-| `https://127.0.0.1:8000/api/ezp/v2/` | REST API v2 |
+| `https://127.0.0.1:8000/admin/` | **Platform v5 Admin UI** (React) |
+| `https://127.0.0.1:8000/api/ibexa/v2/` | REST API v2 |
 | `https://127.0.0.1:8000/graphql` | GraphQL endpoint |
 
 Default credentials: `admin` / `publish` (change immediately after first login).
@@ -433,7 +433,7 @@ See [INSTALL.md](INSTALL.md) for the complete step-by-step guide including Legac
 - **Single-Kernel Host Architecture** — Exponential Platform v5 OSS runs on Symfony 7.4 LTS as the outer container; the legacy kernel is encapsulated within it through the Bridge
 - **GraphQL API** — auto-generated schema per content model via `ibexa:graphql:generate-schema`
 - **JWT Authentication** — REST API secured by RSA keypairs (`lexik/jwt-authentication-bundle`)
-- **Platform v5 Admin UI** — React-powered editorial interface at `/adminui/`
+- **Platform v5 Admin UI** — React-powered editorial interface at `/admin/`
 - **Webpack Encore** — modern asset pipeline with HMR dev server and production minification
 - **Design Engine** — `@ezdesign` Twig namespace with theme fallback chain for clean template inheritance
 - **Multi-siteaccess** — run multiple sites, languages, or environments from a single codebase and database
@@ -551,9 +551,9 @@ php bin/console lexik:jwt:generate-keypair                    # generate RSA key
 | `/legacy_admin/content/dashboard` | Legacy admin dashboard |
 | `/legacy_admin/class/grouplist` | Legacy content type editor |
 | `/legacy_admin/role/list` | Legacy role/policy management |
-| `/adminui/` | Platform v5 Admin UI (new stack, React) |
+| `/admin/` | Platform v5 Admin UI (new stack, React) |
 | `/` | Public Symfony/Twig site (`site` siteaccess) |
-| `/api/ezp/v2/` | REST API v2 |
+| `/api/ibexa/v2/` | REST API v2 |
 | `/graphql` | GraphQL endpoint |
 
 See the [Legacy Bridge — Architecture & Default Siteaccess URLs](#legacy-bridge--architecture--default-siteaccess-urls) section above for the complete URL reference.
@@ -586,10 +586,10 @@ php bin/console exponential:debug:config-resolver languages --siteaccess=legacy_
 
 ### Frontend / Asset Build (Yarn / Webpack Encore)
 
-Activate Node.js 20 LTS via nvm before running any Yarn commands:
+Activate Node.js 24 LTS via nvm before running any Yarn commands:
 
 ```bash
-source ~/.nvm/nvm.sh && nvm use 20    # activate Node.js 20 LTS (required)
+source ~/.nvm/nvm.sh && nvm use 24    # activate Node.js 24 LTS (required)
 corepack enable                        # activates Yarn 1.22.22 as declared in package.json
 
 yarn install            # install / update Node dependencies

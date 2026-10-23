@@ -254,9 +254,9 @@ Browser Request
       ▼
   public/index.php  ──  Symfony Kernel (Platform v5 OSS — Symfony 7.4 LTS)
       │
-      ├── URI: /adminui/**           → Platform v5 Admin UI (React)       ← siteaccess: admin
+      ├── URI: /admin/**             → Platform v5 Admin UI (React)       ← siteaccess: admin
       │                                  login: admin / publish
-      ├── URI: /api/ezp/v2/**        → REST API v2 (JWT-auth)             ← siteaccess: admin
+      ├── URI: /api/ibexa/v2/**      → REST API v2 (JWT-auth)             ← siteaccess: admin
       ├── URI: /graphql              → GraphQL API                         ← siteaccess: admin
       │
       ├── URI: /legacy_admin/**      → Legacy Bridge → Legacy Kernel       ← siteaccess: legacy_admin
@@ -284,7 +284,7 @@ The legacy kernel runs exclusively within the `legacy_mode: true` siteaccesses (
 | `site` | Platform v5 OSS | `/` | Symfony/Twig public front end |
 | `legacy_site` | Legacy (Bridge) | `/legacy_site/` | Classic eZ Publish public front end |
 | `legacy_admin` | Legacy (Bridge) | `/legacy_admin/` | Classic eZ Publish admin interface |
-| `admin` | Platform v5 OSS | `/adminui/` | Platform v5 Admin UI (React) |
+| `admin` | Platform v5 OSS | `/admin/` | Platform v5 Admin UI (React) |
 
 ### Key Directories
 
@@ -349,8 +349,8 @@ After a fresh install, **all of the following URLs are live with no additional c
 
 | URL | Description |
 |---|---|
-| `http://localhost/adminui/` | **Platform v5 Admin UI** — React editorial interface |
-| `http://localhost/api/ezp/v2/` | **REST API v2** — full content API (JWT-authenticated) |
+| `http://localhost/admin/` | **Platform v5 Admin UI** — React editorial interface |
+| `http://localhost/api/ibexa/v2/` | **REST API v2** — full content API (JWT-authenticated) |
 | `http://localhost/graphql` | **GraphQL** — auto-generated content schema |
 | `http://localhost/graphql/explorer` | GraphiQL browser (APP_ENV=dev only) |
 | `http://localhost/` | Symfony/Twig public site (`site` siteaccess) |
@@ -559,10 +559,10 @@ The following extensions are active by default (installed by the Flex recipe):
 |---|---|
 | `sevenx_exponential_platform_v5_database_translator` | **Required first** — DB driver alias translator for MySQL/MariaDB/PostgreSQL/SQLite |
 | `app` | Your site's custom legacy extension (add your legacy PHP classes, templates here) |
-| `ngsite` | Netgen site base legacy extension |
+| `ngsite` | Netgen site base legacy extension (from `se7enxweb/site-legacy-bundle`, which this project requires; the bridge activates it) |
 | `sevenx_themes_simple` | 7x simple theme base |
 | `ngsymfonytools` | Netgen Symfony tools bridge (share Symfony services in legacy templates) |
-| `ezrichtext` | RichText datatype in legacy |
+| `ezrichtext` | RichText datatype in legacy (from `se7enxweb/richtext-datatype-bundle` 5.0, which this project requires; the bridge activates it) |
 | `ezwebin` | Built-in website-in-a-box design and templates |
 | `eztags` | Tag/category management field type |
 | `ezoe` | Legacy online editor (OE) |
@@ -844,7 +844,7 @@ See Section 8.
 #### Step 5 — Build frontend assets
 
 ```bash
-source ~/.nvm/nvm.sh && nvm use 20
+source ~/.nvm/nvm.sh && nvm use 24
 yarn install
 yarn dev
 ```
@@ -892,6 +892,18 @@ php bin/console exponential:reindex
 symfony server:start
 ```
 
+Without the Symfony CLI, PHP's built-in server is enough for a local test (no URL rewriting is needed:
+requests for paths that are not files go to `public/index.php`):
+
+```bash
+php -S 127.0.0.1:8000 -t public
+```
+
+The site is then at `http://127.0.0.1:8000/` (plain HTTP). Legacy writes its links without
+`index.php` (`ForceVirtualHost` is enabled by the recipe), which is what Platform expects: it
+rejects `/index.php/...` URLs. Use a real web server (Apache, Nginx, Exponential Velocity) for
+anything other than a local test.
+
 All access points after install:
 
 | URL | Description |
@@ -902,8 +914,8 @@ All access points after install:
 | `https://127.0.0.1:8000/legacy_site/ezinfo/about` | Legacy system info |
 | `https://127.0.0.1:8000/legacy_admin/` | **Legacy Admin interface** (classic eZ Publish admin) |
 | `https://127.0.0.1:8000/legacy_admin/content/dashboard` | Legacy admin dashboard |
-| `https://127.0.0.1:8000/adminui/` | **Platform v5 Admin UI** (React) |
-| `https://127.0.0.1:8000/api/ezp/v2/` | REST API v2 |
+| `https://127.0.0.1:8000/admin/` | **Platform v5 Admin UI** (React) |
+| `https://127.0.0.1:8000/api/ibexa/v2/` | REST API v2 |
 | `https://127.0.0.1:8000/graphql` | GraphQL endpoint |
 
 Default credentials: `admin` / `publish` — change immediately after first login.
@@ -1318,10 +1330,10 @@ chmod -R 775 var/ public/var/
 
 ## 9. Frontend Assets (Site CSS/JS)
 
-The project uses Webpack Encore + Yarn. Always activate Node.js 20 LTS first.
+The project uses Webpack Encore + Yarn. Always activate Node.js 24 LTS first.
 
 ```bash
-source ~/.nvm/nvm.sh && nvm use 20
+source ~/.nvm/nvm.sh && nvm use 24
 corepack enable    # activates yarn 1.22.22 as declared in package.json
 ```
 
@@ -1629,7 +1641,7 @@ php bin/console ezpublish:legacybundles:install_extensions --relative --env=prod
 php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php
 
 # 7. Rebuild Platform v5 Admin UI assets (if admin-ui bundle updated)
-source ~/.nvm/nvm.sh && nvm use 20 && yarn ibexa:build
+source ~/.nvm/nvm.sh && nvm use 24 && yarn ibexa:build
 
 # 8. Rebuild frontend site assets (if theme/JS/CSS changed)
 yarn build
@@ -2278,7 +2290,7 @@ php bin/console exponential:reindex
 
 # 6. Smoke-test the site
 curl -I http://localhost/
-curl -I http://localhost/adminui/
+curl -I http://localhost/admin/
 
 # 7. If using SQLite as target — fix file permissions
 # (skip for MySQL/PostgreSQL)
@@ -2779,7 +2791,7 @@ php bin/console debug:config ibexa                         # dump full resolved 
 
 ```bash
 # ── Node version ───────────────────────────────────────────────────────────
-source ~/.nvm/nvm.sh && nvm use 20     # activate Node.js 20 LTS
+source ~/.nvm/nvm.sh && nvm use 24     # activate Node.js 24 LTS
 corepack enable                        # activates yarn 1.22.22
 
 # ── Package management ─────────────────────────────────────────────────────
