@@ -5338,40 +5338,52 @@
         },
         {
             "name": "league/flysystem",
-            "version": "2.x-dev",
+            "version": "3.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "8aaffb653c5777781b0f7f69a5d937baf7ab6cdb"
+                "reference": "1e748897e0a8e897b5a8bc8942e05f4f57fa248c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/8aaffb653c5777781b0f7f69a5d937baf7ab6cdb",
-                "reference": "8aaffb653c5777781b0f7f69a5d937baf7ab6cdb",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/1e748897e0a8e897b5a8bc8942e05f4f57fa248c",
+                "reference": "1e748897e0a8e897b5a8bc8942e05f4f57fa248c",
                 "shasum": ""
             },
             "require": {
-                "ext-json": "*",
+                "league/flysystem-local": "^3.0.0",
                 "league/mime-type-detection": "^1.0.0",
-                "php": "^7.2 || ^8.0"
+                "php": "^8.0.2"
             },
             "conflict": {
-                "guzzlehttp/ringphp": "<1.1.1"
+                "async-aws/core": "<1.19.0",
+                "async-aws/s3": "<1.14.0",
+                "aws/aws-sdk-php": "3.209.31 || 3.210.0",
+                "guzzlehttp/guzzle": "<7.0",
+                "guzzlehttp/ringphp": "<1.1.1",
+                "phpseclib/phpseclib": "3.0.15",
+                "symfony/http-client": "<5.2"
             },
             "require-dev": {
-                "async-aws/s3": "^1.5",
-                "async-aws/simple-s3": "^1.0",
-                "aws/aws-sdk-php": "^3.132.4",
+                "async-aws/s3": "^1.5 || ^2.0",
+                "async-aws/simple-s3": "^1.1 || ^2.0",
+                "aws/aws-sdk-php": "^3.295.10",
                 "composer/semver": "^3.0",
                 "ext-fileinfo": "*",
                 "ext-ftp": "*",
-                "friendsofphp/php-cs-fixer": "^3.2",
+                "ext-mongodb": "^1.3|^2",
+                "ext-zip": "*",
+                "friendsofphp/php-cs-fixer": "^3.5",
                 "google/cloud-storage": "^1.23",
-                "phpseclib/phpseclib": "^2.0",
-                "phpstan/phpstan": "^0.12.26",
-                "phpunit/phpunit": "^8.5 || ^9.4",
-                "sabre/dav": "^4.1"
+                "guzzlehttp/psr7": "^2.6",
+                "microsoft/azure-storage-blob": "^1.1",
+                "mongodb/mongodb": "^1.2|^2",
+                "phpseclib/phpseclib": "^3.0.36",
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^9.5.11|^10.0",
+                "sabre/dav": "^4.6.0"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -5404,43 +5416,80 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem/issues",
-                "source": "https://github.com/thephpleague/flysystem/tree/2.x"
+                "source": "https://github.com/thephpleague/flysystem/tree/3.x"
             },
-            "funding": [
-                {
-                    "url": "https://ecologi.com/frankdejonge",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/frankdejonge",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/league/flysystem",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2022-09-17T21:02:32+00:00"
+            "time": "2026-10-03T07:44:39+00:00"
         },
         {
-            "name": "league/flysystem-memory",
-            "version": "2.x-dev",
+            "name": "league/flysystem-local",
+            "version": "3.x-dev",
             "source": {
                 "type": "git",
-                "url": "https://github.com/thephpleague/flysystem-memory.git",
-                "reference": "f644026c705b8a501543f38cb8b745a603aa4952"
+                "url": "https://github.com/thephpleague/flysystem-local.git",
+                "reference": "a099b24dce160f3b2239043d13d47c4a1a214ea4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-memory/zipball/f644026c705b8a501543f38cb8b745a603aa4952",
-                "reference": "f644026c705b8a501543f38cb8b745a603aa4952",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-local/zipball/a099b24dce160f3b2239043d13d47c4a1a214ea4",
+                "reference": "a099b24dce160f3b2239043d13d47c4a1a214ea4",
                 "shasum": ""
             },
             "require": {
                 "ext-fileinfo": "*",
-                "league/flysystem": "^2.0.0",
-                "php": "^7.2 || ^8.0"
+                "league/flysystem": "^3.0.0",
+                "league/mime-type-detection": "^1.0.0",
+                "php": "^8.0.2"
             },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "League\\Flysystem\\Local\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Frank de Jonge",
+                    "email": "info@frankdejonge.nl"
+                }
+            ],
+            "description": "Local filesystem adapter for Flysystem.",
+            "keywords": [
+                "Flysystem",
+                "file",
+                "files",
+                "filesystem",
+                "local"
+            ],
+            "support": {
+                "source": "https://github.com/thephpleague/flysystem-local/tree/3.x"
+            },
+            "time": "2026-08-12T13:29:21+00:00"
+        },
+        {
+            "name": "league/flysystem-memory",
+            "version": "3.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/flysystem-memory.git",
+                "reference": "b2d1700ed1215684e7276e55bcacf350e0e06ff9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-memory/zipball/b2d1700ed1215684e7276e55bcacf350e0e06ff9",
+                "reference": "b2d1700ed1215684e7276e55bcacf350e0e06ff9",
+                "shasum": ""
+            },
+            "require": {
+                "ext-fileinfo": "*",
+                "league/flysystem": "^3.0.0",
+                "php": "^8.0.2"
+            },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -5466,10 +5515,9 @@
                 "memory"
             ],
             "support": {
-                "issues": "https://github.com/thephpleague/flysystem-memory/issues",
-                "source": "https://github.com/thephpleague/flysystem-memory/tree/2.x"
+                "source": "https://github.com/thephpleague/flysystem-memory/tree/3.x"
             },
-            "time": "2021-02-12T19:24:17+00:00"
+            "time": "2026-01-23T15:30:45+00:00"
         },
         {
             "name": "league/mime-type-detection",
@@ -12927,12 +12975,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/core.git",
-                "reference": "1adb2bac8c22e61c5dbccf7bdbf4bdc3439adb83"
+                "reference": "bfbe9310be3b88e88ec53bc666b2bfb69be44219"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/core/zipball/1adb2bac8c22e61c5dbccf7bdbf4bdc3439adb83",
-                "reference": "1adb2bac8c22e61c5dbccf7bdbf4bdc3439adb83",
+                "url": "https://api.github.com/repos/se7enxweb/core/zipball/bfbe9310be3b88e88ec53bc666b2bfb69be44219",
+                "reference": "bfbe9310be3b88e88ec53bc666b2bfb69be44219",
                 "shasum": ""
             },
             "require": {
@@ -12959,7 +13007,9 @@
                 "ibexa/doctrine-schema": "~5.0.x-dev",
                 "ibexa/jms-translation-bundle": "^2.6.0",
                 "ibexa/polyfill-php82": "^1.0",
-                "league/flysystem-memory": "^2.0.6",
+                "league/flysystem": "^3.35.3",
+                "league/flysystem-local": "^3.0",
+                "league/flysystem-memory": "^3.0",
                 "liip/imagine-bundle": "^2.3",
                 "nelmio/cors-bundle": "^2.0",
                 "oneup/flysystem-bundle": "^4.4.2",
@@ -13026,7 +13076,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "5.0.x-dev"
+                    "dev-main": "5.1.x-dev"
                 }
             },
             "autoload": {
@@ -13051,7 +13101,7 @@
             "description": "7x Exponential Platform DXP (Stable; Open Source) core. Provides the Content Repository, its APIs, and the application's Symfony framework integration.",
             "homepage": "https://se7enx.com",
             "support": {
-                "source": "https://github.com/se7enxweb/core/tree/main"
+                "source": "https://github.com/se7enxweb/core/tree/v5.1.0"
             },
             "funding": [
                 {
@@ -13079,7 +13129,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-23T14:01:54+00:00"
+            "time": "2026-10-23T16:24:25+00:00"
         },
         {
             "name": "se7enxweb/exponential-velocity",
