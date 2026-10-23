@@ -1,6 +1,11 @@
 # Proxies Symfony trusts, read from TRUSTED_PROXIES (set in .env / .env.local or the server environment).
 # Comma separated addresses or subnets, or REMOTE_ADDR to trust the connecting proxy (e.g. Varnish on Platform.sh).
 # Symfony's own default reads SYMFONY_TRUSTED_PROXIES, which this project does not set.
+# Symfony 5.4 accepts only a string here: the env() default below keeps it one when TRUSTED_PROXIES
+# is not set (an empty value trusts no proxy). The default:: processor would make it string|array.
+parameters:
+    env(TRUSTED_PROXIES): ''
+
 framework:
-    trusted_proxies: '%env(default::TRUSTED_PROXIES)%'
+    trusted_proxies: '%env(TRUSTED_PROXIES)%'
     trusted_headers: ['x-forwarded-for', 'x-forwarded-proto', 'x-forwarded-port']
