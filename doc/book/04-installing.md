@@ -168,16 +168,21 @@ Notes per line:
   `DATABASE_URL` with a demo database name and password; your `.env.local` must override it. `.env` also sets
   `APP_ENV=dev` and a placeholder `APP_SECRET`.
 - **4.6.x and 5.x.** Flex writes the recipe's variables into `.env` (`SEARCH_ENGINE`, `CACHE_POOL`,
-  `HTTPCACHE_PURGE_SERVER`, `DATABASE_CHARSET`, `DATABASE_COLLATION`, `DATABASE_VERSION`, `SOLR_DSN`, ...). The
+  `HTTPCACHE_PURGE_SERVER`, `DATABASE_CHARSET`, `DATABASE_COLLATION`, `DATABASE_VERSION`, `SOLR_DSN`, ...); on 5.x
+  since `v5.0.3.2` the shipped `.env` already carries them, with the placeholder
+  `JWT_PASSPHRASE=ThisTokenIsNotSoSecretChangeIt`, and `.env.dev` the same placeholder for `APP_SECRET`: set real
+  values for both in `.env.local`. The
   installation guides also show separate `DATABASE_HOST`, `DATABASE_USER` and similar variables and say `DATABASE_URL` is
   derived from them; check `config/packages/doctrine.yaml` in your project to see which form it reads. Setting
   `DATABASE_URL` in `.env.local` works for the Doctrine recipe's `url: '%env(resolve:DATABASE_URL)%'`.
 - **SQLite on 4.6.x and 5.x.** The guides add `MESSENGER_TRANSPORT_DSN=sync://` so that Symfony Messenger does not need
   a second database connection.
 - **`APP_ENV` under Apache.** A server variable wins over `.env.local`. The `public/.htaccess` of `v3.3.44.7` and of
-  the 4.6.x and 5.x recipe sets `APP_ENV=dev` for every request, so the value you write here is ignored by the web
-  server until that line is removed. The 3.x branch removed it (commit `66f13e1`, released in `v3.3.44.8`); for
-  the recipe, chapter 6, [6.2.1](06-serving-the-site.md#621-shipped-files-to-check-before-production), shows the fix.
+  the 4.6.x and 5.x recipe as it was until 2026-10-05 sets `APP_ENV=dev` for every request, so the value you write
+  here is ignored by the web server until that line is removed. The 3.x branch removed it (commit `66f13e1`, released
+  in `v3.3.44.8`), the recipe on 2026-10-05 (sevenx-recipes `e2a25bc`), and the `public/.htaccess` that 5.x ships since
+  `v5.0.3.2` has the line commented out; for a project created before, chapter 6,
+  [6.2.1](06-serving-the-site.md#621-shipped-files-to-check-before-production), shows the fix.
 - **`.env.local.php`.** For production, `composer dump-env prod` compiles the files into `.env.local.php`, which is
   faster to load ([Symfony documentation](https://symfony.com/doc/current/configuration.html#configuring-environment-variables-in-production)).
 
@@ -194,7 +199,7 @@ languages, content types) and clears the cache. Both kernels then work on that d
 | 2.5 | `php bin/console ezplatform:install clean` | `clean`; `exponential-oss` with `se7enxweb/ezpublish-kernel` 7.5.41 or later | `EzSystems\PlatformInstallerBundle` in `se7enxweb/ezpublish-kernel` |
 | 3.x | `php bin/console exponential:install exponential-oss` | `ibexa-oss` (default), `exponential-oss` | `se7enxweb/ezplatform-kernel` 1.3 (aliases `ibexa:install`, `ezplatform:install`); `exponential-oss` is `src/Installer/ExponentialOssInstaller.php` |
 | 4.6.x | `php bin/console exponential:install exponential-oss` | `ibexa-oss` (default), `exponential-oss` | the repository installer of the 4.6 core (aliases `ibexa:install`, `ezplatform:install`); `exponential-oss` comes from the recipe's `src/Installer/` |
-| 5.x | `php bin/console exponential:install exponential-oss` | `ibexa-oss` (default), `exponential-oss` | the repository installer of the 5.0 core; `exponential-oss` from the recipe |
+| 5.x | `php bin/console exponential:install exponential-oss` | `ibexa-oss` (default), `exponential-oss` | the repository installer of the 5.0 core; `exponential-oss` from the recipe (`src/Installer/`, shipped in the project since `v5.0.3.2`) |
 
 `exponential-oss` is the upstream "core" installer under the Exponential name. On SQLite it reads the project's own
 `data/sqlite/cleandata.sql` (3.x) because the vendor package has no SQLite seed; on the 2.5 line the README names it as
@@ -230,7 +235,7 @@ What can go wrong at this step:
 
 | Message | Cause | Fix |
 |---|---|---|
-| `Unknown install type 'exponential-oss'` | 2.5 with `se7enxweb/ezpublish-kernel` older than 7.5.41, or 4.6.x/5.x without the recipe's `src/Installer/` | `composer show se7enxweb/ezpublish-kernel`; on 2.5 use `clean`; on 4.6.x/5.x check that `config/services.yaml` registers `App\Installer\ExponentialOssInstaller` |
+| `Unknown install type 'exponential-oss'` | 2.5 with `se7enxweb/ezpublish-kernel` older than 7.5.41, or 4.6.x/5.x without the recipe's `src/Installer/` (5.x ships it since `v5.0.3.2`) | `composer show se7enxweb/ezpublish-kernel`; on 2.5 use `clean`; on 4.6.x/5.x check that `config/services.yaml` registers `App\Installer\ExponentialOssInstaller` |
 | `Command "exponential:install" is not defined` | 2.5 line: that name exists from 3.x on | `ezplatform:install` on 2.5 |
 | `SQLSTATE[HY000] [1045] Access denied` / `[2002] Connection refused` | wrong credentials or host in section 4.4, or the database server is not running | test the same values with `mysql -u db_user -p -h 127.0.0.1 exponential` |
 | `SQLSTATE[42000] ... Specified key was too long` | MySQL or MariaDB older than the line's minimum, or a database created with another character set | recreate the database as in section 4.3 on a supported server |
@@ -299,7 +304,7 @@ php bin/console list graphql                         # 4.6.x and 5.x: shows the 
 | 2.5 | `nvm use 14 && yarn install && yarn encore production`; the site's own SCSS: `node_modules/.bin/encore production --config-name app` | `web/assets/build/`, `web/assets/ezplatform/build/`, `web/assets/app/` |
 | 3.x | `nvm use && yarn install && yarn build:prod && yarn ez` | `public/assets/`, the Admin UI build |
 | 4.6.x, 5.x `v5.0.2` | `nvm use 20 && corepack enable && yarn install && yarn build && yarn ibexa:build` | `public/assets/`, the Admin UI build |
-| 5.x `v5.0.3.1` and branch | `nvm use 24 && npm install -g yarn@1.22.22 && yarn install && yarn build && yarn ibexa:build` | the same |
+| 5.x `v5.0.3.1`, `v5.0.3.2` and branch | `nvm use 24 && npm install -g yarn@1.22.22 && yarn install && yarn build && yarn ibexa:build` | the same |
 
 Then the JavaScript translations: `php bin/console bazinga:js-translation:dump web/assets --merge-domains` (2.5) or
 `... public/assets --merge-domains`. On 2.5 also `php bin/console assetic:dump --env=prod`.
@@ -373,7 +378,7 @@ guide; **change it at the first login**.
 |---|---|---|---|
 | 2.5 | `/admin/` | `/legacy_admin/` | `/` |
 | 3.x | `/adminui/` | `/legacy_admin/` | `/` |
-| 4.6.x, 5.x | `/admin/` per the recipe's `admin` siteaccess (the READMEs say `/adminui/`) | `/legacy_admin/` | `/`; the legacy front end at `/legacy_site/` |
+| 4.6.x, 5.x | `/admin/` per the recipe's `admin` siteaccess (the 4.6.x README says `/adminui/`; the 5.x guides say `/admin/` since `v5.0.3.2`) | `/legacy_admin/` | `/`; the legacy front end at `/legacy_site/` |
 
 The paths follow from the siteaccess names because all lines match siteaccesses by the first URL segment
 (`URIElement: 1`). To read them from your installation:
@@ -504,7 +509,7 @@ php bin/console lexik:jwt:generate-keypair
 php bin/console ezpublish:legacy:assets_install --symlink --relative public
 php bin/console ezpublish:legacybundles:install_extensions --relative
 php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php
-nvm use 20 && corepack enable && yarn install && yarn build && yarn ibexa:build   # 5.x branch: nvm use 24, see 4.8
+nvm use 20 && corepack enable && yarn install && yarn build && yarn ibexa:build   # 5.x v5.0.3.1 on: nvm use 24, see 4.8
 php bin/console bazinga:js-translation:dump public/assets --merge-domains
 P="var public/var ezpublish_legacy/var src/LegacyRoot/var/site/storage"
 sudo setfacl -R -m u:www-data:rwX -m u:"$USER":rwX $P

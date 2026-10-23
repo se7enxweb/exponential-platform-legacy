@@ -102,8 +102,8 @@ table, then check your own copy with the commands below it.
 | `web/app_dev.php` (2.5) | the check that only allows the local machine is commented out, so anyone gets `dev` with debugging | the check is active: requests from `127.0.0.1`, `::1` or the PHP built-in server pass, others get `403 You are not allowed to access this file`; `SYMFONY_DEV_ALLOW_REMOTE=1` in the server's environment opens it on a development server (`d924ceb`, `v2.5.0.4`) | delete the file on production servers, or take the branch's file; never set `SYMFONY_DEV_ALLOW_REMOTE` in production |
 | `web/app.php` (2.5) | starts with `ini_set('display_errors', 'On')` for every request | sets nothing at the top; with debugging off it switches `display_errors` and `display_startup_errors` off (`7605f57`, `v2.5.0.4`) | take the branch's file; errors belong in the log ([chapter 13](13-security-hardening.md)) |
 | `public/.htaccess` (3.x) | `v3.3.44.7`: `SetEnvIf Request_URI ".*" APP_ENV=dev`, so every request under Apache runs in `dev` whatever `.env.local` says | the line is commented out and set to `prod`; the environment comes from the server, `.env.local` or `.env` (`66f13e1`, `v3.3.44.8`) | delete the line, or change it to `APP_ENV=prod` |
-| `public/.htaccess` (4.6.x, 5.x, from the Flex recipe) | `SetEnvIf Request_URI ".*" APP_ENV=dev` | unchanged: the recipe has not been corrected yet | delete the line, or change it to `APP_ENV=prod`; the recipe does not overwrite your file on later updates |
-| Legacy INI files of the 4.6.x and 5.x recipe (slots 1.2 and 1.4) | `[DebugSettings] DebugOutput=enabled`: slot 1.2 in `src/ezpublish_legacy/app/settings/siteaccess/legacy_site/site.ini.append.php`, slot 1.4 in that file, in `.../siteaccess/site/site.ini.append.php` and in the global `src/LegacySettings/override/site.ini.append.php` (which also sets `ShowUsedTemplates=enabled`) | unchanged; a recipe correction is pending | set `DebugOutput=disabled` (and `ShowUsedTemplates=disabled`) in those files: the legacy kernel then stops appending its debug report, with SQL, timings and file paths, to pages |
+| `public/.htaccess` (4.6.x, 5.x, from the Flex recipe) | the recipe until 2026-10-05: `SetEnvIf Request_URI ".*" APP_ENV=dev` | the recipe since 2026-10-05 (sevenx-recipes `e2a25bc`) and the file 5.x ships since `v5.0.3.2` (`1482686`): the line is commented out and set to `prod`, the environment comes from the server, `.env.local` or `.env` | delete the line, or change it to `APP_ENV=prod`; the recipe does not overwrite your file on later updates |
+| Legacy INI files of the 4.6.x and 5.x recipe (slots 1.2 and 1.4) | the recipe until 2026-10-05: the global override `src/LegacySettings/override/site.ini.append.php` (and its copy `src/ezpublish_legacy/app/root/settings/override/`) sets `[DebugSettings] DebugOutput=enabled` and `ShowUsedTemplates=enabled`; the siteaccess files `.../siteaccess/legacy_site/site.ini.append.php` (and on slot 1.4 `.../siteaccess/site/`) set them as well | the recipe since 2026-10-05 (sevenx-recipes `2ae3af3`) and the files 5.x ships since `v5.0.3.2`: the override sets both to `disabled`; the siteaccess files still say `enabled`, but the override is read last and wins | in a project from before, set `DebugOutput=disabled` (and `ShowUsedTemplates=disabled`) in the override file: the legacy kernel then stops appending its debug report, with SQL, timings and file paths, to pages |
 | `doc/nginx/media-site.conf` (3.x) | `fastcgi_param APP_ENV dev;` and a PHP 7.3 socket | unchanged | `prod` and your PHP-FPM socket |
 
 Why this matters: in `dev` Symfony shows full stack traces with configuration values, enables the web profiler where
@@ -120,14 +120,16 @@ grep -n -E '^/\*|^\*/|REMOTE_ADDR' web/app_dev.php
 grep -n "display_errors" web/app.php
 # 3.x, 4.6.x, 5.x: no line may force dev
 grep -n -E '^[^#]*APP_ENV=dev' public/.htaccess
-# 4.6.x, 5.x: the legacy debug report must be off
-grep -rn -E '^(DebugOutput|ShowUsedTemplates)=enabled' src/LegacySettings src/ezpublish_legacy/app/settings
+# 4.6.x, 5.x: the legacy debug report must be off in the global override, which wins over the siteaccess files
+grep -n -E '^(DebugOutput|ShowUsedTemplates)=' src/LegacySettings/override/site.ini.append.php
 ```
 
 Expected on a corrected 2.5 project: the last `.htaccess` line printed is `RewriteRule ^(.*)$ app.php [QSA,L]`;
 `app_dev.php` prints only the `REMOTE_ADDR` line, without the `/*` and `*/` lines around it that commented the check
 out in `v2.5.0.3`; `app.php` prints only `ini_set('display_errors', '0');`. Expected on the newer lines: no output from
-the last two commands. And from outside, against the live site:
+the `APP_ENV` command, and `DebugOutput=disabled` and `ShowUsedTemplates=disabled` from the last one (a 5.x project
+from `v5.0.3.2` on has both as shipped; its siteaccess files still say `enabled`, which the override replaces). And
+from outside, against the live site:
 
 ```bash
 curl -s -o /dev/null -w '%{http_code}\n' https://example.com/app_dev.php/        # 2.5: 403 (or 404 if deleted)

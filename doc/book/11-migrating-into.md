@@ -185,7 +185,7 @@ legacy kernel finds its shop, workflow, collaboration and notification tables mi
    explains (on 5, the installer of a fresh project does this itself; on a migrated 5 database do it by hand with
    `CREATE TABLE IF NOT EXISTS`).
 3. **On a 5.0 database**, the translator extension must be the first entry of `ActiveExtensions[]`; the 5 line's
-   recipe writes it there, and a hand-made override must do the same
+   recipe writes it there (and the 5.x project ships that override since `v5.0.3.2`), and a hand-made override must do the same
    ([10.6](10-upgrading-between-lines.md#106-from-33-to-46-and-from-46-to-5)). If the 5.0 database stores the new
    datatype identifiers (`ibexa_string` and the like), chapter 16.6.3 of the Exponential 6 book shows how to set
    them back; the translator also rewrites them in queries.

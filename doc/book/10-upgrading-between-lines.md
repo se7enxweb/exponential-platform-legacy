@@ -29,26 +29,27 @@ where the upstream documentation has to be followed instead.
 | | 2.5 | 3.3 | 4.6 | 5 |
 |---|---|---|---|---|
 | Branch | `master` | `3.x` | `4.6.x` | `5.x` |
-| Tags | `v2.5.0.0` to `v2.5.0.4` | `v3.0.0.0` to `v3.0.0.14`, `v3.3.44.0` to `v3.3.44.8` | `v4.6.23.0` to `v4.6.23.3` | `v5.0.0` to `v5.0.2`, `v5.0.3.1` (and see the note on `v5.0.3`) |
-| Composer constraint for a new project | `dev-master` (alias `2.5.x-dev`) or `v2.5.0.4` | `3.x-dev` or `v3.3.44.8` | `4.6.x-dev` or `v4.6.23.3` | `5.x-dev` or `v5.0.3.1` |
+| Tags | `v2.5.0.0` to `v2.5.0.4` | `v3.0.0.0` to `v3.0.0.14`, `v3.3.44.0` to `v3.3.44.8` | `v4.6.23.0` to `v4.6.23.3` | `v5.0.0` to `v5.0.2`, `v5.0.3.1`, `v5.0.3.2` (and see the note on `v5.0.3`) |
+| Composer constraint for a new project | `dev-master` (alias `2.5.x-dev`) or `v2.5.0.4` | `3.x-dev` or `v3.3.44.8` | `4.6.x-dev` or `v4.6.23.3` | `5.x-dev` or `~5.0.3.2` (`v5.0.3.2`) |
 | PHP (`composer.json`) | `^7.1.3 \|\| ^8.1 \|\| ^8.2` | `^8.0` | `^7.4` to `^8.5` (the bridge `^4.0.0.0` itself needs `^8.0`) | `>=8.3` (the bridge `^5.0.0.0` needs `^8.4`, so 8.4 in practice) |
 | Symfony | 3.4 (`se7enxweb/symfony ^3.4.50`) | 5.4 | 5.4 | 7.x (`symfony/runtime ^7.3`; the bridge requires `symfony/framework-bundle ^7.4`) |
 | Platform kernel | `se7enxweb/ezpublish-kernel ~7.5.33` | `se7enxweb/ezplatform-kernel ~1.3.43`, `se7enxweb/oss ~3.3.0.0` | `se7enxweb/exponential-platform-dxp 4.6.x-LB-dev` (kernel `se7enxweb/exponential-platform-dxp-core`) | `se7enxweb/exponential-platform-dxp dev-5.x-LB` |
-| Bridge (`se7enxweb/legacy-bridge`) | `^2.1` (`v2.1.10` to `v2.1.12`) | `^3.0.0.35` (to `v3.0.0.37`) | `^4.0.0.0` (`v4.0.0.0` to `v4.0.0.3`) | `^5.0.0.0` (`v5.0.0.0`, `v5.0.1` to `v5.0.10`) |
+| Bridge (`se7enxweb/legacy-bridge`) | `^2.1` (`v2.1.10` to `v2.1.12`) | `^3.0.0.35` (to `v3.0.0.37`) | `^4.0.0.0` (`v4.0.0.0` to `v4.0.0.3`) | `^5.0.0.0` (`v5.0.0.0`, `v5.0.1` to `v5.0.12`; the lock of `v5.0.3.2` pins the `5.x` commit tagged `v5.0.12`) |
 | Legacy kernel | `se7enxweb/exponential ^6.0.12` | `^6.0.12` (through the bridge) | `dev-main` (through the bridge) | `dev-main` (through the bridge) |
 | Console | `bin/console` | `bin/console` | `bin/console` | `bin/console` |
-| Configuration | `app/config/*.yml`, `parameters.yml` | `config/`, `.env`, `.env.local` | `config/` from the Flex recipe, slot `1.2` ([8.9](08-configuration.md#89-where-the-files-are-line-by-line)) | `config/` from the Flex recipe, slot `1.4` |
-| Newest release (2026-10-05) | [`v2.5.0.4`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v2.5.0.4) | [`v3.3.44.8`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v3.3.44.8) | [`v4.6.23.3`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v4.6.23.3) | [`v5.0.3.1`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v5.0.3.1) |
+| Configuration | `app/config/*.yml`, `parameters.yml` | `config/`, `.env`, `.env.local` | `config/` from the Flex recipe, slot `1.2` ([8.9](08-configuration.md#89-where-the-files-are-line-by-line)) | `config/` from the Flex recipe, slot `1.4`; in git with `symfony.lock` and `composer.lock` since `v5.0.3.2` |
+| Newest release (2026-10-05; 5: 2026-10-23) | [`v2.5.0.4`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v2.5.0.4) | [`v3.3.44.8`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v3.3.44.8) | [`v4.6.23.3`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v4.6.23.3) | [`v5.0.3.2`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v5.0.3.2) (before it `v5.0.3.1`) |
 | Web root | `web/` | `public/` | `public/` | `public/` |
 | Page building | none | none | Netgen Layouts `^1.4` | Netgen Layouts `^2.0` |
 | Table names | `ez*` | `ez*` | `ez*` | `ibexa_*`; the legacy kernel reads them through `sevenx_exponential_platform_v5_database_translator` |
 
-The 4.6.x and 5.x branches of this repository hold little more than `composer.json`, the README and the install guide:
-4.6.x adds `config/packages/trusted_proxies.yaml`, 5.x the same file plus `config/services.yaml`,
-`config/packages/lexik_jwt_authentication.yaml` and the front-end build files (`package.json`, `webpack.config.js`,
-`yarn.lock`). The rest of the project (`config/`, `src/`, `bin/install-legacy-links`) is written by the Flex recipe in
-[se7enxweb/sevenx-recipes](https://github.com/se7enxweb/sevenx-recipes) when Composer installs
-`se7enxweb/exponential-platform-dxp` (Flex leaves a file alone that the project already has).
+The 4.6.x branch of this repository holds little more than `composer.json`, the README, the install guide and
+`config/packages/trusted_proxies.yaml`; the rest of the project (`config/`, `src/`, `bin/install-legacy-links`) is
+written by the Flex recipe in [se7enxweb/sevenx-recipes](https://github.com/se7enxweb/sevenx-recipes) when Composer
+installs `se7enxweb/exponential-platform-dxp` (Flex leaves a file alone that the project already has). The 5.x branch
+did the same up to `v5.0.3.1` (with `config/services.yaml`, `config/packages/lexik_jwt_authentication.yaml` and the
+front-end build files in git); since `v5.0.3.2` it carries every file the recipes create, `symfony.lock` and
+`composer.lock` (commits `1482686`, `91ebb2f`), so a 5 project is installed from the lock and Flex applies no recipe.
 
 **What the releases of 2026-10-05 contain.** The fixes committed on 5 October 2026 reached a tagged version the same
 day, in the release of each line (table above): [`v2.5.0.4`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v2.5.0.4) for 2.5, [`v3.3.44.8`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v3.3.44.8) for 3.x, [`v4.6.23.3`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v4.6.23.3) for 4.6 and [`v5.0.3.1`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v5.0.3.1)
@@ -70,7 +71,7 @@ do not:
 | 3.x, 4.6, 5 | listed in [chapter 1](01-introduction.md#fixes-released-on-2026-10-05) | the branch guides and READMEs: legacy commands that exist, cronjobs through the bridge, cloning over HTTPS on the line's own branch, `CREATE USER` before `GRANT`, the 4.6.x Admin UI build script, the 5.x INI order and version constraint, `security@se7enx.com` |
 
 An existing project does not receive changes to files that Composer does not own (`web/`, `public/.htaccess`,
-`config/`): after updating, apply them to your copy by hand, using the commit as the recipe.
+`config/`): after updating, apply them to your copy by hand, using the commit as the recipe. What the 5.x release of 2026-10-23 (`v5.0.3.2`) changed is listed in chapter 1, [The 5.x release of 2026-10-23](01-introduction.md#the-5x-release-of-2026-10-23).
 
 The older `1.x` and `2.0`/`2.2` branches are the upstream `ezsystems/ezplatform-legacy` history (Symfony 2.8, kernel
 6.13 on `1.13`); they are not maintained and are not covered here.
@@ -85,7 +86,7 @@ to the 5 line again; naming `5.0.3` exactly still installs 2.5. Always name the 
 
 ```bash
 composer create-project se7enxweb/exponential-platform-legacy:5.x-dev my-site    # the 5 line, branch head
-composer create-project se7enxweb/exponential-platform-legacy:~5.0.3.1 my-site  # the 5 line, v5.0.3.1 and later 5.0.3.x
+composer create-project se7enxweb/exponential-platform-legacy:~5.0.3.2 my-site  # the 5 line, v5.0.3.2 and later 5.0.3.x
 composer create-project se7enxweb/exponential-platform-legacy:~2.5.0.4 my-site   # the 2.5 line (v2.5.0.4)
 ```
 
@@ -123,6 +124,20 @@ The line's Composer scripts then link the legacy kernel's assets and extensions 
 (2.5: `legacy-scripts`; 3.x and later: `auto-scripts` plus `project-scripts`, with `php bin/install-legacy-links` on
 4.6 and 5). Afterwards apply the legacy kernel's database update if the kernel version moved ([10.7](#107-the-legacy-kernel-inside-every-line))
 and clear both sides' caches ([9.1](09-operations.md#91-caches-on-both-sides)).
+
+A 5 project created from `v5.0.3.2` or later starts from the `composer.lock` the release shipped, so its first
+`composer install` installs the tested versions and `composer update` is what moves them on. Test the site after an
+update (pages, the Platform and the legacy admin sign-in, editing and publishing) and commit the new `composer.lock`.
+Recipes are not updated by `composer update`: `composer recipes` lists those with a newer version and
+`composer recipes:update <package>` applies one, as a change to review like any other.
+
+`composer audit` lists the security advisories that affect the locked versions. On the lock of `v5.0.3.2` it reports
+one: `league/flysystem` is locked at `2.x-dev`, affected by CVE-2026-102601
+([GHSA-cxf4-7mrp-vvpr](https://github.com/advisories/GHSA-cxf4-7mrp-vvpr), low: the path normalizer's control-character
+check can be bypassed with malformed UTF-8), fixed in `3.35.3`. It cannot move yet:
+`se7enxweb/exponential-platform-dxp-core` requires `league/flysystem-memory ^2.0.6`, which requires
+`league/flysystem ^2`, and no 2.x release carries the fix. The update becomes possible once the core allows
+`league/flysystem-memory` 3.
 
 On the 2.5 line older documents of this repository recommend `--ignore-platform-reqs` for every install. Use it only
 when Composer reports a platform requirement you have checked is irrelevant; it also hides real problems such as a
@@ -242,7 +257,7 @@ here is what differs for Exponential Platform Legacy.
   PostgreSQL and SQLite drivers and rewrites every query (95 table and column mappings, for example `ezuser` to
   `ibexa_user`, `ezsite_data` to `ibexa_site_data`). It works only when it is in `ActiveExtensions[]`, **first** in
   the list, because it replaces the driver aliases before any other extension opens a connection. A 5 project gets
-  this from its recipe: Flex writes it from the `sevenx-recipes` folder `1.4` (the branch `5.x-LB` of
+  this from its recipe (since `v5.0.3.2` the project ships the file as that recipe wrote it): Flex writes it from the `sevenx-recipes` folder `1.4` (the branch `5.x-LB` of
   `se7enxweb/exponential-platform-dxp` is aliased `1.4.x-dev`), whose `src/LegacySettings/override/site.ini.append.php`
   starts the list with the translator. Check your copy:
 

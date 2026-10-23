@@ -144,8 +144,9 @@ from the configuration the skeleton or its Symfony Flex recipe installs.
 | | **2.5** | **3.x** | **4.6.x** | **5.x** |
 |---|---|---|---|---|
 | Branch | `master` | `3.x` | `4.6.x` | `5.x` |
-| Newest release of the line (2026-10-05) | [`v2.5.0.4`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v2.5.0.4) | [`v3.3.44.8`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v3.3.44.8) | [`v4.6.23.3`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v4.6.23.3) | [`v5.0.3.1`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v5.0.3.1) (read [the note on v5.0.3](#the-tag-v503)) |
-| Release before it | `v2.5.0.3` | `v3.3.44.7` | `v4.6.23.2` | `v5.0.2` |
+| Newest release of the line (2026-10-05; 5.x: 2026-10-23) | [`v2.5.0.4`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v2.5.0.4) | [`v3.3.44.8`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v3.3.44.8) | [`v4.6.23.3`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v4.6.23.3) | [`v5.0.3.2`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v5.0.3.2) (read [the note on v5.0.3](#the-tag-v503)) |
+| Release before it | `v2.5.0.3` | `v3.3.44.7` | `v4.6.23.2` | `v5.0.3.1` (2026-10-05; before it `v5.0.2`) |
+| Project files and lock | in the branch, no `composer.lock` | in the branch, no `composer.lock` | `composer.json` and a few `config/` files in the branch; Symfony Flex writes the recipe files during the install | in the branch with `composer.lock` and `symfony.lock` since `v5.0.3.2`: installed from the lock, Flex applies no recipe |
 | Symfony | 3.4 LTS (`se7enxweb/symfony ^3.4.50`) | 5.4 LTS (`se7enxweb/symfony 5.4.x-dev`, `symfony/framework-bundle 5.4.*`) | 5.4 LTS (`extra.symfony.require ^5.3`; LegacyBridge 4 requires `^5.4`) | 7.4 (`se7enxweb/exponential-platform-dxp` and LegacyBridge 5 require `symfony/framework-bundle ^7.4`) |
 | Platform new stack | `se7enxweb/ezpublish-kernel ~7.5.33` | `se7enxweb/oss ~3.3.0.0`, `se7enxweb/ezplatform-kernel ~1.3.43` | `se7enxweb/exponential-platform-dxp 4.6.x-LB-dev` | `se7enxweb/exponential-platform-dxp dev-5.x-LB` |
 | Upstream it was built from | eZ Platform 2.5 | Ibexa OSS 3.3 | Ibexa DXP 4.6 (OSS) | Ibexa DXP 5.0 (OSS) |
@@ -169,9 +170,10 @@ constraint is the widest statement; a required package can narrow it. On the 2.5
 `^7.1.3`, but the legacy kernel releases it resolves to need PHP 8.1, so PHP 7 cannot install it. On the 5.x line the
 skeleton says `>=8.3`, but every LegacyBridge 5 release needs 8.4. [Chapter 2](02-requirements.md) has the details.
 
-The admin paths of 4.6.x and 5.x: the READMEs of both branches name `/adminui/`. The configuration their Flex recipe
-installs (`config/packages/ibexa_admin_ui.yaml` and `config/packages/ibexa.yaml` in
-[se7enxweb/sevenx-recipes](https://github.com/se7enxweb/sevenx-recipes)) defines the admin siteaccess as `admin` with
+The admin paths of 4.6.x and 5.x: the README of 4.6.x names `/adminui/`; the 5.x guides name `/admin/` since commit
+`9eb0f78` (released in `v5.0.3.2`). The configuration of the Flex recipe (`config/packages/ibexa_admin_ui.yaml` and
+`config/packages/ibexa.yaml` in [se7enxweb/sevenx-recipes](https://github.com/se7enxweb/sevenx-recipes); on 5.x the
+same files are committed in the project since `v5.0.3.2`) defines the admin siteaccess as `admin` with
 `URIElement: 1` matching, which puts it at `/admin/`. Check your installation with
 `php bin/console debug:config ibexa siteaccess` ([chapter 4](04-installing.md#410-first-login)).
 
@@ -204,9 +206,29 @@ in the release of its line.
 | 3.x | `ef13795` | the comments in `.env`, `.platform.app.yaml` and the guide say what reads `TRUSTED_PROXIES` | 6.8 |
 | 3.x, 4.6.x, 5.x | 3.x `e278fde`, `f557295`, `9b626bc`; 4.6.x `4edf8a6`, `058646c`, `71fec70`, `eb63593`, `b24357c`, `01ab64b`, `a34bbc0`; 5.x `c85428c`, `54f90fb`, `dc4080b`, `58287e0`, `609d482`, `4989924`, `aad93de` | the branch guides and READMEs: legacy commands that exist instead of `ezpublish:legacy:clear-cache` and `ezpublish:legacy:generate-autoloads`; legacy cronjobs through the bridge; cloning over HTTPS and checking out the line's own branch; `CREATE USER` before `GRANT`; `yarn ibexa:build` instead of 4.6.x's `yarn ez`; the legacy INI order of the 5.x guide; an explicit `~5.0.3.1` in the 5.x `create-project`; `security@se7enx.com` and the same `SECURITY.md` as `master` on every branch | [3.5](03-getting-the-code.md#35-cloning-a-branch-with-git), [4.6](04-installing.md#46-wire-up-the-legacy-kernel) |
 
-Two things the corrections do **not** cover yet: the `public/.htaccess` that the Flex recipe installs on 4.6.x and
-5.x still forces `APP_ENV=dev`; and the same recipe (slots 1.2 and 1.4) switches the legacy kernel's debug report on
-(`DebugOutput=enabled`), a correction that is pending. Section 6.2.1 shows what to change in your project.
+Two things these releases did **not** cover: the `public/.htaccess` that the Flex recipe installed on 4.6.x and 5.x
+forced `APP_ENV=dev`, and the same recipe (slots 1.2 and 1.4) switched the legacy kernel's debug report on
+(`DebugOutput=enabled` in the override `site.ini.append.php`). The recipe was corrected later the same day
+(sevenx-recipes commits `e2a25bc` and `2ae3af3`): a 4.6.x project created since then gets the corrected files, and the
+5.x project ships them corrected since `v5.0.3.2` (below). A project created before keeps the old lines; section 6.2.1
+shows what to change.
+
+### The 5.x release of 2026-10-23
+
+[`v5.0.3.2`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v5.0.3.2) ("A fresh install works,
+from a composer.lock") changes how a 5.x project is created. Until `v5.0.3.1` the branch held only `composer.json`
+and a few configuration files, and Symfony Flex wrote the rest from the recipes during the install, with that day's
+branch heads of every dependency (`minimum-stability` is `dev`). From `v5.0.3.2` on the project ships:
+
+| Commit | What changed | Book section |
+|---|---|---|
+| `1482686` | the files the Flex recipes create (`bin/`, `public/`, `src/`, `config/`, `templates/`, `translations/`, `.env`, `.env.dev`), as a fresh install of 2026-10-23 wrote them, and `symfony.lock`, which records every recipe as installed; `.env` and `.env.dev` carry the placeholder `ThisTokenIsNotSoSecretChangeIt` instead of generated secrets | [3.4](03-getting-the-code.md#34-composer-create-project-per-line) |
+| `91ebb2f` | `composer.lock`: `create-project` and `composer install` install the tested versions ("Installing dependencies from lock file") and Flex applies no recipe | 3.4, [10.3](10-upgrading-between-lines.md#103-updating-within-a-line) |
+| `65d744f`, `c3f24a6` | the project requires `se7enxweb/site-legacy-bundle` and `se7enxweb/richtext-datatype-bundle`, generates the legacy autoloads before the cache is built, and imports the routes of Netgen Layouts, Tags and Information Collection itself | [4.6](04-installing.md#46-wire-up-the-legacy-kernel) |
+| `9eb0f78`, `6172acd` | the guides name `/admin/` and `/api/ibexa/v2/`, Node.js 24 throughout, `~5.0.3.2`, and the shipped lock files | [4.10](04-installing.md#410-first-login) |
+
+The shipped lock still pins `league/flysystem` 2.x, which `composer audit` reports
+([13.11](13-security-hardening.md#1311-keeping-up-to-date)).
 
 ### Which line is this project?
 
@@ -245,7 +267,7 @@ and you got the 2.5 line under a 5.x number. Its tree is `v2.5.0.3` plus one com
 controllers that the branch fixed later (see above). Published tags are never moved, so the tag stays as it is: the
 correction is to publish the next version, not to change this one. That version is [`v5.0.3.1`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v5.0.3.1), published on 2026-10-05
 on the 5.x branch: Composer compares `5.0.3.1` as greater than `5.0.3`, so an unconstrained `create-project` and
-`^5.0` reach the 5.x line again. Naming `5.0.3` exactly still installs the 2.5 line. Always name the line explicitly when you create a
+`^5.0` reach the 5.x line again (today `v5.0.3.2`, published on 2026-10-23). Naming `5.0.3` exactly still installs the 2.5 line. Always name the line explicitly when you create a
 project ([chapter 3](03-getting-the-code.md#34-composer-create-project-per-line)).
 
 ## 1.5 Which line to choose
@@ -260,8 +282,8 @@ project ([chapter 3](03-getting-the-code.md#34-composer-create-project-per-line)
 | You do not need the legacy kernel at all | not this product: Exponential Platform Nexus |
 
 Choose carefully, because the line decides the shape of the project: the 2.5 line keeps its configuration in `app/`
-and `parameters.yml`, the others in `config/` and `.env.local`, and the 4.6.x and 5.x lines take most of their files
-from a Flex recipe rather than from the branch. Moving later means moving that configuration by hand, upgrading the
+and `parameters.yml`, the others in `config/` and `.env.local`, and the 4.6.x line takes most of its files
+from a Flex recipe rather than from the branch (the 5.x line commits the files that recipe wrote, since `v5.0.3.2`). Moving later means moving that configuration by hand, upgrading the
 database schema of the new stack and rebuilding the front-end assets. The legacy kernel, its extensions, designs and INI
 settings move almost unchanged, because every line runs the same Exponential 6 kernel.
 
@@ -316,7 +338,7 @@ line.
 | **INI override** | A file `*.ini.append.php` in `ezpublish_legacy/settings/override/` or `settings/siteaccess/<name>/` that changes legacy settings |
 | **Legacy extension** | A directory in `ezpublish_legacy/extension/` with settings, templates, modules or datatypes for the legacy kernel |
 | **Install type** | The data set the platform installer loads: `clean`, `ibexa-oss`, `exponential-oss` |
-| **Flex recipe** | Files Symfony Flex copies into a project when a package is installed; the 4.6.x and 5.x skeletons get most of their files this way |
+| **Flex recipe** | Files Symfony Flex copies into a project when a package is installed; the 4.6.x skeleton gets most of its files this way; the 5.x skeleton ships the files they wrote, recorded in `symfony.lock`, so Flex applies no recipe on install |
 | **Exponential Velocity** | The application server that accepts HTTP and HTTPS itself and runs PHP in persistent workers ([chapter 6](06-serving-the-site.md)) |
 
 ## 1.9 References
@@ -339,7 +361,7 @@ External:
 - The Exponential 6 book: [Installing and running Exponential 6.0](https://github.com/se7enxweb/exponential/blob/main/doc/install/README.md),
   in particular [1. Introduction](https://github.com/se7enxweb/exponential/blob/main/doc/install/01-introduction.md)
 - LegacyBridge: [github.com/se7enxweb/LegacyBridge](https://github.com/se7enxweb/LegacyBridge) (Composer package `se7enxweb/legacy-bridge`)
-- The Flex recipes of the 4.6.x and 5.x lines: [github.com/se7enxweb/sevenx-recipes](https://github.com/se7enxweb/sevenx-recipes)
+- The Flex recipes of the 4.6.x and 5.x lines (5.x ships their files since `v5.0.3.2`): [github.com/se7enxweb/sevenx-recipes](https://github.com/se7enxweb/sevenx-recipes)
   (slots `se7enxweb/exponential-platform-dxp/1.2` for 4.6.x and `1.4` for 5.x)
 - GitHub releases: [all releases](https://github.com/se7enxweb/exponential-platform-legacy/releases),
   [the v5.0.3 release notes](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v5.0.3);

@@ -96,7 +96,8 @@ The Composer script `installIniSettings` of LegacyBridge 3 also copies the bridg
 
 ### 5.3.3 The 4.6.x and 5.x lines: links into src/
 
-`bin/install-legacy-links` (from the recipe, run by Composer on every install and update) replaces parts of
+`bin/install-legacy-links` (from the recipe, shipped in the 5.x project since `v5.0.3.2`, run by Composer on every
+install and update) replaces parts of
 `ezpublish_legacy/` with relative symbolic links into `src/`:
 
 | Link in `ezpublish_legacy/` | Points to | What lives there |
@@ -107,7 +108,8 @@ The Composer script `installIniSettings` of LegacyBridge 3 also copies the bridg
 | `var/site/storage` | `src/LegacyRoot/var/site/storage` | uploaded files, so they survive a reinstall of the kernel |
 
 It also links seven INI files of `legacy_admin` (`content`, `contentstructuremenu`, `dashboard`, `design`, `image`,
-`override`, `toolbar`) to the same files of `ngadminui`, because a Flex recipe cannot carry symbolic links. The script
+`override`, `toolbar`) to the same files of `ngadminui`, because a Flex recipe cannot carry symbolic links (the 5.x
+project commits the same seven links since `v5.0.3.2`, commit `1482686`; the script finds them in place). The script
 replaces existing links and **skips** a path that is a real file or directory, printing
 `SKIP (real path exists, not a symlink)`. If a link is missing after an update, look for that line.
 
@@ -444,7 +446,9 @@ In this repository:
   [config/app/packages/ezpublish_siteaccess.yaml](https://github.com/se7enxweb/exponential-platform-legacy/blob/3.x/config/app/packages/ezpublish_siteaccess.yaml),
   [the injected settings bundle](https://github.com/se7enxweb/exponential-platform-legacy/tree/3.x/src/ExponentialPlatformLegacyInjectedSettings)
 - 4.6.x and 5.x recipe: [bin/install-legacy-links](https://github.com/se7enxweb/sevenx-recipes/blob/master/se7enxweb/exponential-platform-dxp/1.4/bin/install-legacy-links),
-  [config/packages/ez_publish_legacy.yaml](https://github.com/se7enxweb/sevenx-recipes/blob/master/se7enxweb/exponential-platform-dxp/1.4/config/packages/ez_publish_legacy.yaml)
+  [config/packages/ez_publish_legacy.yaml](https://github.com/se7enxweb/sevenx-recipes/blob/master/se7enxweb/exponential-platform-dxp/1.4/config/packages/ez_publish_legacy.yaml);
+  the 5.x project ships them since `v5.0.3.2`: [bin/install-legacy-links](https://github.com/se7enxweb/exponential-platform-legacy/blob/5.x/bin/install-legacy-links),
+  [config/packages/ez_publish_legacy.yaml](https://github.com/se7enxweb/exponential-platform-legacy/blob/5.x/config/packages/ez_publish_legacy.yaml)
 
 External:
 

@@ -6,7 +6,8 @@ must never hand out, the secrets and where they come from, debug output, the two
 and form tokens, trusted proxies on both sides (including the legacy kernel's `TrustedProxies[]` of Exponential
 6.0.15), headers and HTTPS, file permissions and keeping up to date. Several defaults in the published releases are
 development settings; most were corrected on the branches on 5 October 2026 and published the same day in the releases
-`v2.5.0.4`, `v3.3.44.8`, `v4.6.23.3` and `v5.0.3.1`; the 4.6 and 5 recipes still carry two of them. Each is named here, with the commit that corrects it and
+`v2.5.0.4`, `v3.3.44.8`, `v4.6.23.3` and `v5.0.3.1`; the two the 4.6 and 5 recipes carried were corrected in the recipes
+later that day, and the 5.x project ships the corrected files since `v5.0.3.2` (2026-10-23). Each is named here, with the commit that corrects it and
 the change an existing site needs, because files outside `vendor/` are not updated by Composer.
 
 [Previous: 12. Troubleshooting](12-troubleshooting.md) · [Contents](README.md)
@@ -159,10 +160,10 @@ cookies and the CSRF tokens of Symfony forms. A known value lets anyone forge th
 | 2.5 `web/app.php` | up to `v2.5.0.3`: `ini_set('display_errors', 'On')` and `ini_set('display_startup_errors', 1)` at the top; from `7605f57` on `master` (`v2.5.0.4`): error display switched off whenever debugging is off | the `master` file; set `display_errors=Off` in the PHP-FPM pool as well |
 | 2.5 environment | `SYMFONY_ENV` unset means `prod`, but up to `v2.5.0.3` the committed `.htaccess` routes to `app_dev.php`, which forces `dev` (corrected in `fa091cd`, released in `v2.5.0.4`, [13.2](#132-what-the-web-server-must-never-hand-out)) | `prod`, `SYMFONY_DEBUG` unset or `0` |
 | 3.x `public/.htaccess` | up to `v3.3.44.7`: `SetEnvIf Request_URI ".*" APP_ENV=dev`, which beats `.env.local`; from `66f13e1` on the `3.x` branch (`v3.3.44.8`): commented out | not forced in `.htaccess` |
-| 4.6 and 5 `public/.htaccess` (written by the recipe) | `SetEnvIf Request_URI ".*" APP_ENV=dev`: every request through Apache runs in `dev`, whatever `.env.local` says. A correction of the recipes is pending the maintainers' approval | comment the line out, or set it to `prod` |
+| 4.6 and 5 `public/.htaccess` (written by the recipe) | the recipe until 2026-10-05: `SetEnvIf Request_URI ".*" APP_ENV=dev`, so every request through Apache runs in `dev`, whatever `.env.local` says; commented out in the recipe since sevenx-recipes `e2a25bc` (2026-10-05) and in the file 5.x ships since `v5.0.3.2` | comment the line out, or set it to `prod` |
 | 3.x and later `.env` | `APP_ENV=dev` in the committed `.env` | `APP_ENV=prod`, `APP_DEBUG=0` in `.env.local` or the environment |
 | Legacy kernel, 2.5 and 3.x | master's override has `DebugOutput` and `Debug` commented out | keep `[DebugSettings] DebugOutput=disabled`; limit `DebugByIP` to your own addresses if you need it |
-| Legacy kernel, 4.6 and 5 | the recipe's `src/LegacySettings/override/site.ini.append.php` has `[DebugSettings] DebugOutput=enabled` | set `DebugOutput=disabled` there |
+| Legacy kernel, 4.6 and 5 | the recipe's `src/LegacySettings/override/site.ini.append.php` had `[DebugSettings] DebugOutput=enabled` until 2026-10-05; `disabled` since sevenx-recipes `2ae3af3` and in the file 5.x ships since `v5.0.3.2` (the siteaccess files still say `enabled`; the override wins) | set `DebugOutput=disabled` there |
 
 Why the `.htaccess` line matters more than `.env.local`: Symfony's Dotenv never overwrites a variable that the web
 server already set, and `SetEnvIf` sets one. The console does not read `.htaccess`, so `php bin/console about`
@@ -344,7 +345,11 @@ ACLs, as the README's `setfacl` lines do), never as root: root-owned cache files
   of [se7enxweb/exponential](https://github.com/se7enxweb/exponential) (legacy kernel security fixes, such as the
   6.0.15 trusted proxies change).
 - `composer audit` lists known advisories for the installed packages; the 2.5 line also runs the SensioLabs security
-  checker in its Composer scripts (`bin/security-checker security:check`).
+  checker in its Composer scripts (`bin/security-checker security:check`). On the 5 line, whose releases ship a
+  `composer.lock` since `v5.0.3.2`, run it after each `composer update` and before you commit the new lock. The lock of
+  `v5.0.3.2` has one known advisory: `league/flysystem` `2.x-dev`, CVE-2026-102601
+  ([GHSA-cxf4-7mrp-vvpr](https://github.com/advisories/GHSA-cxf4-7mrp-vvpr), low), fixed only in `3.35.3`, which the
+  platform core cannot use yet ([10.3](10-upgrading-between-lines.md#103-updating-within-a-line)).
 - Read the legacy kernel's own hardening chapter for what is inside it: passwords and sign-in lockout, the audit log,
   mail consent (Exponential 6 book, chapter 13).
 

@@ -77,7 +77,7 @@ Three consequences follow, and they explain most database trouble in this distri
    that goes through the bridge. The overrides the distribution ships accordingly carry no connection: the
    `[DatabaseSettings]` block of master's `ezpublish_legacy/settings/override/site.ini.append.php` has
    `Charset=utf8mb4` and two commented SQLite lines; the one in `src/LegacySettings/override/site.ini.append.php` of
-   the 4.6 line's recipe has `Charset=utf8mb4` only, and the 5 line's recipe adds the same two SQLite lines,
+   the 4.6 line's recipe has `Charset=utf8mb4` only, and the 5 line's recipe (shipped in the project since `v5.0.3.2`) adds the same two SQLite lines,
    commented out. Uncommenting them changes nothing on a bridged request.
 2. **A legacy script started directly does not get the connection.** `php ezpublish_legacy/runcronjobs.php` or
    `cd ezpublish_legacy && php bin/php/ezcache.php` bypasses the bridge, so the legacy kernel falls back to the
@@ -401,7 +401,7 @@ In this repository:
   [3.x `src/Installer/ExponentialOssInstaller.php`](https://github.com/se7enxweb/exponential-platform-legacy/blob/3.x/src/Installer/ExponentialOssInstaller.php),
   [3.x `data/sqlite/cleandata.sql`](https://github.com/se7enxweb/exponential-platform-legacy/blob/3.x/data/sqlite/cleandata.sql)
 - The bridge's connection mapping: `bundle/LegacyMapper/Configuration.php` in [se7enxweb/LegacyBridge](https://github.com/se7enxweb/LegacyBridge) (Composer package `se7enxweb/legacy-bridge`)
-- The 4.6 and 5.x project files come from the Flex recipes in [se7enxweb/sevenx-recipes](https://github.com/se7enxweb/sevenx-recipes)
+- The 4.6 and 5.x project files come from the Flex recipes in [se7enxweb/sevenx-recipes](https://github.com/se7enxweb/sevenx-recipes); the 5.x project ships the files they wrote since `v5.0.3.2`
 - The 5.x table translation: [se7enxweb/sevenx_exponential_platform_v5_database_translator](https://github.com/se7enxweb/sevenx_exponential_platform_v5_database_translator)
 
 The Exponential 6 book (the legacy kernel):

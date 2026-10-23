@@ -267,7 +267,7 @@ content. Languages themselves (`ezcontent_language`) live in the shared database
 | Legacy siteaccess settings | `ezpublish_legacy/settings/siteaccess/legacy_admin/` (in git) | `ezpublish_legacy/settings/siteaccess/` | `src/ezpublish_legacy/app/settings/siteaccess/<name>/`, linked in | same |
 | Project legacy extension | | | `src/ezpublish_legacy/app` linked as `ezpublish_legacy/extension/app` | same |
 | Trusted proxies | `SYMFONY_TRUSTED_PROXIES`, read by `web/app.php` | `TRUSTED_PROXIES`, read by `config/packages/ezpublish.yaml` | `TRUSTED_PROXIES`, read by `config/packages/trusted_proxies.yaml` | same as 4.6 |
-| Recipe that wrote `config/` and `src/` | none (files in git) | none (files in git) | `sevenx-recipes` slot `1.2` | slot `1.4` |
+| Recipe that wrote `config/` and `src/` | none (files in git) | none (files in git) | `sevenx-recipes` slot `1.2`, during the install | slot `1.4`; since `v5.0.3.2` the files it wrote are in git, with `symfony.lock` and `composer.lock`, and Flex applies no recipe on install |
 
 On 4.6 and 5.x, keep your changes in `src/`: `bin/install-legacy-links` runs on every `composer install` and
 `composer update` and re-creates the links into `ezpublish_legacy/`, which Composer may replace.
@@ -276,7 +276,9 @@ On 4.6 and 5.x, keep your changes in `src/`: `bin/install-legacy-links` runs on 
 `se7enxweb/exponential-platform-dxp`, and the two Legacy branches of that package carry branch aliases: `4.6.x-LB`
 is `1.2.x-dev`, `5.x-LB` is `1.4.x-dev`. So a 4.6 project is written by the recipe in folder `1.2` (the same files
 as the folder `4.6.x-LB-dev`, apart from `bin/install-legacy-links`), and a 5 project by the folder `1.4`, not by
-the folder `5.0`, an older copy of the same recipe. `symfony.lock` records which one ran:
+the folder `5.0`, an older copy of the same recipe. Since `v5.0.3.2` the 5 project ships the files of folder `1.4`
+and the `symfony.lock` that records it, so every 5 project created from that release on has the same files.
+`symfony.lock` records which one ran:
 
 ```bash
 grep -A6 '"se7enxweb/exponential-platform-dxp"' symfony.lock | grep '"version"'
@@ -294,7 +296,8 @@ In this repository: [`app/config/ezplatform.yml`](https://github.com/se7enxweb/e
 [`config/app/packages/ezpublish_siteaccess.yaml`](https://github.com/se7enxweb/exponential-platform-legacy/blob/3.x/config/app/packages/ezpublish_siteaccess.yaml);
 the 4.6 and 5.x project files in [se7enxweb/sevenx-recipes](https://github.com/se7enxweb/sevenx-recipes)
 ([`se7enxweb/exponential-platform-dxp/1.2/`](https://github.com/se7enxweb/sevenx-recipes/tree/master/se7enxweb/exponential-platform-dxp/1.2)
-and [`1.4/`](https://github.com/se7enxweb/sevenx-recipes/tree/master/se7enxweb/exponential-platform-dxp/1.4)); the
+and [`1.4/`](https://github.com/se7enxweb/sevenx-recipes/tree/master/se7enxweb/exponential-platform-dxp/1.4)), and
+for 5.x since `v5.0.3.2` [the `5.x` branch itself](https://github.com/se7enxweb/exponential-platform-legacy/tree/5.x); the
 branch aliases in the `composer.json` of [se7enxweb/exponential-platform-dxp](https://github.com/se7enxweb/exponential-platform-dxp)
 (branches `4.6.x-LB` and `5.x-LB`).
 

@@ -37,7 +37,7 @@ tag is never moved or re-cut, and a mistake in one is corrected by publishing th
 | 2.5 | `master` (`dev-master`, alias `2.5.x-dev`) | `v2.5.0.0` (2025-08-25), `v2.5.0.1` (2025-09-14), `v2.5.0.2` (2026-04-10), `v2.5.0.3` (2026-04-21), `v2.5.0.4` (2026-10-05); also `v5.0.3` (2026-07-08), see below |
 | 3.x | `3.x` (`3.x-dev`) | `v3.0.0.0` to `v3.0.0.14` (2026-03-28 to 2026-04-03), `v3.3.44.0` to `v3.3.44.7` (2026-04-07 to 2026-04-12), `v3.3.44.8` (2026-10-05) |
 | 4.6.x | `4.6.x` (`4.6.x-dev`) | `v4.6.23.0` (2026-04-06), `v4.6.23.1` (2026-04-07), `v4.6.23.2` (2026-04-16), `v4.6.23.3` (2026-10-05) |
-| 5.x | `5.x` (`5.x-dev`) | `v5.0.0` (2026-04-12), `v5.0.1` (2026-04-14), `v5.0.2` (2026-04-16), `v5.0.3.1` (2026-10-05) |
+| 5.x | `5.x` (`5.x-dev`) | `v5.0.0` (2026-04-12), `v5.0.1` (2026-04-14), `v5.0.2` (2026-04-16), `v5.0.3.1` (2026-10-05), `v5.0.3.2` (2026-10-23) |
 | snapshots | `2.5.0.0` to `2.5.0.3` (`2.5.0.0-dev` ...) | branches frozen at each 2.5 release; use the tags |
 | history | `1.7` to `1.13`, `2.0`, `2.2` | upstream branches, not maintained (chapter 1, [1.4](01-introduction.md#the-old-branches)) |
 
@@ -48,6 +48,9 @@ LegacyBridge branch `4.6.x-LB-dev` of that package. `v5.0.0` required LegacyBrid
 
 The releases of 2026-10-05, [`v2.5.0.4`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v2.5.0.4), [`v3.3.44.8`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v3.3.44.8), [`v4.6.23.3`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v4.6.23.3) and [`v5.0.3.1`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v5.0.3.1), carry the branch fixes listed in
 chapter 1, [Fixes released on 2026-10-05](01-introduction.md#fixes-released-on-2026-10-05).
+[`v5.0.3.2`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v5.0.3.2) (2026-10-23) is the first
+5.x release that ships `composer.lock`, `symfony.lock` and the files the recipes create
+([The 5.x release of 2026-10-23](01-introduction.md#the-5x-release-of-2026-10-23)).
 
 To see what exists today rather than what this book saw, list the tags by version (a plain name sort puts `.10` before
 `.9`) and the releases:
@@ -57,15 +60,15 @@ git ls-remote --tags https://github.com/se7enxweb/exponential-platform-legacy.gi
 gh release list -R se7enxweb/exponential-platform-legacy --limit 5      # GitHub CLI, optional
 ```
 
-Output on 2026-10-05 after that day's releases, hashes shortened. An annotated tag appears twice: once with the hash of the tag object and once,
+Output on 2026-10-23 after that day's 5.x release, hashes shortened. An annotated tag appears twice: once with the hash of the tag object and once,
 with `^{}`, with the hash of the commit it points to.
 
 ```text
-bfbe3daf...  refs/tags/v5.0.2
-43461d83...  refs/tags/v5.0.2^{}
 8479bb75...  refs/tags/v5.0.3
 4477aaee...  refs/tags/v5.0.3.1
 20a922b6...  refs/tags/v5.0.3.1^{}
+57d90f8a...  refs/tags/v5.0.3.2
+6172acd1...  refs/tags/v5.0.3.2^{}
 ```
 
 If a newer version of a series appears there, it was released after this book was written; the constraints of
@@ -77,21 +80,23 @@ section 3.2 pick it up.
 ~7.5.33`, LegacyBridge `^2.1`, web root `web/`). It was the highest stable version on Packagist from 2026-08-03 until
 [`v5.0.3.1`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v5.0.3.1), tagged on the 5.x branch, was published on 2026-10-05:
 
-| You type | Composer installed until 2026-10-05 | Composer installs since |
+| You type | Composer installed until 2026-10-05 | Composer installs since (`v5.0.3.1`; `v5.0.3.2` since 2026-10-23) |
 |---|---|---|
-| `composer create-project se7enxweb/exponential-platform-legacy my_project` | `v5.0.3`: the **2.5 line** | `v5.0.3.1`: the 5.x line |
-| `... se7enxweb/exponential-platform-legacy:^5.0 my_project` | `v5.0.3`: the **2.5 line** | `v5.0.3.1`: the 5.x line |
-| `... se7enxweb/exponential-platform-legacy:~5.0.2 my_project` | `v5.0.3` as well (`~5.0.2` allows 5.0.3) | `v5.0.3.1`: the 5.x line |
+| `composer create-project se7enxweb/exponential-platform-legacy my_project` | `v5.0.3`: the **2.5 line** | `v5.0.3.2`: the 5.x line |
+| `... se7enxweb/exponential-platform-legacy:^5.0 my_project` | `v5.0.3`: the **2.5 line** | `v5.0.3.2`: the 5.x line |
+| `... se7enxweb/exponential-platform-legacy:~5.0.2 my_project` | `v5.0.3` as well (`~5.0.2` allows 5.0.3) | `v5.0.3.2`: the 5.x line |
 | `... se7enxweb/exponential-platform-legacy:5.0.3 my_project` | `v5.0.3`: the **2.5 line** | `v5.0.3`: the **2.5 line** |
 
 The 5.x installation guide's own quick start up to `v5.0.2` (`composer create-project se7enxweb/exponential-platform-legacy
 my-project`, without a version) therefore does not give you 5.x; the branch guide asks for `~5.0.3.1` since commit
-`54f90fb` (released in `v5.0.3.1`). Name the line every time, as in section 3.4.
+`54f90fb` (released in `v5.0.3.1`) and for `~5.0.3.2` since commit `6172acd` (released in `v5.0.3.2`). Name the line
+every time, as in section 3.4.
 
 How to tell afterwards which line you received: the 2.5 line has `app/` and `web/`, the others `config/` and
 `public/`; `grep legacy-bridge composer.json` prints `^2.1` for the 2.5 line. Since `v5.0.3.1` was published on
-2026-10-05 it is the highest stable version (Composer compares `5.0.3.1` as greater than `5.0.3`), and an unconstrained
-`create-project` or `^5.0` reaches the 5.x line again. Naming the line stays the safe habit.
+2026-10-05 a 5.x release is the highest stable version (Composer compares `5.0.3.1` as greater than `5.0.3`; today it
+is `v5.0.3.2`), and an unconstrained `create-project` or `^5.0` reaches the 5.x line again. Naming the line stays the
+safe habit.
 
 ## 3.2 Choosing a version constraint
 
@@ -103,7 +108,7 @@ line, checked against the versions Packagist publishes:
 | 2.5 | `~2.5.0.4` (`v2.5.0.4` and later `2.5.0.x`) | `dev-master` or `2.5.x-dev` | `2.5.0.x-dev` (named in the 2.5 README and guide; no published version matches it); `^5.0` |
 | 3.x | `~3.3.44.8` | `3.x-dev` | `^3.0` resolves too, but also admits the older `v3.0.0.x` series; the tilde names the current series |
 | 4.6.x | `~4.6.23.3` | `4.6.x-dev` | `4.6.x-LB-dev` (that is a branch of `se7enxweb/exponential-platform-dxp`, not of this package) |
-| 5.x | `~5.0.3.1` (`v5.0.3.1` and later `5.0.3.x`) | `5.x-dev` | `5.0.3` (exact): the 2.5 line. No constraint, `^5.0`, `~5.0.2` and `~5.0` reach `v5.0.3.1` since 2026-10-05; before that they reached `v5.0.3` |
+| 5.x | `~5.0.3.2` (`v5.0.3.2` and later `5.0.3.x`; `~5.0.3.1` also admits `v5.0.3.1`) | `5.x-dev` | `5.0.3` (exact): the 2.5 line. No constraint, `^5.0`, `~5.0.2` and `~5.0` reach the newest 5.x release since 2026-10-05 (`v5.0.3.2` since 2026-10-23); before that they reached `v5.0.3` |
 
 A tilde with all four positions (`~2.5.0.3`) allows the last position to grow and nothing else: `>=2.5.0.3 <2.5.1`.
 
@@ -111,7 +116,9 @@ The 3.x, 4.6.x and 5.x skeletons set `"minimum-stability": "dev"`: even when you
 some of its dependencies are development branches (`se7enxweb/exponential-platform-dxp 4.6.x-LB-dev` and `dev-5.x-LB`,
 the legacy kernel `dev-main` through LegacyBridge 4 and 5, `se7enxweb/symfony 5.4.x-dev` on 3.x). Two installs of the
 same tag on different days can therefore resolve to different commits of those packages. Keep the `composer.lock` your
-first install writes (section 3.8) to make later installs repeatable.
+first install writes (section 3.8) to make later installs repeatable. The 5.x line ships its own `composer.lock` since
+`v5.0.3.2` (commit `91ebb2f`): `create-project` from that release or later installs the versions it was tested with,
+every time, and `composer update` in your project is what moves them on.
 
 ## 3.3 Before you run Composer
 
@@ -201,7 +208,8 @@ Which recipe slot applies: Symfony Flex chooses the recipe by the version of the
 alias `1.4.x-dev`, so Flex installs the slots `1.2` and `1.4` of the recipe repository. The folders named
 `4.6.x-LB-dev` and `5.0` in that repository look as if they belonged to these lines, but `index.json` does not list
 `4.6.x-LB-dev`, and neither is the slot Flex picks; read `1.2` and `1.4` when you want to know what a project receives.
-`composer recipes se7enxweb/exponential-platform-dxp` in your project shows the installed recipe version.
+`composer recipes se7enxweb/exponential-platform-dxp` in your project shows the installed recipe version. (The 5.x
+project ships the files of slot `1.4` itself since `v5.0.3.2`, section 3.4.4.)
 
 Then `post-install-cmd` runs:
 
@@ -216,24 +224,33 @@ Then `post-install-cmd` runs:
 ### 3.4.4 The 5.x line
 
 ```bash
-composer create-project se7enxweb/exponential-platform-legacy:~5.0.3.1 my_project
+composer create-project se7enxweb/exponential-platform-legacy:~5.0.3.2 my_project
 # or the branch, with every fix since:
 composer create-project se7enxweb/exponential-platform-legacy:5.x-dev my_project
 cd my_project
 ```
 
-The same mechanism as 4.6.x, with the recipe slot `se7enxweb/exponential-platform-dxp/1.4`, Symfony 7.4 and
-LegacyBridge 5. What differs between the older tag and the current release:
+Symfony 7.4 and LegacyBridge 5. Up to `v5.0.3.1` the mechanism was the one of 4.6.x, with the recipe slot
+`se7enxweb/exponential-platform-dxp/1.4`. Since `v5.0.3.2` the project **ships the files that recipe and the Symfony,
+Ibexa and Netgen recipes create** (`bin/`, `public/`, `src/`, `config/`, `templates/`, `translations/`, `.env`,
+commit `1482686`), together with `symfony.lock`, which records every recipe as installed, and a `composer.lock`
+(commit `91ebb2f`). `create-project` therefore installs exactly the package versions tested for the release (Composer
+prints "Installing dependencies from lock file"), and Flex applies no recipe; `composer recipes` lists the recipes the
+project carries and `composer recipes:update <package>` applies a newer one when you want it.
 
-| | `v5.0.2` | `v5.0.3.1` and the branch `5.x-dev` |
-|---|---|---|
-| Files in the skeleton besides `composer.json` and the documents | none | `config/services.yaml`, `config/packages/lexik_jwt_authentication.yaml`, `config/packages/trusted_proxies.yaml`, `package.json`, `webpack.config.js`, `yarn.lock` |
-| Post-install scripts | those of 4.6.x without the final `assets:install public` | the same as 4.6.x |
-| Node.js for the asset build | 20 LTS | 24 LTS |
+| | `v5.0.2` | `v5.0.3.1` | `v5.0.3.2` and the branch `5.x-dev` |
+|---|---|---|---|
+| Files in the skeleton besides `composer.json` and the documents | none | `config/services.yaml`, `config/packages/lexik_jwt_authentication.yaml`, `config/packages/trusted_proxies.yaml`, `package.json`, `webpack.config.js`, `yarn.lock` | every file the recipes create, `symfony.lock`, `composer.lock` and a `.gitignore` |
+| Where the other files come from | the Flex recipes, during the install | the Flex recipes, during the install | the project; Flex applies no recipe |
+| Dependency versions | that day's branch heads | that day's branch heads | the ones in `composer.lock` |
+| Post-install scripts | those of 4.6.x without the final `assets:install public` | the same as 4.6.x | `bin/install-legacy-links`, `ezpublish:legacybundles:install_extensions`, the legacy autoloads, then the `auto-scripts` (JavaScript translations, `assets:install`, `ezpublish:legacy:assets_install`, `ezpublish:legacybundles:install_extensions` again, `cache:clear`, `assets:install public`) |
+| Node.js for the asset build | 20 LTS | 24 LTS | 24 LTS |
 
-The branch's own files take precedence over the recipe's: Symfony Flex does not overwrite a file that already exists
-when it installs a recipe. Its `config/services.yaml` keeps `src/ezpublish_legacy/app/root/config.php` out of the
-service discovery, which otherwise stops `cache:clear` with a class error on a fresh install (commit `c98f567`).
+On `v5.0.3.1`, the branch's own files took precedence over the recipe's: Symfony Flex does not overwrite a file that
+already exists when it installs a recipe. Its `config/services.yaml` keeps `src/ezpublish_legacy/app/root/config.php`
+out of the service discovery, which otherwise stops `cache:clear` with a class error on a fresh install (commit
+`c98f567`). The shipped `.env` and `.env.dev` carry the placeholder `ThisTokenIsNotSoSecretChangeIt` for
+`JWT_PASSPHRASE` and `APP_SECRET`; set real values in `.env.local` (chapter 4, [4.4.2](04-installing.md#442-3x-46x-and-5x-envlocal)).
 
 ### 3.4.5 Files you may have to add to a project from an older tag
 
@@ -250,7 +267,8 @@ framework:
 
 The same applies to the other lines. What to take over from the branch into a project created from a tag before the
 releases of 2026-10-05 (`v2.5.0.4`, `v3.3.44.8`, `v4.6.23.3` and `v5.0.3.1` ship these files; the recipe changes in
-the last row apply to projects created from `v4.6.23.3` and `v5.0.3.1` as well):
+the last row apply to projects created from `v4.6.23.3` and `v5.0.3.1` before the recipe was corrected on 2026-10-05,
+sevenx-recipes commits `e2a25bc` and `2ae3af3`; `v5.0.3.2` ships the corrected files):
 
 | Created from | Take over | Why |
 |---|---|---|
@@ -290,7 +308,8 @@ composer install
 |---|---|
 | `master` (2.5) | the same as `create-project`, without the welcome text |
 | `3.x` | the same as `create-project` |
-| `4.6.x`, `5.x` | the branch holds only `composer.json`; Symfony Flex writes the recipe files during `composer install` because none of them is recorded in a `symfony.lock` yet |
+| `4.6.x` | the branch holds only `composer.json` and a few `config/` files; Symfony Flex writes the recipe files during `composer install` because none of them is recorded in a `symfony.lock` yet |
+| `5.x` | the branch holds the recipe files, `symfony.lock` and `composer.lock` (since `v5.0.3.2`): `composer install` installs the locked versions and Flex applies no recipe |
 
 Errors in the branch guides of the tags up to `v3.3.44.7`, `v4.6.23.2` and `v5.0.2`: the 4.6.x installation guide's
 "git clone" section says `git checkout 3.x` (use `4.6.x`), the 5.x guide's says `git checkout master` (use `5.x`),
@@ -358,7 +377,7 @@ my_project/
 ```
 my_project/
 ├── bin/console, bin/install-legacy-links
-├── config/                               from the recipe: packages/ibexa*.yaml, ez_publish_legacy.yaml, routes/
+├── config/                               from the recipe (5.x: committed): packages/ibexa*.yaml, ez_publish_legacy.yaml, routes/
 ├── ezpublish_legacy/                     the legacy kernel; several entries are symbolic links into src/
 ├── src/
 │   ├── Installer/ExponentialOssInstaller.php
@@ -369,8 +388,12 @@ my_project/
 ├── public/                               the web root
 ├── templates/, assets/, package.json, webpack.config.js
 ├── var/
-└── .env, .env.local
+└── .env, .env.local; 5.x also composer.lock, symfony.lock
 ```
+
+On 4.6.x every entry except `composer.json`, a few `config/` files and the documents is written by Flex during the
+install; on 5.x from `v5.0.3.2` on, all of them except the generated ones (`vendor/`, `var/`, `ezpublish_legacy/`,
+`public/bundles`, `public/assets` and the legacy links in `public/`) are in the project as shipped.
 
 ## 3.8 Putting your project under version control
 
@@ -384,6 +407,10 @@ exclude what is generated or secret:
 | secrets | `/app/config/parameters.yml`, `auth.json` | `.env.local` (Symfony convention), `/config/jwt/*.pem`, `auth.json` |
 | generated assets | `/web/bundles/`, `/web/assets/build/*`, `/web/design`, `/web/extension`, `/web/share`, `/web/var` | `/public/assets/`, `/public/design`, `/public/extension`, `/public/share`, `/public/var`, `/public/build/` |
 | runtime | `/var/*` except the placeholder files | `var/` (from the Symfony recipes) |
+
+On 5.x the shipped `.gitignore` (since `v5.0.3.2`) adds the legacy entries (`/ezpublish_legacy/`, the `public/`
+links, the content files under `src/LegacyRoot/var/site/storage/`), and `composer.lock` and `symfony.lock` are
+already committed: keep them committed, and commit the new lock after each tested `composer update`.
 
 Two things to decide on for the 2.5 line:
 

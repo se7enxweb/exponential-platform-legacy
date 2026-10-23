@@ -256,7 +256,8 @@ In the order of their effect:
    3.x and later from `APP_ENV`. Run `cache:warmup --env=prod` after each clear. Check that nothing forces `dev`:
    the `web/.htaccess` of releases `v2.5.0.1` to `v2.5.0.3` routes every request to `app_dev.php` (corrected on
    `master` in `fa091cd`, released in `v2.5.0.4`), the `public/.htaccess` of the 3.x releases up to `v3.3.44.7` sets `APP_ENV=dev`
-   (corrected in `66f13e1`, released in `v3.3.44.8`), and the `public/.htaccess` the 4.6 and 5 recipes write still sets it
+   (corrected in `66f13e1`, released in `v3.3.44.8`), and the `public/.htaccess` the 4.6 and 5 recipes wrote until 2026-10-05
+   sets it (corrected in sevenx-recipes `e2a25bc`; 5.x ships the corrected file since `v5.0.3.2`)
    ([13.4](13-security-hardening.md#134-debug-output-and-error-display)). A site in `dev` is several times slower,
    because Symfony checks every configuration file for changes and collects profiler data on each request.
    `curl -sI https://example.com/ | grep -i x-debug-token` prints nothing on a site in `prod`.
