@@ -1,0 +1,5 @@
+# Routes of the Layouts integration with the Platform admin (the "Layouts" tab of the content
+# view). Without them the admin content view stops with "route nglayouts_ibexa_admin_location_layouts
+# does not exist". The paths in the file are absolute (/nglayouts/...), so no prefix.
+netgen_layouts_ibexa:
+    resource: "@NetgenLayoutsIbexaBundle/Resources/config/routing.yaml"

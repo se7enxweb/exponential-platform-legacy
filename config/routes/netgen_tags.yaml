@@ -1,0 +1,3 @@
+# Netgen Tags comes with the site bundles this project requires (se7enxweb/site-legacy-bundle).
+netgen_tags:
+    resource: "@NetgenTagsBundle/Resources/config/routing.yaml"

@@ -1,0 +1,5 @@
+# Netgen Layouts is required by this project (netgen/layouts-ibexa, netgen/layouts-standard),
+# so the project imports its routes itself; the Legacy Bridge recipe no longer does.
+netgen_layouts:
+    resource: "@NetgenLayoutsBundle/Resources/config/routing.yaml"
+    prefix: "%netgen_layouts.route_prefix%"
