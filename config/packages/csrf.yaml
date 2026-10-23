@@ -1,0 +1,7 @@
+# Enable CSRF protection for forms
+framework:
+    form:
+        csrf_protection:
+            enabled: true
+
+    csrf_protection: true

@@ -1,0 +1,61 @@
+parameters:
+    # imagemagick.pre_parameters / post_parameters are read unconditionally by
+    # se7enxweb/legacy-bridge LegacyMapper/Configuration.php via the ibexa
+    # ConfigResolver. No Ibexa config-tree parser registers these keys, so they
+    # must be declared here as raw container parameters for the default scope.
+    ibexa.site_access.config.default.imagemagick.pre_parameters: ''
+    ibexa.site_access.config.default.imagemagick.post_parameters: ''
+
+    # ── Global scalar INI overrides ──────────────────────────────────────────
+    app.legacy.injected_settings:
+        # Override DFS cluster: LegacyMapper always injects eZDFSFileHandler because dfs_nfs_path
+        # has a default container parameter, but this is not a DFS environment.
+        'file.ini/ClusteringSettings/FileHandler': eZFSFileHandler
+        'site.ini/SiteSettings/DefaultAccess': legacy_site
+        'site.ini/SiteAccessSettings/CheckValidity': 'false'
+        'site.ini/SiteAccessSettings/HostMatch': 'uri'
+        # Platform rejects /index.php/... URLs (RejectExplicitFrontControllerRequestsListener), so
+        # legacy must write links without the front controller, on every server.
+        'site.ini/SiteAccessSettings/ForceVirtualHost': 'true'
+        'site.ini/SiteAccessSettings/RemoveSiteAccessIfDefaultAccess': disabled
+
+    # ── Global array-merge INI settings ──────────────────────────────────────
+    app.legacy.injected_merge_settings:
+        'site.ini/SiteSettings/SiteList':
+            - site
+            - legacy_site
+            - legacy_admin
+        'site.ini/SiteAccessSettings/AvailableSiteAccessList':
+            - site
+            - legacy_site
+            - legacy_admin
+        'site.ini/ExtensionSettings/ActiveExtensions':
+            - ezjscore
+            - ezoe
+            - eztags
+            - ezstarrating
+            - ngsymfonytools
+            - recaptcha
+            - xrowmetadata
+            - bcgooglesitemaps
+            - bcwebsitestatistics
+            - ezwebin
+            - sevenx_themes_simple
+            - app
+
+    # ── Per-siteaccess scalar overrides ──────────────────────────────────────
+    # NOTE: eZINI::injectSettings() is static/global — per-siteaccess values
+    # injected here leak across ALL siteaccesses (whichever is active at kernel
+    # build time wins for the process lifetime). All siteaccess-specific settings
+    # must live in settings/siteaccess/{name}/*.ini.append.php instead.
+    app.legacy.siteaccess_injected_settings: {}
+
+    # ── Per-siteaccess array-merge settings ───────────────────────────────────
+    app.legacy.siteaccess_injected_merge_settings: {}
+
+ez_publish_legacy:
+    system:
+        legacy_site:
+            legacy_mode: true
+        legacy_admin:
+            legacy_mode: true

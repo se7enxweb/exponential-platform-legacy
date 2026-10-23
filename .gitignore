@@ -1,0 +1,53 @@
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> liip/imagine-bundle ###
+/public/media/cache/
+###< liip/imagine-bundle ###
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###
+
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###
+
+###> se7enxweb/exponential-platform-dxp ###
+# Installed by the legacy installer and the bridge's commands on every composer install
+/ezpublish_legacy/
+/public/design
+/public/extension
+/public/share
+/public/var
+# Content files the legacy kernel stores (ezpublish_legacy/var/site/storage links here)
+/src/LegacyRoot/var/site/storage/*
+!/src/LegacyRoot/var/site/storage/.gitkeep
+###< se7enxweb/exponential-platform-dxp ###
+
+# Build output and generated files
+/public/assets/
+/config/graphql/types/*
+!/config/graphql/types/.gitignore
+ide-twig.json
+
+# Local files
+auth.json
+composer.phar
+package-lock.json
+.phpunit.result.cache
+/phpunit.xml
+.php-cs-fixer.cache
+.idea/
+.DS_Store

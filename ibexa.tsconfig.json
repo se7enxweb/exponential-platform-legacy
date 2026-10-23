@@ -1,0 +1,18 @@
+{
+    "extends": "@ibexa/ts-config",
+    "include": [
+        "vendor/ibexa/**/*",
+        "vendor/se7enxweb/**/*"
+    ],
+    "exclude": [
+        "vendor/ibexa/**/node_modules/**/*",
+        "vendor/ibexa/**/vendors/**/*",
+        "vendor/ibexa/**/vendor/**/*",
+        "vendor/se7enxweb/**/node_modules/**/*",
+        "vendor/se7enxweb/**/vendors/**/*",
+        "vendor/se7enxweb/**/vendor/**/*"
+    ],
+    "compilerOptions": {
+        "paths": {}
+    }
+}

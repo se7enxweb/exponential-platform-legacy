@@ -1,0 +1,121 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Creates symlinks that wire src/ezpublish_legacy/app/ into the installed
+ * ezpublish_legacy/ directory.  Run automatically by Composer on install/update.
+ *
+ * Symlinks created:
+ *
+ *   ezpublish_legacy/extension/app
+ *       -> ../../src/ezpublish_legacy/app
+ *       (mounts the custom "app" eZ extension)
+ *
+ *   ezpublish_legacy/settings/override
+ *       -> ../../src/ezpublish_legacy/app/root/settings/override
+ *       (global INI override dir, retained across composer reinstalls)
+ *
+ *   ezpublish_legacy/settings/siteaccess/legacy_admin
+ *       -> ../../../src/ezpublish_legacy/app/settings/siteaccess/legacy_admin
+ *       (per-siteaccess INI overrides for legacy_admin)
+ *
+ *   vendor/se7enxweb/exponential/var/autoload
+ *       -> ../../../../ezpublish_legacy/var/autoload
+ *       (fixes ezpAutoloader __DIR__ when vendor copy is loaded first)
+ *
+ *   src/ezpublish_legacy/app/settings/siteaccess/legacy_admin/{content,contentstructuremenu,dashboard,design,image,override,toolbar}.ini.append.php
+ *       -> ../ngadminui/{same filename}
+ *       (legacy_admin delegates most INI config to ngadminui; zip-deployed recipes
+ *        cannot carry symlinks so these are created here instead)
+ */
+
+declare(strict_types=1);
+
+$root = dirname(__DIR__);
+
+$links = [
+    // [ link path (relative to project root), symlink target (relative to link's parent dir) ]
+    [
+        'ezpublish_legacy/extension/app',
+        '../../src/ezpublish_legacy/app',
+    ],
+    [
+        'ezpublish_legacy/settings/override',
+        '../../src/LegacySettings/override',
+    ],
+    [
+        'ezpublish_legacy/settings/siteaccess/ngadminui',
+        '../../../src/ezpublish_legacy/app/settings/siteaccess/ngadminui',
+    ],
+    [
+        'ezpublish_legacy/settings/siteaccess/legacy_site',
+        '../../../src/ezpublish_legacy/app/settings/siteaccess/legacy_site',
+    ],
+    [
+        'ezpublish_legacy/settings/siteaccess/legacy_admin',
+        '../../../src/ezpublish_legacy/app/settings/siteaccess/legacy_admin',
+    ],
+    [
+        'ezpublish_legacy/var/site/storage',
+        '../../../src/LegacyRoot/var/site/storage',
+    ],
+    // Per-file symlinks inside legacy_admin/ that delegate to ngadminui settings.
+    // These cannot be stored as symlinks in the Flex recipe (zip strips them),
+    // so they are created here instead.
+    [
+        'src/ezpublish_legacy/app/settings/siteaccess/legacy_admin/content.ini.append.php',
+        '../ngadminui/content.ini.append.php',
+    ],
+    [
+        'src/ezpublish_legacy/app/settings/siteaccess/legacy_admin/contentstructuremenu.ini.append.php',
+        '../ngadminui/contentstructuremenu.ini.append.php',
+    ],
+    [
+        'src/ezpublish_legacy/app/settings/siteaccess/legacy_admin/dashboard.ini.append.php',
+        '../ngadminui/dashboard.ini.append.php',
+    ],
+    [
+        'src/ezpublish_legacy/app/settings/siteaccess/legacy_admin/design.ini.append.php',
+        '../ngadminui/design.ini.append.php',
+    ],
+    [
+        'src/ezpublish_legacy/app/settings/siteaccess/legacy_admin/image.ini.append.php',
+        '../ngadminui/image.ini.append.php',
+    ],
+    [
+        'src/ezpublish_legacy/app/settings/siteaccess/legacy_admin/override.ini.append.php',
+        '../ngadminui/override.ini.append.php',
+    ],
+    [
+        'src/ezpublish_legacy/app/settings/siteaccess/legacy_admin/toolbar.ini.append.php',
+        '../ngadminui/toolbar.ini.append.php',
+    ],
+];
+
+$ok = 0;
+$skipped = 0;
+
+foreach ($links as [$linkRel, $target]) {
+    $link = $root . '/' . $linkRel;
+    $linkDir = dirname($link);
+
+    // Ensure parent directory exists.
+    if (!is_dir($linkDir)) {
+        mkdir($linkDir, 0755, true);
+    }
+
+    if (is_link($link)) {
+        // Replace existing symlink unconditionally so target is always correct.
+        unlink($link);
+    } elseif (file_exists($link)) {
+        // Real file or directory — do not remove, skip with a warning.
+        echo "SKIP (real path exists, not a symlink): {$linkRel}\n";
+        ++$skipped;
+        continue;
+    }
+
+    symlink($target, $link);
+    echo "Linked: {$linkRel} -> {$target}\n";
+    ++$ok;
+}
+
+echo "\nDone: {$ok} link(s) created" . ($skipped ? ", {$skipped} skipped" : '') . ".\n";

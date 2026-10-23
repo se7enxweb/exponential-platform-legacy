@@ -1,0 +1,914 @@
+{
+    "api-platform/core": {
+        "version": "4.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "4.0",
+            "ref": "cb9e6b8ceb9b62f32d41fc8ad72a25d5bd674c6d"
+        },
+        "files": [
+            "config/packages/api_platform.yaml",
+            "config/routes/api_platform.yaml",
+            "src/ApiResource/.gitignore"
+        ]
+    },
+    "babdev/pagerfanta-bundle": {
+        "version": "v4.6.0"
+    },
+    "doctrine/annotations": {
+        "version": "2.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.10",
+            "ref": "64d8583af5ea57b7afa4aba4b159907f3a148b05"
+        }
+    },
+    "doctrine/deprecations": {
+        "version": "1.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.0",
+            "ref": "fdd756167454623e21f1d769c5b814b243782a67"
+        }
+    },
+    "doctrine/doctrine-bundle": {
+        "version": "2.19",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "2.13",
+            "ref": "620b57f496f2e599a6015a9fa222c2ee0a32adcb"
+        },
+        "files": [
+            "config/packages/doctrine.yaml",
+            "src/Entity/.gitignore",
+            "src/Repository/.gitignore"
+        ]
+    },
+    "doctrine/doctrine-migrations-bundle": {
+        "version": "3.8",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "3.1",
+            "ref": "1d01ec03c6ecbd67c3375c5478c9a423ae5d6a33"
+        },
+        "files": [
+            "config/packages/doctrine_migrations.yaml",
+            "migrations/.gitignore"
+        ]
+    },
+    "friendsofsymfony/http-cache-bundle": {
+        "version": "3.x-dev"
+    },
+    "friendsofsymfony/jsrouting-bundle": {
+        "version": "3.9999999",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "3.0",
+            "ref": "03986bbad9dcc3e367036a6b4f48ec469a4b1bf4"
+        },
+        "files": [
+            "config/routes/fos_js_routing.yaml"
+        ]
+    },
+    "google/recaptcha": {
+        "version": "1.5",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "1.1",
+            "ref": "e5a4aa21f2e98d7440ae9aab6b56e307f99dd084"
+        },
+        "files": [
+            "config/packages/google_recaptcha.yaml"
+        ]
+    },
+    "ibexa/content-forms": {
+        "version": "5.0",
+        "recipe": {
+            "repo": "github.com/ibexa/recipes",
+            "branch": "master",
+            "version": "5.0",
+            "ref": "575fa895eb28f9d0b7e65e02ba9e3bcb16782094"
+        }
+    },
+    "ibexa/core-persistence": {
+        "version": "5.0",
+        "recipe": {
+            "repo": "github.com/ibexa/recipes",
+            "branch": "master",
+            "version": "5.0",
+            "ref": "575fa895eb28f9d0b7e65e02ba9e3bcb16782094"
+        }
+    },
+    "ibexa/core-search": {
+        "version": "5.0",
+        "recipe": {
+            "repo": "github.com/ibexa/recipes",
+            "branch": "master",
+            "version": "5.0",
+            "ref": "575fa895eb28f9d0b7e65e02ba9e3bcb16782094"
+        }
+    },
+    "ibexa/cron": {
+        "version": "5.0",
+        "recipe": {
+            "repo": "github.com/ibexa/recipes",
+            "branch": "master",
+            "version": "5.0",
+            "ref": "575fa895eb28f9d0b7e65e02ba9e3bcb16782094"
+        }
+    },
+    "ibexa/design-engine": {
+        "version": "5.0",
+        "recipe": {
+            "repo": "github.com/ibexa/recipes",
+            "branch": "master",
+            "version": "5.0",
+            "ref": "575fa895eb28f9d0b7e65e02ba9e3bcb16782094"
+        }
+    },
+    "ibexa/doctrine-migrations": {
+        "version": "5.0.x-dev"
+    },
+    "ibexa/doctrine-schema": {
+        "version": "5.0",
+        "recipe": {
+            "repo": "github.com/ibexa/recipes",
+            "branch": "master",
+            "version": "5.0",
+            "ref": "575fa895eb28f9d0b7e65e02ba9e3bcb16782094"
+        }
+    },
+    "ibexa/fieldtype-matrix": {
+        "version": "5.0",
+        "recipe": {
+            "repo": "github.com/ibexa/recipes",
+            "branch": "master",
+            "version": "5.0",
+            "ref": "575fa895eb28f9d0b7e65e02ba9e3bcb16782094"
+        }
+    },
+    "ibexa/fieldtype-query": {
+        "version": "5.0",
+        "recipe": {
+            "repo": "github.com/ibexa/recipes",
+            "branch": "master",
+            "version": "5.0",
+            "ref": "575fa895eb28f9d0b7e65e02ba9e3bcb16782094"
+        }
+    },
+    "ibexa/fieldtype-richtext": {
+        "version": "5.0",
+        "recipe": {
+            "repo": "github.com/ibexa/recipes",
+            "branch": "master",
+            "version": "5.0",
+            "ref": "575fa895eb28f9d0b7e65e02ba9e3bcb16782094"
+        }
+    },
+    "ibexa/graphql": {
+        "version": "5.0",
+        "recipe": {
+            "repo": "github.com/ibexa/recipes",
+            "branch": "master",
+            "version": "5.0",
+            "ref": "575fa895eb28f9d0b7e65e02ba9e3bcb16782094"
+        }
+    },
+    "ibexa/http-cache": {
+        "version": "5.0",
+        "recipe": {
+            "repo": "github.com/ibexa/recipes",
+            "branch": "master",
+            "version": "5.0",
+            "ref": "575fa895eb28f9d0b7e65e02ba9e3bcb16782094"
+        }
+    },
+    "ibexa/jms-translation-bundle": {
+        "version": "2.x-dev"
+    },
+    "ibexa/messenger": {
+        "version": "5.0.x-dev"
+    },
+    "ibexa/notifications": {
+        "version": "5.0",
+        "recipe": {
+            "repo": "github.com/ibexa/recipes",
+            "branch": "master",
+            "version": "5.0",
+            "ref": "575fa895eb28f9d0b7e65e02ba9e3bcb16782094"
+        }
+    },
+    "ibexa/rest": {
+        "version": "5.0",
+        "recipe": {
+            "repo": "github.com/ibexa/recipes",
+            "branch": "master",
+            "version": "5.0",
+            "ref": "575fa895eb28f9d0b7e65e02ba9e3bcb16782094"
+        }
+    },
+    "ibexa/search": {
+        "version": "5.0",
+        "recipe": {
+            "repo": "github.com/ibexa/recipes",
+            "branch": "master",
+            "version": "5.0",
+            "ref": "575fa895eb28f9d0b7e65e02ba9e3bcb16782094"
+        }
+    },
+    "ibexa/solr": {
+        "version": "5.0",
+        "recipe": {
+            "repo": "github.com/ibexa/recipes",
+            "branch": "master",
+            "version": "5.0",
+            "ref": "575fa895eb28f9d0b7e65e02ba9e3bcb16782094"
+        }
+    },
+    "ibexa/standard-design": {
+        "version": "5.0",
+        "recipe": {
+            "repo": "github.com/ibexa/recipes",
+            "branch": "master",
+            "version": "5.0",
+            "ref": "575fa895eb28f9d0b7e65e02ba9e3bcb16782094"
+        }
+    },
+    "ibexa/templated-uri-bundle": {
+        "version": "4.0.0"
+    },
+    "ibexa/twig-components": {
+        "version": "5.0",
+        "recipe": {
+            "repo": "github.com/ibexa/recipes",
+            "branch": "master",
+            "version": "5.0",
+            "ref": "f2a0508673feab7662ca3bea9e3163f37f09bb09"
+        },
+        "files": []
+    },
+    "ibexa/user": {
+        "version": "5.0",
+        "recipe": {
+            "repo": "github.com/ibexa/recipes",
+            "branch": "master",
+            "version": "5.0",
+            "ref": "575fa895eb28f9d0b7e65e02ba9e3bcb16782094"
+        }
+    },
+    "knplabs/knp-menu-bundle": {
+        "version": "dev-master"
+    },
+    "lexik/jwt-authentication-bundle": {
+        "version": "2.9999999",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "2.5",
+            "ref": "e9481b233a11ef7e15fe055a2b21fd3ac1aa2bb7"
+        },
+        "files": [
+            "config/packages/lexik_jwt_authentication.yaml"
+        ]
+    },
+    "liip/imagine-bundle": {
+        "version": "2.9999999",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "1.8",
+            "ref": "d1227d002b70d1a1f941d91845fcd7ac7fbfc929"
+        },
+        "files": [
+            "config/packages/liip_imagine.yaml",
+            "config/routes/liip_imagine.yaml"
+        ]
+    },
+    "lolautruche/ez-core-extra-bundle": {
+        "version": "dev-master"
+    },
+    "nelmio/cors-bundle": {
+        "version": "2.9999999",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.5",
+            "ref": "6bea22e6c564fba3a1391615cada1437d0bde39c"
+        },
+        "files": [
+            "config/packages/nelmio_cors.yaml"
+        ]
+    },
+    "netgen/birthday-bundle": {
+        "version": "dev-master"
+    },
+    "netgen/content-browser": {
+        "version": "2.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "2.0",
+            "ref": "122c2ac9b3350a586d97f326b71be2c7bc3e3ed3"
+        },
+        "files": [
+            "config/routes/netgen_content_browser.yaml"
+        ]
+    },
+    "netgen/content-browser-ibexa": {
+        "version": "dev-master"
+    },
+    "netgen/content-browser-ui": {
+        "version": "dev-master"
+    },
+    "netgen/content-type-list-bundle": {
+        "version": "dev-master"
+    },
+    "netgen/enhanced-selection-bundle": {
+        "version": "dev-master"
+    },
+    "netgen/ibexa-fieldtype-enhanced-link": {
+        "version": "dev-master"
+    },
+    "netgen/ibexa-forms-bundle": {
+        "version": "dev-master"
+    },
+    "netgen/ibexa-search-extra": {
+        "version": "dev-ibexa5"
+    },
+    "netgen/ibexa-site-api": {
+        "version": "7.0.0"
+    },
+    "netgen/information-collection-bundle": {
+        "version": "4.x-dev"
+    },
+    "netgen/layouts-core": {
+        "version": "2.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "2.0",
+            "ref": "bc96d39a58f03c067c5d92a0c122f319763b73b0"
+        },
+        "files": [
+            "config/routes/netgen_layouts.yaml"
+        ]
+    },
+    "netgen/layouts-ibexa": {
+        "version": "dev-master"
+    },
+    "netgen/layouts-standard": {
+        "version": "dev-master"
+    },
+    "netgen/layouts-ui": {
+        "version": "dev-master"
+    },
+    "netgen/open-graph-bundle": {
+        "version": "dev-master"
+    },
+    "netgen/siteaccess-routes-bundle": {
+        "version": "dev-master"
+    },
+    "netgen/tagsbundle": {
+        "version": "dev-master"
+    },
+    "oneup/flysystem-bundle": {
+        "version": "4.14",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "4.0",
+            "ref": "3ae1b83985e89138f5443bbc2d9b8c074b497d49"
+        },
+        "files": [
+            "config/packages/oneup_flysystem.yaml"
+        ]
+    },
+    "overblog/graphiql-bundle": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "0.1",
+            "ref": "96d185c63491cd15c1570f6243ec1808f4462970"
+        },
+        "files": [
+            "config/routes/dev/graphiql.yaml"
+        ]
+    },
+    "overblog/graphql-bundle": {
+        "version": "1.10",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "0.12",
+            "ref": "b122f3bfcfc0706c617a74afa8510af4799810f6"
+        },
+        "files": [
+            "config/graphql/types/.gitignore",
+            "config/packages/graphql.yaml",
+            "config/routes/graphql.yaml"
+        ]
+    },
+    "php-http/discovery": {
+        "version": "1.9999999",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.18",
+            "ref": "f45b5dd173a27873ab19f5e3180b2f661c21de02"
+        },
+        "files": [
+            "config/packages/http_discovery.yaml"
+        ]
+    },
+    "se7enxweb/admin-ui": {
+        "version": "dev-main"
+    },
+    "se7enxweb/admin-ui-assets": {
+        "version": "5.0.0.x-dev"
+    },
+    "se7enxweb/exponential-platform-dxp": {
+        "version": "1.4",
+        "recipe": {
+            "repo": "github.com/se7enxweb/sevenx-recipes",
+            "branch": "master",
+            "version": "1.4",
+            "ref": "63bfd69b5980e6218e382a154fa898e2cb593171"
+        },
+        "files": [
+            "bin/install-legacy-links",
+            "config/packages/cache_pool/cache.memcached.yaml",
+            "config/packages/cache_pool/cache.redis.yaml",
+            "config/packages/cache_pool/cache.tagaware.filesystem.yaml",
+            "config/packages/csrf.yaml",
+            "config/packages/dfs/dfs.yaml",
+            "config/packages/ez_publish_legacy.yaml",
+            "config/packages/graphql.yaml",
+            "config/packages/ibexa.yaml",
+            "config/packages/ibexa_admin_ui.yaml",
+            "config/packages/ibexa_assets.yaml",
+            "config/packages/ibexa_doctrine_schema.yaml",
+            "config/packages/ibexa_http_cache.yaml",
+            "config/packages/ibexa_jms_translation.yaml",
+            "config/packages/ibexa_richtext.yaml",
+            "config/packages/ibexa_solr.yaml",
+            "config/packages/ibexa_twig_components.yaml",
+            "config/packages/ibexa_welcome_page.yaml",
+            "config/packages/lexik_jwt_authentication.yaml",
+            "config/packages/mailer.yaml",
+            "config/packages/security.yaml",
+            "config/routes/graphql.yaml",
+            "config/routes/ibexa.yaml",
+            "config/routes/ibexa_admin_ui.yaml",
+            "config/routes/ibexa_content_forms.yaml",
+            "config/routes/ibexa_fieldtype_query.yaml",
+            "config/routes/ibexa_http_cache.yaml",
+            "config/routes/ibexa_rest.yaml",
+            "config/routes/ibexa_search.yaml",
+            "config/routes/ibexa_system_info.yaml",
+            "config/routes/ibexa_user.yaml",
+            "config/services.yaml",
+            "ibexa.tsconfig.json",
+            "ibexa.webpack.config.manager.js",
+            "package.json",
+            "tsconfig.json",
+            "webpack.config.js",
+            "public/.htaccess",
+            "public/favicon.ico",
+            "public/favicon.png",
+            "public/index.php",
+            "public/index_cluster.php",
+            "public/index_rest.php",
+            "templates/themes/standard/full/welcome_page.html.twig",
+            "templates/themes/standard/pagelayout.html.twig",
+            "translations/ibexa_welcome_page.en.xlf",
+            "assets/controllers.json",
+            "assets/images/caret-down.svg",
+            "assets/images/development.svg",
+            "assets/images/documentation.svg",
+            "assets/images/header-background.png",
+            "assets/images/oss.png",
+            "assets/images/php-api.svg",
+            "assets/images/rest-api.svg",
+            "assets/images/support-background.png",
+            "assets/images/support.png",
+            "assets/images/training-background.png",
+            "assets/images/training.svg",
+            "assets/images/tutorials-icon.svg",
+            "assets/images/tutorials.svg",
+            "assets/images/user.svg",
+            "assets/js/welcome.page.js",
+            "assets/scss/_contact.scss",
+            "assets/scss/_custom-normalize.scss",
+            "assets/scss/_documentation.scss",
+            "assets/scss/_footer.scss",
+            "assets/scss/_header.scss",
+            "assets/scss/_main.scss",
+            "assets/scss/_training.scss",
+            "assets/scss/_tutorials.scss",
+            "assets/scss/normalize.css",
+            "assets/scss/variables.scss",
+            "assets/scss/welcome-page.scss",
+            "src/EventListener/LegacyRequestListener.php",
+            "src/EventListener/LegacyRestListener.php",
+            "src/EventSubscriber/LegacyInjectedSettingsSubscriber.php",
+            "src/Installer/ExponentialOssInstaller.php",
+            "src/LegacySettings/override/site.ini.append.php",
+            "src/LegacySettings/siteaccess/legacy_admin/site.ini.append.php",
+            "src/LegacySettings/siteaccess/legacy_site/bcgeneratestaticcache.ini.append.php",
+            "src/LegacySettings/siteaccess/legacy_site/bcwebsitestatistics.ini.append.php",
+            "src/LegacySettings/siteaccess/legacy_site/browse.ini.append.php",
+            "src/LegacySettings/siteaccess/legacy_site/content.ini.append.php",
+            "src/LegacySettings/siteaccess/legacy_site/contentstructuremenu.ini.append.php",
+            "src/LegacySettings/siteaccess/legacy_site/design.ini.append.php",
+            "src/LegacySettings/siteaccess/legacy_site/image.ini.append.php",
+            "src/LegacySettings/siteaccess/legacy_site/menu.ini.append.php",
+            "src/LegacySettings/siteaccess/legacy_site/odf.ini.append.php",
+            "src/LegacySettings/siteaccess/legacy_site/override.ini.append.php",
+            "src/LegacySettings/siteaccess/legacy_site/site.ini.append.php",
+            "src/LegacySettings/siteaccess/legacy_site/staticcache.ini.append.php",
+            "src/LegacySettings/siteaccess/legacy_site/template.ini.append.php",
+            "src/LegacySettings/siteaccess/legacy_site/toolbar.ini.append.php",
+            "src/LegacySettings/siteaccess/legacy_site/viewcache.ini.append.php",
+            "src/LegacySettings/siteaccess/ngadminui/content.ini.append.php",
+            "src/LegacySettings/siteaccess/ngadminui/contentstructuremenu.ini.append.php",
+            "src/LegacySettings/siteaccess/ngadminui/dashboard.ini.append.php",
+            "src/LegacySettings/siteaccess/ngadminui/design.ini.append.php",
+            "src/LegacySettings/siteaccess/ngadminui/image.ini.append.php",
+            "src/LegacySettings/siteaccess/ngadminui/override.ini.append.php",
+            "src/LegacySettings/siteaccess/ngadminui/site.ini.append.php",
+            "src/LegacySettings/siteaccess/ngadminui/toolbar.ini.append.php",
+            "src/LegacySettings/siteaccess/site/bcgeneratestaticcache.ini.append.php",
+            "src/LegacySettings/siteaccess/site/bcwebsitestatistics.ini.append.php",
+            "src/LegacySettings/siteaccess/site/browse.ini.append.php",
+            "src/LegacySettings/siteaccess/site/content.ini.append.php",
+            "src/LegacySettings/siteaccess/site/contentstructuremenu.ini.append.php",
+            "src/LegacySettings/siteaccess/site/design.ini.append.php",
+            "src/LegacySettings/siteaccess/site/image.ini.append.php",
+            "src/LegacySettings/siteaccess/site/menu.ini.append.php",
+            "src/LegacySettings/siteaccess/site/odf.ini.append.php",
+            "src/LegacySettings/siteaccess/site/override.ini.append.php",
+            "src/LegacySettings/siteaccess/site/site.ini.append.php",
+            "src/LegacySettings/siteaccess/site/staticcache.ini.append.php",
+            "src/LegacySettings/siteaccess/site/template.ini.append.php",
+            "src/LegacySettings/siteaccess/site/toolbar.ini.append.php",
+            "src/LegacySettings/siteaccess/site/viewcache.ini.append.php",
+            "src/ezpublish_legacy/app/design/standard/templates/node/view/full.tpl",
+            "src/ezpublish_legacy/app/extension.xml",
+            "src/ezpublish_legacy/app/root/config.php",
+            "src/ezpublish_legacy/app/root/settings/override/site.ini.append.php",
+            "src/ezpublish_legacy/app/settings/_skeleton_legacy_admin/site.ini.append.php",
+            "src/ezpublish_legacy/app/settings/_skeleton_ngadminui/site.ini.append.php",
+            "src/ezpublish_legacy/app/settings/design.ini.append.php",
+            "src/ezpublish_legacy/app/settings/image.ini.append.php",
+            "src/ezpublish_legacy/app/settings/site.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/legacy_admin/site.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/legacy_site/bcgeneratestaticcache.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/legacy_site/bcwebsitestatistics.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/legacy_site/browse.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/legacy_site/content.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/legacy_site/contentstructuremenu.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/legacy_site/design.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/legacy_site/image.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/legacy_site/menu.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/legacy_site/odf.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/legacy_site/override.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/legacy_site/site.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/legacy_site/staticcache.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/legacy_site/template.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/legacy_site/toolbar.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/legacy_site/viewcache.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/ngadminui/content.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/ngadminui/contentstructuremenu.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/ngadminui/dashboard.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/ngadminui/design.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/ngadminui/image.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/ngadminui/override.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/ngadminui/site.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/ngadminui/toolbar.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/site/bcgeneratestaticcache.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/site/bcwebsitestatistics.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/site/browse.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/site/content.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/site/contentstructuremenu.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/site/design.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/site/image.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/site/menu.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/site/odf.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/site/override.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/site/site.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/site/staticcache.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/site/template.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/site/toolbar.ini.append.php",
+            "src/ezpublish_legacy/app/settings/siteaccess/site/viewcache.ini.append.php",
+            "src/ezpublish_legacy/app/settings/transform.ini.append.php"
+        ]
+    },
+    "se7enxweb/exponential-platform-dxp-core": {
+        "version": "dev-main"
+    },
+    "se7enxweb/ezplatform-xmltext-fieldtype": {
+        "version": "5.x-dev"
+    },
+    "se7enxweb/legacy-bridge": {
+        "version": "5.x-dev"
+    },
+    "se7enxweb/richtext-datatype-bundle": {
+        "version": "5.x-dev"
+    },
+    "se7enxweb/site-bundle": {
+        "version": "5.0",
+        "recipe": {
+            "repo": "github.com/se7enxweb/sevenx-recipes",
+            "branch": "master",
+            "version": "3.1",
+            "ref": "2ad788f0459b0106a24e7d4d0abee684c96ba786"
+        },
+        "files": [
+            "config/routes/netgen_site.yaml"
+        ]
+    },
+    "se7enxweb/site-legacy-bundle": {
+        "version": "5.0.x-dev"
+    },
+    "se7enxweb/system-info": {
+        "version": "dev-main"
+    },
+    "symfony/console": {
+        "version": "7.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "5.3",
+            "ref": "1781ff40d8a17d87cf53f8d4cf0c8346ed2bb461"
+        },
+        "files": [
+            "bin/console"
+        ]
+    },
+    "symfony/debug-bundle": {
+        "version": "7.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "5.3",
+            "ref": "5aa8aa48234c8eb6dbdd7b3cd5d791485d2cec4b"
+        },
+        "files": [
+            "config/packages/debug.yaml"
+        ]
+    },
+    "symfony/flex": {
+        "version": "2.9999999",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "2.4",
+            "ref": "52e9754527a15e2b79d9a610f98185a1fe46622a"
+        },
+        "files": [
+            ".env",
+            ".env.dev"
+        ]
+    },
+    "symfony/form": {
+        "version": "7.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "7.2",
+            "ref": "7d86a6723f4a623f59e2bf966b6aad2fc461d36b"
+        },
+        "files": [
+            "config/packages/csrf.yaml"
+        ]
+    },
+    "symfony/framework-bundle": {
+        "version": "7.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "7.4",
+            "ref": "5ea2ed9cd29ca8fc2cb9bca9cb7b7e0a8d2be1dc"
+        },
+        "files": [
+            "config/packages/cache.yaml",
+            "config/packages/framework.yaml",
+            "config/preload.php",
+            "config/routes/framework.yaml",
+            "config/services.yaml",
+            "public/index.php",
+            "src/Controller/.gitignore",
+            "src/Kernel.php",
+            ".editorconfig"
+        ]
+    },
+    "symfony/lock": {
+        "version": "7.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "5.2",
+            "ref": "8e937ff2b4735d110af1770f242c1107fdab4c8e"
+        },
+        "files": [
+            "config/packages/lock.yaml"
+        ]
+    },
+    "symfony/mailer": {
+        "version": "7.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "4.3",
+            "ref": "710cae90ab3e5d3f4a747e9ce6ae33299d7ae83b"
+        },
+        "files": [
+            "config/packages/mailer.yaml"
+        ]
+    },
+    "symfony/messenger": {
+        "version": "7.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "6.0",
+            "ref": "d8936e2e2230637ef97e5eecc0eea074eecae58b"
+        },
+        "files": [
+            "config/packages/messenger.yaml"
+        ]
+    },
+    "symfony/monolog-bundle": {
+        "version": "3.9999999",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "3.7",
+            "ref": "feb8fd9520b5694c7d0d2ba17fd4b4d33f9dd9cf"
+        },
+        "files": [
+            "config/packages/monolog.yaml"
+        ]
+    },
+    "symfony/notifier": {
+        "version": "7.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "5.0",
+            "ref": "b912054fd9639f5fad62493cc24439048c2fd045"
+        },
+        "files": [
+            "config/packages/notifier.yaml"
+        ]
+    },
+    "symfony/property-info": {
+        "version": "7.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "7.3",
+            "ref": "dae70df71978ae9226ae915ffd5fad817f5ca1f7"
+        },
+        "files": [
+            "config/packages/property_info.yaml"
+        ]
+    },
+    "symfony/routing": {
+        "version": "7.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "7.4",
+            "ref": "bc94c4fd86f393f3ab3947c18b830ea343e51ded"
+        },
+        "files": [
+            "config/packages/routing.yaml",
+            "config/routes.yaml"
+        ]
+    },
+    "symfony/security-bundle": {
+        "version": "7.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "7.4",
+            "ref": "c42fee7802181cdd50f61b8622715829f5d2335c"
+        },
+        "files": [
+            "config/packages/security.yaml",
+            "config/routes/security.yaml"
+        ]
+    },
+    "symfony/translation": {
+        "version": "7.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "6.3",
+            "ref": "620a1b84865ceb2ba304c8f8bf2a185fbf32a843"
+        },
+        "files": [
+            "config/packages/translation.yaml",
+            "translations/.gitignore"
+        ]
+    },
+    "symfony/twig-bundle": {
+        "version": "7.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "6.4",
+            "ref": "06dacf16872358cb1f2494e089070ff2d045233a"
+        },
+        "files": [
+            "config/packages/twig.yaml",
+            "templates/base.html.twig"
+        ]
+    },
+    "symfony/uid": {
+        "version": "7.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "7.0",
+            "ref": "0df5844274d871b37fc3816c57a768ffc60a43a5"
+        }
+    },
+    "symfony/ux-twig-component": {
+        "version": "2.9999999",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "2.13",
+            "ref": "f367ae2a1faf01c503de2171f1ec22567febeead"
+        },
+        "files": [
+            "config/packages/twig_component.yaml"
+        ]
+    },
+    "symfony/validator": {
+        "version": "7.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "7.0",
+            "ref": "8c1c4e28d26a124b0bb273f537ca8ce443472bfd"
+        },
+        "files": [
+            "config/packages/validator.yaml"
+        ]
+    },
+    "symfony/web-profiler-bundle": {
+        "version": "7.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "7.3",
+            "ref": "a363460c1b0b4a4d0242f2ce1a843ca0f6ac9026"
+        },
+        "files": [
+            "config/packages/web_profiler.yaml",
+            "config/routes/web_profiler.yaml"
+        ]
+    },
+    "symfony/webpack-encore-bundle": {
+        "version": "2.9999999",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "2.2",
+            "ref": "b618bf5f17ed61f523da7153025bf58ec9502f65"
+        },
+        "files": [
+            "assets/app.js",
+            "assets/styles/app.css",
+            "config/packages/webpack_encore.yaml",
+            "package.json",
+            "webpack.config.js"
+        ]
+    },
+    "twig/extra-bundle": {
+        "version": "3.x-dev"
+    },
+    "willdurand/js-translation-bundle": {
+        "version": "6.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "2.0",
+            "ref": "02b720a49f6d36b44d557e0b18e48bf09e0a8e07"
+        },
+        "files": [
+            "config/routes/js_translation.yaml"
+        ]
+    }
+}
