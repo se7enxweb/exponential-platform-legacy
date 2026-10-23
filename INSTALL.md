@@ -778,27 +778,36 @@ Steps 2–5 are run automatically by the `post-install-cmd` / `post-update-cmd` 
 ### 4a. Composer create-project (recommended)
 
 ```bash
-composer create-project se7enxweb/exponential-platform-legacy:~5.0.3.1 \
+composer create-project se7enxweb/exponential-platform-legacy:~5.0.3.2 \
     my-project
 cd my-project
 ```
 
 Always give the version constraint. The package holds four release lines, and the tag `v5.0.3` was cut from the 2.5
-line by mistake (published tags never move, so it stays). `~5.0.3.1` installs `v5.0.3.1`, the first correct 5.x
-release since `v5.0.2`, and later `5.0.3.x` releases, never `v5.0.3`; `5.x-dev` installs the head of the `5.x`
-branch.
+line by mistake (published tags never move, so it stays). `~5.0.3.2` installs `v5.0.3.2`, the first 5.x release
+that ships a `composer.lock`, and later `5.0.3.x` releases, never `v5.0.3`; the previous release was `v5.0.3.1`
+(`~5.0.3.1`). `5.x-dev` installs the head of the `5.x` branch.
+
+The project ships its `composer.lock` and `symfony.lock`, together with the files the Symfony Flex recipes
+created (`bin/`, `public/`, `src/`, `config/`, `templates/`, `translations/`, `.env`). `create-project`
+therefore installs exactly the package versions that were tested for the release (Composer prints
+"Installing dependencies from lock file"), and Flex applies no recipe, because `symfony.lock` records every
+recipe as installed (`composer recipes` lists them). To move to newer dependencies later, run `composer update`
+in your project, test the site again (pages, both admin sign-ins, editing and publishing), and commit the new
+`composer.lock` (see [17](#17-updating-the-codebase)).
 
 Composer will:
 
-1. Download all PHP packages including `se7enxweb/legacy-bridge` and the full legacy kernel
-2. Run Symfony Flex recipes (including the `se7enxweb/exponential-platform-dxp` recipe — installs `src/LegacySettings/override/site.ini.append.php` and other config files)
+1. Download all PHP packages, at the versions in `composer.lock`, including `se7enxweb/legacy-bridge` and the full legacy kernel
+2. Keep the recipe files the project ships (those of the `se7enxweb/exponential-platform-dxp` recipe include `bin/install-legacy-links` and `src/LegacySettings/override/site.ini.append.php`)
 3. Execute `post-install-cmd` scripts in order:
    - `php bin/install-legacy-links` — creates legacy kernel symlinks
-   - `assets:install` — publishes bundle `public/` assets to `public/bundles/`
-   - `ezpublish:legacy:assets_install` — publishes legacy bundle assets
    - `ezpublish:legacybundles:install_extensions` — installs legacy extension symlinks
-   - `cache:clear` — warms up the initial cache
    - `ezpublish:legacy:script bin/php/ezpgenerateautoloads.php` — generates legacy autoloads
+   - `bazinga:js-translation:dump` — writes the JS translations to `public/assets/`
+   - `assets:install` — publishes bundle `public/` assets to `public/bundles/`
+   - `ezpublish:legacy:assets_install` — publishes legacy assets (the `public/design`, `extension`, `share` and `var` links, `index_rest.php`, `index_cluster.php`)
+   - `cache:clear` — warms up the initial cache
 
 > 💾 **Git Save Point 1 — Project created**
 > ```bash
@@ -822,7 +831,7 @@ git checkout 5.x
 composer install --keep-vcs
 ```
 
-This downloads all packages (including the legacy kernel via `se7enxweb/legacy-bridge`), runs Flex recipes, installs legacy extension symlinks, and generates legacy autoloads.
+This installs the packages at the versions in the committed `composer.lock` (including the legacy kernel via `se7enxweb/legacy-bridge`), installs legacy extension symlinks, and generates legacy autoloads. The recipe files are part of the repository and `symfony.lock` records them, so Flex applies no recipe.
 
 > 💾 **Git Save Point 1 — Vendors installed**
 > ```bash
@@ -1677,6 +1686,12 @@ php bin/console cache:clear
 ```
 
 ### Update Composer packages
+
+The project ships `composer.lock` and `symfony.lock`, so `composer install` always installs the versions they
+record. `composer update` resolves newer versions within the constraints of `composer.json` and rewrites
+`composer.lock`; test the site again afterwards (pages, Platform and legacy admin sign-in, editing and
+publishing) before you commit the new lock. Recipe updates are a separate step: `composer recipes` lists them
+and `composer recipes:update <package>` applies one.
 
 ```bash
 # Update all packages within constraints

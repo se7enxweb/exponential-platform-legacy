@@ -312,8 +312,9 @@ For a complete walkthrough of Legacy Bridge installation, configuration, URL rou
 
 ```bash
 # 1. Create project from the DXP skeleton (includes Legacy Bridge by default)
-# (always give the version: the tag v5.0.3 holds the 2.5 line; ~5.0.3.1 is the 5.x line, 5.x-dev its branch head)
-composer create-project se7enxweb/exponential-platform-legacy:~5.0.3.1 \
+# (always give the version: the tag v5.0.3 holds the 2.5 line; ~5.0.3.2 is the 5.x line, 5.x-dev its branch head)
+# The project ships composer.lock and symfony.lock: this installs the tested versions from the lock file.
+composer create-project se7enxweb/exponential-platform-legacy:~5.0.3.2 \
     exponential_website
 cd exponential_website
 
@@ -447,13 +448,19 @@ See [INSTALL.md](INSTALL.md) for the complete step-by-step guide including Legac
 Create a new project using Composer:
 
 ```bash
-composer create-project se7enxweb/exponential-platform-legacy:~5.0.3.1 exponential_website
+composer create-project se7enxweb/exponential-platform-legacy:~5.0.3.2 exponential_website
 ```
 
 Always give the version constraint. The package holds four release lines, and the tag `v5.0.3` was cut from the 2.5
-line by mistake (published tags never move, so it stays). `~5.0.3.1` installs `v5.0.3.1`, the first correct 5.x
-release since `v5.0.2`, and later `5.0.3.x` releases, never `v5.0.3`; `5.x-dev` installs the head of the `5.x`
-branch.
+line by mistake (published tags never move, so it stays). `~5.0.3.2` installs `v5.0.3.2`, the first 5.x release
+that ships a `composer.lock`, and later `5.0.3.x` releases, never `v5.0.3`; the previous release was `v5.0.3.1`.
+`5.x-dev` installs the head of the `5.x` branch.
+
+The project ships `composer.lock` and `symfony.lock` together with the files the Symfony Flex recipes created
+(`bin/`, `public/`, `src/`, `config/`, `templates/`, `.env`), so `create-project` installs exactly the tested
+package versions from the lock file and Flex applies no recipe. To update dependencies, run `composer update` in
+your project, test the site again (pages, both admin sign-ins, editing and publishing) and commit the new
+`composer.lock`.
 
 The `se7enxweb/legacy-bridge` package and all Legacy Bridge configuration are included automatically. After `composer create-project` completes, the legacy bridge is installed, legacy extension symlinks are created, and autoloads are generated — no manual steps needed.
 
