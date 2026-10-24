@@ -1,12 +1,7 @@
-> This copy lives on the 5.x branch (the 5 line). The book covers every release line; the newest copy is on
-> master: [https://github.com/se7enxweb/exponential-platform-legacy/blob/master/doc/INSTALL.md](https://github.com/se7enxweb/exponential-platform-legacy/blob/master/doc/INSTALL.md).
-> This short guide installs the 2.5 line; the installation guide of the 5 line is [INSTALL.md](../INSTALL.md) at the root
-> of this branch, and [chapter 4.13 of the book](book/04-installing.md#413-the-whole-install-per-line) gives the whole install per line.
-
 # Exponential Platform Legacy: short installation guide
 
 This is the quick start. It installs the **2.5 line** (this branch, `master`: Symfony 3.4, platform kernel
-`se7enxweb/ezpublish-kernel ~7.5.33`, LegacyBridge 2.x, the Exponential 6 legacy kernel in `ezpublish_legacy/`) and
+`se7enxweb/ezpublish-kernel ~7.5.42`, LegacyBridge 2.x, the Exponential 6 legacy kernel in `ezpublish_legacy/`) and
 points to the chapter of [the book](book/README.md) that explains each step. For the 3.3, 4.6 and 5 lines, follow the
 book's [chapter 4.13](book/04-installing.md#413-the-whole-install-per-line) instead.
 
@@ -14,11 +9,11 @@ book's [chapter 4.13](book/04-installing.md#413-the-whole-install-per-line) inst
 
 | | 2.5 line |
 |---|---|
-| PHP | `^7.1.3 \|\| ^8.1 \|\| ^8.2` (`composer.json`), with `curl`, `intl`, `mbstring`, `pdo` plus the PDO driver of your database, `xml`, `xsl`, `zip`, `fileinfo`, `gd` or `imagick`; for SQLite both `pdo_sqlite` and `sqlite3` |
+| PHP | 8.0 or later (the skeleton says `^7.1.3 \|\| ^8.0`; the legacy kernel `se7enxweb/exponential ^6.0.12` needs 8.0: on PHP 8.0 Composer installs its 6.0.x line, 6.0.15, on 8.1 and later its newest release, see below), with `curl`, `intl`, `mbstring`, `pdo` plus the PDO driver of your database, `xml`, `xsl`, `zip`, `fileinfo`, `gd` or `imagick`; for SQLite both `pdo_sqlite` and `sqlite3` |
 | `memory_limit` | 256M at least; both kernels run in one process |
 | `date.timezone` | set in `php.ini` |
 | Database | MySQL 5.7+ / MariaDB 10.0+ (`utf8mb4`), PostgreSQL 9.5+, or SQLite 3.35+ for development and tests |
-| Composer | 2.x |
+| Composer | 2.2 or later (step 2 uses `--ignore-platform-req=php+`) |
 | Asset build | Node.js 14 LTS and Yarn 1.22 (Webpack Encore 1.8.2 and webpack 4.46 do not build on Node.js 16 and later) |
 | Web server | Exponential Velocity, Apache 2.4 or nginx with PHP-FPM ([book, chapter 6](book/06-serving-the-site.md)) |
 
@@ -27,18 +22,44 @@ Details: [chapter 2](book/02-requirements.md).
 ## 2. Get the code
 
 ```bash
-composer create-project se7enxweb/exponential-platform-legacy:~2.5.0.3 exponential_website   # the v2.5.0.3 release
+composer create-project --ignore-platform-req=php+ se7enxweb/exponential-platform-legacy:~2.5.0.8 exponential_website
 # or the branch head: se7enxweb/exponential-platform-legacy:dev-master  (also known as 2.5.x-dev)
 cd exponential_website
 ```
 
-Always give the version. Without one, Composer takes the newest stable tag, `v5.0.3`, which (by a release mistake)
-contains this 2.5 line; for the 5 line use `:5.x-dev` or `:v5.0.2` ([chapter 3.1](book/03-getting-the-code.md#the-v503-tag-selects-the-25-line),
-[chapter 10.1](book/10-upgrading-between-lines.md#101-the-release-lines)). The next 2.5 release is planned as
-`v2.5.0.4`; until it is tagged, `~2.5.0.3` installs `v2.5.0.3`, whose front controllers still carry development
-settings that the branch has since corrected (step 7).
-`2.5.0.x-dev`, used by older guides, matches nothing on Packagist. Use `--ignore-platform-reqs` only for a platform
-requirement you have checked is irrelevant.
+**`--ignore-platform-req=php+` is needed on every PHP version**, for `create-project`, `install` and `update` alike
+(or set it once in the shell: `export COMPOSER_IGNORE_PLATFORM_REQ=php+`). The legacy kernel needs PHP 8.0 or later,
+while packages this line depends on still declare an upper bound below PHP 8: `friendsofsymfony/http-cache-bundle` 1.3
+(through `se7enxweb/ezplatform-http-cache` 0.9 and the platform kernel) and `overblog/graphiql-bundle` 0.1 say
+`^5.4 || ^7.0`, several others `^7.1`. Without the switch Composer stops on PHP 8 with "your php version (8.x...) does
+not satisfy that requirement", and on PHP 7.4 because the legacy kernel needs 8.0. The `+` ignores only those upper
+bounds: a PHP older than a package's minimum is still refused, and the extension checks still run. Do not use the
+broader `--ignore-platform-reqs`.
+
+**Composer 2.9 and later block packages with security advisories, and this line works with that left on.** The
+2.5 stack runs on `se7enxweb/symfony` 3.4, which replaces every `symfony/*` component. Packagist's advisories for
+those components name ranges such as `>=3.4.0,<4.0.0`, because upstream stopped fixing 3.4 in 2021, so Composer
+refused the fork although it is maintained; releases before `v2.5.0.8` fail with "these were not loaded, because
+they are affected by security advisories". `v2.5.0.8` requires `se7enxweb/symfony` 3.4.58 or later, which carries the
+fixes backported to 3.4, and lists each of those advisories in `config.policy.advisories.ignore-id` (and
+`config.audit.ignore` for Composer 2.9) of `composer.json` with the reason it is fixed or does not apply (the three
+Mime and Mailer advisories name components the 3.4 line does not have). Blocking stays on for everything else, and a
+new advisory blocks the install until it is fixed and listed. Never set `COMPOSER_NO_SECURITY_BLOCKING` or
+`policy.advisories.block: false` to get past it.
+
+**PHP 8.0 gets the legacy kernel's 6.0.x line.** The kernel releases 6.0.12 to 6.0.14 declare PHP `^8.1`; the 6.0.x
+development line (`se7enxweb/exponential` `main`, 6.0.15) declares `^8.0`. On PHP 8.1 and later Composer installs the
+newest release; on PHP 8.0 it installs the 6.0.x line, which the project's `minimum-stability: dev` allows (it shows
+as `dev-main` in `composer show`), until 6.0.15 is released. PHP 8.0 needs `v2.5.0.6` or later: in earlier releases
+several packages of the 2.5 stack declared `^7.1 || ^8.1 || ^8.2`, which leaves 8.0 out. Exponential Velocity needs
+PHP 8.1; on PHP 8.0 serve the site with Apache or nginx (step 7).
+
+Always give the version. Without one, Composer takes the newest stable tag: until 2026-10-05 that was `v5.0.3`, which
+(by a release mistake) contains this 2.5 line; since then it is [`v5.0.3.1`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v5.0.3.1), the 5 line. For the 5 line use `:5.x-dev` or
+`:~5.0.3.1` ([chapter 3.1](book/03-getting-the-code.md#the-v503-tag-selects-the-25-line),
+[chapter 10.1](book/10-upgrading-between-lines.md#101-the-release-lines)). The 2.5 release [`v2.5.0.4`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v2.5.0.4) (2026-10-05)
+carries the corrected front controllers (step 7); `v2.5.0.3` and earlier still have development settings.
+`2.5.0.x-dev`, used by older guides, matches nothing on Packagist.
 
 `composer install` runs the project's scripts: it builds `app/config/parameters.yml` from `parameters.yml.dist`
 (asking for values unless `--no-interaction`), clears the cache, installs bundle assets, links the legacy kernel's
@@ -68,6 +89,14 @@ Real environment variables of the same names override these values. For SQLite s
 environment variable `DATABASE_PATH`. The legacy kernel needs no database settings of its own: the bridge passes the
 platform's connection to it ([chapter 7.2](book/07-databases.md#72-how-the-bridge-hands-the-connection-to-the-legacy-kernel)).
 
+When `composer install` or `create-project` ran with `--no-interaction`, its scripts have already compiled the
+container with the `parameters.yml.dist` defaults (`pdo_mysql`). Clear the cache after editing the file, or step 4
+still connects with the old values:
+
+```bash
+php bin/console --env=prod cache:clear
+```
+
 Optional settings, as environment variables (defaults in `app/config/default_parameters.yml`):
 
 | Variable | Default | Meaning |
@@ -95,7 +124,9 @@ php bin/console ezplatform:install clean              # or: ezplatform:install e
 ```
 
 The installer drops and recreates its tables: run it only on an empty database. `exponential-oss` builds SQLite
-tables with correct composite primary keys. The seed's administrator is `admin` / `publish`; change the password at
+tables with correct composite primary keys. Both types add the tables and columns of the installed legacy kernel's
+own schema (`ezpublish_legacy/share/db_schema.dba`) that the platform schema lacks, such as the bookmark folders of
+kernel 6.0.15, so the legacy admin finds every table it reads on every engine. The seed's administrator is `admin` / `publish`; change the password at
 once. Chapters: [4.5](book/04-installing.md#45-run-the-platform-installer), [7](book/07-databases.md).
 
 ## 5. Permissions
@@ -139,9 +170,9 @@ with `{{ encore_entry_link_tags('index', null, 'app') }}`. Chapters: [5](book/05
 ## 7. Serve the site
 
 Point the web server at `web/`. Production must route to `web/app.php`, never to `web/app_dev.php`; use the rules in
-[`doc/apache2/vhost.template`](https://github.com/se7enxweb/exponential-platform-legacy/blob/master/doc/apache2/vhost.template) or [`doc/nginx/`](https://github.com/se7enxweb/exponential-platform-legacy/tree/master/doc/nginx). On this branch the front controllers
+[`doc/apache2/vhost.template`](apache2/vhost.template) or [`doc/nginx/`](nginx/). On this branch the front controllers
 are safe as committed (2026-10-05): `web/.htaccess` routes to `app.php`, `web/app_dev.php` refuses every client that
-is not the local machine, and `web/app.php` no longer switches `display_errors` on. A project created from `v2.5.0.3`
+is not the local machine, and `web/app.php` no longer switches `display_errors` on. The release `v2.5.0.4` has the same files. A project created from `v2.5.0.3`
 (or `v5.0.3`) still has the old files, which route every request to `app_dev.php` with its check disabled; replace
 them with the branch's files ([chapter 6.2.1](book/06-serving-the-site.md#621-shipped-files-to-check-before-production),
 [chapter 13.2](book/13-security-hardening.md#132-what-the-web-server-must-never-hand-out)). A virtual host generated
@@ -176,7 +207,7 @@ settings. Chapter: [9.2](book/09-operations.md#92-cron-on-both-sides).
 - Solr: the 2.5 line installs `se7enxweb/ezplatform-solr-search-engine` 1.7; create the core with Solr's own tools
   from the configuration `vendor/se7enxweb/ezplatform-solr-search-engine/bin/generate-solr-config.sh` produces, set
   `SEARCH_ENGINE=solr`, `SOLR_DSN`, `SOLR_CORE`, and reindex. There is no `ezplatform:solr:create-core` command.
-- Varnish: sample VCL in [`doc/varnish/`](https://github.com/se7enxweb/exponential-platform-legacy/blob/master/doc/varnish/varnish.md); set `HTTPCACHE_PURGE_TYPE=http` and
+- Varnish: sample VCL in [`doc/varnish/`](varnish/varnish.md); set `HTTPCACHE_PURGE_TYPE=http` and
   `HTTPCACHE_PURGE_SERVER`, and `SYMFONY_TRUSTED_PROXIES` to Varnish's address. Purge everything with
   `php bin/console fos:httpcache:invalidate:tag ez-all`.
 
@@ -185,7 +216,7 @@ Chapter: [9.4](book/09-operations.md#94-search) and [9.8](book/09-operations.md#
 ## 10. Updating and troubleshooting
 
 ```bash
-git pull --ff-only && composer install
+git pull --ff-only && composer install --ignore-platform-req=php+
 php bin/console --env=prod cache:clear
 php bin/console --env=prod ezpublish:legacy:script bin/php/ezcache.php --clear-all
 ```
