@@ -69,12 +69,48 @@ class LegacyScriptsExtension extends \Twig_Extension
                 $this->scripts[] = strpos($file, '://') === 0 ? 'https' . $file : $file;
                 continue;
             }
-            $path = $file[0] === '/' ? $file : self::SCRIPT_DIR . $file;
-            if (is_file($this->legacyRootDir . $path)) {
+            $path = $this->localScriptPath($file);
+            if ($path !== null) {
                 $this->scripts[] = $path;
             }
         }
 
         return $this->scripts;
+    }
+
+    /**
+     * The address of a LocalScripts file, resolved as ezjscore's packer does: a name is a file of a
+     * design's javascript/ directory (the kernel's own: extension/ezjscore), a path that starts with
+     * "/" is relative to a design directory itself. Exponential UI (extension expui, active with
+     * kernel 6.0.15) names /lib/jquery/jquery-4.0.0.min.js, a file of its own design; read from the
+     * legacy root instead, the head loaded no jQuery at all. Null when no design has the file.
+     *
+     * @param string $file
+     *
+     * @return string|null
+     */
+    private function localScriptPath($file)
+    {
+        if ($file[0] !== '/') {
+            $relative = 'javascript/' . $file;
+            if (is_file($this->legacyRootDir . self::SCRIPT_DIR . $file)) {
+                return self::SCRIPT_DIR . $file;
+            }
+        } else {
+            $relative = ltrim($file, '/');
+        }
+        $designs = array_merge(
+            glob($this->legacyRootDir . '/extension/*/design/standard', GLOB_ONLYDIR) ?: [],
+            glob($this->legacyRootDir . '/design/standard', GLOB_ONLYDIR) ?: [],
+            glob($this->legacyRootDir . '/extension/*/design/*', GLOB_ONLYDIR) ?: [],
+            glob($this->legacyRootDir . '/design/*', GLOB_ONLYDIR) ?: []
+        );
+        foreach ($designs as $design) {
+            if (is_file($design . '/' . $relative)) {
+                return substr($design, strlen($this->legacyRootDir)) . '/' . $relative;
+            }
+        }
+
+        return null;
     }
 }
