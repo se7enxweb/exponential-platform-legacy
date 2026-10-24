@@ -156,7 +156,7 @@ Exponential Platform Legacy is database, platform and browser independent. Becau
 
 ```bash
 # 1. Create project
-composer create-project --ignore-platform-req=php+ se7enxweb/exponential-platform-legacy:~2.5.0.6 exponential_website
+composer create-project --ignore-platform-req=php+ se7enxweb/exponential-platform-legacy:~2.5.0.8 exponential_website
 cd exponential_website
 
 # 2. Configure environment
@@ -265,7 +265,7 @@ symfony server:start
 Create a new project using Composer:
 
 ```bash
-composer create-project --ignore-platform-req=php+ se7enxweb/exponential-platform-legacy:~2.5.0.6 exponential_website
+composer create-project --ignore-platform-req=php+ se7enxweb/exponential-platform-legacy:~2.5.0.8 exponential_website
 ```
 
 Always name the version. The other release lines are `:3.x-dev`, `:4.6.x-dev` and, for Symfony 7, `:5.x-dev` (or the

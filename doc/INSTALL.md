@@ -22,7 +22,7 @@ Details: [chapter 2](book/02-requirements.md).
 ## 2. Get the code
 
 ```bash
-composer create-project --ignore-platform-req=php+ se7enxweb/exponential-platform-legacy:~2.5.0.6 exponential_website
+composer create-project --ignore-platform-req=php+ se7enxweb/exponential-platform-legacy:~2.5.0.8 exponential_website
 # or the branch head: se7enxweb/exponential-platform-legacy:dev-master  (also known as 2.5.x-dev)
 cd exponential_website
 ```
@@ -35,6 +35,17 @@ while packages this line depends on still declare an upper bound below PHP 8: `f
 not satisfy that requirement", and on PHP 7.4 because the legacy kernel needs 8.0. The `+` ignores only those upper
 bounds: a PHP older than a package's minimum is still refused, and the extension checks still run. Do not use the
 broader `--ignore-platform-reqs`.
+
+**Composer 2.9 and later block packages with security advisories, and this line works with that left on.** The
+2.5 stack runs on `se7enxweb/symfony` 3.4, which replaces every `symfony/*` component. Packagist's advisories for
+those components name ranges such as `>=3.4.0,<4.0.0`, because upstream stopped fixing 3.4 in 2021, so Composer
+refused the fork although it is maintained; releases before `v2.5.0.8` fail with "these were not loaded, because
+they are affected by security advisories". `v2.5.0.8` requires `se7enxweb/symfony` 3.4.58 or later, which carries the
+fixes backported to 3.4, and lists each of those advisories in `config.policy.advisories.ignore-id` (and
+`config.audit.ignore` for Composer 2.9) of `composer.json` with the reason it is fixed or does not apply (the three
+Mime and Mailer advisories name components the 3.4 line does not have). Blocking stays on for everything else, and a
+new advisory blocks the install until it is fixed and listed. Never set `COMPOSER_NO_SECURITY_BLOCKING` or
+`policy.advisories.block: false` to get past it.
 
 **PHP 8.0 gets the legacy kernel's 6.0.x line.** The kernel releases 6.0.12 to 6.0.14 declare PHP `^8.1`; the 6.0.x
 development line (`se7enxweb/exponential` `main`, 6.0.15) declares `^8.0`. On PHP 8.1 and later Composer installs the

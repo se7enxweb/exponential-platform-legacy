@@ -131,7 +131,7 @@ first install writes (section 3.8) to make later installs repeatable.
 ### 3.4.1 The 2.5 line
 
 ```bash
-composer create-project --ignore-platform-req=php+ se7enxweb/exponential-platform-legacy:~2.5.0.6 my_project
+composer create-project --ignore-platform-req=php+ se7enxweb/exponential-platform-legacy:~2.5.0.8 my_project
 cd my_project
 ```
 

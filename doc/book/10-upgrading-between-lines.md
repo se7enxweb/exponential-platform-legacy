@@ -86,7 +86,7 @@ to the 5 line again; naming `5.0.3` exactly still installs 2.5. Always name the 
 ```bash
 composer create-project se7enxweb/exponential-platform-legacy:5.x-dev my-site    # the 5 line, branch head
 composer create-project se7enxweb/exponential-platform-legacy:~5.0.3.1 my-site  # the 5 line, v5.0.3.1 and later 5.0.3.x
-composer create-project se7enxweb/exponential-platform-legacy:~2.5.0.6 my-site   # the 2.5 line (v2.5.0.6 and later; PHP 8.0 too)
+composer create-project se7enxweb/exponential-platform-legacy:~2.5.0.8 my-site   # the 2.5 line (v2.5.0.8 and later: PHP 8.0 too, and Composer 2.9+)
 ```
 
 Check the result before going on: `grep '"se7enxweb/legacy-bridge"' my-site/composer.json` must show `^5.0.0.0` for
