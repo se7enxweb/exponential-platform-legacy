@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "991d9e65d9f96196e080362df24bcc73",
+    "content-hash": "7293df1bb0ae467f61699c4cf57dda9e",
     "packages": [
         {
             "name": "api-platform/core",
@@ -307,133 +307,6 @@
                 }
             ],
             "time": "2025-11-29T13:01:51+00:00"
-        },
-        {
-            "name": "beberlei/assert",
-            "version": "v3.3.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/beberlei/assert.git",
-                "reference": "f193f4613c7d7fbcee2c05e4daff4061d49c040e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/assert/zipball/f193f4613c7d7fbcee2c05e4daff4061d49c040e",
-                "reference": "f193f4613c7d7fbcee2c05e4daff4061d49c040e",
-                "shasum": ""
-            },
-            "require": {
-                "ext-ctype": "*",
-                "ext-json": "*",
-                "ext-mbstring": "*",
-                "ext-simplexml": "*",
-                "php": "^7.1 || ^8.0"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "*",
-                "phpstan/phpstan": "*",
-                "phpunit/phpunit": ">=6.0.0",
-                "yoast/phpunit-polyfills": "^0.1.0"
-            },
-            "suggest": {
-                "ext-intl": "Needed to allow Assertion::count(), Assertion::isCountable(), Assertion::minCount(), and Assertion::maxCount() to operate on ResourceBundles"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "lib/Assert/functions.php"
-                ],
-                "psr-4": {
-                    "Assert\\": "lib/Assert"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-2-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Benjamin Eberlei",
-                    "email": "kontakt@beberlei.de",
-                    "role": "Lead Developer"
-                },
-                {
-                    "name": "Richard Quadling",
-                    "email": "rquadling@gmail.com",
-                    "role": "Collaborator"
-                }
-            ],
-            "description": "Thin assertion library for input validation in business models.",
-            "keywords": [
-                "assert",
-                "assertion",
-                "validation"
-            ],
-            "support": {
-                "issues": "https://github.com/beberlei/assert/issues",
-                "source": "https://github.com/beberlei/assert/tree/v3.3.4"
-            },
-            "time": "2026-06-10T19:47:05+00:00"
-        },
-        {
-            "name": "brick/math",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/brick/math.git",
-                "reference": "2effe05d2177c451b86c6a073196a4034c02f211"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/brick/math/zipball/2effe05d2177c451b86c6a073196a4034c02f211",
-                "reference": "2effe05d2177c451b86c6a073196a4034c02f211",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^8.2"
-            },
-            "require-dev": {
-                "phpstan/phpstan": "2.2.13",
-                "phpstan/phpstan-phpunit": "2.0.18",
-                "phpunit/phpunit": "^11.5"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Brick\\Math\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Arbitrary-precision arithmetic library",
-            "keywords": [
-                "Arbitrary-precision",
-                "BigInteger",
-                "BigRational",
-                "arithmetic",
-                "bigdecimal",
-                "bignum",
-                "bignumber",
-                "brick",
-                "decimal",
-                "integer",
-                "math",
-                "mathematics",
-                "rational"
-            ],
-            "support": {
-                "issues": "https://github.com/brick/math/issues",
-                "source": "https://github.com/brick/math/tree/1.0.0"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/BenMorel",
-                    "type": "github"
-                }
-            ],
-            "time": "2026-09-12T10:28:18+00:00"
         },
         {
             "name": "clue/stream-filter",
@@ -776,82 +649,6 @@
                 "source": "https://github.com/Cron/Cron/tree/1.9.1"
             },
             "time": "2024-11-13T21:04:33+00:00"
-        },
-        {
-            "name": "dflydev/dot-access-data",
-            "version": "dev-main",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/dflydev/dflydev-dot-access-data.git",
-                "reference": "a23a2bf4f31d3518f3ecb38660c95715dfead60f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/dflydev/dflydev-dot-access-data/zipball/a23a2bf4f31d3518f3ecb38660c95715dfead60f",
-                "reference": "a23a2bf4f31d3518f3ecb38660c95715dfead60f",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.1 || ^8.0"
-            },
-            "require-dev": {
-                "phpstan/phpstan": "^0.12.42",
-                "phpunit/phpunit": "^7.5 || ^8.5 || ^9.3",
-                "scrutinizer/ocular": "1.6.0",
-                "squizlabs/php_codesniffer": "^3.5",
-                "vimeo/psalm": "^4.0.0"
-            },
-            "default-branch": true,
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-main": "3.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Dflydev\\DotAccessData\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Dragonfly Development Inc.",
-                    "email": "info@dflydev.com",
-                    "homepage": "http://dflydev.com"
-                },
-                {
-                    "name": "Beau Simensen",
-                    "email": "beau@dflydev.com",
-                    "homepage": "http://beausimensen.com"
-                },
-                {
-                    "name": "Carlos Frutos",
-                    "email": "carlos@kiwing.it",
-                    "homepage": "https://github.com/cfrutos"
-                },
-                {
-                    "name": "Colin O'Dell",
-                    "email": "colinodell@gmail.com",
-                    "homepage": "https://www.colinodell.com"
-                }
-            ],
-            "description": "Given a deep data structure, access data by dot notation.",
-            "homepage": "https://github.com/dflydev/dflydev-dot-access-data",
-            "keywords": [
-                "access",
-                "data",
-                "dot",
-                "notation"
-            ],
-            "support": {
-                "issues": "https://github.com/dflydev/dflydev-dot-access-data/issues",
-                "source": "https://github.com/dflydev/dflydev-dot-access-data/tree/v3.0.3"
-            },
-            "time": "2024-07-08T12:26:09+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -1765,20 +1562,20 @@
         },
         {
             "name": "doctrine/instantiator",
-            "version": "2.2.x-dev",
+            "version": "2.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/instantiator.git",
-                "reference": "c795a176780bcada3d008d07eef0c2b1b298665c"
+                "reference": "7be2ebd072deac210cb57eb2776aac19f4d5d1ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/instantiator/zipball/c795a176780bcada3d008d07eef0c2b1b298665c",
-                "reference": "c795a176780bcada3d008d07eef0c2b1b298665c",
+                "url": "https://api.github.com/repos/doctrine/instantiator/zipball/7be2ebd072deac210cb57eb2776aac19f4d5d1ad",
+                "reference": "7be2ebd072deac210cb57eb2776aac19f4d5d1ad",
                 "shasum": ""
             },
             "require": {
-                "php": "^8.4"
+                "php": "^8.1"
             },
             "require-dev": {
                 "doctrine/coding-standard": "^14",
@@ -1792,7 +1589,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Doctrine\\Instantiator\\": "src/"
+                    "Doctrine\\Instantiator\\": "src/Doctrine/Instantiator/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1814,7 +1611,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/instantiator/issues",
-                "source": "https://github.com/doctrine/instantiator/tree/2.2.x"
+                "source": "https://github.com/doctrine/instantiator/tree/2.0.x"
             },
             "funding": [
                 {
@@ -1830,7 +1627,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-03-20T19:06:08+00:00"
+            "time": "2026-01-04T22:42:35+00:00"
         },
         {
             "name": "doctrine/lexer",
@@ -2332,66 +2129,6 @@
             "time": "2025-03-06T22:45:56+00:00"
         },
         {
-            "name": "emodric/twig-package-versions",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/emodric/twig-package-versions.git",
-                "reference": "c7d66966f5e6ea027e871a17ac17ead14ae3c1e5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/emodric/twig-package-versions/zipball/c7d66966f5e6ea027e871a17ac17ead14ae3c1e5",
-                "reference": "c7d66966f5e6ea027e871a17ac17ead14ae3c1e5",
-                "shasum": ""
-            },
-            "require": {
-                "jean85/pretty-package-versions": "^2.1",
-                "php": "^8.4",
-                "twig/twig": "^3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^12.5"
-            },
-            "default-branch": true,
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "EdiModric\\Twig\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Edi Modrić",
-                    "email": "edi.modric@gmail.com",
-                    "homepage": "https://www.github.com/emodric"
-                }
-            ],
-            "description": "Twig functions that return a package version by using jean85/pretty-package-versions library",
-            "homepage": "http://github.com/emodric/twig-package-versions",
-            "keywords": [
-                "package",
-                "symfony",
-                "templating",
-                "twig",
-                "version"
-            ],
-            "support": {
-                "issues": "https://github.com/emodric/twig-package-versions/issues",
-                "source": "https://github.com/emodric/twig-package-versions/tree/master"
-            },
-            "time": "2025-12-30T17:00:44+00:00"
-        },
-        {
             "name": "erusev/parsedown",
             "version": "1.8.0",
             "source": {
@@ -2798,31 +2535,30 @@
         },
         {
             "name": "google/recaptcha",
-            "version": "1.5.2",
+            "version": "1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/google/recaptcha.git",
-                "reference": "ee4352ff2fe5ee23f2a8fbd165375dab3a1bad17"
+                "reference": "56522c261d2e8c58ba416c90f81a4cd9f2ed89b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/google/recaptcha/zipball/ee4352ff2fe5ee23f2a8fbd165375dab3a1bad17",
-                "reference": "ee4352ff2fe5ee23f2a8fbd165375dab3a1bad17",
+                "url": "https://api.github.com/repos/google/recaptcha/zipball/56522c261d2e8c58ba416c90f81a4cd9f2ed89b9",
+                "reference": "56522c261d2e8c58ba416c90f81a4cd9f2ed89b9",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.4"
+                "php": ">=8"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.95",
-                "php-coveralls/php-coveralls": "^2.9.1",
-                "phpstan/phpstan": "^2.1.51",
-                "phpunit/phpunit": "^13.1"
+                "friendsofphp/php-cs-fixer": "^3.14",
+                "php-coveralls/php-coveralls": "^2.5",
+                "phpunit/phpunit": "^10"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.5.x-dev"
+                    "dev-master": "1.3.x-dev"
                 }
             },
             "autoload": {
@@ -2847,7 +2583,7 @@
                 "issues": "https://github.com/google/recaptcha/issues",
                 "source": "https://github.com/google/recaptcha"
             },
-            "time": "2026-09-22T09:50:41+00:00"
+            "time": "2025-06-26T22:21:57+00:00"
         },
         {
             "name": "ibexa/content-forms",
@@ -4676,132 +4412,6 @@
             "time": "2026-06-04T10:05:48+00:00"
         },
         {
-            "name": "jean85/pretty-package-versions",
-            "version": "2.x-dev",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Jean85/pretty-package-versions.git",
-                "reference": "eeb29501e5262613013c5d13845be802278b2724"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Jean85/pretty-package-versions/zipball/eeb29501e5262613013c5d13845be802278b2724",
-                "reference": "eeb29501e5262613013c5d13845be802278b2724",
-                "shasum": ""
-            },
-            "require": {
-                "composer-runtime-api": "^2.1.0",
-                "php": "^7.4|^8.0"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.2",
-                "jean85/composer-provided-replaced-stub-package": "^1.0",
-                "phpstan/phpstan": "^2.0",
-                "phpunit/phpunit": "^9.6.34",
-                "rector/rector": "^2.0",
-                "vimeo/psalm": "^4.3 || ^5.0"
-            },
-            "default-branch": true,
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Jean85\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Alessandro Lai",
-                    "email": "alessandro.lai85@gmail.com"
-                }
-            ],
-            "description": "A library to get pretty versions strings of installed dependencies",
-            "keywords": [
-                "composer",
-                "package",
-                "release",
-                "versions"
-            ],
-            "support": {
-                "issues": "https://github.com/Jean85/pretty-package-versions/issues",
-                "source": "https://github.com/Jean85/pretty-package-versions/tree/2.x"
-            },
-            "time": "2026-06-22T07:11:19+00:00"
-        },
-        {
-            "name": "justinrainbow/json-schema",
-            "version": "6.13.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jsonrainbow/json-schema.git",
-                "reference": "e54aacc4c0657b3a4af4f628428d2702146828c6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jsonrainbow/json-schema/zipball/e54aacc4c0657b3a4af4f628428d2702146828c6",
-                "reference": "e54aacc4c0657b3a4af4f628428d2702146828c6",
-                "shasum": ""
-            },
-            "require": {
-                "ext-filter": "*",
-                "ext-json": "*",
-                "marc-mabe/php-enum": "^4.4",
-                "php": "^7.2 || ^8.0"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "3.3.0",
-                "json-schema/json-schema-test-suite": "dev-main",
-                "marc-mabe/php-enum-phpstan": "^2.0",
-                "phpspec/prophecy": "^1.19",
-                "phpstan/phpstan": "^1.12",
-                "phpunit/phpunit": "^8.5"
-            },
-            "bin": [
-                "bin/validate-json"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "6.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "JsonSchema\\": "src/JsonSchema/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Danny van der Sluijs",
-                    "email": "danny.vandersluijs@icloud.com",
-                    "role": "Maintainer"
-                }
-            ],
-            "description": "A library to validate a json schema.",
-            "homepage": "https://github.com/jsonrainbow/json-schema",
-            "keywords": [
-                "json",
-                "schema"
-            ],
-            "support": {
-                "issues": "https://github.com/jsonrainbow/json-schema/issues",
-                "source": "https://github.com/jsonrainbow/json-schema/tree/6.13.1"
-            },
-            "time": "2026-09-30T07:42:28+00:00"
-        },
-        {
             "name": "knplabs/knp-menu",
             "version": "dev-master",
             "source": {
@@ -5010,36 +4620,35 @@
         },
         {
             "name": "lcobucci/clock",
-            "version": "3.7.x-dev",
+            "version": "3.5.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lcobucci/clock.git",
-                "reference": "5a3d3acf30a34233f8eea0b5e9a0eacb8ae70b00"
+                "reference": "a3139d9e97d47826f27e6a17bb63f13621f86058"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lcobucci/clock/zipball/5a3d3acf30a34233f8eea0b5e9a0eacb8ae70b00",
-                "reference": "5a3d3acf30a34233f8eea0b5e9a0eacb8ae70b00",
+                "url": "https://api.github.com/repos/lcobucci/clock/zipball/a3139d9e97d47826f27e6a17bb63f13621f86058",
+                "reference": "a3139d9e97d47826f27e6a17bb63f13621f86058",
                 "shasum": ""
             },
             "require": {
-                "php": "~8.4.0 || ~8.5.0",
+                "php": "~8.3.0 || ~8.4.0 || ~8.5.0",
                 "psr/clock": "^1.0"
             },
             "provide": {
                 "psr/clock-implementation": "1.0"
             },
             "require-dev": {
-                "infection/infection": "^0.35",
-                "lcobucci/coding-standard": "^12.0",
+                "infection/infection": "^0.31",
+                "lcobucci/coding-standard": "^11.2.0",
                 "phpstan/extension-installer": "^1.3.1",
-                "phpstan/phpstan": "^2.1",
-                "phpstan/phpstan-deprecation-rules": "^2.0",
-                "phpstan/phpstan-phpunit": "^2.0",
-                "phpstan/phpstan-strict-rules": "^2.0",
-                "phpunit/phpunit": "^13.0"
+                "phpstan/phpstan": "^2.0.0",
+                "phpstan/phpstan-deprecation-rules": "^2.0.0",
+                "phpstan/phpstan-phpunit": "^2.0.0",
+                "phpstan/phpstan-strict-rules": "^2.0.0",
+                "phpunit/phpunit": "^12.0.0"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -5059,7 +4668,7 @@
             "description": "Yet another clock abstraction",
             "support": {
                 "issues": "https://github.com/lcobucci/clock/issues",
-                "source": "https://github.com/lcobucci/clock/tree/3.7.x"
+                "source": "https://github.com/lcobucci/clock/tree/3.5.x"
             },
             "funding": [
                 {
@@ -5071,7 +4680,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-16T06:16:07+00:00"
+            "time": "2025-10-27T09:03:17+00:00"
         },
         {
             "name": "lcobucci/jwt",
@@ -5145,196 +4754,6 @@
                 }
             ],
             "time": "2026-10-23T07:29:35+00:00"
-        },
-        {
-            "name": "league/commonmark",
-            "version": "dev-main",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "40821b7606d8d946bac57dbd2290076c722e3a65"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/40821b7606d8d946bac57dbd2290076c722e3a65",
-                "reference": "40821b7606d8d946bac57dbd2290076c722e3a65",
-                "shasum": ""
-            },
-            "require": {
-                "ext-mbstring": "*",
-                "league/config": "^1.1.1",
-                "php": "^7.4 || ^8.0",
-                "psr/event-dispatcher": "^1.0",
-                "symfony/deprecation-contracts": "^2.1 || ^3.0",
-                "symfony/polyfill-php80": "^1.16"
-            },
-            "require-dev": {
-                "cebe/markdown": "^1.0",
-                "commonmark/cmark": "0.31.1",
-                "commonmark/commonmark.js": "0.31.1",
-                "composer/package-versions-deprecated": "^1.8",
-                "embed/embed": "^4.4",
-                "erusev/parsedown": "^1.0",
-                "ext-json": "*",
-                "github/gfm": "0.29.0",
-                "michelf/php-markdown": "^1.4 || ^2.0",
-                "nyholm/psr7": "^1.5",
-                "phpstan/phpstan": "^2.0.0",
-                "phpunit/phpunit": "^9.5.21 || ^10.5.9 || ^11.0.0 || ^12.0.0 || ^13.0.0",
-                "scrutinizer/ocular": "^1.8.1",
-                "symfony/finder": "^5.3 | ^6.0 | ^7.0 || ^8.0",
-                "symfony/process": "^5.4 | ^6.0 | ^7.0 || ^8.0",
-                "symfony/yaml": "^2.3 | ^3.0 | ^4.0 | ^5.0 | ^6.0 | ^7.0 || ^8.0",
-                "unleashedtech/php-coding-standard": "^3.1.1",
-                "vimeo/psalm": "^4.24.0 || ^5.0.0 || ^6.0.0"
-            },
-            "suggest": {
-                "symfony/yaml": "v2.3+ required if using the Front Matter extension"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-main": "2.11-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "League\\CommonMark\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Colin O'Dell",
-                    "email": "colinodell@gmail.com",
-                    "homepage": "https://www.colinodell.com",
-                    "role": "Lead Developer"
-                }
-            ],
-            "description": "Highly-extensible PHP Markdown parser which fully supports the CommonMark spec and GitHub-Flavored Markdown (GFM)",
-            "homepage": "https://commonmark.thephpleague.com",
-            "keywords": [
-                "commonmark",
-                "flavored",
-                "gfm",
-                "github",
-                "github-flavored",
-                "markdown",
-                "md",
-                "parser"
-            ],
-            "support": {
-                "docs": "https://commonmark.thephpleague.com/",
-                "forum": "https://github.com/thephpleague/commonmark/discussions",
-                "issues": "https://github.com/thephpleague/commonmark/issues",
-                "rss": "https://github.com/thephpleague/commonmark/releases.atom",
-                "source": "https://github.com/thephpleague/commonmark"
-            },
-            "funding": [
-                {
-                    "url": "https://www.colinodell.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://www.paypal.me/colinpodell/10.00",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/colinodell",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/league/commonmark",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2026-10-17T19:59:50+00:00"
-        },
-        {
-            "name": "league/config",
-            "version": "dev-main",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/config.git",
-                "reference": "b16faf308b671600f500bec843cfcbd389344092"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/config/zipball/b16faf308b671600f500bec843cfcbd389344092",
-                "reference": "b16faf308b671600f500bec843cfcbd389344092",
-                "shasum": ""
-            },
-            "require": {
-                "dflydev/dot-access-data": "^3.0.1",
-                "nette/schema": "^1.2",
-                "php": "^7.4 || ^8.0"
-            },
-            "require-dev": {
-                "phpstan/phpstan": "^1.8.2",
-                "phpunit/phpunit": "^9.5.5 || ^10.0.0 || ^11.0.0",
-                "scrutinizer/ocular": "^1.8.1",
-                "unleashedtech/php-coding-standard": "^3.1",
-                "vimeo/psalm": "^4.7.3"
-            },
-            "default-branch": true,
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-main": "1.2-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "League\\Config\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Colin O'Dell",
-                    "email": "colinodell@gmail.com",
-                    "homepage": "https://www.colinodell.com",
-                    "role": "Lead Developer"
-                }
-            ],
-            "description": "Define configuration arrays with strict schemas and access values with dot notation",
-            "homepage": "https://config.thephpleague.com",
-            "keywords": [
-                "array",
-                "config",
-                "configuration",
-                "dot",
-                "dot-access",
-                "nested",
-                "schema"
-            ],
-            "support": {
-                "docs": "https://config.thephpleague.com/",
-                "issues": "https://github.com/thephpleague/config/issues",
-                "rss": "https://github.com/thephpleague/config/releases.atom",
-                "source": "https://github.com/thephpleague/config"
-            },
-            "funding": [
-                {
-                    "url": "https://www.colinodell.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://www.paypal.me/colinpodell/10.00",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/colinodell",
-                    "type": "github"
-                }
-            ],
-            "time": "2026-06-22T00:27:57+00:00"
         },
         {
             "name": "league/flysystem",
@@ -5574,276 +4993,6 @@
                 }
             ],
             "time": "2026-07-09T11:49:27+00:00"
-        },
-        {
-            "name": "league/uri",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/uri.git",
-                "reference": "8557ec1378d99e70b6a2fc93b80becbd0169a300"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/uri/zipball/8557ec1378d99e70b6a2fc93b80becbd0169a300",
-                "reference": "8557ec1378d99e70b6a2fc93b80becbd0169a300",
-                "shasum": ""
-            },
-            "require": {
-                "ext-mbstring": "*",
-                "league/uri-interfaces": "^7.9.0",
-                "php": "^8.1",
-                "psr/http-factory": "^1"
-            },
-            "conflict": {
-                "league/uri-schemes": "^1.0"
-            },
-            "suggest": {
-                "ext-bcmath": "to improve IPV4 host parsing",
-                "ext-dom": "to convert the URI into an HTML anchor tag",
-                "ext-fileinfo": "to create Data URI from file contennts",
-                "ext-gmp": "to improve IPV4 host parsing",
-                "ext-intl": "to handle IDN host with the best performance",
-                "ext-uri": "to use the PHP native URI class",
-                "jeremykendall/php-domain-parser": "to further parse the URI host and resolve its Public Suffix and Top Level Domain",
-                "league/uri-components": "to provide additional tools to manipulate URI objects components",
-                "league/uri-polyfill": "to backport the PHP URI extension for older versions of PHP",
-                "php-64bit": "to improve IPV4 host parsing",
-                "rowbot/url": "to handle URLs using the WHATWG URL Living Standard specification",
-                "symfony/polyfill-intl-idn": "to handle IDN host via the Symfony polyfill if ext-intl is not present"
-            },
-            "default-branch": true,
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "7.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "League\\Uri\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Ignace Nyamagana Butera",
-                    "email": "nyamsprod@gmail.com",
-                    "homepage": "https://nyamsprod.com"
-                }
-            ],
-            "description": "URI manipulation library",
-            "homepage": "https://uri.thephpleague.com",
-            "keywords": [
-                "URN",
-                "data-uri",
-                "file-uri",
-                "ftp",
-                "hostname",
-                "http",
-                "https",
-                "middleware",
-                "parse_str",
-                "parse_url",
-                "psr-7",
-                "query-string",
-                "querystring",
-                "rfc2141",
-                "rfc3986",
-                "rfc3987",
-                "rfc6570",
-                "rfc8141",
-                "uri",
-                "uri-template",
-                "url",
-                "ws"
-            ],
-            "support": {
-                "docs": "https://uri.thephpleague.com",
-                "forum": "https://thephpleague.slack.com",
-                "issues": "https://github.com/thephpleague/uri-src/issues",
-                "source": "https://github.com/thephpleague/uri/tree/master"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/sponsors/nyamsprod",
-                    "type": "github"
-                }
-            ],
-            "time": "2026-10-23T05:07:53+00:00"
-        },
-        {
-            "name": "league/uri-interfaces",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/uri-interfaces.git",
-                "reference": "eb5f6d24e6a4fe0a8e9c78ded4eb1dfff1404f58"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/uri-interfaces/zipball/eb5f6d24e6a4fe0a8e9c78ded4eb1dfff1404f58",
-                "reference": "eb5f6d24e6a4fe0a8e9c78ded4eb1dfff1404f58",
-                "shasum": ""
-            },
-            "require": {
-                "ext-filter": "*",
-                "php": "^8.1",
-                "psr/http-message": "^1.1 || ^2.0"
-            },
-            "suggest": {
-                "ext-bcmath": "to improve IPV4 host parsing",
-                "ext-gmp": "to improve IPV4 host parsing",
-                "ext-intl": "to handle IDN host with the best performance",
-                "php-64bit": "to improve IPV4 host parsing",
-                "rowbot/url": "to handle URLs using the WHATWG URL Living Standard specification",
-                "symfony/polyfill-intl-idn": "to handle IDN host via the Symfony polyfill if ext-intl is not present"
-            },
-            "default-branch": true,
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "7.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "League\\Uri\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Ignace Nyamagana Butera",
-                    "email": "nyamsprod@gmail.com",
-                    "homepage": "https://nyamsprod.com"
-                }
-            ],
-            "description": "Common tools for parsing and resolving RFC3987/RFC3986 URI",
-            "homepage": "https://uri.thephpleague.com",
-            "keywords": [
-                "data-uri",
-                "file-uri",
-                "ftp",
-                "hostname",
-                "http",
-                "https",
-                "parse_str",
-                "parse_url",
-                "psr-7",
-                "query-string",
-                "querystring",
-                "rfc3986",
-                "rfc3987",
-                "rfc6570",
-                "uri",
-                "url",
-                "ws"
-            ],
-            "support": {
-                "docs": "https://uri.thephpleague.com",
-                "forum": "https://thephpleague.slack.com",
-                "issues": "https://github.com/thephpleague/uri-src/issues",
-                "source": "https://github.com/thephpleague/uri-interfaces/tree/master"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/sponsors/nyamsprod",
-                    "type": "github"
-                }
-            ],
-            "time": "2026-10-16T15:19:33+00:00"
-        },
-        {
-            "name": "league/uri-polyfill",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/uri-polyfill.git",
-                "reference": "f3ccad6f69c032fc525539a4d87f41573ca2df1c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/uri-polyfill/zipball/f3ccad6f69c032fc525539a4d87f41573ca2df1c",
-                "reference": "f3ccad6f69c032fc525539a4d87f41573ca2df1c",
-                "shasum": ""
-            },
-            "require": {
-                "league/uri-interfaces": ">=7.9.0",
-                "php": ">=8.1",
-                "rowbot/url": "^4.1.0"
-            },
-            "provide": {
-                "ext-uri": "*"
-            },
-            "suggest": {
-                "ext-intl": "to handle IDN host with the best performance",
-                "jeremykendall/php-domain-parser": "to further parse the URI host and resolve its Public Suffix and Top Level Domain",
-                "league/uri-components": "to provide additional tools to manipulate URI objects components",
-                "php-64bit": "to improve IPV4 host parsing",
-                "symfony/polyfill-intl-idn": "to handle IDN host via the Symfony polyfill if ext-intl is not present",
-                "symfony/polyfill-php82": "to use the SensitiveParameter polyfill in PHP8.1"
-            },
-            "default-branch": true,
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "7.x-dev"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "lib/Rfc3986/functions.php",
-                    "lib/WhatWg/functions.php"
-                ],
-                "psr-4": {
-                    "League\\Uri\\": ""
-                },
-                "classmap": [
-                    "lib"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Ignace Nyamagana Butera",
-                    "email": "nyamsprod@gmail.com",
-                    "homepage": "https://github.com/nyamsprod/",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Polyfill backporting PHP 8.5+ native RFC3986/WHATWG URI features to lower PHP versions",
-            "keywords": [
-                "WHATWG",
-                "compatibiliy",
-                "equivalence",
-                "parser",
-                "polyfill",
-                "portable",
-                "resolver",
-                "rfc3986",
-                "uri",
-                "url"
-            ],
-            "support": {
-                "source": "https://github.com/thephpleague/uri-polyfill/tree/master"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/nyamsprod",
-                    "type": "github"
-                }
-            ],
-            "time": "2026-10-16T15:19:33+00:00"
         },
         {
             "name": "lexik/jwt-authentication-bundle",
@@ -6316,80 +5465,6 @@
             "time": "2021-08-11T08:24:13+00:00"
         },
         {
-            "name": "marc-mabe/php-enum",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/marc-mabe/php-enum.git",
-                "reference": "3a0d103f03b53844fa1489901b74b9a4254ec122"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/marc-mabe/php-enum/zipball/3a0d103f03b53844fa1489901b74b9a4254ec122",
-                "reference": "3a0d103f03b53844fa1489901b74b9a4254ec122",
-                "shasum": ""
-            },
-            "require": {
-                "ext-reflection": "*",
-                "php": "^7.1 | ^8.0"
-            },
-            "require-dev": {
-                "phpbench/phpbench": "^0.16.10 || ^1.0.4",
-                "phpstan/phpstan": "^1.3.1",
-                "phpunit/phpunit": "^7.5.20 | ^8.5.52 | ^9.6.33",
-                "vimeo/psalm": "^4.17.0 | ^5.26.1"
-            },
-            "default-branch": true,
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-3.x": "3.2-dev",
-                    "dev-master": "4.7-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "MabeEnum\\": "src/"
-                },
-                "classmap": [
-                    "stubs/Stringable.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Marc Bennewitz",
-                    "email": "dev@mabe.berlin",
-                    "homepage": "https://mabe.berlin/",
-                    "role": "Lead"
-                }
-            ],
-            "description": "Simple and fast implementation of enumerations with native PHP",
-            "homepage": "https://github.com/marc-mabe/php-enum",
-            "keywords": [
-                "enum",
-                "enum-map",
-                "enum-set",
-                "enumeration",
-                "enumerator",
-                "enummap",
-                "enumset",
-                "map",
-                "set",
-                "type",
-                "type-hint",
-                "typehint"
-            ],
-            "support": {
-                "issues": "https://github.com/marc-mabe/php-enum/issues",
-                "source": "https://github.com/marc-mabe/php-enum/tree/master"
-            },
-            "time": "2026-02-09T21:42:46+00:00"
-        },
-        {
             "name": "markbaker/complex",
             "version": "3.0.x-dev",
             "source": {
@@ -6497,73 +5572,6 @@
                 "source": "https://github.com/MarkBaker/PHPMatrix/tree/3.0.1"
             },
             "time": "2022-12-02T22:17:43+00:00"
-        },
-        {
-            "name": "masterminds/html5",
-            "version": "2.11.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Masterminds/html5-php.git",
-                "reference": "a1e7a2f88ee13635d86fc61cfbdf2306a76ddfc7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Masterminds/html5-php/zipball/a1e7a2f88ee13635d86fc61cfbdf2306a76ddfc7",
-                "reference": "a1e7a2f88ee13635d86fc61cfbdf2306a76ddfc7",
-                "shasum": ""
-            },
-            "require": {
-                "ext-dom": "*",
-                "php": ">=7.4"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^6 || ^7 || ^8 || ^9 || ^10"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.7-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Masterminds\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Matt Butcher",
-                    "email": "technosophos@gmail.com"
-                },
-                {
-                    "name": "Matt Farina",
-                    "email": "matt@mattfarina.com"
-                },
-                {
-                    "name": "Asmir Mustafic",
-                    "email": "goetas@gmail.com"
-                }
-            ],
-            "description": "An HTML5 parser and serializer.",
-            "homepage": "http://masterminds.github.io/html5-php",
-            "keywords": [
-                "HTML5",
-                "dom",
-                "html",
-                "parser",
-                "querypath",
-                "serializer",
-                "xml"
-            ],
-            "support": {
-                "issues": "https://github.com/Masterminds/html5-php/issues",
-                "source": "https://github.com/Masterminds/html5-php/tree/2.11.0"
-            },
-            "time": "2026-08-18T06:18:41+00:00"
         },
         {
             "name": "mck89/peast",
@@ -7002,195 +6010,6 @@
                 "source": "https://github.com/netgen/NetgenBirthdayBundle/tree/master"
             },
             "time": "2025-10-23T12:08:52+00:00"
-        },
-        {
-            "name": "netgen/content-browser",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/netgen-layouts/content-browser.git",
-                "reference": "67b56557e42b41e5efbb0a34fef8c62a24c9c6a5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/netgen-layouts/content-browser/zipball/67b56557e42b41e5efbb0a34fef8c62a24c9c6a5",
-                "reference": "67b56557e42b41e5efbb0a34fef8c62a24c9c6a5",
-                "shasum": ""
-            },
-            "require": {
-                "ext-mbstring": "*",
-                "netgen/content-browser-ui": "~2.0.0",
-                "pagerfanta/pagerfanta": "^3.8 || ^4.8",
-                "php": "^8.4",
-                "symfony/asset": "^7.4 || ^8.0",
-                "symfony/config": "^7.4 || ^8.0",
-                "symfony/dependency-injection": "^7.4 || ^8.0",
-                "symfony/deprecation-contracts": "^3.7",
-                "symfony/error-handler": "^7.4 || ^8.0",
-                "symfony/event-dispatcher": "^7.4 || ^8.0",
-                "symfony/event-dispatcher-contracts": "^3.7",
-                "symfony/form": "^7.4 || ^8.0",
-                "symfony/framework-bundle": "^7.4 || ^8.0",
-                "symfony/http-foundation": "^7.4 || ^8.0",
-                "symfony/http-kernel": "^7.4 || ^8.0",
-                "symfony/options-resolver": "^7.4 || ^8.0",
-                "symfony/security-bundle": "^7.4 || ^8.0",
-                "symfony/security-core": "^7.4 || ^8.0",
-                "symfony/translation": "^7.4 || ^8.0",
-                "symfony/translation-contracts": "^3.7",
-                "symfony/twig-bundle": "^7.4 || ^8.0",
-                "symfony/yaml": "^7.4 || ^8.0",
-                "twig/twig": "^3.27"
-            },
-            "require-dev": {
-                "matthiasnoback/symfony-dependency-injection-test": "^6.3",
-                "mtdowling/jmespath.php": "^2.9",
-                "netgen/layouts-coding-standard": "^3.0",
-                "phpstan/extension-installer": "^1.4",
-                "phpstan/phpstan": "^2.1",
-                "phpstan/phpstan-phpunit": "^2.0",
-                "phpstan/phpstan-strict-rules": "^2.0",
-                "phpunit/phpunit": "^13.1",
-                "symfony/runtime": "^7.4 || ^8.0",
-                "zenstruck/browser": "^1.10"
-            },
-            "default-branch": true,
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Netgen\\ContentBrowser\\": "lib/",
-                    "Netgen\\Bundle\\ContentBrowserBundle\\": "bundle/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Netgen",
-                    "homepage": "https://netgen.io"
-                }
-            ],
-            "description": "Netgen Content Browser is a Symfony bundle that provides an interface which selects items from any kind of backend and returns the IDs of selected items back to the calling code.",
-            "support": {
-                "issues": "https://github.com/netgen-layouts/content-browser/issues",
-                "source": "https://github.com/netgen-layouts/content-browser/tree/master"
-            },
-            "time": "2026-08-03T09:35:35+00:00"
-        },
-        {
-            "name": "netgen/content-browser-ibexa",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/netgen-layouts/content-browser-ibexa.git",
-                "reference": "ad2229f46bab15eb4d958d2c4f9bf021d82643f0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/netgen-layouts/content-browser-ibexa/zipball/ad2229f46bab15eb4d958d2c4f9bf021d82643f0",
-                "reference": "ad2229f46bab15eb4d958d2c4f9bf021d82643f0",
-                "shasum": ""
-            },
-            "require": {
-                "ibexa/core": "^5.0",
-                "netgen/content-browser": "~2.0.0",
-                "php": "^8.4"
-            },
-            "require-dev": {
-                "matthiasnoback/symfony-dependency-injection-test": "^6.3",
-                "netgen/layouts-coding-standard": "^3.0",
-                "netgen/tagsbundle": "^6.0",
-                "phpstan/extension-installer": "^1.4",
-                "phpstan/phpstan": "^2.1",
-                "phpstan/phpstan-phpunit": "^2.0",
-                "phpstan/phpstan-strict-rules": "^2.0",
-                "phpunit/phpunit": "^13.1"
-            },
-            "default-branch": true,
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Netgen\\ContentBrowser\\Ibexa\\": "lib/",
-                    "Netgen\\Bundle\\ContentBrowserIbexaBundle\\": "bundle/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0-only"
-            ],
-            "authors": [
-                {
-                    "name": "Netgen",
-                    "homepage": "https://netgen.io"
-                }
-            ],
-            "description": "Netgen Content Browser & Ibexa CMS integration",
-            "support": {
-                "issues": "https://github.com/netgen-layouts/content-browser-ibexa/issues",
-                "source": "https://github.com/netgen-layouts/content-browser-ibexa/tree/master"
-            },
-            "time": "2026-04-22T09:31:34+00:00"
-        },
-        {
-            "name": "netgen/content-browser-ui",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/netgen-layouts/content-browser-ui.git",
-                "reference": "95210a2e210d073e4e5b080871e045b751d3c603"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/netgen-layouts/content-browser-ui/zipball/95210a2e210d073e4e5b080871e045b751d3c603",
-                "reference": "95210a2e210d073e4e5b080871e045b751d3c603",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^8.4"
-            },
-            "require-dev": {
-                "netgen/layouts-coding-standard": "^3.0"
-            },
-            "default-branch": true,
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Netgen\\Bundle\\ContentBrowserUIBundle\\": "bundle/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Netgen",
-                    "homepage": "https://netgen.io"
-                }
-            ],
-            "description": "Netgen Content Browser user interface",
-            "support": {
-                "issues": "https://github.com/netgen-layouts/content-browser-ui/issues",
-                "source": "https://github.com/netgen-layouts/content-browser-ui/tree/master"
-            },
-            "time": "2026-07-03T13:24:17+00:00"
         },
         {
             "name": "netgen/content-type-list-bundle",
@@ -7841,312 +6660,6 @@
             "time": "2026-03-04T09:24:25+00:00"
         },
         {
-            "name": "netgen/layouts-core",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/netgen-layouts/layouts-core.git",
-                "reference": "081a050fe466570a8353b03298a2fad4866a71ae"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/netgen-layouts/layouts-core/zipball/081a050fe466570a8353b03298a2fad4866a71ae",
-                "reference": "081a050fe466570a8353b03298a2fad4866a71ae",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/collections": "^2.6 || ^3.1",
-                "doctrine/dbal": "^3.10 || ^4.4",
-                "doctrine/doctrine-bundle": "^2.18 || ^3.2",
-                "doctrine/doctrine-migrations-bundle": "^3.7 || ^4.0",
-                "egulias/email-validator": "^4.0",
-                "emodric/twig-package-versions": "^2.0",
-                "ext-intl": "*",
-                "ext-mbstring": "*",
-                "friendsofsymfony/http-cache-bundle": "^3.4",
-                "justinrainbow/json-schema": "^6.10",
-                "knplabs/knp-menu-bundle": "^3.7",
-                "league/uri-polyfill": "^7.8",
-                "netgen/content-browser": "^2.0",
-                "netgen/layouts-ui": "~2.0.0",
-                "nikolaposa/version": "^4.2",
-                "pagerfanta/pagerfanta": "^3.8 || ^4.8",
-                "php": "^8.4",
-                "symfony/asset": "^7.4 || ^8.0",
-                "symfony/clock": "^7.4 || ^8.0",
-                "symfony/config": "^7.4 || ^8.0",
-                "symfony/console": "^7.4 || ^8.0",
-                "symfony/dependency-injection": "^7.4 || ^8.0",
-                "symfony/deprecation-contracts": "^3.7",
-                "symfony/emoji": "^7.4 || ^8.0",
-                "symfony/error-handler": "^7.4 || ^8.0",
-                "symfony/event-dispatcher": "^7.4 || ^8.0",
-                "symfony/event-dispatcher-contracts": "^3.7",
-                "symfony/expression-language": "^7.4 || ^8.0",
-                "symfony/form": "^7.4 || ^8.0",
-                "symfony/framework-bundle": "^7.4 || ^8.0",
-                "symfony/html-sanitizer": "^7.4 || ^8.0",
-                "symfony/http-client": "^7.4 || ^8.0",
-                "symfony/http-foundation": "^7.4 || ^8.0",
-                "symfony/http-kernel": "^7.4 || ^8.0",
-                "symfony/intl": "^7.4 || ^8.0",
-                "symfony/mime": "^7.4 || ^8.0",
-                "symfony/options-resolver": "^7.4 || ^8.0",
-                "symfony/polyfill-deepclone": "^1.37",
-                "symfony/polyfill-php85": "^1.36",
-                "symfony/routing": "^7.4 || ^8.0",
-                "symfony/security-bundle": "^7.4 || ^8.0",
-                "symfony/security-core": "^7.4 || ^8.0",
-                "symfony/security-csrf": "^7.4 || ^8.0",
-                "symfony/serializer": "^7.4 || ^8.0",
-                "symfony/string": "^7.4 || ^8.0",
-                "symfony/translation": "^7.4 || ^8.0",
-                "symfony/translation-contracts": "^3.7",
-                "symfony/twig-bundle": "^7.4 || ^8.0",
-                "symfony/uid": "^7.4 || ^8.0",
-                "symfony/validator": "^7.4 || ^8.0",
-                "symfony/yaml": "^7.4 || ^8.0",
-                "twig/extra-bundle": "^3.24",
-                "twig/intl-extra": "^3.26",
-                "twig/twig": "^3.27"
-            },
-            "conflict": {
-                "symfony/framework-bundle": "<7.4.9"
-            },
-            "require-dev": {
-                "behat/behat": "^4.0",
-                "behat/mink": "^1.13",
-                "behat/mink-selenium2-driver": "^1.7",
-                "coduo/php-matcher": "^6.0",
-                "friends-of-behat/mink-extension": "^3.0",
-                "friends-of-behat/page-object-extension": "^0.4",
-                "friends-of-behat/symfony-extension": "^2.7",
-                "matthiasnoback/symfony-dependency-injection-test": "^6.3",
-                "mtdowling/jmespath.php": "^2.9",
-                "netgen/layouts-coding-standard": "^3.0",
-                "netgen/layouts-standard": "~2.0.0",
-                "phpstan/extension-installer": "^1.4",
-                "phpstan/phpstan": "^2.1",
-                "phpstan/phpstan-phpunit": "^2.0",
-                "phpstan/phpstan-strict-rules": "^2.0",
-                "phpunit/phpunit": "^13.1",
-                "sebastian/diff": "^9.0",
-                "symfony/runtime": "^7.4 || ^8.0",
-                "zenstruck/browser": "^1.10"
-            },
-            "default-branch": true,
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Netgen\\Layouts\\": "lib/",
-                    "Netgen\\Layouts\\Migrations\\": "migrations/",
-                    "Netgen\\Bundle\\LayoutsBundle\\": "bundles/LayoutsBundle/",
-                    "Netgen\\Bundle\\LayoutsAdminBundle\\": "bundles/LayoutsAdminBundle/",
-                    "Netgen\\Bundle\\LayoutsDebugBundle\\": "bundles/LayoutsDebugBundle/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Netgen",
-                    "homepage": "https://netgen.io"
-                }
-            ],
-            "description": "Netgen Layouts enables you to build and manage complex web pages in a simpler way and with less coding. This is the core of Netgen Layouts, its heart and soul.",
-            "support": {
-                "issues": "https://github.com/netgen-layouts/layouts-core/issues",
-                "source": "https://github.com/netgen-layouts/layouts-core/tree/master"
-            },
-            "time": "2026-08-03T09:29:38+00:00"
-        },
-        {
-            "name": "netgen/layouts-ibexa",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/netgen-layouts/layouts-ibexa.git",
-                "reference": "fa7901b21367c2edc9094b7860d249792342bfaf"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/netgen-layouts/layouts-ibexa/zipball/fa7901b21367c2edc9094b7860d249792342bfaf",
-                "reference": "fa7901b21367c2edc9094b7860d249792342bfaf",
-                "shasum": ""
-            },
-            "require": {
-                "ibexa/admin-ui": "^5.0",
-                "ibexa/core": "^5.0",
-                "ibexa/http-cache": "^5.0",
-                "netgen/content-browser-ibexa": "^2.0",
-                "netgen/layouts-core": "~2.0.0",
-                "php": "^8.4"
-            },
-            "require-dev": {
-                "matthiasnoback/symfony-dependency-injection-test": "^6.3",
-                "netgen/layouts-coding-standard": "^3.0",
-                "netgen/layouts-standard": "~2.0.0",
-                "netgen/tagsbundle": "^6.0",
-                "phpstan/extension-installer": "^1.4",
-                "phpstan/phpstan": "^2.1",
-                "phpstan/phpstan-phpunit": "^2.0",
-                "phpstan/phpstan-strict-rules": "^2.0",
-                "phpunit/phpunit": "^13.1"
-            },
-            "suggest": {
-                "netgen/layouts-ibexa-site-api": "Integrate Netgen Layouts with Ibexa CMS Site API to boost your site-building productivity with Ibexa CMS"
-            },
-            "default-branch": true,
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Netgen\\Layouts\\Ibexa\\": "lib/",
-                    "Netgen\\Bundle\\LayoutsIbexaBundle\\": "bundle/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0-only"
-            ],
-            "authors": [
-                {
-                    "name": "Netgen",
-                    "homepage": "https://netgen.io"
-                }
-            ],
-            "description": "Netgen Layouts & Ibexa CMS integration",
-            "support": {
-                "issues": "https://github.com/netgen-layouts/layouts-ibexa/issues",
-                "source": "https://github.com/netgen-layouts/layouts-ibexa/tree/master"
-            },
-            "time": "2026-07-03T13:23:06+00:00"
-        },
-        {
-            "name": "netgen/layouts-standard",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/netgen-layouts/layouts-standard.git",
-                "reference": "b4086b255e632c978a513d8058c654224a09ac7b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/netgen-layouts/layouts-standard/zipball/b4086b255e632c978a513d8058c654224a09ac7b",
-                "reference": "b4086b255e632c978a513d8058c654224a09ac7b",
-                "shasum": ""
-            },
-            "require": {
-                "league/commonmark": "^2.8",
-                "netgen/layouts-core": "~2.0.0",
-                "php": "^8.4",
-                "twig/extra-bundle": "^3.24",
-                "twig/markdown-extra": "^3.24"
-            },
-            "require-dev": {
-                "netgen/layouts-coding-standard": "^3.0",
-                "phpstan/extension-installer": "^1.4",
-                "phpstan/phpstan": "^2.1",
-                "phpstan/phpstan-phpunit": "^2.0",
-                "phpstan/phpstan-strict-rules": "^2.0",
-                "phpunit/phpunit": "^13.1"
-            },
-            "default-branch": true,
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Netgen\\Layouts\\Standard\\": "lib/",
-                    "Netgen\\Bundle\\LayoutsStandardBundle\\": "bundle/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Netgen",
-                    "homepage": "https://netgen.io"
-                }
-            ],
-            "description": "Netgen Layouts enables you to build and manage complex web pages in a simpler way and with less coding. This package provides a set of most used blocks and layouts for Netgen Layouts for building rich content websites.",
-            "support": {
-                "issues": "https://github.com/netgen-layouts/layouts-standard/issues",
-                "source": "https://github.com/netgen-layouts/layouts-standard/tree/master"
-            },
-            "time": "2026-08-03T09:36:11+00:00"
-        },
-        {
-            "name": "netgen/layouts-ui",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/netgen-layouts/layouts-ui.git",
-                "reference": "e61f093e1ee323a56768fa074e90a4e4576a0bcd"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/netgen-layouts/layouts-ui/zipball/e61f093e1ee323a56768fa074e90a4e4576a0bcd",
-                "reference": "e61f093e1ee323a56768fa074e90a4e4576a0bcd",
-                "shasum": ""
-            },
-            "require": {
-                "netgen/content-browser-ui": "^2.0",
-                "php": "^8.4"
-            },
-            "require-dev": {
-                "netgen/layouts-coding-standard": "^3.0"
-            },
-            "default-branch": true,
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Netgen\\Bundle\\LayoutsUIBundle\\": "bundle/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Netgen",
-                    "homepage": "https://netgen.io"
-                },
-                {
-                    "name": "Effectiva",
-                    "homepage": "https://effectiva.hr"
-                }
-            ],
-            "description": "Netgen Layouts user interface",
-            "support": {
-                "issues": "https://github.com/netgen-layouts/layouts-ui/issues",
-                "source": "https://github.com/netgen-layouts/layouts-ui/tree/master"
-            },
-            "time": "2026-07-03T13:24:29+00:00"
-        },
-        {
             "name": "netgen/ngclasslist",
             "version": "1.1",
             "source": {
@@ -8480,158 +6993,6 @@
             "time": "2022-07-01T14:09:45+00:00"
         },
         {
-            "name": "nette/schema",
-            "version": "v1.4.x-dev",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nette/schema.git",
-                "reference": "248836daa10bd34b8494045c0e768659393199c1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nette/schema/zipball/248836daa10bd34b8494045c0e768659393199c1",
-                "reference": "248836daa10bd34b8494045c0e768659393199c1",
-                "shasum": ""
-            },
-            "require": {
-                "nette/utils": "^4.0",
-                "php": "8.1 - 8.6"
-            },
-            "require-dev": {
-                "nette/phpstan-rules": "^1.0.7",
-                "nette/tester": "^2.6",
-                "phpstan/extension-installer": "^1.4@stable",
-                "phpstan/phpstan": "^2.3@stable",
-                "tracy/tracy": "^2.8"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.4-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Nette\\": "src"
-                },
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause",
-                "GPL-2.0-only",
-                "GPL-3.0-only"
-            ],
-            "authors": [
-                {
-                    "name": "David Grudl",
-                    "homepage": "https://davidgrudl.com"
-                }
-            ],
-            "description": "📐 Nette Schema: validates and normalizes data such as configuration or API input against a schema described in a few readable lines of PHP, with precise error messages.",
-            "homepage": "https://doc.nette.org/schema",
-            "keywords": [
-                "configuration",
-                "data validation",
-                "nette",
-                "normalization",
-                "schema",
-                "validation"
-            ],
-            "support": {
-                "issues": "https://github.com/nette/schema/issues",
-                "source": "https://github.com/nette/schema/tree/v1.4"
-            },
-            "time": "2026-10-22T02:14:31+00:00"
-        },
-        {
-            "name": "nette/utils",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nette/utils.git",
-                "reference": "282f55a4a902e81a62ba2db6f58ed128cf1b39b8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nette/utils/zipball/282f55a4a902e81a62ba2db6f58ed128cf1b39b8",
-                "reference": "282f55a4a902e81a62ba2db6f58ed128cf1b39b8",
-                "shasum": ""
-            },
-            "require": {
-                "php": "8.2 - 8.6"
-            },
-            "conflict": {
-                "nette/finder": "<3",
-                "nette/schema": "<1.2.2"
-            },
-            "require-dev": {
-                "jetbrains/phpstorm-attributes": "^1.2",
-                "nette/phpstan-rules": "^1.0",
-                "nette/tester": "^2.5",
-                "phpstan/extension-installer": "^1.4@stable",
-                "phpstan/phpstan": "^2.1@stable",
-                "tracy/tracy": "^2.9"
-            },
-            "suggest": {
-                "ext-gd": "to use Image",
-                "ext-iconv": "to use Strings::chr(), ord() and reverse()",
-                "ext-intl": "to use Strings::webalize(), toAscii(), normalize() and compare()",
-                "ext-json": "to use Nette\\Utils\\Json",
-                "ext-mbstring": "to use Strings::lower() etc...",
-                "ext-tokenizer": "to use Nette\\Utils\\Reflection::getUseStatements()"
-            },
-            "default-branch": true,
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "4.1-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Nette\\": "src"
-                },
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause",
-                "GPL-2.0-only",
-                "GPL-3.0-only"
-            ],
-            "authors": [
-                {
-                    "name": "David Grudl",
-                    "homepage": "https://davidgrudl.com"
-                }
-            ],
-            "description": "🛠 Nette Utils: small, well-tested helpers you would otherwise write yourself. Strings and arrays with UTF-8 in mind, safe JSON, images, validators, the file system and more.",
-            "homepage": "https://doc.nette.org/utils",
-            "keywords": [
-                "arrays",
-                "filesystem",
-                "helpers",
-                "images",
-                "json",
-                "nette",
-                "slug",
-                "strings",
-                "utf-8",
-                "utilities",
-                "validation"
-            ],
-            "support": {
-                "issues": "https://github.com/nette/utils/issues",
-                "source": "https://github.com/nette/utils/tree/master"
-            },
-            "time": "2026-10-21T04:13:58+00:00"
-        },
-        {
             "name": "nikic/php-parser",
             "version": "dev-master",
             "source": {
@@ -8688,68 +7049,6 @@
                 "source": "https://github.com/nikic/PHP-Parser/tree/master"
             },
             "time": "2026-10-05T07:07:23+00:00"
-        },
-        {
-            "name": "nikolaposa/version",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nikolaposa/version.git",
-                "reference": "d8416651c275f0ac929bb5d86bb8fd92935eb8a7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nikolaposa/version/zipball/d8416651c275f0ac929bb5d86bb8fd92935eb8a7",
-                "reference": "d8416651c275f0ac929bb5d86bb8fd92935eb8a7",
-                "shasum": ""
-            },
-            "require": {
-                "beberlei/assert": "^3.2",
-                "php": "^8.1"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.44",
-                "phpstan/phpstan": "^1.10",
-                "phpstan/phpstan-beberlei-assert": "^1.1",
-                "phpstan/phpstan-phpunit": "^1.3",
-                "phpunit/phpunit": "^10.5"
-            },
-            "default-branch": true,
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "4.2.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Version\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nikola Poša",
-                    "email": "posa.nikola@gmail.com",
-                    "homepage": "https://www.nikolaposa.in.rs"
-                }
-            ],
-            "description": "Value Object that represents a SemVer-compliant version number.",
-            "homepage": "https://github.com/nikolaposa/version",
-            "keywords": [
-                "semantic",
-                "semver",
-                "version",
-                "versioning"
-            ],
-            "support": {
-                "issues": "https://github.com/nikolaposa/version/issues",
-                "source": "https://github.com/nikolaposa/version/tree/master"
-            },
-            "time": "2025-03-25T12:17:42+00:00"
         },
         {
             "name": "nyholm/psr7",
@@ -10448,185 +8747,6 @@
             "time": "2022-04-08T16:41:45+00:00"
         },
         {
-            "name": "rowbot/idna",
-            "version": "0.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/TRowbotham/idna.git",
-                "reference": "504900acc8e465a17668a61ae30391d1aebbb4f2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/TRowbotham/idna/zipball/504900acc8e465a17668a61ae30391d1aebbb4f2",
-                "reference": "504900acc8e465a17668a61ae30391d1aebbb4f2",
-                "shasum": ""
-            },
-            "require": {
-                "ext-mbstring": "*",
-                "php": ">=8.1",
-                "rowbot/punycode": "^1.0",
-                "symfony/polyfill-intl-normalizer": "^1.18"
-            },
-            "require-dev": {
-                "guzzlehttp/guzzle": "^6.5 || ^7.0",
-                "phpstan/phpstan": "^2.1",
-                "phpstan/phpstan-deprecation-rules": "^2.0",
-                "phpstan/phpstan-strict-rules": "^2.0",
-                "phpunit/phpunit": "^10.0 || ^11.0 || ^12.0",
-                "squizlabs/php_codesniffer": "^3.7.1",
-                "symfony/cache": "^5.0 || ^6.0 || ^7.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Rowbot\\Idna\\": "src/",
-                    "Rowbot\\Idna\\Resource\\": "resources/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Trevor Rowbotham"
-                }
-            ],
-            "description": "An implementation of UTS#46 Unicode IDNA Compatibility Processing.",
-            "keywords": [
-                "idn",
-                "idna",
-                "international domain names",
-                "iri",
-                "tr46",
-                "unicode",
-                "uts46"
-            ],
-            "support": {
-                "issues": "https://github.com/TRowbotham/idna/issues",
-                "source": "https://github.com/TRowbotham/idna/tree/0.3.0"
-            },
-            "time": "2025-09-19T00:30:13+00:00"
-        },
-        {
-            "name": "rowbot/punycode",
-            "version": "1.0.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/TRowbotham/punycode.git",
-                "reference": "ec116e99cb089a25d45147813d61bfa2deb29328"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/TRowbotham/punycode/zipball/ec116e99cb089a25d45147813d61bfa2deb29328",
-                "reference": "ec116e99cb089a25d45147813d61bfa2deb29328",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.1"
-            },
-            "require-dev": {
-                "ext-mbstring": "*",
-                "phpstan/phpstan": "^1.2",
-                "phpstan/phpstan-deprecation-rules": "^1.0",
-                "phpstan/phpstan-strict-rules": "^1.0",
-                "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0",
-                "squizlabs/php_codesniffer": "^3.5.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Rowbot\\Punycode\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Trevor Rowbotham",
-                    "homepage": "https://trowbotham.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "A Bootstring encoding of Unicode for Internationalized Domain Names in Applications (IDNA).",
-            "keywords": [
-                "punycode",
-                "rfc-3492",
-                "rfc3492"
-            ],
-            "support": {
-                "issues": "https://github.com/TRowbotham/punycode/issues",
-                "source": "https://github.com/TRowbotham/punycode/tree/1.0.4"
-            },
-            "time": "2024-05-03T00:56:10+00:00"
-        },
-        {
-            "name": "rowbot/url",
-            "version": "4.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/TRowbotham/URL-Parser.git",
-                "reference": "9b1bd1ac757672cb0682f697b53dc5aa03c76297"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/TRowbotham/URL-Parser/zipball/9b1bd1ac757672cb0682f697b53dc5aa03c76297",
-                "reference": "9b1bd1ac757672cb0682f697b53dc5aa03c76297",
-                "shasum": ""
-            },
-            "require": {
-                "brick/math": "^0.12 || ^0.13 || ^0.14 || ^0.15 || ^0.16 || ^0.17 || ^0.18 || ^0.19 || ^0.20 || ^1.0",
-                "ext-mbstring": "*",
-                "php": ">=8.1",
-                "psr/log": "^2.0 || ^3.0",
-                "rowbot/idna": "^0.3.0"
-            },
-            "require-dev": {
-                "guzzlehttp/guzzle": "^7.0",
-                "phpstan/phpstan": "^2.1",
-                "phpstan/phpstan-deprecation-rules": "^2.0",
-                "phpstan/phpstan-strict-rules": "^2.0",
-                "phpunit/phpunit": "^10.0 || ^11.0 || ^12.0",
-                "slevomat/coding-standard": "^8.0",
-                "squizlabs/php_codesniffer": "^3.7.1",
-                "symfony/cache": "^5.0 || ^6.0 || ^7.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Rowbot\\URL\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Trevor Rowbotham",
-                    "homepage": "https://trowbotham.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "A WHATWG URL spec compliant URL parser for working with URLs and their query strings.",
-            "keywords": [
-                "WHATWG",
-                "query-string",
-                "querystring",
-                "uri",
-                "url",
-                "url-parser",
-                "url-parsing"
-            ],
-            "support": {
-                "issues": "https://github.com/TRowbotham/URL-Parser/issues",
-                "source": "https://github.com/TRowbotham/URL-Parser/tree/4.2.1"
-            },
-            "time": "2026-10-03T01:15:39+00:00"
-        },
-        {
             "name": "se7enxweb/admin-ui",
             "version": "dev-main",
             "source": {
@@ -10825,16 +8945,16 @@
         },
         {
             "name": "se7enxweb/bccie",
-            "version": "v1.1.19",
+            "version": "v1.1.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/bccie.git",
-                "reference": "e0f6bd6a8c7fcd71744f93bf1231f2c8b0607b7b"
+                "reference": "513e81384876f027b645c6aa5378afb0ddc4095b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/bccie/zipball/e0f6bd6a8c7fcd71744f93bf1231f2c8b0607b7b",
-                "reference": "e0f6bd6a8c7fcd71744f93bf1231f2c8b0607b7b",
+                "url": "https://api.github.com/repos/se7enxweb/bccie/zipball/513e81384876f027b645c6aa5378afb0ddc4095b",
+                "reference": "513e81384876f027b645c6aa5378afb0ddc4095b",
                 "shasum": ""
             },
             "require": {
@@ -10914,7 +9034,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-22T06:19:31+00:00"
+            "time": "2026-10-23T22:12:23+00:00"
         },
         {
             "name": "se7enxweb/bcgooglesitemaps",
@@ -10995,16 +9115,16 @@
         },
         {
             "name": "se7enxweb/bcwebsitestatistics",
-            "version": "v1.0.15",
+            "version": "v1.0.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/bcwebsitestatistics.git",
-                "reference": "bf843913910838c9d31fd4b56b9fdac1722198c8"
+                "reference": "3642def7ced462a7c99df8fc2c2e3c610afdce5f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/bcwebsitestatistics/zipball/bf843913910838c9d31fd4b56b9fdac1722198c8",
-                "reference": "bf843913910838c9d31fd4b56b9fdac1722198c8",
+                "url": "https://api.github.com/repos/se7enxweb/bcwebsitestatistics/zipball/3642def7ced462a7c99df8fc2c2e3c610afdce5f",
+                "reference": "3642def7ced462a7c99df8fc2c2e3c610afdce5f",
                 "shasum": ""
             },
             "require": {
@@ -11048,7 +9168,7 @@
             ],
             "support": {
                 "issues": "https://github.com/se7enxweb/bcwebsitestatistics/issues",
-                "source": "https://github.com/se7enxweb/bcwebsitestatistics/tree/v1.0.15"
+                "source": "https://github.com/se7enxweb/bcwebsitestatistics/tree/v1.0.16"
             },
             "funding": [
                 {
@@ -11076,20 +9196,20 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-20T08:00:38+00:00"
+            "time": "2026-10-23T22:12:31+00:00"
         },
         {
             "name": "se7enxweb/birthday",
-            "version": "1.3.6",
+            "version": "1.3.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/birthday.git",
-                "reference": "a1f7f2c0f097471ce3fcfe932dc7d9ba056d3365"
+                "reference": "53a9eeec33971366bf01600663ae30d34dcfc094"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/birthday/zipball/a1f7f2c0f097471ce3fcfe932dc7d9ba056d3365",
-                "reference": "a1f7f2c0f097471ce3fcfe932dc7d9ba056d3365",
+                "url": "https://api.github.com/repos/se7enxweb/birthday/zipball/53a9eeec33971366bf01600663ae30d34dcfc094",
+                "reference": "53a9eeec33971366bf01600663ae30d34dcfc094",
                 "shasum": ""
             },
             "require": {
@@ -11127,7 +9247,7 @@
             "description": "This datatype stores the date in the format of YYYY-MM-DD in the data_text field",
             "support": {
                 "issues": "https://github.com/se7enxweb/birthday/issues",
-                "source": "https://github.com/se7enxweb/birthday/tree/1.3.6"
+                "source": "https://github.com/se7enxweb/birthday/tree/1.3.7"
             },
             "funding": [
                 {
@@ -11155,20 +9275,20 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-21T11:47:18+00:00"
+            "time": "2026-10-23T22:12:44+00:00"
         },
         {
             "name": "se7enxweb/cjw_newsletter",
-            "version": "4.2.15",
+            "version": "4.2.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/cjw_newsletter.git",
-                "reference": "d78b37ab1eba25b490585cfc21db33d1d84c5d2c"
+                "reference": "5f86b22f0c8230aeba2d8383e1fe3f76c4fa51d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/cjw_newsletter/zipball/d78b37ab1eba25b490585cfc21db33d1d84c5d2c",
-                "reference": "d78b37ab1eba25b490585cfc21db33d1d84c5d2c",
+                "url": "https://api.github.com/repos/se7enxweb/cjw_newsletter/zipball/5f86b22f0c8230aeba2d8383e1fe3f76c4fa51d8",
+                "reference": "5f86b22f0c8230aeba2d8383e1fe3f76c4fa51d8",
                 "shasum": ""
             },
             "require": {
@@ -11241,20 +9361,20 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-22T06:26:00+00:00"
+            "time": "2026-10-23T22:17:11+00:00"
         },
         {
             "name": "se7enxweb/cjw_themes_jumper",
-            "version": "v0.1.8",
+            "version": "v0.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/cjw_themes_jumper.git",
-                "reference": "e5937d595f4eb6c0dad223cfd4e378d0105ce5f3"
+                "reference": "d48b760ea2570536a37603f3af6643426f5cb976"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/cjw_themes_jumper/zipball/e5937d595f4eb6c0dad223cfd4e378d0105ce5f3",
-                "reference": "e5937d595f4eb6c0dad223cfd4e378d0105ce5f3",
+                "url": "https://api.github.com/repos/se7enxweb/cjw_themes_jumper/zipball/d48b760ea2570536a37603f3af6643426f5cb976",
+                "reference": "d48b760ea2570536a37603f3af6643426f5cb976",
                 "shasum": ""
             },
             "require": {
@@ -11292,20 +9412,20 @@
                 "issues": "https://github.com/se7enxweb/cjw_themes_jumper/issues",
                 "source": "https://github.com/se7enxweb/cjw_themes_jumper"
             },
-            "time": "2026-10-20T05:31:59+00:00"
+            "time": "2026-10-23T22:12:52+00:00"
         },
         {
             "name": "se7enxweb/cjw_tmv",
-            "version": "v0.1.3",
+            "version": "v0.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/cjw_tmv.git",
-                "reference": "38c1533ecea26f84c0fb9b9b368bdf68a9f4ad3b"
+                "reference": "401ad97a52d5a20a88e3061c9ce774643d66581c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/cjw_tmv/zipball/38c1533ecea26f84c0fb9b9b368bdf68a9f4ad3b",
-                "reference": "38c1533ecea26f84c0fb9b9b368bdf68a9f4ad3b",
+                "url": "https://api.github.com/repos/se7enxweb/cjw_tmv/zipball/401ad97a52d5a20a88e3061c9ce774643d66581c",
+                "reference": "401ad97a52d5a20a88e3061c9ce774643d66581c",
                 "shasum": ""
             },
             "require": {
@@ -11344,20 +9464,20 @@
                 "issues": "https://github.com/se7enxweb/cjw_tmv/issues",
                 "source": "https://github.com/se7enxweb/cjw_tmv"
             },
-            "time": "2026-10-20T05:31:56+00:00"
+            "time": "2026-10-23T22:12:59+00:00"
         },
         {
             "name": "se7enxweb/enhancedezbinaryfile",
-            "version": "v4.4.10",
+            "version": "v4.4.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/enhancedezbinaryfile.git",
-                "reference": "7d453bfe28b1ffac50fe13d8966d9f8ebd6f514b"
+                "reference": "061e52bd0047c2fb6a3e53cb21e1992c68c99751"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/enhancedezbinaryfile/zipball/7d453bfe28b1ffac50fe13d8966d9f8ebd6f514b",
-                "reference": "7d453bfe28b1ffac50fe13d8966d9f8ebd6f514b",
+                "url": "https://api.github.com/repos/se7enxweb/enhancedezbinaryfile/zipball/061e52bd0047c2fb6a3e53cb21e1992c68c99751",
+                "reference": "061e52bd0047c2fb6a3e53cb21e1992c68c99751",
                 "shasum": ""
             },
             "require": {
@@ -11399,7 +9519,7 @@
             ],
             "support": {
                 "issues": "https://github.com/se7enxweb/enhancedezbinaryfile/issues",
-                "source": "https://github.com/se7enxweb/enhancedezbinaryfile/tree/v4.4.10"
+                "source": "https://github.com/se7enxweb/enhancedezbinaryfile/tree/v4.4.11"
             },
             "funding": [
                 {
@@ -11427,20 +9547,20 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-21T03:38:05+00:00"
+            "time": "2026-10-23T22:13:07+00:00"
         },
         {
             "name": "se7enxweb/enhancedselection2",
-            "version": "2.1.10",
+            "version": "2.1.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/enhancedselection2.git",
-                "reference": "81101ac3cf235cf06d82b566472548f0d3e88f50"
+                "reference": "c9bca3222bc17f4c6f82a724c574026e166539ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/enhancedselection2/zipball/81101ac3cf235cf06d82b566472548f0d3e88f50",
-                "reference": "81101ac3cf235cf06d82b566472548f0d3e88f50",
+                "url": "https://api.github.com/repos/se7enxweb/enhancedselection2/zipball/c9bca3222bc17f4c6f82a724c574026e166539ba",
+                "reference": "c9bca3222bc17f4c6f82a724c574026e166539ba",
                 "shasum": ""
             },
             "require": {
@@ -11466,7 +9586,7 @@
             ],
             "description": "The Enhanced Selection type was initially based on the standard Exponential Selection ('ezselection') datatype. It's original intent was to provide the same functionality as the standard datatype, but store an identifier instead of an id in the contentobject attribute.",
             "support": {
-                "source": "https://github.com/se7enxweb/enhancedselection2/tree/2.1.10"
+                "source": "https://github.com/se7enxweb/enhancedselection2/tree/2.1.11"
             },
             "funding": [
                 {
@@ -11494,7 +9614,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-20T05:42:43+00:00"
+            "time": "2026-10-23T22:13:15+00:00"
         },
         {
             "name": "se7enxweb/exp_adminui",
@@ -11636,16 +9756,16 @@
         },
         {
             "name": "se7enxweb/expai",
-            "version": "v0.0.1.17",
+            "version": "v0.0.1.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/expai.git",
-                "reference": "5b2e0d077b5a31ff94087fd16a6ae10fda6daa8d"
+                "reference": "61fd0bc0db3502189c2f50a99b3822b53c1491d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/expai/zipball/5b2e0d077b5a31ff94087fd16a6ae10fda6daa8d",
-                "reference": "5b2e0d077b5a31ff94087fd16a6ae10fda6daa8d",
+                "url": "https://api.github.com/repos/se7enxweb/expai/zipball/61fd0bc0db3502189c2f50a99b3822b53c1491d2",
+                "reference": "61fd0bc0db3502189c2f50a99b3822b53c1491d2",
                 "shasum": ""
             },
             "require": {
@@ -11689,20 +9809,20 @@
                 "issues": "https://github.com/se7enxweb/expai/issues",
                 "source": "https://github.com/se7enxweb/expai"
             },
-            "time": "2026-10-21T22:30:02+00:00"
+            "time": "2026-10-23T22:13:28+00:00"
         },
         {
             "name": "se7enxweb/expchangeclass",
-            "version": "v1.0.10",
+            "version": "v1.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/expchangeclass.git",
-                "reference": "ad18bd9a2218c7e4b82c528ab0fabdff034ee577"
+                "reference": "447df079ddf6b6aaff2e98b0f1c8c7cc6ce86358"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/expchangeclass/zipball/ad18bd9a2218c7e4b82c528ab0fabdff034ee577",
-                "reference": "ad18bd9a2218c7e4b82c528ab0fabdff034ee577",
+                "url": "https://api.github.com/repos/se7enxweb/expchangeclass/zipball/447df079ddf6b6aaff2e98b0f1c8c7cc6ce86358",
+                "reference": "447df079ddf6b6aaff2e98b0f1c8c7cc6ce86358",
                 "shasum": ""
             },
             "require": {
@@ -11766,20 +9886,20 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-20T05:31:58+00:00"
+            "time": "2026-10-23T22:13:36+00:00"
         },
         {
             "name": "se7enxweb/explayouts",
-            "version": "v1.4.42",
+            "version": "v1.4.43",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/explayouts.git",
-                "reference": "7029700b7c4578385bc1d5b5312c72c2e3756f0c"
+                "reference": "12084ced145e58bb5de971a33edd928d465e0062"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/explayouts/zipball/7029700b7c4578385bc1d5b5312c72c2e3756f0c",
-                "reference": "7029700b7c4578385bc1d5b5312c72c2e3756f0c",
+                "url": "https://api.github.com/repos/se7enxweb/explayouts/zipball/12084ced145e58bb5de971a33edd928d465e0062",
+                "reference": "12084ced145e58bb5de971a33edd928d465e0062",
                 "shasum": ""
             },
             "require": {
@@ -11806,7 +9926,7 @@
             "homepage": "https://se7enx.com",
             "support": {
                 "issues": "https://github.com/se7enxweb/explayouts/issues",
-                "source": "https://github.com/se7enxweb/explayouts/tree/v1.4.42"
+                "source": "https://github.com/se7enxweb/explayouts/tree/v1.4.43"
             },
             "funding": [
                 {
@@ -11834,7 +9954,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-21T11:24:09+00:00"
+            "time": "2026-10-23T22:13:43+00:00"
         },
         {
             "name": "se7enxweb/explayouts-api",
@@ -12033,16 +10153,16 @@
         },
         {
             "name": "se7enxweb/explayouts-content-browser-ui",
-            "version": "v1.0.11",
+            "version": "v1.0.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/explayouts_content_browser_ui.git",
-                "reference": "9b22f43a1186f5dd8e8ecd9b2e7c056a26096c93"
+                "reference": "2b86a7d8bb3abffd61f0af6efc6f78d5d62ece73"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/explayouts_content_browser_ui/zipball/9b22f43a1186f5dd8e8ecd9b2e7c056a26096c93",
-                "reference": "9b22f43a1186f5dd8e8ecd9b2e7c056a26096c93",
+                "url": "https://api.github.com/repos/se7enxweb/explayouts_content_browser_ui/zipball/2b86a7d8bb3abffd61f0af6efc6f78d5d62ece73",
+                "reference": "2b86a7d8bb3abffd61f0af6efc6f78d5d62ece73",
                 "shasum": ""
             },
             "require": {
@@ -12066,7 +10186,7 @@
             "homepage": "https://se7enx.com",
             "support": {
                 "issues": "https://github.com/se7enxweb/explayouts_content_browser_ui/issues",
-                "source": "https://github.com/se7enxweb/explayouts_content_browser_ui/tree/v1.0.11"
+                "source": "https://github.com/se7enxweb/explayouts_content_browser_ui/tree/v1.0.12"
             },
             "funding": [
                 {
@@ -12094,7 +10214,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-21T03:49:14+00:00"
+            "time": "2026-10-23T22:13:50+00:00"
         },
         {
             "name": "se7enxweb/explayouts-core",
@@ -12423,16 +10543,16 @@
         },
         {
             "name": "se7enxweb/explayouts-ui",
-            "version": "v1.3.27",
+            "version": "v1.3.28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/explayouts_ui.git",
-                "reference": "28df51315be2f7a8aa9734bf8eba856f7490bd34"
+                "reference": "b57101a7bab0c30c1e88ca0f1a2b009c2b90622f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/explayouts_ui/zipball/28df51315be2f7a8aa9734bf8eba856f7490bd34",
-                "reference": "28df51315be2f7a8aa9734bf8eba856f7490bd34",
+                "url": "https://api.github.com/repos/se7enxweb/explayouts_ui/zipball/b57101a7bab0c30c1e88ca0f1a2b009c2b90622f",
+                "reference": "b57101a7bab0c30c1e88ca0f1a2b009c2b90622f",
                 "shasum": ""
             },
             "require": {
@@ -12456,7 +10576,7 @@
             "homepage": "https://se7enx.com",
             "support": {
                 "issues": "https://github.com/se7enxweb/explayouts_ui/issues",
-                "source": "https://github.com/se7enxweb/explayouts_ui/tree/v1.3.27"
+                "source": "https://github.com/se7enxweb/explayouts_ui/tree/v1.3.28"
             },
             "funding": [
                 {
@@ -12484,20 +10604,20 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-21T03:39:02+00:00"
+            "time": "2026-10-23T22:13:58+00:00"
         },
         {
             "name": "se7enxweb/explayouts-ui-api",
-            "version": "v1.3.29",
+            "version": "v1.3.31",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/explayouts_ui_api.git",
-                "reference": "03e6eef9f787b4235bf9b1125f1d5895656cc5e3"
+                "reference": "db1864ee3dda059ed510b9dae2e85ba4d12d1a7b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/explayouts_ui_api/zipball/03e6eef9f787b4235bf9b1125f1d5895656cc5e3",
-                "reference": "03e6eef9f787b4235bf9b1125f1d5895656cc5e3",
+                "url": "https://api.github.com/repos/se7enxweb/explayouts_ui_api/zipball/db1864ee3dda059ed510b9dae2e85ba4d12d1a7b",
+                "reference": "db1864ee3dda059ed510b9dae2e85ba4d12d1a7b",
                 "shasum": ""
             },
             "require": {
@@ -12521,7 +10641,7 @@
             "homepage": "https://se7enx.com",
             "support": {
                 "issues": "https://github.com/se7enxweb/explayouts_ui_api/issues",
-                "source": "https://github.com/se7enxweb/explayouts_ui_api/tree/v1.3.29"
+                "source": "https://github.com/se7enxweb/explayouts_ui_api/tree/v1.3.31"
             },
             "funding": [
                 {
@@ -12549,7 +10669,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-21T11:29:47+00:00"
+            "time": "2026-10-23T22:21:18+00:00"
         },
         {
             "name": "se7enxweb/exponential",
@@ -12557,12 +10677,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/exponential.git",
-                "reference": "9ae8b2ee7fe3112b9a69016d9ecd3fe64056e71c"
+                "reference": "da4b08fbdbaecf1c8eb3ac0c91c5e0f2e6df097a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/exponential/zipball/9ae8b2ee7fe3112b9a69016d9ecd3fe64056e71c",
-                "reference": "9ae8b2ee7fe3112b9a69016d9ecd3fe64056e71c",
+                "url": "https://api.github.com/repos/se7enxweb/exponential/zipball/da4b08fbdbaecf1c8eb3ac0c91c5e0f2e6df097a",
+                "reference": "da4b08fbdbaecf1c8eb3ac0c91c5e0f2e6df097a",
                 "shasum": ""
             },
             "require": {
@@ -12577,73 +10697,74 @@
                 "ext-simplexml": "*",
                 "ext-spl": "*",
                 "php": "^8.0 || ^8.1 || ^8.2 || ^8.3 || ^8.4 || ^8.5 || ^8.6 || ^8.7 || ^8.8",
-                "se7enxweb/bccie": "~1.1.19",
+                "se7enxweb/bccie": "~1.1.20",
                 "se7enxweb/bcgooglesitemaps": "~1.1.6.6",
-                "se7enxweb/bcwebsitestatistics": "~1.0.15",
-                "se7enxweb/birthday": "~1.3.6",
-                "se7enxweb/cjw_newsletter": "~4.2.15",
-                "se7enxweb/cjw_themes_jumper": "~0.1.8",
-                "se7enxweb/cjw_tmv": "~0.1.3",
-                "se7enxweb/enhancedezbinaryfile": "~4.4.10",
-                "se7enxweb/enhancedselection2": "~2.1.10",
+                "se7enxweb/bcwebsitestatistics": "~1.0.16",
+                "se7enxweb/birthday": "~1.3.7",
+                "se7enxweb/cjw_newsletter": "~4.2.16",
+                "se7enxweb/cjw_themes_jumper": "~0.1.9",
+                "se7enxweb/cjw_tmv": "~0.1.4",
+                "se7enxweb/enhancedezbinaryfile": "~4.4.11",
+                "se7enxweb/enhancedselection2": "~2.1.11",
                 "se7enxweb/exp_adminui": "~1.0.0.50",
                 "se7enxweb/exp_enhanced_link": "~1.0.9",
-                "se7enxweb/expai": "~0.0.1.17",
-                "se7enxweb/expchangeclass": "~1.0.10",
-                "se7enxweb/explayouts": "~1.4.42",
+                "se7enxweb/expai": "~0.0.1.18",
+                "se7enxweb/expchangeclass": "~1.0.11",
+                "se7enxweb/explayouts": "~1.4.43",
                 "se7enxweb/explayouts-api": "~1.0.3",
                 "se7enxweb/explayouts-content-browser": "~1.0.4",
                 "se7enxweb/explayouts-content-browser-core": "~1.0.4",
-                "se7enxweb/explayouts-content-browser-ui": "~1.0.11",
+                "se7enxweb/explayouts-content-browser-ui": "~1.0.12",
                 "se7enxweb/explayouts-core": "~1.0.10",
                 "se7enxweb/explayouts-relation-list-query": "~1.0.3",
                 "se7enxweb/explayouts-site-api": "~1.0.4",
                 "se7enxweb/explayouts-standard": "~1.0.3",
                 "se7enxweb/explayouts-tags-query": "~1.0.3",
-                "se7enxweb/explayouts-ui": "~1.3.27",
-                "se7enxweb/explayouts-ui-api": "~1.3.29",
+                "se7enxweb/explayouts-ui": "~1.3.28",
+                "se7enxweb/explayouts-ui-api": "~1.3.31",
                 "se7enxweb/exponential-legacy-installer": "*",
                 "se7enxweb/exponential-velocity": "~0.0.4.55",
                 "se7enxweb/expquery-translator": "~1.0.4",
-                "se7enxweb/expqueue": "~0.1.5",
+                "se7enxweb/expqueue": "~0.1.6",
                 "se7enxweb/expsite-api": "~1.0.5",
                 "se7enxweb/expsite-app": "~1.0.3",
                 "se7enxweb/expsite-core": "~1.0.3",
                 "se7enxweb/expsite-data-media": "~1.0.7",
                 "se7enxweb/expsite-installer": "~1.0.3",
-                "se7enxweb/expui": "~1.0.0.15",
+                "se7enxweb/expui": "~1.0.0.16",
                 "se7enxweb/ezautosave": "~6.0.15",
                 "se7enxweb/ezdemo": "~6.0.15",
                 "se7enxweb/ezflow": "~6.1.12",
                 "se7enxweb/ezgmaplocation": "~6.1.2",
                 "se7enxweb/ezie": "~6.0.15",
-                "se7enxweb/ezmbpaex": "~6.0.9",
-                "se7enxweb/ezmultiupload": "~6.1.12",
-                "se7enxweb/ezodf": "~6.1.13",
+                "se7enxweb/ezmbpaex": "~6.0.10",
+                "se7enxweb/ezmultiupload": "~6.1.13",
+                "se7enxweb/ezodf": "~7.0.0",
                 "se7enxweb/ezoracle": "~2.3.7",
-                "se7enxweb/ezownerchange": "~1.4.3",
+                "se7enxweb/ezownerchange": "~1.4.4",
                 "se7enxweb/ezpaypal": "~1.2.3",
                 "se7enxweb/ezprestapi": "~1.2.6",
-                "se7enxweb/ezstarrating": "~6.0.15",
+                "se7enxweb/ezstarrating": "~6.0.16",
                 "se7enxweb/eztags": "~2.4.24",
-                "se7enxweb/ezupdate": "~1.1.25",
+                "se7enxweb/ezupdate": "~1.1.26",
                 "se7enxweb/ezurlmultisite": "~1.1.1",
-                "se7enxweb/ezwebin": "~6.0.25",
-                "se7enxweb/ezwt": "~6.0.15",
-                "se7enxweb/git_manager": "~2.0.23",
+                "se7enxweb/ezwebin": "~6.0.26",
+                "se7enxweb/ezwt": "~6.0.16",
+                "se7enxweb/git_manager": "~2.0.24",
                 "se7enxweb/hcaptcha": "~1.6",
                 "se7enxweb/ngclasslist": "~1.1.6",
                 "se7enxweb/owsimpleoperator": "~1.2.7",
-                "se7enxweb/powercontent": "~2.0.5",
-                "se7enxweb/recaptcha": "~1.4.11",
-                "se7enxweb/sevenx-themes-media": "~1.5.75",
-                "se7enxweb/sevenx_authentication_2fa": "~1.0.14",
-                "se7enxweb/sevenx_dse": "~1.1.15",
-                "se7enxweb/sevenx_themes_simple": "~1.0.25",
+                "se7enxweb/powercontent": "~2.0.6",
+                "se7enxweb/recaptcha": "~1.4.12",
+                "se7enxweb/sevenx-themes-media": "~1.5.76",
+                "se7enxweb/sevenx_authentication_2fa": "~1.0.15",
+                "se7enxweb/sevenx_dse": "~1.1.16",
+                "se7enxweb/sevenx_themes_simple": "~1.0.26",
+                "se7enxweb/sqliimport": "~2.0.0",
                 "se7enxweb/swark": "~1.0.5",
-                "se7enxweb/syndication": "~1.3.11",
-                "se7enxweb/xrowextract": "~2.5.19",
-                "se7enxweb/xrowmetadata": "~1.4.16",
+                "se7enxweb/syndication": "~1.3.12",
+                "se7enxweb/xrowextract": "~2.5.21",
+                "se7enxweb/xrowmetadata": "~1.4.17",
                 "symfony/polyfill-php73": "^1.9",
                 "zetacomponents/archive": "~1.5.1",
                 "zetacomponents/authentication": "~1.4.1",
@@ -12760,7 +10881,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-23T10:08:37+00:00"
+            "time": "2026-10-24T07:07:45+00:00"
         },
         {
             "name": "se7enxweb/exponential-legacy-installer",
@@ -13286,16 +11407,16 @@
         },
         {
             "name": "se7enxweb/expqueue",
-            "version": "v0.1.5",
+            "version": "v0.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/expqueue.git",
-                "reference": "8d9385deead7ae3173a805a6e15503b3cdd07dda"
+                "reference": "61c301d25bb191f06dc114cf1ef89978d95b6d2a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/expqueue/zipball/8d9385deead7ae3173a805a6e15503b3cdd07dda",
-                "reference": "8d9385deead7ae3173a805a6e15503b3cdd07dda",
+                "url": "https://api.github.com/repos/se7enxweb/expqueue/zipball/61c301d25bb191f06dc114cf1ef89978d95b6d2a",
+                "reference": "61c301d25bb191f06dc114cf1ef89978d95b6d2a",
                 "shasum": ""
             },
             "require": {
@@ -13342,7 +11463,7 @@
                 "issues": "https://github.com/se7enxweb/expqueue/issues",
                 "source": "https://github.com/se7enxweb/expqueue"
             },
-            "time": "2026-10-21T03:40:36+00:00"
+            "time": "2026-10-23T22:14:06+00:00"
         },
         {
             "name": "se7enxweb/expsite-api",
@@ -13671,16 +11792,16 @@
         },
         {
             "name": "se7enxweb/expui",
-            "version": "v1.0.0.15",
+            "version": "v1.0.0.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/expui.git",
-                "reference": "78df6859e916ae2fe18a7798b821fdeb23889a1b"
+                "reference": "ef834e54ac1f7bb9bfc4f0f19b8c621632f9338b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/expui/zipball/78df6859e916ae2fe18a7798b821fdeb23889a1b",
-                "reference": "78df6859e916ae2fe18a7798b821fdeb23889a1b",
+                "url": "https://api.github.com/repos/se7enxweb/expui/zipball/ef834e54ac1f7bb9bfc4f0f19b8c621632f9338b",
+                "reference": "ef834e54ac1f7bb9bfc4f0f19b8c621632f9338b",
                 "shasum": ""
             },
             "require": {
@@ -13716,7 +11837,7 @@
             ],
             "support": {
                 "issues": "https://github.com/se7enxweb/expui/issues",
-                "source": "https://github.com/se7enxweb/expui/tree/v1.0.0.15"
+                "source": "https://github.com/se7enxweb/expui/tree/v1.0.0.16"
             },
             "funding": [
                 {
@@ -13744,7 +11865,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-23T08:01:37+00:00"
+            "time": "2026-10-23T22:14:14+00:00"
         },
         {
             "name": "se7enxweb/ezautosave",
@@ -14089,16 +12210,16 @@
         },
         {
             "name": "se7enxweb/ezmbpaex",
-            "version": "v6.0.9",
+            "version": "v6.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/ezmbpaex.git",
-                "reference": "48e76b1196d8d9cc44e6945fb0d36b1789e9a29d"
+                "reference": "41b313e729a3e7a3ab5d2e62d5c20c6f6c671aa3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/ezmbpaex/zipball/48e76b1196d8d9cc44e6945fb0d36b1789e9a29d",
-                "reference": "48e76b1196d8d9cc44e6945fb0d36b1789e9a29d",
+                "url": "https://api.github.com/repos/se7enxweb/ezmbpaex/zipball/41b313e729a3e7a3ab5d2e62d5c20c6f6c671aa3",
+                "reference": "41b313e729a3e7a3ab5d2e62d5c20c6f6c671aa3",
                 "shasum": ""
             },
             "require": {
@@ -14121,7 +12242,7 @@
             "description": "eZ Publish Legacy Extension that provides functionality for password expiration and validation.",
             "support": {
                 "issues": "https://github.com/se7enxweb/ezmbpaex/issues",
-                "source": "https://github.com/se7enxweb/ezmbpaex/tree/v6.0.9"
+                "source": "https://github.com/se7enxweb/ezmbpaex/tree/v6.0.10"
             },
             "funding": [
                 {
@@ -14149,20 +12270,20 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-21T03:46:58+00:00"
+            "time": "2026-10-23T22:14:23+00:00"
         },
         {
             "name": "se7enxweb/ezmultiupload",
-            "version": "v6.1.12",
+            "version": "v6.1.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/ezmultiupload.git",
-                "reference": "6286e412fea2fc9bb6f2b8574264c4969d84e7f5"
+                "reference": "27146790ae61447a4fe199cfd05956d9238deaad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/ezmultiupload/zipball/6286e412fea2fc9bb6f2b8574264c4969d84e7f5",
-                "reference": "6286e412fea2fc9bb6f2b8574264c4969d84e7f5",
+                "url": "https://api.github.com/repos/se7enxweb/ezmultiupload/zipball/27146790ae61447a4fe199cfd05956d9238deaad",
+                "reference": "27146790ae61447a4fe199cfd05956d9238deaad",
                 "shasum": ""
             },
             "require": {
@@ -14186,7 +12307,7 @@
             "description": "Multi-upload extension for Exponential Legacy",
             "support": {
                 "issues": "https://github.com/se7enxweb/ezmultiupload/issues",
-                "source": "https://github.com/se7enxweb/ezmultiupload/tree/v6.1.12"
+                "source": "https://github.com/se7enxweb/ezmultiupload/tree/v6.1.13"
             },
             "funding": [
                 {
@@ -14214,25 +12335,33 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-21T03:55:08+00:00"
+            "time": "2026-10-23T22:14:31+00:00"
         },
         {
             "name": "se7enxweb/ezodf",
-            "version": "v6.1.13",
+            "version": "v7.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/ezodf.git",
-                "reference": "d7e77f2b94096f54d418a05045c62d27b44cdf57"
+                "reference": "6812c15301af3b87726309b7f79bd380d561cffc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/ezodf/zipball/d7e77f2b94096f54d418a05045c62d27b44cdf57",
-                "reference": "d7e77f2b94096f54d418a05045c62d27b44cdf57",
+                "url": "https://api.github.com/repos/se7enxweb/ezodf/zipball/6812c15301af3b87726309b7f79bd380d561cffc",
+                "reference": "6812c15301af3b87726309b7f79bd380d561cffc",
                 "shasum": ""
             },
             "require": {
+                "ext-dom": "*",
                 "ext-zip": "*",
+                "php": ">=8.0",
                 "se7enxweb/ezpublish-legacy-installer": "*"
+            },
+            "suggest": {
+                "ext-curl": "Installs LibreOffice from the administration and reads web addresses",
+                "se7enxweb/expai": "AI suggestions for imported documents (a summary and keywords), applied only on request",
+                "se7enxweb/expqueue": "Runs imports, exports and the converter's work on the job queue; without it each job runs in a PHP process of its own",
+                "se7enxweb/sqliimport": "Document formats of 7x SQLI Import 2: mapping, dry run, undo and schedules for documents of uploads, ZIP archives, web addresses, feeds, WebDAV/Nextcloud, Google Drive, OneDrive and mailboxes"
             },
             "type": "ezpublish-legacy-extension",
             "extra": {
@@ -14246,12 +12375,18 @@
                 {
                     "name": "eZ Publish dev-team & eZ Community",
                     "homepage": "https://github.com/se7enxweb/ezodf/contributors"
+                },
+                {
+                    "name": "7x",
+                    "email": "info@se7enx.com",
+                    "homepage": "https://se7enx.com",
+                    "role": "Maintainer"
                 }
             ],
-            "description": "This extension provides for the import and export of OpenOffice.org Writer documents within Exponential Legacy",
+            "description": "Documents in and out of Exponential: imports Word, OpenDocument, RTF, PDF, Markdown, HTML, spreadsheets and presentations (files, folders, ZIP archives, web addresses) and exports any item as DOCX, PDF, ODT, RTF, EPUB or text, with LibreOffice as the converter, installed and switched on from the administration",
             "support": {
                 "issues": "https://github.com/se7enxweb/ezodf/issues",
-                "source": "https://github.com/se7enxweb/ezodf/tree/v6.1.13"
+                "source": "https://github.com/se7enxweb/ezodf/tree/v7.0.0"
             },
             "funding": [
                 {
@@ -14279,7 +12414,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-21T03:44:44+00:00"
+            "time": "2026-10-24T00:47:12+00:00"
         },
         {
             "name": "se7enxweb/ezoracle",
@@ -14351,16 +12486,16 @@
         },
         {
             "name": "se7enxweb/ezownerchange",
-            "version": "v1.4.3",
+            "version": "v1.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/ezownerchange.git",
-                "reference": "08ca24e89e92ce6b2dc3c0f08255f856db0d08bf"
+                "reference": "253ae9ff0c3101e5acd47da9d6bcf3dddc2b0293"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/ezownerchange/zipball/08ca24e89e92ce6b2dc3c0f08255f856db0d08bf",
-                "reference": "08ca24e89e92ce6b2dc3c0f08255f856db0d08bf",
+                "url": "https://api.github.com/repos/se7enxweb/ezownerchange/zipball/253ae9ff0c3101e5acd47da9d6bcf3dddc2b0293",
+                "reference": "253ae9ff0c3101e5acd47da9d6bcf3dddc2b0293",
                 "shasum": ""
             },
             "require": {
@@ -14432,7 +12567,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-20T05:31:58+00:00"
+            "time": "2026-10-23T22:14:39+00:00"
         },
         {
             "name": "se7enxweb/ezpaypal",
@@ -14529,12 +12664,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/ezplatform-xmltext-fieldtype.git",
-                "reference": "7fd9a17cbe67802585556214faeacd31c4937a02"
+                "reference": "7ff263bdf5f84e69d00e10b3b50e2c4d7919b165"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/ezplatform-xmltext-fieldtype/zipball/7fd9a17cbe67802585556214faeacd31c4937a02",
-                "reference": "7fd9a17cbe67802585556214faeacd31c4937a02",
+                "url": "https://api.github.com/repos/se7enxweb/ezplatform-xmltext-fieldtype/zipball/7ff263bdf5f84e69d00e10b3b50e2c4d7919b165",
+                "reference": "7ff263bdf5f84e69d00e10b3b50e2c4d7919b165",
                 "shasum": ""
             },
             "require": {
@@ -14544,7 +12679,7 @@
                 "ibexa/core": "^5.0",
                 "ibexa/fieldtype-richtext": "^5.0",
                 "ibexa/rest": "^5.0",
-                "php": "^8.4 || ^8.5"
+                "php": "^8.3"
             },
             "replace": {
                 "ezsystems/ezplatform-xmltext-fieldtype": "self.version"
@@ -14610,7 +12745,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-23T12:34:28+00:00"
+            "time": "2026-10-24T03:14:42+00:00"
         },
         {
             "name": "se7enxweb/ezprestapi",
@@ -14703,16 +12838,16 @@
         },
         {
             "name": "se7enxweb/ezstarrating",
-            "version": "v6.0.15",
+            "version": "v6.0.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/ezstarrating.git",
-                "reference": "a95e1c6a5560b09075d279cb21dafbebab72427a"
+                "reference": "8c179e20d6491ce8da9a4265c421d48af92b0936"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/ezstarrating/zipball/a95e1c6a5560b09075d279cb21dafbebab72427a",
-                "reference": "a95e1c6a5560b09075d279cb21dafbebab72427a",
+                "url": "https://api.github.com/repos/se7enxweb/ezstarrating/zipball/8c179e20d6491ce8da9a4265c421d48af92b0936",
+                "reference": "8c179e20d6491ce8da9a4265c421d48af92b0936",
                 "shasum": ""
             },
             "require": {
@@ -14740,7 +12875,7 @@
             "description": "eZ Star Rating is an extension that allows the addition of a rating system to Exponential content objects via a dedicated datatype. The current version allows ratings between 1 and 5 stars; users can vote once per session.",
             "support": {
                 "issues": "https://github.com/se7enxweb/ezstarrating/issues",
-                "source": "https://github.com/se7enxweb/ezstarrating/tree/v6.0.15"
+                "source": "https://github.com/se7enxweb/ezstarrating/tree/v6.0.16"
             },
             "funding": [
                 {
@@ -14768,7 +12903,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-21T03:38:06+00:00"
+            "time": "2026-10-23T22:14:47+00:00"
         },
         {
             "name": "se7enxweb/eztags",
@@ -14867,16 +13002,16 @@
         },
         {
             "name": "se7enxweb/ezupdate",
-            "version": "v1.1.25",
+            "version": "v1.1.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/ezupdate.git",
-                "reference": "e30aca895d6d2359f1b5b05d6e51dad5b6fecafd"
+                "reference": "e207282b0d40659ff2480f85e0a764e465f10202"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/ezupdate/zipball/e30aca895d6d2359f1b5b05d6e51dad5b6fecafd",
-                "reference": "e30aca895d6d2359f1b5b05d6e51dad5b6fecafd",
+                "url": "https://api.github.com/repos/se7enxweb/ezupdate/zipball/e207282b0d40659ff2480f85e0a764e465f10202",
+                "reference": "e207282b0d40659ff2480f85e0a764e465f10202",
                 "shasum": ""
             },
             "require": {
@@ -14920,7 +13055,7 @@
             ],
             "support": {
                 "issues": "https://github.com/se7enxweb/ezupdate/issues",
-                "source": "https://github.com/se7enxweb/ezupdate/tree/v1.1.25"
+                "source": "https://github.com/se7enxweb/ezupdate/tree/v1.1.26"
             },
             "funding": [
                 {
@@ -14948,7 +13083,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-20T04:25:01+00:00"
+            "time": "2026-10-23T22:14:55+00:00"
         },
         {
             "name": "se7enxweb/ezurlmultisite",
@@ -15030,16 +13165,16 @@
         },
         {
             "name": "se7enxweb/ezwebin",
-            "version": "v6.0.25",
+            "version": "v6.0.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/ezwebin.git",
-                "reference": "6286b657f4a24738e9ca11436a9e61060671eb20"
+                "reference": "88275779ca653b4e58a8de49c7af5b266ffc6f8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/ezwebin/zipball/6286b657f4a24738e9ca11436a9e61060671eb20",
-                "reference": "6286b657f4a24738e9ca11436a9e61060671eb20",
+                "url": "https://api.github.com/repos/se7enxweb/ezwebin/zipball/88275779ca653b4e58a8de49c7af5b266ffc6f8c",
+                "reference": "88275779ca653b4e58a8de49c7af5b266ffc6f8c",
                 "shasum": ""
             },
             "require": {
@@ -15068,7 +13203,7 @@
             "description": "Exponential Legacy website interface extension",
             "support": {
                 "issues": "https://github.com/se7enxweb/ezwebin/issues",
-                "source": "https://github.com/se7enxweb/ezwebin/tree/v6.0.25"
+                "source": "https://github.com/se7enxweb/ezwebin/tree/v6.0.26"
             },
             "funding": [
                 {
@@ -15096,20 +13231,20 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-21T03:47:02+00:00"
+            "time": "2026-10-23T22:15:03+00:00"
         },
         {
             "name": "se7enxweb/ezwt",
-            "version": "v6.0.15",
+            "version": "v6.0.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/ezwt.git",
-                "reference": "78f633df11d49d74f1d4334690f8498e8ec3c653"
+                "reference": "3eaf02ba36e3feb29c6cfa09e7d4aefcb23f71a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/ezwt/zipball/78f633df11d49d74f1d4334690f8498e8ec3c653",
-                "reference": "78f633df11d49d74f1d4334690f8498e8ec3c653",
+                "url": "https://api.github.com/repos/se7enxweb/ezwt/zipball/3eaf02ba36e3feb29c6cfa09e7d4aefcb23f71a1",
+                "reference": "3eaf02ba36e3feb29c6cfa09e7d4aefcb23f71a1",
                 "shasum": ""
             },
             "require": {
@@ -15139,7 +13274,7 @@
             "description": "Exponential Legacy website toolbar extension. Great for editing small to medium sized website content by untrained end users.",
             "support": {
                 "issues": "https://github.com/se7enxweb/ezwt/issues",
-                "source": "https://github.com/se7enxweb/ezwt/tree/v6.0.15"
+                "source": "https://github.com/se7enxweb/ezwt/tree/v6.0.16"
             },
             "funding": [
                 {
@@ -15167,20 +13302,20 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-21T03:47:04+00:00"
+            "time": "2026-10-23T22:15:11+00:00"
         },
         {
             "name": "se7enxweb/git_manager",
-            "version": "v2.0.23",
+            "version": "v2.0.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/git_manager.git",
-                "reference": "97cc26ce1b631f4fecb050f32ce0eb23726c5f24"
+                "reference": "75ad6c6f7562c5c33c50bbb29cb0a5d8aaee6728"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/git_manager/zipball/97cc26ce1b631f4fecb050f32ce0eb23726c5f24",
-                "reference": "97cc26ce1b631f4fecb050f32ce0eb23726c5f24",
+                "url": "https://api.github.com/repos/se7enxweb/git_manager/zipball/75ad6c6f7562c5c33c50bbb29cb0a5d8aaee6728",
+                "reference": "75ad6c6f7562c5c33c50bbb29cb0a5d8aaee6728",
                 "shasum": ""
             },
             "require": {
@@ -15257,7 +13392,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-22T06:19:23+00:00"
+            "time": "2026-10-23T22:15:18+00:00"
         },
         {
             "name": "se7enxweb/hcaptcha",
@@ -15350,17 +13485,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/LegacyBridge.git",
-                "reference": "a73ee66846896e67281630582bf19e1f26ee44a3"
+                "reference": "9b03f9a1e959a4bf7783f271b327fb7b3f9e5a3f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/LegacyBridge/zipball/a73ee66846896e67281630582bf19e1f26ee44a3",
-                "reference": "a73ee66846896e67281630582bf19e1f26ee44a3",
+                "url": "https://api.github.com/repos/se7enxweb/LegacyBridge/zipball/9b03f9a1e959a4bf7783f271b327fb7b3f9e5a3f",
+                "reference": "9b03f9a1e959a4bf7783f271b327fb7b3f9e5a3f",
                 "shasum": ""
             },
             "require": {
                 "ibexa/core": "^5.0",
-                "php": "^8.4",
+                "php": "^8.3",
                 "se7enxweb/exponential": "dev-main",
                 "se7enxweb/exponential-legacy-installer": "^2.2.5",
                 "se7enxweb/ezplatform-xmltext-fieldtype": "5.x-dev",
@@ -15402,9 +13537,9 @@
                     "homepage": "https://se7enx.com"
                 }
             ],
-            "description": "eZ Publish Legacy bridge for Ibexa 5.x / Symfony 7 — PHP 8.4 compatible",
+            "description": "eZ Publish Legacy bridge for Ibexa 5.x / Symfony 7 — PHP 8.3+",
             "support": {
-                "source": "https://github.com/se7enxweb/LegacyBridge/tree/v5.0.13"
+                "source": "https://github.com/se7enxweb/LegacyBridge/tree/5.x"
             },
             "funding": [
                 {
@@ -15432,7 +13567,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-23T15:20:18+00:00"
+            "time": "2026-10-24T03:14:42+00:00"
         },
         {
             "name": "se7enxweb/ngclasslist",
@@ -15749,16 +13884,16 @@
         },
         {
             "name": "se7enxweb/powercontent",
-            "version": "v2.0.5",
+            "version": "v2.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/powercontent.git",
-                "reference": "9b64d2ab2be94b69d639fee4ecd935bc1c3e622f"
+                "reference": "9d4620d02db83910cba215f365b8811f3a576cc5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/powercontent/zipball/9b64d2ab2be94b69d639fee4ecd935bc1c3e622f",
-                "reference": "9b64d2ab2be94b69d639fee4ecd935bc1c3e622f",
+                "url": "https://api.github.com/repos/se7enxweb/powercontent/zipball/9d4620d02db83910cba215f365b8811f3a576cc5",
+                "reference": "9d4620d02db83910cba215f365b8811f3a576cc5",
                 "shasum": ""
             },
             "require": {
@@ -15800,7 +13935,7 @@
                 "powercontent"
             ],
             "support": {
-                "source": "https://github.com/se7enxweb/powercontent/tree/v2.0.5"
+                "source": "https://github.com/se7enxweb/powercontent/tree/v2.0.6"
             },
             "funding": [
                 {
@@ -15828,20 +13963,20 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-20T05:31:57+00:00"
+            "time": "2026-10-23T22:15:26+00:00"
         },
         {
             "name": "se7enxweb/recaptcha",
-            "version": "v1.4.11",
+            "version": "v1.4.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/recaptcha.git",
-                "reference": "31cd9420d4da04db95a72ad893cc6a2863902096"
+                "reference": "88e9d787cd48430c2b2ae4f583c263503f49aea0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/recaptcha/zipball/31cd9420d4da04db95a72ad893cc6a2863902096",
-                "reference": "31cd9420d4da04db95a72ad893cc6a2863902096",
+                "url": "https://api.github.com/repos/se7enxweb/recaptcha/zipball/88e9d787cd48430c2b2ae4f583c263503f49aea0",
+                "reference": "88e9d787cd48430c2b2ae4f583c263503f49aea0",
                 "shasum": ""
             },
             "require": {
@@ -15891,7 +14026,7 @@
                 "user registration"
             ],
             "support": {
-                "source": "https://github.com/se7enxweb/recaptcha/tree/v1.4.11"
+                "source": "https://github.com/se7enxweb/recaptcha/tree/v1.4.12"
             },
             "funding": [
                 {
@@ -15919,7 +14054,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-21T03:47:10+00:00"
+            "time": "2026-10-23T22:15:34+00:00"
         },
         {
             "name": "se7enxweb/richtext-datatype-bundle",
@@ -15927,12 +14062,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/NetgenRichTextDataTypeBundle.git",
-                "reference": "99d25e7f8685d89368b59bf65b1e408ee272616a"
+                "reference": "999f55c1c9cce766fc3b24376d2ab494ed998801"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/NetgenRichTextDataTypeBundle/zipball/99d25e7f8685d89368b59bf65b1e408ee272616a",
-                "reference": "99d25e7f8685d89368b59bf65b1e408ee272616a",
+                "url": "https://api.github.com/repos/se7enxweb/NetgenRichTextDataTypeBundle/zipball/999f55c1c9cce766fc3b24376d2ab494ed998801",
+                "reference": "999f55c1c9cce766fc3b24376d2ab494ed998801",
                 "shasum": ""
             },
             "require": {
@@ -15973,7 +14108,7 @@
             "description": "Rich text datatype bundle: lets Exponential Legacy edit and publish content with the rich text (ezrichtext) field type of Exponential Platform 5.x",
             "support": {
                 "issues": "https://github.com/se7enxweb/NetgenRichTextDataTypeBundle/issues",
-                "source": "https://github.com/se7enxweb/NetgenRichTextDataTypeBundle/tree/v5.0.0"
+                "source": "https://github.com/se7enxweb/NetgenRichTextDataTypeBundle/tree/5.x"
             },
             "funding": [
                 {
@@ -16001,20 +14136,20 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-23T13:58:19+00:00"
+            "time": "2026-10-24T07:08:14+00:00"
         },
         {
             "name": "se7enxweb/sevenx-themes-media",
-            "version": "v1.5.75",
+            "version": "v1.5.76",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/sevenx_themes_media.git",
-                "reference": "672e49f8c0f83dbf42b4d8bba7d50cc3f7b753ee"
+                "reference": "f9178639e54dc59740911f9312f9410b2aed4ba9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/sevenx_themes_media/zipball/672e49f8c0f83dbf42b4d8bba7d50cc3f7b753ee",
-                "reference": "672e49f8c0f83dbf42b4d8bba7d50cc3f7b753ee",
+                "url": "https://api.github.com/repos/se7enxweb/sevenx_themes_media/zipball/f9178639e54dc59740911f9312f9410b2aed4ba9",
+                "reference": "f9178639e54dc59740911f9312f9410b2aed4ba9",
                 "shasum": ""
             },
             "require": {
@@ -16052,7 +14187,7 @@
             ],
             "support": {
                 "issues": "https://github.com/se7enxweb/sevenx_themes_media/issues",
-                "source": "https://github.com/se7enxweb/sevenx_themes_media/tree/v1.5.75"
+                "source": "https://github.com/se7enxweb/sevenx_themes_media/tree/v1.5.76"
             },
             "funding": [
                 {
@@ -16080,20 +14215,20 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-21T11:28:39+00:00"
+            "time": "2026-10-23T22:16:00+00:00"
         },
         {
             "name": "se7enxweb/sevenx_authentication_2fa",
-            "version": "v1.0.14",
+            "version": "v1.0.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/sevenx_authentication_2fa.git",
-                "reference": "32796a615de390cdccd82da1bfd200c2a48fe030"
+                "reference": "4e87e8fe4f11d55ec70c9d2e3773014115a285f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/sevenx_authentication_2fa/zipball/32796a615de390cdccd82da1bfd200c2a48fe030",
-                "reference": "32796a615de390cdccd82da1bfd200c2a48fe030",
+                "url": "https://api.github.com/repos/se7enxweb/sevenx_authentication_2fa/zipball/4e87e8fe4f11d55ec70c9d2e3773014115a285f3",
+                "reference": "4e87e8fe4f11d55ec70c9d2e3773014115a285f3",
                 "shasum": ""
             },
             "require": {
@@ -16133,22 +14268,22 @@
             ],
             "support": {
                 "issues": "https://github.com/se7enxweb/sevenx_authentication_2fa/issues",
-                "source": "https://github.com/se7enxweb/sevenx_authentication_2fa/tree/v1.0.14"
+                "source": "https://github.com/se7enxweb/sevenx_authentication_2fa/tree/v1.0.16"
             },
-            "time": "2026-10-20T05:42:49+00:00"
+            "time": "2026-10-24T00:51:52+00:00"
         },
         {
             "name": "se7enxweb/sevenx_dse",
-            "version": "v1.1.15",
+            "version": "v1.1.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/sevenx_dse.git",
-                "reference": "bc31419a3b6ed304ec20d84e83eec8fe65353a23"
+                "reference": "37377f73a306898e2fb88b223243d6ef9662187e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/sevenx_dse/zipball/bc31419a3b6ed304ec20d84e83eec8fe65353a23",
-                "reference": "bc31419a3b6ed304ec20d84e83eec8fe65353a23",
+                "url": "https://api.github.com/repos/se7enxweb/sevenx_dse/zipball/37377f73a306898e2fb88b223243d6ef9662187e",
+                "reference": "37377f73a306898e2fb88b223243d6ef9662187e",
                 "shasum": ""
             },
             "require": {
@@ -16252,7 +14387,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-22T06:17:46+00:00"
+            "time": "2026-10-23T22:15:51+00:00"
         },
         {
             "name": "se7enxweb/sevenx_exponential_platform_v5_database_translator",
@@ -16260,12 +14395,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/sevenx_exponential_platform_v5_database_translator.git",
-                "reference": "ab6fe671ec9ca57ffd776cd909d4357ce974c08e"
+                "reference": "e52e518f8857905573ed028fc031003dd328c46b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/sevenx_exponential_platform_v5_database_translator/zipball/ab6fe671ec9ca57ffd776cd909d4357ce974c08e",
-                "reference": "ab6fe671ec9ca57ffd776cd909d4357ce974c08e",
+                "url": "https://api.github.com/repos/se7enxweb/sevenx_exponential_platform_v5_database_translator/zipball/e52e518f8857905573ed028fc031003dd328c46b",
+                "reference": "e52e518f8857905573ed028fc031003dd328c46b",
                 "shasum": ""
             },
             "require": {
@@ -16308,20 +14443,20 @@
                 "issues": "https://github.com/se7enxweb/sevenx_exponential_platform_v5_database_translator/issues",
                 "source": "https://github.com/se7enxweb/sevenx_exponential_platform_v5_database_translator/tree/main"
             },
-            "time": "2026-10-23T14:13:34+00:00"
+            "time": "2026-10-24T07:08:14+00:00"
         },
         {
             "name": "se7enxweb/sevenx_themes_simple",
-            "version": "v1.0.25",
+            "version": "v1.0.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/sevenx_themes_simple.git",
-                "reference": "8218a99f63b5a56cf0597083b81ea8738854ceb4"
+                "reference": "dbc44ff3c49ac67c455fddb4a5e2762f108bfe4f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/sevenx_themes_simple/zipball/8218a99f63b5a56cf0597083b81ea8738854ceb4",
-                "reference": "8218a99f63b5a56cf0597083b81ea8738854ceb4",
+                "url": "https://api.github.com/repos/se7enxweb/sevenx_themes_simple/zipball/dbc44ff3c49ac67c455fddb4a5e2762f108bfe4f",
+                "reference": "dbc44ff3c49ac67c455fddb4a5e2762f108bfe4f",
                 "shasum": ""
             },
             "require": {
@@ -16357,7 +14492,7 @@
             ],
             "support": {
                 "issues": "https://github.com/se7enxweb/sevenx_themes_simple/issues",
-                "source": "https://github.com/se7enxweb/sevenx_themes_simple/tree/v1.0.25"
+                "source": "https://github.com/se7enxweb/sevenx_themes_simple/tree/v1.0.26"
             },
             "funding": [
                 {
@@ -16385,7 +14520,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-20T05:31:58+00:00"
+            "time": "2026-10-23T22:16:08+00:00"
         },
         {
             "name": "se7enxweb/site-bundle",
@@ -16393,12 +14528,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/site-bundle.git",
-                "reference": "1d114d833174aa9fe132616f877ec7979394befb"
+                "reference": "e8255847cddfc34f4cb3ff283f8d6f21162609f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/site-bundle/zipball/1d114d833174aa9fe132616f877ec7979394befb",
-                "reference": "1d114d833174aa9fe132616f877ec7979394befb",
+                "url": "https://api.github.com/repos/se7enxweb/site-bundle/zipball/e8255847cddfc34f4cb3ff283f8d6f21162609f5",
+                "reference": "e8255847cddfc34f4cb3ff283f8d6f21162609f5",
                 "shasum": ""
             },
             "require": {
@@ -16418,7 +14553,7 @@
                 "netgen/open-graph-bundle": "^4.0",
                 "netgen/siteaccess-routes-bundle": "^4.0",
                 "netgen/tagsbundle": "^6.0",
-                "php": "^8.4",
+                "php": "^8.3",
                 "sebastianfeldmann/git": "^3.15",
                 "symfony/mailer": "^7.3",
                 "symfony/polyfill-php84": "^1.33",
@@ -16500,7 +14635,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-04-20T03:33:49+00:00"
+            "time": "2026-10-24T03:14:42+00:00"
         },
         {
             "name": "se7enxweb/site-legacy-bundle",
@@ -16508,12 +14643,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/site-legacy-bundle.git",
-                "reference": "e2bef684f79509d85cdc1792c0757fdc1798b933"
+                "reference": "25c4baea22f0d465869220316e0adfa07ac97736"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/site-legacy-bundle/zipball/e2bef684f79509d85cdc1792c0757fdc1798b933",
-                "reference": "e2bef684f79509d85cdc1792c0757fdc1798b933",
+                "url": "https://api.github.com/repos/se7enxweb/site-legacy-bundle/zipball/25c4baea22f0d465869220316e0adfa07ac97736",
+                "reference": "25c4baea22f0d465869220316e0adfa07ac97736",
                 "shasum": ""
             },
             "require": {
@@ -16525,7 +14660,7 @@
                 "netgen/hideuntildate": "^2.0",
                 "netgen/ngclasslist": "^1.1",
                 "netgen/xrowmetadata": "^3.0",
-                "php": "^8.4",
+                "php": "^8.3",
                 "se7enxweb/eztags": "^2.4.24",
                 "se7enxweb/legacy-bridge": "^5.0.0.0",
                 "se7enxweb/ngsymfonytools": "v5.0.x-dev",
@@ -16558,7 +14693,7 @@
             ],
             "description": "7x Netgen Site Legacy Bundle is an Exponential Platform / Ibexa OSS bundle that implements common features that are used by Netgen to implement websites. This bundle acts as a glue between new and legacy kernels.",
             "support": {
-                "source": "https://github.com/se7enxweb/site-legacy-bundle/tree/v5.0.3"
+                "source": "https://github.com/se7enxweb/site-legacy-bundle/tree/5.0.x"
             },
             "funding": [
                 {
@@ -16586,7 +14721,118 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-23T15:32:42+00:00"
+            "time": "2026-10-24T03:14:42+00:00"
+        },
+        {
+            "name": "se7enxweb/sqliimport",
+            "version": "v2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/se7enxweb/sqliimport.git",
+                "reference": "50a2e916f657bf0aad313c456049da3e056a2a25"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/se7enxweb/sqliimport/zipball/50a2e916f657bf0aad313c456049da3e056a2a25",
+                "reference": "50a2e916f657bf0aad313c456049da3e056a2a25",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "ext-xmlreader": "*",
+                "php": ">=8.0",
+                "se7enxweb/exponential-legacy-installer": "*",
+                "se7enxweb/expqueue": "~0.1.5",
+                "se7enxweb/expui": "^1.0.0.14"
+            },
+            "replace": {
+                "lolautruche/sqliimport": "self.version"
+            },
+            "suggest": {
+                "ext-intl": "Slugs and name matching take accents off with Normalizer (a fixed table otherwise)",
+                "ext-pcntl": "Lets the 1.x command line script sqlidoimport.php stop safely on SIGTERM or SIGINT",
+                "ext-zip": "Spreadsheet sources (XLSX and ODS)",
+                "se7enxweb/expai": "The AI assist: suggests mappings and classes, explains failed rows and summarizes runs (off unless enabled)"
+            },
+            "type": "ezpublish-legacy-extension",
+            "extra": {
+                "installer-name": "sqliimport",
+                "ezpublish-legacy-extension-name": "sqliimport"
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "Jérôme Vieilledent",
+                    "email": "lolautruche@gmail.com",
+                    "role": "Original author"
+                },
+                {
+                    "name": "Simone Tellini",
+                    "homepage": "http://tellini.info/",
+                    "role": "Oracle support"
+                },
+                {
+                    "name": "7x",
+                    "email": "info@se7enx.com",
+                    "homepage": "https://se7enx.com",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "7x SQLI Import for Exponential: imports content from more than 60 sources (files, feeds, web pages, APIs, SQL and NoSQL databases, other CMS, mailboxes, office documents) through a no-code mapping or import handlers, all in the administration, run by the job queue in chunks with a log and a row per record, on demand, on schedules or by a webhook. Handlers of sqliimport 1.x keep working.",
+            "homepage": "https://github.com/se7enxweb/sqliimport",
+            "keywords": [
+                "Exponential 6",
+                "content import",
+                "cronjob",
+                "csv",
+                "exponential",
+                "exponential-legacy",
+                "import",
+                "job queue",
+                "json",
+                "legacy-extension",
+                "mapping",
+                "migration",
+                "rss",
+                "xml"
+            ],
+            "support": {
+                "docs": "https://github.com/se7enxweb/sqliimport/tree/master/doc",
+                "issues": "https://github.com/se7enxweb/sqliimport/issues",
+                "source": "https://github.com/se7enxweb/sqliimport"
+            },
+            "funding": [
+                {
+                    "url": "https://account.venmo.com/u/se7enxweb",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://cash.app/$7xweb",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://se7enx.com",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://www.paypal.me/7xweb",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/se7enxweb",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.patreon.com/7xweb",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2026-10-24T02:11:47+00:00"
         },
         {
             "name": "se7enxweb/swark",
@@ -16667,16 +14913,16 @@
         },
         {
             "name": "se7enxweb/syndication",
-            "version": "v1.3.11",
+            "version": "v1.3.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/syndication.git",
-                "reference": "25959597462f7d0535f707ec98fed519ffe047c3"
+                "reference": "91ae7d22ff3e89d7fb732ddeb0e8e36006388d12"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/syndication/zipball/25959597462f7d0535f707ec98fed519ffe047c3",
-                "reference": "25959597462f7d0535f707ec98fed519ffe047c3",
+                "url": "https://api.github.com/repos/se7enxweb/syndication/zipball/91ae7d22ff3e89d7fb732ddeb0e8e36006388d12",
+                "reference": "91ae7d22ff3e89d7fb732ddeb0e8e36006388d12",
                 "shasum": ""
             },
             "require": {
@@ -16733,7 +14979,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-22T06:20:38+00:00"
+            "time": "2026-10-23T22:16:16+00:00"
         },
         {
             "name": "se7enxweb/system-info",
@@ -16834,23 +15080,23 @@
         },
         {
             "name": "se7enxweb/xrowextract",
-            "version": "v2.5.19",
+            "version": "v2.5.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/xrowextract.git",
-                "reference": "7f8d4f91684781199667f1264533e461d6523a2b"
+                "reference": "b636e833023bfadc49fc8add2ebebd0ae2d350f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/xrowextract/zipball/7f8d4f91684781199667f1264533e461d6523a2b",
-                "reference": "7f8d4f91684781199667f1264533e461d6523a2b",
+                "url": "https://api.github.com/repos/se7enxweb/xrowextract/zipball/b636e833023bfadc49fc8add2ebebd0ae2d350f1",
+                "reference": "b636e833023bfadc49fc8add2ebebd0ae2d350f1",
                 "shasum": ""
             },
             "require": {
                 "ext-ctype": "*",
                 "ext-json": "*",
                 "ext-mbstring": "*",
-                "php": ">=8.1",
+                "php": ">=8.0",
                 "se7enxweb/ezpublish-legacy-installer": "*"
             },
             "suggest": {
@@ -16915,20 +15161,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-10-22T06:28:52+00:00"
+            "time": "2026-10-23T22:16:24+00:00"
         },
         {
             "name": "se7enxweb/xrowmetadata",
-            "version": "v1.4.16",
+            "version": "v1.4.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/se7enxweb/xrowmetadata.git",
-                "reference": "4fbe607920020fb7257984e500319cfb04a24320"
+                "reference": "dff03285b0514e0451194325ca460b41f74bb17e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/se7enxweb/xrowmetadata/zipball/4fbe607920020fb7257984e500319cfb04a24320",
-                "reference": "4fbe607920020fb7257984e500319cfb04a24320",
+                "url": "https://api.github.com/repos/se7enxweb/xrowmetadata/zipball/dff03285b0514e0451194325ca460b41f74bb17e",
+                "reference": "dff03285b0514e0451194325ca460b41f74bb17e",
                 "shasum": ""
             },
             "require": {
@@ -16965,7 +15211,7 @@
             "description": "Add SEO Meta Data to content objects also provides sitemap capabilities to Exponential",
             "support": {
                 "issues": "https://github.com/se7enxweb/xrowmetadata/issues",
-                "source": "https://github.com/se7enxweb/xrowmetadata/tree/v1.4.16"
+                "source": "https://github.com/se7enxweb/xrowmetadata/tree/v1.4.17"
             },
             "funding": [
                 {
@@ -16993,7 +15239,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2026-10-21T03:44:43+00:00"
+            "time": "2026-10-23T22:16:35+00:00"
         },
         {
             "name": "sebastianfeldmann/cli",
@@ -17252,12 +15498,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/cache.git",
-                "reference": "81af98f3884e0d3411a1c26cabf5b68212b9b29b"
+                "reference": "13fbc4aa5690e95ca84c10351d4f71533e23040f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/cache/zipball/81af98f3884e0d3411a1c26cabf5b68212b9b29b",
-                "reference": "81af98f3884e0d3411a1c26cabf5b68212b9b29b",
+                "url": "https://api.github.com/repos/symfony/cache/zipball/13fbc4aa5690e95ca84c10351d4f71533e23040f",
+                "reference": "13fbc4aa5690e95ca84c10351d4f71533e23040f",
                 "shasum": ""
             },
             "require": {
@@ -17347,7 +15593,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-18T14:39:27+00:00"
+            "time": "2026-10-24T10:52:36+00:00"
         },
         {
             "name": "symfony/cache-contracts",
@@ -17593,12 +15839,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "c0dfa7e361c773364bdf09c56c0a46fa8de78a77"
+                "reference": "e69f154b4e11df2e4b70a8549f53e17791af0f74"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/c0dfa7e361c773364bdf09c56c0a46fa8de78a77",
-                "reference": "c0dfa7e361c773364bdf09c56c0a46fa8de78a77",
+                "url": "https://api.github.com/repos/symfony/console/zipball/e69f154b4e11df2e4b70a8549f53e17791af0f74",
+                "reference": "e69f154b4e11df2e4b70a8549f53e17791af0f74",
                 "shasum": ""
             },
             "require": {
@@ -17683,7 +15929,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-21T21:04:10+00:00"
+            "time": "2026-10-23T16:51:52+00:00"
         },
         {
             "name": "symfony/css-selector",
@@ -17760,12 +16006,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "bbf877ecc61d84c566417c16d051c31d101a9f1d"
+                "reference": "35653f6417449edcfc2037f0a3f3a560bb29afbf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/bbf877ecc61d84c566417c16d051c31d101a9f1d",
-                "reference": "bbf877ecc61d84c566417c16d051c31d101a9f1d",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/35653f6417449edcfc2037f0a3f3a560bb29afbf",
+                "reference": "35653f6417449edcfc2037f0a3f3a560bb29afbf",
                 "shasum": ""
             },
             "require": {
@@ -17836,7 +16082,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-22T14:23:04+00:00"
+            "time": "2026-10-23T16:51:52+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -18176,86 +16422,6 @@
                 }
             ],
             "time": "2026-07-26T10:22:28+00:00"
-        },
-        {
-            "name": "symfony/emoji",
-            "version": "7.4.x-dev",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/emoji.git",
-                "reference": "ed16a72b1d8aaf86b63b764e1a03717745763d5f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/emoji/zipball/ed16a72b1d8aaf86b63b764e1a03717745763d5f",
-                "reference": "ed16a72b1d8aaf86b63b764e1a03717745763d5f",
-                "shasum": ""
-            },
-            "require": {
-                "ext-intl": "*",
-                "php": ">=8.2"
-            },
-            "require-dev": {
-                "symfony/filesystem": "^7.1|^8.0",
-                "symfony/finder": "^6.4|^7.0|^8.0",
-                "symfony/var-exporter": "^6.4|^7.0|^8.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Emoji\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/",
-                    "/Resources/data/",
-                    "/Resources/bin/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Grégoire Pineau",
-                    "email": "lyrixx@lyrixx.info"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Provides access to emoji characters and sequences from the Unicode CLDR",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "cldr",
-                "emoji",
-                "intl",
-                "transliterator",
-                "unicode"
-            ],
-            "support": {
-                "source": "https://github.com/symfony/emoji/tree/7.4"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://github.com/nicolas-grekas",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2026-06-05T06:22:21+00:00"
         },
         {
             "name": "symfony/error-handler",
@@ -18791,12 +16957,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/form.git",
-                "reference": "6a5605b32a9361cd37f1dffea7fb444876c8b318"
+                "reference": "7acf037c2d96a83eb4de0553193e7cbd772a71c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/form/zipball/6a5605b32a9361cd37f1dffea7fb444876c8b318",
-                "reference": "6a5605b32a9361cd37f1dffea7fb444876c8b318",
+                "url": "https://api.github.com/repos/symfony/form/zipball/7acf037c2d96a83eb4de0553193e7cbd772a71c9",
+                "reference": "7acf037c2d96a83eb4de0553193e7cbd772a71c9",
                 "shasum": ""
             },
             "require": {
@@ -18886,7 +17052,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-18T14:39:27+00:00"
+            "time": "2026-10-23T16:51:52+00:00"
         },
         {
             "name": "symfony/framework-bundle",
@@ -19044,80 +17210,6 @@
                 }
             ],
             "time": "2026-10-22T14:23:04+00:00"
-        },
-        {
-            "name": "symfony/html-sanitizer",
-            "version": "7.4.x-dev",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/html-sanitizer.git",
-                "reference": "bd9f00cfe1ad0ccd5c871edd850d906a7a464b28"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/html-sanitizer/zipball/bd9f00cfe1ad0ccd5c871edd850d906a7a464b28",
-                "reference": "bd9f00cfe1ad0ccd5c871edd850d906a7a464b28",
-                "shasum": ""
-            },
-            "require": {
-                "ext-dom": "*",
-                "league/uri": "^6.5|^7.0",
-                "masterminds/html5": "^2.7.2",
-                "php": ">=8.2",
-                "symfony/deprecation-contracts": "^2.5|^3"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\HtmlSanitizer\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Titouan Galopin",
-                    "email": "galopintitouan@gmail.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Provides an object-oriented API to sanitize untrusted HTML input for safe insertion into a document's DOM.",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "Purifier",
-                "html",
-                "sanitizer"
-            ],
-            "support": {
-                "source": "https://github.com/symfony/html-sanitizer/tree/7.4"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://github.com/nicolas-grekas",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2026-10-20T19:25:08+00:00"
         },
         {
             "name": "symfony/http-client",
@@ -19309,12 +17401,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "0b1c339c66ed0e13a12ae4d9a0433f47e54f4a43"
+                "reference": "7f39f9df330b672a2a0d00b8f4ec7e7104aab42b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/0b1c339c66ed0e13a12ae4d9a0433f47e54f4a43",
-                "reference": "0b1c339c66ed0e13a12ae4d9a0433f47e54f4a43",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/7f39f9df330b672a2a0d00b8f4ec7e7104aab42b",
+                "reference": "7f39f9df330b672a2a0d00b8f4ec7e7104aab42b",
                 "shasum": ""
             },
             "require": {
@@ -19383,7 +17475,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-18T14:39:27+00:00"
+            "time": "2026-10-23T16:51:52+00:00"
         },
         {
             "name": "symfony/http-kernel",
@@ -19391,12 +17483,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-kernel.git",
-                "reference": "9479f958034341b40a119c581e5a7b772d0c767c"
+                "reference": "b6c93be69829b2e67adb0f2c5c7af713085452e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/9479f958034341b40a119c581e5a7b772d0c767c",
-                "reference": "9479f958034341b40a119c581e5a7b772d0c767c",
+                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/b6c93be69829b2e67adb0f2c5c7af713085452e9",
+                "reference": "b6c93be69829b2e67adb0f2c5c7af713085452e9",
                 "shasum": ""
             },
             "require": {
@@ -19502,7 +17594,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-19T16:56:54+00:00"
+            "time": "2026-10-23T16:51:52+00:00"
         },
         {
             "name": "symfony/intl",
@@ -19683,12 +17775,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/mailer.git",
-                "reference": "4020b3e9b708868c30ca16442f570b5bbd376284"
+                "reference": "1aa1e2ee7515826bb17b0ad0d2f16962fcaa7859"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/mailer/zipball/4020b3e9b708868c30ca16442f570b5bbd376284",
-                "reference": "4020b3e9b708868c30ca16442f570b5bbd376284",
+                "url": "https://api.github.com/repos/symfony/mailer/zipball/1aa1e2ee7515826bb17b0ad0d2f16962fcaa7859",
+                "reference": "1aa1e2ee7515826bb17b0ad0d2f16962fcaa7859",
                 "shasum": ""
             },
             "require": {
@@ -19759,7 +17851,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-21T21:04:10+00:00"
+            "time": "2026-10-23T16:51:52+00:00"
         },
         {
             "name": "symfony/messenger",
@@ -19767,12 +17859,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/messenger.git",
-                "reference": "ebaef1686e5fda7a4c73ca8a0c1465daa2fb1e08"
+                "reference": "cdb7f7a99772799618a8cb27599c1476002f32f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/messenger/zipball/ebaef1686e5fda7a4c73ca8a0c1465daa2fb1e08",
-                "reference": "ebaef1686e5fda7a4c73ca8a0c1465daa2fb1e08",
+                "url": "https://api.github.com/repos/symfony/messenger/zipball/cdb7f7a99772799618a8cb27599c1476002f32f5",
+                "reference": "cdb7f7a99772799618a8cb27599c1476002f32f5",
                 "shasum": ""
             },
             "require": {
@@ -19853,7 +17945,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-18T14:39:27+00:00"
+            "time": "2026-10-23T11:53:30+00:00"
         },
         {
             "name": "symfony/mime",
@@ -20338,94 +18430,6 @@
                 }
             ],
             "time": "2026-06-05T06:22:21+00:00"
-        },
-        {
-            "name": "symfony/polyfill-deepclone",
-            "version": "1.x-dev",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/polyfill-deepclone.git",
-                "reference": "82274308b59f6e96f53a3fb37fc40877d843e5a5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-deepclone/zipball/82274308b59f6e96f53a3fb37fc40877d843e5a5",
-                "reference": "82274308b59f6e96f53a3fb37fc40877d843e5a5",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.1"
-            },
-            "provide": {
-                "ext-deepclone": "*"
-            },
-            "suggest": {
-                "ext-deepclone": "For best performance"
-            },
-            "default-branch": true,
-            "type": "library",
-            "extra": {
-                "thanks": {
-                    "url": "https://github.com/symfony/polyfill",
-                    "name": "symfony/polyfill"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "bootstrap.php"
-                ],
-                "psr-4": {
-                    "Symfony\\Polyfill\\DeepClone\\": ""
-                },
-                "classmap": [
-                    "Resources/stubs"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nicolas Grekas",
-                    "email": "p@tchwork.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony polyfill for the deepclone extension",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "compatibility",
-                "deepclone",
-                "polyfill",
-                "portable",
-                "shim"
-            ],
-            "support": {
-                "source": "https://github.com/symfony/polyfill-deepclone/tree/1.x"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://github.com/nicolas-grekas",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2026-10-14T07:17:09+00:00"
         },
         {
             "name": "symfony/polyfill-intl-grapheme",
@@ -21342,101 +19346,17 @@
             "time": "2026-09-25T15:46:47+00:00"
         },
         {
-            "name": "symfony/polyfill-uuid",
-            "version": "1.x-dev",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/polyfill-uuid.git",
-                "reference": "b23ff8245cc5c4479ea2be3d0132d2e6dd433993"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-uuid/zipball/b23ff8245cc5c4479ea2be3d0132d2e6dd433993",
-                "reference": "b23ff8245cc5c4479ea2be3d0132d2e6dd433993",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.2"
-            },
-            "provide": {
-                "ext-uuid": "*"
-            },
-            "suggest": {
-                "ext-uuid": "For best performance"
-            },
-            "default-branch": true,
-            "type": "library",
-            "extra": {
-                "thanks": {
-                    "url": "https://github.com/symfony/polyfill",
-                    "name": "symfony/polyfill"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "bootstrap.php"
-                ],
-                "psr-4": {
-                    "Symfony\\Polyfill\\Uuid\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Grégoire Pineau",
-                    "email": "lyrixx@lyrixx.info"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony polyfill for uuid functions",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "compatibility",
-                "polyfill",
-                "portable",
-                "uuid"
-            ],
-            "support": {
-                "source": "https://github.com/symfony/polyfill-uuid/tree/1.x"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://github.com/nicolas-grekas",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2026-09-24T05:20:52+00:00"
-        },
-        {
             "name": "symfony/process",
             "version": "7.4.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "54470179176f4c5ed38ba8f7272d2b093b331613"
+                "reference": "a9fff7e1f8aefa0560d071db3c5ea2190f38b0b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/54470179176f4c5ed38ba8f7272d2b093b331613",
-                "reference": "54470179176f4c5ed38ba8f7272d2b093b331613",
+                "url": "https://api.github.com/repos/symfony/process/zipball/a9fff7e1f8aefa0560d071db3c5ea2190f38b0b7",
+                "reference": "a9fff7e1f8aefa0560d071db3c5ea2190f38b0b7",
                 "shasum": ""
             },
             "require": {
@@ -21488,7 +19408,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-15T16:00:28+00:00"
+            "time": "2026-10-23T16:51:52+00:00"
         },
         {
             "name": "symfony/property-access",
@@ -22022,12 +19942,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security-core.git",
-                "reference": "80284ebb9386f67472eb9eb4a50bdea082f0c163"
+                "reference": "f6c2a7c3307418c6f551f694e1af71428173383c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security-core/zipball/80284ebb9386f67472eb9eb4a50bdea082f0c163",
-                "reference": "80284ebb9386f67472eb9eb4a50bdea082f0c163",
+                "url": "https://api.github.com/repos/symfony/security-core/zipball/f6c2a7c3307418c6f551f694e1af71428173383c",
+                "reference": "f6c2a7c3307418c6f551f694e1af71428173383c",
                 "shasum": ""
             },
             "require": {
@@ -22106,7 +20026,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-19T16:56:54+00:00"
+            "time": "2026-10-23T16:51:52+00:00"
         },
         {
             "name": "symfony/security-csrf",
@@ -22594,12 +20514,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
-                "reference": "08e90baf76022a76683fad69737198b63d615633"
+                "reference": "8dff7da3a56638f1d189c5368183294102de4ced"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/08e90baf76022a76683fad69737198b63d615633",
-                "reference": "08e90baf76022a76683fad69737198b63d615633",
+                "url": "https://api.github.com/repos/symfony/string/zipball/8dff7da3a56638f1d189c5368183294102de4ced",
+                "reference": "8dff7da3a56638f1d189c5368183294102de4ced",
                 "shasum": ""
             },
             "require": {
@@ -22677,7 +20597,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-22T14:23:04+00:00"
+            "time": "2026-10-23T16:51:52+00:00"
         },
         {
             "name": "symfony/templating",
@@ -22756,12 +20676,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "fc96a01609f9b98a7172929850589893389b7d86"
+                "reference": "3eb07107eb2e48619b1c48a904a656150fa200fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/fc96a01609f9b98a7172929850589893389b7d86",
-                "reference": "fc96a01609f9b98a7172929850589893389b7d86",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/3eb07107eb2e48619b1c48a904a656150fa200fb",
+                "reference": "3eb07107eb2e48619b1c48a904a656150fa200fb",
                 "shasum": ""
             },
             "require": {
@@ -22848,7 +20768,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-15T16:00:28+00:00"
+            "time": "2026-10-23T18:04:05+00:00"
         },
         {
             "name": "symfony/translation-contracts",
@@ -23144,12 +21064,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/type-info.git",
-                "reference": "bbaaf3366400f5c85f66800b955c77b46e8abad2"
+                "reference": "f69ab198af73e1aac485c0ff5aa066d20c14adf0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/type-info/zipball/bbaaf3366400f5c85f66800b955c77b46e8abad2",
-                "reference": "bbaaf3366400f5c85f66800b955c77b46e8abad2",
+                "url": "https://api.github.com/repos/symfony/type-info/zipball/f69ab198af73e1aac485c0ff5aa066d20c14adf0",
+                "reference": "f69ab198af73e1aac485c0ff5aa066d20c14adf0",
                 "shasum": ""
             },
             "require": {
@@ -23219,85 +21139,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-09-28T12:19:37+00:00"
-        },
-        {
-            "name": "symfony/uid",
-            "version": "7.4.x-dev",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/uid.git",
-                "reference": "3e706a245b5343ea93be9cafe84525bfb54e60fc"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/uid/zipball/3e706a245b5343ea93be9cafe84525bfb54e60fc",
-                "reference": "3e706a245b5343ea93be9cafe84525bfb54e60fc",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.2",
-                "symfony/polyfill-uuid": "^1.15"
-            },
-            "require-dev": {
-                "symfony/console": "^6.4|^7.0|^8.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Uid\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Grégoire Pineau",
-                    "email": "lyrixx@lyrixx.info"
-                },
-                {
-                    "name": "Nicolas Grekas",
-                    "email": "p@tchwork.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Provides an object-oriented API to generate and represent UIDs",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "UID",
-                "ulid",
-                "uuid"
-            ],
-            "support": {
-                "source": "https://github.com/symfony/uid/tree/7.4"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://github.com/nicolas-grekas",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2026-10-12T14:31:36+00:00"
+            "time": "2026-10-24T08:22:23+00:00"
         },
         {
             "name": "symfony/ux-twig-component",
@@ -23394,12 +21236,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/validator.git",
-                "reference": "b57ad4960927beacd077b517851ecf7af8c0a0bd"
+                "reference": "2e4338f5d38ea736b35b2f812b6209d8206024e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/validator/zipball/b57ad4960927beacd077b517851ecf7af8c0a0bd",
-                "reference": "b57ad4960927beacd077b517851ecf7af8c0a0bd",
+                "url": "https://api.github.com/repos/symfony/validator/zipball/2e4338f5d38ea736b35b2f812b6209d8206024e9",
+                "reference": "2e4338f5d38ea736b35b2f812b6209d8206024e9",
                 "shasum": ""
             },
             "require": {
@@ -23490,7 +21332,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-18T14:39:27+00:00"
+            "time": "2026-10-23T16:51:52+00:00"
         },
         {
             "name": "symfony/var-dumper",
@@ -24285,80 +22127,6 @@
                 }
             ],
             "time": "2026-10-19T17:08:00+00:00"
-        },
-        {
-            "name": "twig/markdown-extra",
-            "version": "3.x-dev",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/twigphp/markdown-extra.git",
-                "reference": "f12af657983444bcf3fb9d2f0decdfdfc7381677"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/markdown-extra/zipball/f12af657983444bcf3fb9d2f0decdfdfc7381677",
-                "reference": "f12af657983444bcf3fb9d2f0decdfdfc7381677",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.1.0",
-                "symfony/deprecation-contracts": "^2.5|^3",
-                "twig/twig": "^3.13|^4.0"
-            },
-            "require-dev": {
-                "erusev/parsedown": "dev-master as 1.x-dev",
-                "league/commonmark": "^2.7",
-                "league/html-to-markdown": "^4.8|^5.0",
-                "michelf/php-markdown": "^1.8|^2.0",
-                "symfony/phpunit-bridge": "^6.4|^7.0",
-                "tempest/markdown": "^1.2"
-            },
-            "default-branch": true,
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "Resources/functions.php"
-                ],
-                "psr-4": {
-                    "Twig\\Extra\\Markdown\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
-                }
-            ],
-            "description": "A Twig extension for Markdown",
-            "homepage": "https://twig.symfony.com",
-            "keywords": [
-                "html",
-                "markdown",
-                "twig"
-            ],
-            "support": {
-                "source": "https://github.com/twigphp/markdown-extra/tree/3.x"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/twig/twig",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2026-09-18T17:50:53+00:00"
         },
         {
             "name": "twig/string-extra",
@@ -26417,5 +24185,8 @@
         "ext-mbstring": "*"
     },
     "platform-dev": {},
+    "platform-overrides": {
+        "php": "8.3.0"
+    },
     "plugin-api-version": "2.9.0"
 }
