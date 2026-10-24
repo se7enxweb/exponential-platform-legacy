@@ -132,7 +132,9 @@ The detailed sections below expand each step.
   - To create a project without Netgen Layouts on PHP 8.4+ too, set `EXP_WITHOUT_NETGEN_LAYOUTS=1` for
     `composer create-project`.
   - To add it later (after moving to PHP 8.4+, or after creating without it), run `php bin/add-netgen-layouts`.
-  - With Netgen Layouts installed, create its tables once the database is installed:
+  - Its tables: `exponential:install` creates the `nglayouts_*` tables itself when Netgen Layouts is installed
+    (and none on PHP 8.3). Only when you add it to a project whose database is installed already, create them
+    with Netgen Layouts' migrations:
     ```bash
     php bin/console doctrine:migrations:migrate --configuration=vendor/netgen/layouts-core/migrations/doctrine.yaml
     php bin/console cache:clear

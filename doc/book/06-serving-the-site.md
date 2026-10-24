@@ -755,7 +755,7 @@ docker run -d -p 8080:8080 -v "$PWD:/srv/site" \
   qbixserver --root=/srv/site/public --config=/srv/site/velocity.json --port=8080
 ```
 
-Choose the PHP version of your line (8.4 for 5.x) and check that the image has the extensions of chapter 2,
+Choose the PHP version of your line (8.3 or later for 5.x, 8.4 or later for Netgen Layouts on 5.x) and check that the image has the extensions of chapter 2,
 [2.3](02-requirements.md#23-php-extensions) (`docker exec <container> qbixctl ext:check` lists the image's baseline).
 The database runs in its own container or outside.
 

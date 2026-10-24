@@ -53,6 +53,6 @@ if ($run(['config', 'platform.php', $platform]) !== 0
         . "  To add it later: php bin/add-netgen-layouts (see INSTALL.md, \"Netgen Layouts\").\n");
     exit(0);
 }
-fwrite(STDOUT, "Netgen Layouts: added. After the database is installed, create its tables:\n"
+fwrite(STDOUT, "Netgen Layouts: added. exponential:install creates its tables. If the database is installed already:\n"
     . "  php bin/console doctrine:migrations:migrate --configuration=vendor/netgen/layouts-core/migrations/doctrine.yaml\n");
 exit(0);

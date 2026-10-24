@@ -29,18 +29,18 @@ where the upstream documentation has to be followed instead.
 | | 2.5 | 3.3 | 4.6 | 5 |
 |---|---|---|---|---|
 | Branch | `master` | `3.x` | `4.6.x` | `5.x` |
-| Tags | `v2.5.0.0` to `v2.5.0.4` | `v3.0.0.0` to `v3.0.0.14`, `v3.3.44.0` to `v3.3.44.8` | `v4.6.23.0` to `v4.6.23.3` | `v5.0.0` to `v5.0.2`, `v5.0.3.1`, `v5.0.3.2` (and see the note on `v5.0.3`) |
-| Composer constraint for a new project | `dev-master` (alias `2.5.x-dev`) or `v2.5.0.4` | `3.x-dev` or `v3.3.44.8` | `4.6.x-dev` or `v4.6.23.3` | `5.x-dev` or `~5.0.3.2` (`v5.0.3.2`) |
-| PHP (`composer.json`) | `^7.1.3 \|\| ^8.1 \|\| ^8.2` | `^8.0` | `^7.4` to `^8.5` (the bridge `^4.0.0.0` itself needs `^8.0`) | `>=8.3` (the bridge `^5.0.0.0` needs `^8.4`, so 8.4 in practice) |
+| Tags | `v2.5.0.0` to `v2.5.0.8` | `v3.0.0.0` to `v3.0.0.14`, `v3.3.44.0` to `v3.3.44.8` | `v4.6.23.0` to `v4.6.23.4` | `v5.0.0` to `v5.0.2`, `v5.0.3.1` to `v5.0.3.5` (and see the note on `v5.0.3`) |
+| Composer constraint for a new project | `dev-master` (alias `2.5.x-dev`) or `~2.5.0.8` | `3.x-dev` or `v3.3.44.8` | `4.6.x-dev` or `~4.6.23.4` | `5.x-dev` or `~5.0.3.5` (`v5.0.3.5`) |
+| PHP (`composer.json`) | `^7.1.3 \|\| ^8.1 \|\| ^8.2` | `^8.0` | `^7.4` to `^8.5` (the bridge `^4.0.0.0` itself needs `^8.0`) | `>=8.3`, lock resolved for 8.3 from `v5.0.3.5` (before it the bridge needed `^8.4`, so 8.4 in practice); Netgen Layouts needs 8.4 |
 | Symfony | 3.4 (`se7enxweb/symfony ^3.4.50`) | 5.4 | 5.4 | 7.x (`symfony/runtime ^7.3`; the bridge requires `symfony/framework-bundle ^7.4`) |
 | Platform kernel | `se7enxweb/ezpublish-kernel ~7.5.33` | `se7enxweb/ezplatform-kernel ~1.3.43`, `se7enxweb/oss ~3.3.0.0` | `se7enxweb/exponential-platform-dxp 4.6.x-LB-dev` (kernel `se7enxweb/exponential-platform-dxp-core`) | `se7enxweb/exponential-platform-dxp dev-5.x-LB` |
-| Bridge (`se7enxweb/legacy-bridge`) | `^2.1` (`v2.1.10` to `v2.1.12`) | `^3.0.0.35` (to `v3.0.0.37`) | `^4.0.0.0` (`v4.0.0.0` to `v4.0.0.3`) | `^5.0.0.0` (`v5.0.0.0`, `v5.0.1` to `v5.0.12`; the lock of `v5.0.3.2` pins the `5.x` commit tagged `v5.0.12`) |
+| Bridge (`se7enxweb/legacy-bridge`) | `^2.1` (`v2.1.10` to `v2.1.12`) | `^3.0.0.35` (to `v3.0.0.37`) | `^4.0.0.0` (`v4.0.0.0` to `v4.0.0.6`) | `^5.0.0.0` (`v5.0.0.0`, `v5.0.1` to `v5.0.14`; `v5.0.14` and later allow PHP 8.3) |
 | Legacy kernel | `se7enxweb/exponential ^6.0.12` | `^6.0.12` (through the bridge) | `dev-main` (through the bridge) | `dev-main` (through the bridge) |
 | Console | `bin/console` | `bin/console` | `bin/console` | `bin/console` |
 | Configuration | `app/config/*.yml`, `parameters.yml` | `config/`, `.env`, `.env.local` | `config/` from the Flex recipe, slot `1.2` ([8.9](08-configuration.md#89-where-the-files-are-line-by-line)) | `config/` from the Flex recipe, slot `1.4`; in git with `symfony.lock` and `composer.lock` since `v5.0.3.2` |
-| Newest release (2026-10-05; 5: 2026-10-23) | [`v2.5.0.4`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v2.5.0.4) | [`v3.3.44.8`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v3.3.44.8) | [`v4.6.23.3`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v4.6.23.3) | [`v5.0.3.2`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v5.0.3.2) (before it `v5.0.3.1`) |
+| Newest release (2026-10-24) | [`v2.5.0.8`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v2.5.0.8) | [`v3.3.44.8`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v3.3.44.8) | [`v4.6.23.4`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v4.6.23.4) | [`v5.0.3.5`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v5.0.3.5) |
 | Web root | `web/` | `public/` | `public/` | `public/` |
-| Page building | none | none | Netgen Layouts `^1.4` | Netgen Layouts `^2.0` |
+| Page building | none | none | Netgen Layouts `^1.4` | Netgen Layouts `^2.0` on PHP 8.4 and later (added by `composer create-project`), none on PHP 8.3 |
 | Table names | `ez*` | `ez*` | `ez*` | `ibexa_*`; the legacy kernel reads them through `sevenx_exponential_platform_v5_database_translator` |
 
 The 4.6.x branch of this repository holds little more than `composer.json`, the README, the install guide and
@@ -282,8 +282,8 @@ here is what differs for Exponential Platform Legacy.
   appended after the INI list, so it does not have to repeat the translator.
 - **Legacy-only tables.** The upstream script renames the platform's tables; the legacy-only tables keep their `ez*`
   names, and the translator leaves names it does not map alone.
-- **PHP 8.4 and Symfony 7.** Custom Symfony code needs the Symfony 7 changes; PHP must be 8.4 because of the bridge.
-- **Netgen Layouts 2.0** replaces 1.4 (upgrade per Netgen's documentation).
+- **PHP 8.3 and Symfony 7.** Custom Symfony code needs the Symfony 7 changes; PHP must be 8.3 or later (8.4 before `v5.0.3.5`, and 8.4 for Netgen Layouts).
+- **Netgen Layouts 2.0** replaces 1.4 (upgrade per Netgen's documentation). It needs PHP 8.4: on PHP 8.3 a 5.x project runs without it, and `php bin/add-netgen-layouts` adds it after a move to 8.4 or later.
 
 ## 10.7 The legacy kernel inside every line
 
