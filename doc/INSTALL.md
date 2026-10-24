@@ -47,6 +47,16 @@ Mime and Mailer advisories name components the 3.4 line does not have). Blocking
 new advisory blocks the install until it is fixed and listed. Never set `COMPOSER_NO_SECURITY_BLOCKING` or
 `policy.advisories.block: false` to get past it.
 
+The same applies to four more packages the 2.5 stack needs at versions upstream no longer fixes. The line requires
+the se7enxweb forks that carry the backported fixes, and each fork replaces the upstream name: `se7enxweb/twig`
+2.16.5 or later (for `twig/twig` 2.x), `se7enxweb/flysystem` 1.1.11 or later (`league/flysystem` 1.x),
+`se7enxweb/graphql-php` 0.13.12 or later (`webonyx/graphql-php` 0.13) and `se7enxweb/symfony-mime` 5.4.55 or later
+(`symfony/mime`, at the fixed 5.4.54 code). The advisories of the first three name ranges that include the fork's
+version, so they are listed in the same two places with the fix each fork carries. Without the forks Composer 2.10
+fell back to the development branches of those packages, which Composer 2.11 blocks as well, and with them every
+installed package is a stable release. The dev dependencies no longer include the Goutte Mink driver: it needs
+Guzzle 6, for which no fixed release exists; Behat uses the in-process Symfony session instead.
+
 **PHP 8.0 gets the legacy kernel's 6.0.x line.** The kernel releases 6.0.12 to 6.0.14 declare PHP `^8.1`; the 6.0.x
 development line (`se7enxweb/exponential` `main`, 6.0.15) declares `^8.0`. On PHP 8.1 and later Composer installs the
 newest release; on PHP 8.0 it installs the 6.0.x line, which the project's `minimum-stability: dev` allows (it shows
