@@ -4,7 +4,8 @@ default:
     extensions:
         Behat\MinkExtension:
             base_url: 'http://localhost'
-            goutte: ~
+            default_session: symfony2
+            symfony2: ~
             javascript_session: selenium2
             selenium2:
                 browser: chrome
