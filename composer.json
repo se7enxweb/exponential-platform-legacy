@@ -76,6 +76,9 @@
             "@php bin/console ezpublish:legacybundles:install_extensions --relative",
             "@php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php"
         ],
+        "post-create-project-cmd": [
+            "@php bin/add-netgen-layouts"
+        ],
         "post-install-cmd": [
             "php bin/install-legacy-links",
             "@project-scripts",

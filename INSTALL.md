@@ -124,17 +124,21 @@ The detailed sections below expand each step.
 - **PHP 8.3+** (PHP 8.3 or 8.5 strongly recommended). The shipped `composer.lock` is resolved for PHP 8.3
   (`composer.json` sets `config.platform.php` to `8.3.0`), so the same lock installs on PHP 8.3, 8.4 and 8.5,
   and a later `composer update` keeps it installable on PHP 8.3.
-- **Netgen Layouts is optional and needs PHP 8.4 or later.** Netgen Layouts 2 (and its Content Browser) is
-  written for PHP 8.4, so it is not part of the default install. The legacy layouts extensions (`explayouts`)
-  are installed either way. On PHP 8.4 or 8.5 you can add it to the Platform v5 stack:
-  ```bash
-  composer config platform.php 8.4.0
-  composer require netgen/layouts-ibexa:^2.0 netgen/layouts-standard:^2.0
-  php bin/console doctrine:migrations:migrate --configuration=vendor/netgen/layouts-core/migrations/doctrine.yaml
-  php bin/console cache:clear
-  ```
-  Its bundles are already listed in `config/bundles.php` and its routes in `config/routes/netgen_*.php`;
-  they take effect as soon as the packages are installed. The project then no longer installs on PHP 8.3.
+- **Netgen Layouts is installed by default on PHP 8.4 and later, and left out on PHP 8.3.** Netgen Layouts 2
+  (and its Content Browser) is written for PHP 8.4. `composer create-project` runs `bin/add-netgen-layouts` at
+  the end: on PHP 8.4 or 8.5 it sets `config.platform.php` to the running PHP and adds
+  `netgen/layouts-ibexa` and `netgen/layouts-standard`; on PHP 8.3 it adds nothing and the project works
+  without them. The legacy layouts extensions (`explayouts`) are installed either way.
+  - To create a project without Netgen Layouts on PHP 8.4+ too, set `EXP_WITHOUT_NETGEN_LAYOUTS=1` for
+    `composer create-project`.
+  - To add it later (after moving to PHP 8.4+, or after creating without it), run `php bin/add-netgen-layouts`.
+  - With Netgen Layouts installed, create its tables once the database is installed:
+    ```bash
+    php bin/console doctrine:migrations:migrate --configuration=vendor/netgen/layouts-core/migrations/doctrine.yaml
+    php bin/console cache:clear
+    ```
+  Its bundles are listed in `config/bundles.php` and its routes in `config/routes/netgen_*.php`; they take
+  effect as soon as the packages are installed. A project with Netgen Layouts no longer installs on PHP 8.3.
 - Required extensions: `gd` or `imagick`, `curl`, `json`, `pdo_mysql` or `pdo_pgsql` or `pdo_sqlite`, `xsl`, `xml`, `intl`, `mbstring`, `opcache`, `ctype`, `iconv`
 - For SQLite: `pdo_sqlite` + `sqlite3` PHP extensions (usually bundled with PHP; verify with `php -m | grep -i sqlite`)
 - `memory_limit` ≥ 256M (512M recommended) — set in `php.ini` or `.htaccess`; restart the web server after changes

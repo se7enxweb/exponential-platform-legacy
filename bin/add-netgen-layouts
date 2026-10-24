@@ -1,0 +1,58 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Adds Netgen Layouts 2 to a new project on PHP 8.4 or later (Composer's post-create-project-cmd).
+ *
+ * Netgen Layouts 2 and its Content Browser need PHP 8.4. The shipped composer.lock is resolved for PHP 8.3, so
+ * they are not part of it: on PHP 8.4 and later this script adds them right after `composer create-project`, so
+ * Layouts is there by default; on PHP 8.3 the project installs without it. Its bundles and routes are already
+ * listed in the project and take effect once the packages are installed (src/Kernel.php).
+ *
+ *   php bin/add-netgen-layouts            run by composer create-project; safe to run again later
+ *   EXP_WITHOUT_NETGEN_LAYOUTS=1          create the project without Netgen Layouts on PHP 8.4+ too
+ *
+ * A failure here never fails the project: it stays a complete installation without Netgen Layouts, and the
+ * message says how to add it by hand (INSTALL.md, "Netgen Layouts").
+ */
+
+$packages = ['netgen/layouts-ibexa:^2.0', 'netgen/layouts-standard:^2.0'];
+$root = dirname(__DIR__);
+
+if (getenv('EXP_WITHOUT_NETGEN_LAYOUTS')) {
+    fwrite(STDOUT, "Netgen Layouts: not added (EXP_WITHOUT_NETGEN_LAYOUTS is set).\n");
+    exit(0);
+}
+if (PHP_VERSION_ID < 80400) {
+    fwrite(STDOUT, 'Netgen Layouts: not added. It needs PHP 8.4 or later, this is PHP ' . PHP_VERSION . ".\n"
+        . "  The project works without it. On PHP 8.4+ add it later with: php bin/add-netgen-layouts\n");
+    exit(0);
+}
+$installed = $root . '/vendor/composer/installed.json';
+if (is_file($installed) && str_contains((string) file_get_contents($installed), '"name": "netgen/layouts-ibexa"')) {
+    fwrite(STDOUT, "Netgen Layouts: already installed.\n");
+    exit(0);
+}
+
+$composer = getenv('COMPOSER_BINARY') ?: 'composer';
+$run = static function (array $args) use ($composer, $root): int {
+    $command = escapeshellarg(PHP_BINARY) . ' ' . escapeshellarg($composer) . ' ' . implode(' ', array_map('escapeshellarg', $args));
+    if (!str_ends_with($composer, '.phar') && !is_file($composer)) {
+        $command = escapeshellarg($composer) . ' ' . implode(' ', array_map('escapeshellarg', $args));
+    }
+    passthru('cd ' . escapeshellarg($root) . ' && ' . $command, $code);
+
+    return $code;
+};
+
+$platform = PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION . '.0';
+fwrite(STDOUT, "Netgen Layouts: adding it for PHP $platform (the lock was resolved for PHP 8.3).\n");
+if ($run(['config', 'platform.php', $platform]) !== 0
+    || $run(array_merge(['require', '--no-interaction', '--update-with-dependencies'], $packages)) !== 0) {
+    $run(['config', 'platform.php', '8.3.0']);
+    fwrite(STDERR, "Netgen Layouts: could not be added; the project is complete without it.\n"
+        . "  To add it later: php bin/add-netgen-layouts (see INSTALL.md, \"Netgen Layouts\").\n");
+    exit(0);
+}
+fwrite(STDOUT, "Netgen Layouts: added. After the database is installed, create its tables:\n"
+    . "  php bin/console doctrine:migrations:migrate --configuration=vendor/netgen/layouts-core/migrations/doctrine.yaml\n");
+exit(0);
