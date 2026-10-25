@@ -38,11 +38,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 final class LegacyInjectedSettingsSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly array $injectedSettings,
-        private readonly array $injectedMergeSettings,
-        private readonly array $siteaccessInjectedSettings,
-        private readonly array $siteaccessInjectedMergeSettings,
-        private readonly SiteAccess $siteAccess,
+        private array $injectedSettings,
+        private array $injectedMergeSettings,
+        private array $siteaccessInjectedSettings,
+        private array $siteaccessInjectedMergeSettings,
+        private SiteAccess $siteAccess,
     ) {
     }
 
