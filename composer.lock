@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7293df1bb0ae467f61699c4cf57dda9e",
+    "content-hash": "53c02c50b9128418cbe881c03eb0dc99",
     "packages": [
         {
             "name": "api-platform/core",
@@ -6879,79 +6879,6 @@
                 "source": "https://github.com/netgen/NetgenSiteAccessRoutesBundle/tree/master"
             },
             "time": "2025-10-22T09:34:14+00:00"
-        },
-        {
-            "name": "netgen/tagsbundle",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/netgen/TagsBundle.git",
-                "reference": "bb413067e8216afb231557b8d96526d81005d8ee"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/netgen/TagsBundle/zipball/bb413067e8216afb231557b8d96526d81005d8ee",
-                "reference": "bb413067e8216afb231557b8d96526d81005d8ee",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/collections": "^2.4 || ^3.0",
-                "ibexa/admin-ui": "^5.0",
-                "ibexa/content-forms": "^5.0",
-                "ibexa/core": "^5.0",
-                "ibexa/http-cache": "^5.0",
-                "ibexa/rest": "^5.0",
-                "ibexa/solr": "^5.0",
-                "lolautruche/ez-core-extra-bundle": "^5.0",
-                "pagerfanta/pagerfanta": "^3.8 || ^4.8",
-                "php": "^8.3",
-                "symfony/polyfill-php84": "^1.33",
-                "symfony/translation-contracts": "^3.6"
-            },
-            "require-dev": {
-                "netgen/coding-standard": "^1.0",
-                "phpstan/phpstan": "^2.1",
-                "phpstan/phpstan-phpunit": "^2.0",
-                "phpstan/phpstan-strict-rules": "^2.0",
-                "phpstan/phpstan-symfony": "^2.0",
-                "phpunit/phpunit": "^9.6"
-            },
-            "default-branch": true,
-            "type": "ibexa-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "6.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Netgen\\TagsBundle\\": "bundle/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0-only"
-            ],
-            "authors": [
-                {
-                    "name": "Netgen",
-                    "homepage": "https://netgen.io"
-                }
-            ],
-            "description": "Netgen Tags Bundle is an Ibexa DXP bundle for taxonomy management and easier classification of content, providing more functionality for tagging content than ibexa_keyword field type included in Ibexa core.",
-            "homepage": "https://github.com/netgen/TagsBundle",
-            "keywords": [
-                "ibexa",
-                "netgen",
-                "tags",
-                "tagsbundle",
-                "taxonomy"
-            ],
-            "support": {
-                "issues": "https://github.com/netgen/TagsBundle/issues",
-                "source": "https://github.com/netgen/TagsBundle/tree/master"
-            },
-            "time": "2026-01-22T14:24:05+00:00"
         },
         {
             "name": "netgen/xrowmetadata",
@@ -15077,6 +15004,106 @@
                 }
             ],
             "time": "2026-04-11T08:04:59+00:00"
+        },
+        {
+            "name": "se7enxweb/tagsbundle",
+            "version": "v6.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/se7enxweb/TagsBundle.git",
+                "reference": "1edd0965ad822c22e0607f6a425b3f109211af49"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/se7enxweb/TagsBundle/zipball/1edd0965ad822c22e0607f6a425b3f109211af49",
+                "reference": "1edd0965ad822c22e0607f6a425b3f109211af49",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/collections": "^2.4 || ^3.0",
+                "ibexa/admin-ui": "^5.0",
+                "ibexa/content-forms": "^5.0",
+                "ibexa/core": "^5.0",
+                "ibexa/http-cache": "^5.0",
+                "ibexa/rest": "^5.0",
+                "ibexa/solr": "^5.0",
+                "lolautruche/ez-core-extra-bundle": "^5.0",
+                "pagerfanta/pagerfanta": "^3.8 || ^4.8",
+                "php": "^8.3",
+                "symfony/polyfill-php84": "^1.33",
+                "symfony/translation-contracts": "^3.6"
+            },
+            "replace": {
+                "netgen/tagsbundle": "self.version"
+            },
+            "require-dev": {
+                "netgen/coding-standard": "^1.0",
+                "phpstan/phpstan": "^2.1",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "phpstan/phpstan-strict-rules": "^2.0",
+                "phpstan/phpstan-symfony": "^2.0",
+                "phpunit/phpunit": "^9.6"
+            },
+            "type": "ibexa-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "6.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Netgen\\TagsBundle\\": "bundle/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "Netgen",
+                    "homepage": "https://netgen.io"
+                }
+            ],
+            "description": "Netgen Tags Bundle is an Ibexa DXP bundle for taxonomy management and easier classification of content, providing more functionality for tagging content than ibexa_keyword field type included in Ibexa core.",
+            "homepage": "https://github.com/se7enxweb/TagsBundle",
+            "keywords": [
+                "ibexa",
+                "netgen",
+                "tags",
+                "tagsbundle",
+                "taxonomy"
+            ],
+            "support": {
+                "source": "https://github.com/se7enxweb/TagsBundle/tree/v6.0.3"
+            },
+            "funding": [
+                {
+                    "url": "https://account.venmo.com/u/se7enxweb",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://cash.app/$7xweb",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://se7enx.com",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://www.paypal.me/7xweb",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/se7enxweb",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.patreon.com/7xweb",
+                    "type": "patreon"
+                }
+            ],
+            "time": "2026-10-25T00:04:43+00:00"
         },
         {
             "name": "se7enxweb/xrowextract",
