@@ -24,6 +24,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "se7enxweb/oss": "~3.3.0.6",
+        "se7enxweb/ezplatform-admin-ui-assets": "^5.3.7",
         "se7enxweb/legacy-bridge": "^3.0.0.35",
         "se7enxweb/symfony": "5.4.x-dev",
         "se7enxweb/symfony-flex": "^2.10.3",
