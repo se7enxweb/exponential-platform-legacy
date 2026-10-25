@@ -19,6 +19,7 @@
         "se7enxweb/legacy-bridge": "^5.0.0.0",
         "se7enxweb/richtext-datatype-bundle": "^5.0",
         "se7enxweb/site-legacy-bundle": "^5.0",
+        "se7enxweb/tagsbundle": "~6.0.3",
         "symfony/flex": "^2",
         "symfony/runtime": "^7.3"
     },
