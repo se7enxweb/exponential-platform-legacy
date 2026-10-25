@@ -24,6 +24,13 @@ services:
             - '../../src/ExponentialPlatformLegacyInjectedSettings/'
             - '../../src/Installer/'
 
+    # exp_legacy_js_library() and exp_legacy_jquery_scripts(): what the installed legacy kernel provides to the
+    # page head of the themes (YUI or Exponential UI, and its jQuery files)
+    App\Twig\LegacyScriptsExtension:
+        arguments:
+            $legacyConfigResolver: '@ezpublish_legacy.config.resolver'
+            $legacyRootDir: '%ezpublish_legacy.root_dir%'
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 

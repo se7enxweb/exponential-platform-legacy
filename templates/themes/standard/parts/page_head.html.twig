@@ -5,17 +5,31 @@
     {% for href in encore_entry_css_files('index', 'app') %}
     <link rel="stylesheet" type="text/css" href="{{ href }}">
     {% endfor %}
+    {#
+        The legacy scripts and styles below come from the installed legacy kernel, which is one of two kinds:
+        exp_legacy_js_library() is 'yui' where it still ships YUI (kernel 6.0.14 and earlier) and 'expui' where
+        it runs on Exponential UI and jQuery instead (kernel 6.0.15, which removed YUI). YUI, its yui_*.css
+        themes and the admin scripts written as YUI modules (fixed_toolbar.js, ezmodalwindow.js,
+        ezajaxuploader.js, ezcollapsiblemenu.js) are only loaded in the 'yui' case, so a kernel without them
+        gets no 404 and no "YAHOO is not defined". jQuery (and jQuery Migrate) are the files the kernel's own
+        ezjsc::jquery loads: 3.7.1 with Migrate 1.2.1 on 6.0.14, 4.0.0 with Migrate 4.0.2 on 6.0.15.
+    #}
+    {% set exp_js_library = exp_legacy_js_library() %}
     <link rel="stylesheet" href="/design/admin/stylesheets/core.css">
     <link rel="stylesheet" href="/design/admin/stylesheets/pagelayout.css">
     <link rel="stylesheet" href="/design/admin/stylesheets/content.css">
     <link rel="stylesheet" href="/design/admin/stylesheets/theme/rounded.css">
+    {% if exp_js_library == 'yui' %}
     <link rel="stylesheet" href="/design/admin/stylesheets/theme/yui_datatable.css">
     <link rel="stylesheet" href="/design/admin/stylesheets/theme/yui_menu.css">
     <link rel="stylesheet" href="/design/admin/stylesheets/theme/yui_container.css">
+    {% endif %}
     <link rel="stylesheet" href="/design/admin/stylesheets/theme/modalwindow.css">
     <!-- Legacy JS: jQuery -->
-    <script src="/extension/ezjscore/design/standard/javascript/jquery-3.7.1.min.js"></script>
-    <script src="/extension/ezjscore/design/standard/javascript/jquery-migrate-1.2.1.min.js"></script>
+    {% for script in exp_legacy_jquery_scripts() %}
+    <script src="{{ script }}"></script>
+    {% endfor %}
+    {% if exp_js_library == 'yui' %}
     <!-- Legacy JS: YUI2 loader (provides YAHOO.util.YUILoader) -->
     <script src="/extension/ezjscore/design/standard/lib/yui/2.8.2/build/yuiloader/yuiloader-min.js"></script>
     <script>
@@ -26,13 +40,16 @@
         };
         var YUILoader = new YAHOO.util.YUILoader(YUI2_config);
     </script>
+    {% endif %}
     <!-- Legacy JS: Backend scripts (BackendJavaScriptList) -->
     <script src="/design/standard/javascript/tools/ezjsselection.js"></script>
     <script src="/design/standard/javascript/lib/ezjslibimagepreloader.js"></script>
     <script src="/design/admin/javascript/popupmenu/ezpopupmenu.js"></script>
     <script src="/design/admin/javascript/contentstructuremenu_dynamic.js"></script>
+    {% if exp_js_library == 'yui' %}
     <script src="/design/admin/javascript/fixed_toolbar.js"></script>
     <script src="/design/admin/javascript/ezmodalwindow.js"></script>
     <script src="/design/admin/javascript/ezajaxuploader.js"></script>
     <script src="/design/admin/javascript/ezcollapsiblemenu.js"></script>
+    {% endif %}
 </head>
