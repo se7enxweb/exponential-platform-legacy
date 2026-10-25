@@ -21,6 +21,7 @@
         "se7enxweb/richtext-datatype-bundle": "*",
         "se7enxweb/ezplatform-xmltext-fieldtype": "4.x-dev",
         "se7enxweb/site-legacy-bundle": "^2.0.0.1",
+        "se7enxweb/tagsbundle": "~5.3.2",
         "symfony/flex": "^2",
         "symfony/runtime": "^5.3"
     },
