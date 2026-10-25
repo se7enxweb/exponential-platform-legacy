@@ -8,10 +8,9 @@
     {#
         The legacy scripts and styles below come from the installed legacy kernel, which is one of two kinds:
         exp_legacy_js_library() is 'yui' where it still ships YUI (kernel 6.0.14 and earlier) and 'expui' where
-        it runs on Exponential UI and jQuery instead (kernel 6.0.15, which removed YUI). YUI, its yui_*.css
-        themes and the admin scripts written as YUI modules (fixed_toolbar.js, ezmodalwindow.js,
-        ezajaxuploader.js, ezcollapsiblemenu.js) are only loaded in the 'yui' case, so a kernel without them
-        gets no 404 and no "YAHOO is not defined". jQuery (and jQuery Migrate) are the files the kernel's own
+        it runs on Exponential UI and jQuery instead (kernel 6.0.15, which removed YUI). The YUI 2 loader and
+        the yui_*.css themes are only loaded in the 'yui' case, so a kernel without them gets no 404 and no
+        "YAHOO is not defined". jQuery (and jQuery Migrate) are the files the kernel's own
         ezjsc::jquery loads: 3.7.1 with Migrate 1.2.1 on 6.0.14, 4.0.0 with Migrate 4.0.2 on 6.0.15.
     #}
     {% set exp_js_library = exp_legacy_js_library() %}
@@ -46,10 +45,7 @@
     <script src="/design/standard/javascript/lib/ezjslibimagepreloader.js"></script>
     <script src="/design/admin/javascript/popupmenu/ezpopupmenu.js"></script>
     <script src="/design/admin/javascript/contentstructuremenu_dynamic.js"></script>
-    {% if exp_js_library == 'yui' %}
-    <script src="/design/admin/javascript/fixed_toolbar.js"></script>
-    <script src="/design/admin/javascript/ezmodalwindow.js"></script>
-    <script src="/design/admin/javascript/ezajaxuploader.js"></script>
-    <script src="/design/admin/javascript/ezcollapsiblemenu.js"></script>
-    {% endif %}
+    {# fixed_toolbar.js, ezmodalwindow.js, ezajaxuploader.js and ezcollapsiblemenu.js are YUI 3 modules
+       (YUI(YUI3_config).add(...)) of the legacy admin. This head loads no YUI 3, so they only raised
+       "YUI is not defined", with every kernel; nothing on these pages uses them. #}
 </head>
