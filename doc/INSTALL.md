@@ -94,7 +94,7 @@
 - Required extensions: `gd` or `imagick`, `redis`, `curl`, `json`, `pdo_mysql` or `pdo_pgsql` or `pdo_sqlite`,
   `xsl`, `xml`, `intl`, `mbstring`, `opcache`, `ctype`, `iconv`
 - For SQLite: `pdo_sqlite` + `sqlite3` extensions (usually bundled with PHP; verify with `php -m | grep -i sqlite`)
-- `memory_limit` ≥ 256M (set in `php.ini` or `.htaccess`; restart web server after changes)
+- `memory_limit` ≥ 256M for web requests, ≥ 512M for the console (`cache:clear` in the dev environment needs about 300M with Twig 3.19.1); set in `php.ini` (CLI and web server), restart the web server after changes
 - `date.timezone` must be set in `php.ini` or `.htaccess` — see https://php.net/manual/en/timezones.php
 - `max_execution_time` ≥ 90 (recommended 300 for CLI)
 
@@ -195,7 +195,7 @@ Browser Request
 - Platform v3 runs **eZ Platform / Exponential Platform 3.3 OSS** (v4 runs Platform 4 OSS)
 - Platform v3 does **not include Netgen Layouts** (v4 includes Netgen Layouts 1.4+)
 - Platform v3 install command: `exponential:install exponential-oss` (v4: `ibexa:install exponential-oss`)
-- Platform v3 `memory_limit` ≥ 256M (v4 ≥ 512M due to dual-kernel overhead)
+- Platform v3 `memory_limit` ≥ 256M for web requests and ≥ 512M for the console (v4 ≥ 512M due to dual-kernel overhead)
 
 ---
 
