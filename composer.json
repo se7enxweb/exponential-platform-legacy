@@ -37,7 +37,7 @@
         "se7enxweb/ezplatform-cron": "^2.0.8",
         "se7enxweb/ezplatform-design-engine": "^2.0",
         "se7enxweb/ezplatform-graphql": "^1.0",
-        "se7enxweb/ezplatform-http-cache": "^0.9.5",
+        "se7enxweb/ezplatform-http-cache": "^0.9.6",
         "ezsystems/ezplatform-matrix-fieldtype": "^1.0",
         "se7enxweb/ezplatform-richtext": "^1.1.16",
         "se7enxweb/ezplatform-solr-search-engine": "^1.7.14",
@@ -199,7 +199,8 @@
                     "PKSA-w9tt-7782-78jx": "CVE-2026-102601 on league/flysystem: Fixed in se7enxweb/flysystem 1.1.11, which backports the upstream fix to the 1.x line it replaces league/flysystem with (Util::normalizePath() treats a path with malformed UTF-8 as corrupted, as 3.35.3 does).",
                     "PKSA-xwpn-zs9j-6wy5": "GHSA-r7cg-qjjm-xhqq on webonyx/graphql-php: Fixed in se7enxweb/graphql-php 0.13.12, which backports the upstream fix of 15.32.3 to the 0.13 line it replaces webonyx/graphql-php with (the parser bounds the nesting of selection sets, value literals and type references to 256 levels).",
                     "PKSA-sf9j-1gs7-xzvx": "GHSA-fc86-6rv6-2jpm on webonyx/graphql-php: Fixed in se7enxweb/graphql-php 0.13.12, which backports the upstream fix of 15.32.2 to the 0.13 line it replaces webonyx/graphql-php with (OverlappingFieldsCanBeMerged stops after 100000 field comparisons per document).",
-                    "PKSA-7h5p-prw9-w5nr": "CVE-2026-40476 on webonyx/graphql-php: Fixed in se7enxweb/graphql-php 0.13.12, which backports the upstream fix of 15.31.5 to the 0.13 line it replaces webonyx/graphql-php with (OverlappingFieldsCanBeMerged compares structurally identical fields once)."
+                    "PKSA-7h5p-prw9-w5nr": "CVE-2026-40476 on webonyx/graphql-php: Fixed in se7enxweb/graphql-php 0.13.12, which backports the upstream fix of 15.31.5 to the 0.13 line it replaces webonyx/graphql-php with (OverlappingFieldsCanBeMerged compares structurally identical fields once).",
+                    "PKSA-wtj8-672s-hw2j": "BREACH with Varnish VCL on ezsystems/ezplatform-http-cache: Fixed in se7enxweb/ezplatform-http-cache 0.9.6, which replaces ezsystems/ezplatform-http-cache: its VCL never gzips application/json or application/vnd.ez.api responses, the compression 2.3.16 removed upstream, and says not to add it."
                 }
             }
         },
@@ -266,7 +267,8 @@
                 "PKSA-w9tt-7782-78jx": "CVE-2026-102601 on league/flysystem: Fixed in se7enxweb/flysystem 1.1.11, which backports the upstream fix to the 1.x line it replaces league/flysystem with (Util::normalizePath() treats a path with malformed UTF-8 as corrupted, as 3.35.3 does).",
                 "PKSA-xwpn-zs9j-6wy5": "GHSA-r7cg-qjjm-xhqq on webonyx/graphql-php: Fixed in se7enxweb/graphql-php 0.13.12, which backports the upstream fix of 15.32.3 to the 0.13 line it replaces webonyx/graphql-php with (the parser bounds the nesting of selection sets, value literals and type references to 256 levels).",
                 "PKSA-sf9j-1gs7-xzvx": "GHSA-fc86-6rv6-2jpm on webonyx/graphql-php: Fixed in se7enxweb/graphql-php 0.13.12, which backports the upstream fix of 15.32.2 to the 0.13 line it replaces webonyx/graphql-php with (OverlappingFieldsCanBeMerged stops after 100000 field comparisons per document).",
-                "PKSA-7h5p-prw9-w5nr": "CVE-2026-40476 on webonyx/graphql-php: Fixed in se7enxweb/graphql-php 0.13.12, which backports the upstream fix of 15.31.5 to the 0.13 line it replaces webonyx/graphql-php with (OverlappingFieldsCanBeMerged compares structurally identical fields once)."
+                "PKSA-7h5p-prw9-w5nr": "CVE-2026-40476 on webonyx/graphql-php: Fixed in se7enxweb/graphql-php 0.13.12, which backports the upstream fix of 15.31.5 to the 0.13 line it replaces webonyx/graphql-php with (OverlappingFieldsCanBeMerged compares structurally identical fields once).",
+                "PKSA-wtj8-672s-hw2j": "BREACH with Varnish VCL on ezsystems/ezplatform-http-cache: Fixed in se7enxweb/ezplatform-http-cache 0.9.6, which replaces ezsystems/ezplatform-http-cache: its VCL never gzips application/json or application/vnd.ez.api responses, the compression 2.3.16 removed upstream, and says not to add it."
             }
         }
     },

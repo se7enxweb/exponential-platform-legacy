@@ -57,6 +57,10 @@ fell back to the development branches of those packages, which Composer 2.11 blo
 installed package is a stable release. The dev dependencies no longer include the Goutte Mink driver: it needs
 Guzzle 6, for which no fixed release exists; Behat uses the in-process Symfony session instead.
 
+`se7enxweb/ezplatform-http-cache` 0.9.6 or later replaces `ezsystems/ezplatform-http-cache`. Every upstream release
+below 2.3.16 matches PKSA-wtj8-672s-hw2j (BREACH through a VCL that compresses JSON and REST API responses); the 0.9
+VCL never compressed them, so that advisory is listed in the same two places.
+
 **PHP 8.0 gets the legacy kernel's 6.0.x line.** The kernel releases 6.0.12 to 6.0.14 declare PHP `^8.1`; the 6.0.x
 development line (`se7enxweb/exponential` `main`, 6.0.15) declares `^8.0`. On PHP 8.1 and later Composer installs the
 newest release; on PHP 8.0 it installs the 6.0.x line, which the project's `minimum-stability: dev` allows (it shows
