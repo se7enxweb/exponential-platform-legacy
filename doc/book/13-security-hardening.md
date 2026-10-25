@@ -181,7 +181,7 @@ With the debug toolbar or legacy debug output visible, a visitor sees SQL, setti
 | Line | Platform admin | Legacy admin |
 |---|---|---|
 | 2.5 | `/admin/` (siteaccess `admin`, group `admin_group`) | `/legacy_admin/` (`legacy_mode: true`) |
-| 3.x | siteaccess `adminui` (`ngsite.admin_siteaccess_name`) | `legacy_admin`, and `ngadminui` |
+| 3.x | siteaccess `adminui` (`ngsite.admin_siteaccess_name`) | `legacy_admin` (3.x installs no Netgen Admin UI) |
 | 4.6, 5 | `/admin/` (siteaccess `admin`, group `admin_group`, added by the recipe's `ibexa_admin_ui.yaml`) | `/legacy_admin/` |
 
 1. **Change the seed's administrator password** at once (the guides of every line document the seed account as

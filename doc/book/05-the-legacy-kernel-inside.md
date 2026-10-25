@@ -58,7 +58,7 @@ The database is defined in Symfony (`parameters.yml` or `DATABASE_URL`), never i
 | Line | Siteaccesses (from the shipped configuration) | `legacy_mode: true` | Where it is set |
 |---|---|---|---|
 | 2.5 | `site`, `admin`, `legacy_admin` | `legacy_admin` (`site` is set to `false`) | `ez_publish_legacy.system` in `app/config/ezplatform.yml` |
-| 3.x | `fh_eng`, `site`, `bold_eng`, `bold_ger`, `adminui`, `ngadminui`, `legacy_site`, `legacy_admin` | `legacy_admin`, `legacy_site` | `config/app/packages/ezpublish_siteaccess.yaml` |
+| 3.x | `fh_eng`, `site`, `bold_eng`, `bold_ger`, `adminui`, `legacy_site`, `legacy_admin` | `legacy_admin`, `legacy_site` | `config/app/packages/ezpublish_siteaccess.yaml` |
 | 4.6.x, 5.x | `site`, `legacy_site`, `legacy_admin` (and `admin` for the Admin UI) | `legacy_site`, `legacy_admin` | `config/packages/ez_publish_legacy.yaml` from the recipe |
 
 Every siteaccess must exist on **both** sides: in the Symfony siteaccess list and in the legacy kernel's

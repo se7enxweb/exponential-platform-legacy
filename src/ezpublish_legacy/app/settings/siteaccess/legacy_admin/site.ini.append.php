@@ -11,7 +11,6 @@ RelatedSiteAccessList[]=fh_eng
 RelatedSiteAccessList[]=bold_eng
 RelatedSiteAccessList[]=bold_ger
 RelatedSiteAccessList[]=legacy_admin
-RelatedSiteAccessList[]=ngadminui
 ShowHiddenNodes=true
 
 [DesignSettings]

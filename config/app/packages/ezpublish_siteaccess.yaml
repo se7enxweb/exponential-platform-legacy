@@ -12,14 +12,12 @@ ezpublish:
             - bold_eng
             - bold_ger
             - '%ngsite.admin_siteaccess_name%'
-            - ngadminui
             - legacy_site
             - legacy_admin
         groups:
             admin_group:
                 - '%ngsite.admin_siteaccess_name%'
             ngadmin_group:
-                - ngadminui
                 - legacy_admin
             frontend_group:
                 - fh_eng

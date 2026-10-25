@@ -142,7 +142,7 @@ What the lines ship:
 | Line | Siteaccesses (`siteaccess.list`) | Matching | `legacy_mode: true` |
 |---|---|---|---|
 | 2.5 | `site`, `admin`, `legacy_admin` (group `site_group` = site, legacy_admin; `admin_group` = admin) | `URIElement: 1` (a `Map\Host` example for two host names is commented out) | `legacy_admin` |
-| 3.x | `fh_eng`, `site`, `bold_eng`, `bold_ger`, `adminui`, `ngadminui`, `legacy_site`, `legacy_admin` | `URIElement: 1`, set per server environment in `config/app/server/dev/ezpublish_siteaccess.yaml` and `config/app/server/prod.yaml` (host maps commented out in both) | `legacy_admin`, `legacy_site` |
+| 3.x | `fh_eng`, `site`, `bold_eng`, `bold_ger`, `adminui`, `legacy_site`, `legacy_admin` | `URIElement: 1`, set per server environment in `config/app/server/dev/ezpublish_siteaccess.yaml` and `config/app/server/prod.yaml` (host maps commented out in both) | `legacy_admin`, `legacy_site` |
 | 4.6, 5.x | `site`, `legacy_site`, `legacy_admin` (group `site_group`, in `ibexa.yaml`) and `admin` (group `admin_group`, in `ibexa_admin_ui.yaml`; the lists of both files are merged) | `URIElement: 1` | `legacy_admin`, `legacy_site` |
 
 With `URIElement: 1` the first path segment names the siteaccess: the legacy admin of a 2.5, 4.6 or 5.x install is at
