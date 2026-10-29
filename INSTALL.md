@@ -93,7 +93,7 @@
 
 ### PHP
 
-- **PHP 8.0–8.5** (PHP 8.3 or 8.5 strongly recommended)
+- **PHP 8.1–8.5** (PHP 8.3 or 8.5 strongly recommended; PHP 8.0 see "Composer security blocking" below)
 - Required extensions: `gd` or `imagick`, `curl`, `json`, `pdo_mysql` or `pdo_pgsql` or `pdo_sqlite`,
   `xsl`, `xml`, `intl`, `mbstring`, `opcache`, `ctype`, `iconv`
 - For SQLite: `pdo_sqlite` + `sqlite3` PHP extensions (usually bundled with PHP; verify with `php -m | grep -i sqlite`)
@@ -101,6 +101,26 @@
   Set in `php.ini` or `.htaccess`; restart the web server after changes.
 - `date.timezone` must be set in `php.ini` — see https://php.net/manual/en/timezones.php
 - `max_execution_time` ≥ 120 (recommended 300 for CLI operations)
+
+#### Composer security blocking and the se7enxweb forks
+
+Composer 2.9+ refuses packages with known security advisories, and Composer 2.11 also refuses development
+versions with advisories. Some fixes exist upstream only for newer PHP versions or newer major lines, so the project
+requires se7enxweb forks that carry them, and lists the advisory ids those forks fix under
+`config.policy.advisories.ignore-id` and `config.audit.ignore`, each with its reason:
+
+- `se7enxweb/flysystem` 2.5.1 replaces `league/flysystem` 2.x with the fix for CVE-2026-102601 (required by the
+  platform core, which stays on Flysystem 2)
+- `se7enxweb/tagsbundle` 5.3.3 runs on PHP 8.0 and 8.1 as well (Netgen's 5.3 line needs PHP 8.2)
+- `se7enxweb/information-collection-bundle` 3.0.1 replaces `netgen/information-collection-bundle` 3 and allows
+  PhpSpreadsheet up to 5.x, so the current Netgen site bundle installs on PHP 8.5 too
+
+`composer.json` keeps out `netgen/ibexa-site-api` before 6.0: the older releases' preview controller no longer
+matches the platform core, and `composer install` stopped in its first console command when one was chosen.
+
+The 4.6.x line installs on **PHP 8.1 to 8.5**. PHP 8.0 does not work yet: `netgen/ibexa-site-api` 6 needs PHP 8.1.
+
+Never set `"block-insecure": false`: an advisory published later must be reported, not installed silently.
 
 ### Web Server
 

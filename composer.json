@@ -21,9 +21,10 @@
         "se7enxweb/richtext-datatype-bundle": "*",
         "se7enxweb/ezplatform-xmltext-fieldtype": "4.x-dev",
         "se7enxweb/site-legacy-bundle": "^2.0.0.1",
-        "se7enxweb/tagsbundle": "~5.3.2",
+        "se7enxweb/tagsbundle": "~5.3.3",
         "symfony/flex": "^2",
-        "symfony/runtime": "^5.3"
+        "symfony/runtime": "^5.3",
+        "se7enxweb/information-collection-bundle": "^3.0.1"
     },
     "require-dev": {
         "symfony/debug-bundle": "^5.3",
@@ -42,7 +43,19 @@
         "preferred-install": {
             "*": "dist"
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "policy": {
+            "advisories": {
+                "ignore-id": {
+                    "PKSA-w9tt-7782-78jx": "CVE-2026-102601 on league/flysystem: Fixed in se7enxweb/flysystem 2.5.1, which backports the upstream fix to the 2.x line it replaces league/flysystem with (WhitespacePathNormalizer treats a path with malformed UTF-8 as corrupted, as 3.35.3 does)."
+                }
+            }
+        },
+        "audit": {
+            "ignore": {
+                "PKSA-w9tt-7782-78jx": "CVE-2026-102601 on league/flysystem: Fixed in se7enxweb/flysystem 2.5.1, which backports the upstream fix to the 2.x line it replaces league/flysystem with (WhitespacePathNormalizer treats a path with malformed UTF-8 as corrupted, as 3.35.3 does)."
+            }
+        }
     },
     "autoload": {
         "psr-4": {
@@ -86,7 +99,8 @@
     },
     "conflict": {
         "symfony/symfony": "*",
-        "twig/twig": ">=3.31"
+        "twig/twig": ">=3.31",
+        "netgen/ibexa-site-api": "<6.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": false,
