@@ -93,7 +93,7 @@
 
 ### PHP
 
-- **PHP 8.1–8.5** (PHP 8.3 or 8.5 strongly recommended; PHP 8.0 see "Composer security blocking" below)
+- **PHP 8.0–8.5** (PHP 8.3 or 8.5 strongly recommended; PHP 7.4 see "Composer security blocking" below)
 - Required extensions: `gd` or `imagick`, `curl`, `json`, `pdo_mysql` or `pdo_pgsql` or `pdo_sqlite`,
   `xsl`, `xml`, `intl`, `mbstring`, `opcache`, `ctype`, `iconv`
 - For SQLite: `pdo_sqlite` + `sqlite3` PHP extensions (usually bundled with PHP; verify with `php -m | grep -i sqlite`)
@@ -114,11 +114,20 @@ requires se7enxweb forks that carry them, and lists the advisory ids those forks
 - `se7enxweb/tagsbundle` 5.3.3 runs on PHP 8.0 and 8.1 as well (Netgen's 5.3 line needs PHP 8.2)
 - `se7enxweb/information-collection-bundle` 3.0.1 replaces `netgen/information-collection-bundle` 3 and allows
   PhpSpreadsheet up to 5.x, so the current Netgen site bundle installs on PHP 8.5 too
+- `se7enxweb/twig` 3.19.1 replaces `twig/twig` and `twig/intl-extra` with the 2026 fixes backported (on PHP 8.0
+  no fixed upstream Twig release installs)
+- `se7enxweb/ibexa-site-api` 6.2.6, `se7enxweb/ibexa-search-extra` 3.6.3 and `se7enxweb/site-bundle` 3.3.6
+  replace the Netgen packages; they are Netgen's 6.2.5, 3.6.2 and 3.3.5 with the code in PHP 8.0 syntax; the
+  Netgen releases need PHP 8.1, and the older ones that run on PHP 8.0 do not match the platform core
+- `se7enxweb/layouts-core` and `se7enxweb/content-browser` 1.4 replace the Netgen packages and run on PHP 8.0
 
 `composer.json` keeps out `netgen/ibexa-site-api` before 6.0: the older releases' preview controller no longer
 matches the platform core, and `composer install` stopped in its first console command when one was chosen.
 
-The 4.6.x line installs on **PHP 8.1 to 8.5**. PHP 8.0 does not work yet: `netgen/ibexa-site-api` 6 needs PHP 8.1.
+The 4.6.x line installs on **PHP 8.0 to 8.5**. `composer.json` still declares PHP 7.4, but PHP 7.4 does not work:
+the legacy kernel (`se7enxweb/exponential` 6.0), the Legacy Bridge 4 and the legacy extensions require PHP 8.0.
+PHP 7.4 support for this line depends on the planned PHP 7.4 work on the legacy kernel (task #283); until then,
+install it on PHP 8.0 or later.
 
 Never set `"block-insecure": false`: an advisory published later must be reported, not installed silently.
 

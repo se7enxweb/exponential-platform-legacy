@@ -24,7 +24,13 @@
         "se7enxweb/tagsbundle": "~5.3.3",
         "symfony/flex": "^2",
         "symfony/runtime": "^5.3",
-        "se7enxweb/information-collection-bundle": "^3.0.1"
+        "se7enxweb/information-collection-bundle": "^3.0.1",
+        "se7enxweb/twig": "~3.19.1",
+        "se7enxweb/layouts-core": "~1.4.14",
+        "se7enxweb/content-browser": "^1.4.2",
+        "se7enxweb/ibexa-site-api": "~6.2.6",
+        "se7enxweb/site-bundle": "~3.3.6",
+        "se7enxweb/ibexa-search-extra": "~3.6.3"
     },
     "require-dev": {
         "symfony/debug-bundle": "^5.3",
@@ -47,13 +53,47 @@
         "policy": {
             "advisories": {
                 "ignore-id": {
-                    "PKSA-w9tt-7782-78jx": "CVE-2026-102601 on league/flysystem: Fixed in se7enxweb/flysystem 2.5.1, which backports the upstream fix to the 2.x line it replaces league/flysystem with (WhitespacePathNormalizer treats a path with malformed UTF-8 as corrupted, as 3.35.3 does)."
+                    "PKSA-w9tt-7782-78jx": "CVE-2026-102601 on league/flysystem: Fixed in se7enxweb/flysystem 2.5.1, which backports the upstream fix to the 2.x line it replaces league/flysystem with (WhitespacePathNormalizer treats a path with malformed UTF-8 as corrupted, as 3.35.3 does).",
+                    "PKSA-gw7n-z4yx-7xjt": "CVE-2026-24425 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.26.0 to the 3.19 line (the sandbox state is passed to the arrow checks of sort, filter, map, reduce, find and has some/every, so a source-policy sandbox applies).",
+                    "PKSA-kvv6-36cr-fkzb": "CVE-2026-46627 on twig/twig: Resolved in se7enxweb/twig 3.19.1 as upstream resolved it in 3.26.0: the sandbox documentation states that it does not limit CPU, memory or time; untrusted templates are contained at the process level. No sandbox is enabled by the Exponential platforms.",
+                    "PKSA-sjvz-tbbr-vwth": "CVE-2026-46628 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.26.0 to the 3.19 line (the spaceless filter pre-escapes its input).",
+                    "PKSA-2rbx-bjdx-4d4d": "CVE-2026-46629 on twig/intl-extra: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.26.0 to the 3.19 line (the intl extension, which se7enxweb/twig 3.19 ships in place of twig/intl-extra, bounds its IntlDateFormatter and NumberFormatter caches).",
+                    "PKSA-h8hf-ytnd-5t9q": "CVE-2026-46633 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.26.0 to the 3.19 line (the {% use %} template name is no longer emitted as a PHP literal, and Compiler::string() encodes single quotes).",
+                    "PKSA-21g2-dzjv-sky5": "CVE-2026-46634 on twig/twig: Resolved in se7enxweb/twig 3.19.1 as upstream resolved it in 3.26.0: the template_from_string documentation states its caveats in a sandboxed environment. No sandbox is enabled by the Exponential platforms.",
+                    "PKSA-n14z-jjjg-g8vd": "CVE-2026-46635 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.26.0 to the 3.19 line (the column filter checks the property policy before array_column() reads an object).",
+                    "PKSA-yd6k-t2gh-1m43": "CVE-2026-46636 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.27.0 to the 3.19 line (compiled templates check the allow-lists on every render, not once per cached instance).",
+                    "PKSA-3mcc-k66d-pydb": "CVE-2026-46638 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.26.0 to the 3.19 line (an include inside a sandbox tag checks the allow-lists of a preloaded template).",
+                    "PKSA-5k7f-wvjj-jrgw": "CVE-2026-46640 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.26.0 to the 3.19 line (_self and imported macro references accept only valid PHP identifiers, and MacroReferenceExpression validates the name).",
+                    "PKSA-wwb1-81rc-pd65": "CVE-2026-47730 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.26.0 and 3.27.0 to the 3.19 line (the profiler HtmlDumper escapes template and profile names, and Profile::unserialize() restricts the allowed classes).",
+                    "PKSA-dpx1-78wg-1kqs": "CVE-2026-47732 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.26.0 to the 3.19 line (every node that string-coerces a child declares it (CoercesChildrenToStringInterface) and the sandbox checks __toString() there).",
+                    "PKSA-g9zw-qxh8-pq8w": "CVE-2026-48805 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.27.0 to the 3.19 line (the deprecated internal wrappers resolve the sandbox state from the calling template's source).",
+                    "PKSA-1tmc-rt7x-12w6": "CVE-2026-48806 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.27.0 to the 3.19 line (dynamic mapping keys are checked for __toString() and cast to string after the check).",
+                    "PKSA-xx6c-6d96-db2w": "CVE-2026-48807 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.27.0 to the 3.19 line (the sandbox checks the elements of Traversables in join and replace, the in and not in operands, and Stringable Traversables).",
+                    "PKSA-fbvq-z33h-r2np": "CVE-2026-48808 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.27.0 to the 3.19 line (the column filter checks the policy directly, so a source-policy sandbox applies).",
+                    "PKSA-8zx5-v2nz-58pb": "CVE-2026-49981 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.27.0 to the 3.19 line (compiled templates check the allow-lists on every render; GitHub advisory for the same issue as CVE-2026-46636)."
                 }
             }
         },
         "audit": {
             "ignore": {
-                "PKSA-w9tt-7782-78jx": "CVE-2026-102601 on league/flysystem: Fixed in se7enxweb/flysystem 2.5.1, which backports the upstream fix to the 2.x line it replaces league/flysystem with (WhitespacePathNormalizer treats a path with malformed UTF-8 as corrupted, as 3.35.3 does)."
+                "PKSA-w9tt-7782-78jx": "CVE-2026-102601 on league/flysystem: Fixed in se7enxweb/flysystem 2.5.1, which backports the upstream fix to the 2.x line it replaces league/flysystem with (WhitespacePathNormalizer treats a path with malformed UTF-8 as corrupted, as 3.35.3 does).",
+                "PKSA-gw7n-z4yx-7xjt": "CVE-2026-24425 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.26.0 to the 3.19 line (the sandbox state is passed to the arrow checks of sort, filter, map, reduce, find and has some/every, so a source-policy sandbox applies).",
+                "PKSA-kvv6-36cr-fkzb": "CVE-2026-46627 on twig/twig: Resolved in se7enxweb/twig 3.19.1 as upstream resolved it in 3.26.0: the sandbox documentation states that it does not limit CPU, memory or time; untrusted templates are contained at the process level. No sandbox is enabled by the Exponential platforms.",
+                "PKSA-sjvz-tbbr-vwth": "CVE-2026-46628 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.26.0 to the 3.19 line (the spaceless filter pre-escapes its input).",
+                "PKSA-2rbx-bjdx-4d4d": "CVE-2026-46629 on twig/intl-extra: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.26.0 to the 3.19 line (the intl extension, which se7enxweb/twig 3.19 ships in place of twig/intl-extra, bounds its IntlDateFormatter and NumberFormatter caches).",
+                "PKSA-h8hf-ytnd-5t9q": "CVE-2026-46633 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.26.0 to the 3.19 line (the {% use %} template name is no longer emitted as a PHP literal, and Compiler::string() encodes single quotes).",
+                "PKSA-21g2-dzjv-sky5": "CVE-2026-46634 on twig/twig: Resolved in se7enxweb/twig 3.19.1 as upstream resolved it in 3.26.0: the template_from_string documentation states its caveats in a sandboxed environment. No sandbox is enabled by the Exponential platforms.",
+                "PKSA-n14z-jjjg-g8vd": "CVE-2026-46635 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.26.0 to the 3.19 line (the column filter checks the property policy before array_column() reads an object).",
+                "PKSA-yd6k-t2gh-1m43": "CVE-2026-46636 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.27.0 to the 3.19 line (compiled templates check the allow-lists on every render, not once per cached instance).",
+                "PKSA-3mcc-k66d-pydb": "CVE-2026-46638 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.26.0 to the 3.19 line (an include inside a sandbox tag checks the allow-lists of a preloaded template).",
+                "PKSA-5k7f-wvjj-jrgw": "CVE-2026-46640 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.26.0 to the 3.19 line (_self and imported macro references accept only valid PHP identifiers, and MacroReferenceExpression validates the name).",
+                "PKSA-wwb1-81rc-pd65": "CVE-2026-47730 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.26.0 and 3.27.0 to the 3.19 line (the profiler HtmlDumper escapes template and profile names, and Profile::unserialize() restricts the allowed classes).",
+                "PKSA-dpx1-78wg-1kqs": "CVE-2026-47732 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.26.0 to the 3.19 line (every node that string-coerces a child declares it (CoercesChildrenToStringInterface) and the sandbox checks __toString() there).",
+                "PKSA-g9zw-qxh8-pq8w": "CVE-2026-48805 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.27.0 to the 3.19 line (the deprecated internal wrappers resolve the sandbox state from the calling template's source).",
+                "PKSA-1tmc-rt7x-12w6": "CVE-2026-48806 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.27.0 to the 3.19 line (dynamic mapping keys are checked for __toString() and cast to string after the check).",
+                "PKSA-xx6c-6d96-db2w": "CVE-2026-48807 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.27.0 to the 3.19 line (the sandbox checks the elements of Traversables in join and replace, the in and not in operands, and Stringable Traversables).",
+                "PKSA-fbvq-z33h-r2np": "CVE-2026-48808 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.27.0 to the 3.19 line (the column filter checks the policy directly, so a source-policy sandbox applies).",
+                "PKSA-8zx5-v2nz-58pb": "CVE-2026-49981 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.27.0 to the 3.19 line (compiled templates check the allow-lists on every render; GitHub advisory for the same issue as CVE-2026-46636)."
             }
         }
     },
