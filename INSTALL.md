@@ -93,7 +93,7 @@
 
 ### PHP
 
-- **PHP 8.0–8.5** (PHP 8.3 or 8.5 strongly recommended; PHP 7.4 see "Composer security blocking" below)
+- **Supported: PHP 8.0 to 8.5** (PHP 8.3 or 8.5 strongly recommended). **Usable without support: PHP 7.4** (Exponential 6.0.15 and later)
 - Required extensions: `gd` or `imagick`, `curl`, `json`, `pdo_mysql` or `pdo_pgsql` or `pdo_sqlite`,
   `xsl`, `xml`, `intl`, `mbstring`, `opcache`, `ctype`, `iconv`
 - For SQLite: `pdo_sqlite` + `sqlite3` PHP extensions (usually bundled with PHP; verify with `php -m | grep -i sqlite`)
@@ -111,23 +111,26 @@ requires se7enxweb forks that carry them, and lists the advisory ids those forks
 
 - `se7enxweb/flysystem` 2.5.1 replaces `league/flysystem` 2.x with the fix for CVE-2026-102601 (required by the
   platform core, which stays on Flysystem 2)
-- `se7enxweb/tagsbundle` 5.3.3 runs on PHP 8.0 and 8.1 as well (Netgen's 5.3 line needs PHP 8.2)
+- `se7enxweb/tagsbundle` 5.3.4 runs on PHP 7.4 to 8.5 (Netgen's 5.3 line needs PHP 8.2)
 - `se7enxweb/information-collection-bundle` 3.0.1 replaces `netgen/information-collection-bundle` 3 and allows
   PhpSpreadsheet up to 5.x, so the current Netgen site bundle installs on PHP 8.5 too
-- `se7enxweb/twig` 3.19.1 replaces `twig/twig` and `twig/intl-extra` with the 2026 fixes backported (on PHP 8.0
-  no fixed upstream Twig release installs)
-- `se7enxweb/ibexa-site-api` 6.2.6, `se7enxweb/ibexa-search-extra` 3.6.3 and `se7enxweb/site-bundle` 3.3.6
-  replace the Netgen packages; they are Netgen's 6.2.5, 3.6.2 and 3.3.5 with the code in PHP 8.0 syntax; the
-  Netgen releases need PHP 8.1, and the older ones that run on PHP 8.0 do not match the platform core
-- `se7enxweb/layouts-core` and `se7enxweb/content-browser` 1.4 replace the Netgen packages and run on PHP 8.0
+- `se7enxweb/twig` 3.19.1 (3.11.4 on PHP 7.4) replaces `twig/twig` and `twig/intl-extra` with the 2026 fixes backported (on PHP 7.4
+  and 8.0 no fixed upstream Twig release installs)
+- `se7enxweb/ibexa-site-api` 6.2.7, `se7enxweb/ibexa-search-extra` 3.6.4 and `se7enxweb/site-bundle` 3.3.7
+  replace the Netgen packages; they are Netgen's 6.2.5, 3.6.2 and 3.3.5 with the code in PHP 7.4 syntax; the
+  Netgen releases need PHP 8.1, and the older ones that run on PHP 7.4 and 8.0 do not match the platform core
+- `se7enxweb/layouts-core` and `se7enxweb/content-browser` 1.4 replace the Netgen packages and run on PHP 7.4 and 8.0
+- On PHP 7.4 only: `se7enxweb/exponential-platform-dxp-php-floor` 1.0.0 requires `se7enxweb/graphql-php` 14.11.11
+  (webonyx/graphql-php 14 with the 2026 fixes; the GraphQL bundle that installs on PHP 7.4 needs 14.x); on PHP 8.0
+  and later its 1.1.0 requires nothing. A conflict keeps out the webonyx releases those advisories cover.
 
 `composer.json` keeps out `netgen/ibexa-site-api` before 6.0: the older releases' preview controller no longer
 matches the platform core, and `composer install` stopped in its first console command when one was chosen.
 
-The 4.6.x line installs on **PHP 8.0 to 8.5**. `composer.json` still declares PHP 7.4, but PHP 7.4 does not work:
-the legacy kernel (`se7enxweb/exponential` 6.0), the Legacy Bridge 4 and the legacy extensions require PHP 8.0.
-PHP 7.4 support for this line depends on the planned PHP 7.4 work on the legacy kernel (task #283); until then,
-install it on PHP 8.0 or later.
+**Supported: PHP 8.0 to 8.5. Usable without support: PHP 7.4** (with Exponential 6.0.15 and later, whose legacy
+kernel runs on PHP 7.4 and whose `se7enxweb/exponential-php-floor` 1.0.x selects the legacy extensions that do).
+On PHP 7.4 the same `composer create-project` installs; Composer picks the releases above that run there
+(Legacy Bridge 4.0.0.7, eZ Tags 2.4.30, Netgen class lists 2.1.3 and the forks listed above).
 
 Never set `"block-insecure": false`: an advisory published later must be reported, not installed silently.
 
