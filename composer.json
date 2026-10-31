@@ -24,8 +24,8 @@
         "symfony/runtime": "^7.3"
     },
     "suggest": {
-        "netgen/layouts-ibexa": "Netgen Layouts for the Platform v5 stack (^2.0). Needs PHP 8.4 or later; see INSTALL.md.",
-        "netgen/layouts-standard": "The standard block types of Netgen Layouts (^2.0). Needs PHP 8.4 or later."
+        "netgen/layouts-ibexa": "Exponential Layouts for the Platform v5 stack (^2.0). Needs PHP 8.4 or later; see INSTALL.md.",
+        "netgen/layouts-standard": "The standard block types of Exponential Layouts (^2.0). Needs PHP 8.4 or later."
     },
     "require-dev": {
         "symfony/debug-bundle": "^7.3",

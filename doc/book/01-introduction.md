@@ -161,7 +161,7 @@ from the configuration the skeleton or its Symfony Flex recipe installs.
 | Install command | `ezplatform:install clean` (or `exponential-oss`, with kernel 7.5.41 or later) | `exponential:install exponential-oss` | `exponential:install exponential-oss` | `exponential:install exponential-oss` |
 | New-stack admin (siteaccess) | `/admin/` (`admin`) | `/adminui/` (`adminui`) | `/admin/` (`admin`, per the recipe) | `/admin/` (`admin`, per the recipe) |
 | Legacy admin (siteaccess) | `/legacy_admin/` | `/legacy_admin/` | `/legacy_admin/` | `/legacy_admin/` |
-| Netgen Layouts | no | no | `netgen/layouts-ibexa ^1.4` | `netgen/layouts-ibexa ^2.0`, added by `composer create-project` on PHP 8.4 and later, left out on PHP 8.3 (from `v5.0.3.5`) |
+| Exponential Layouts | no | no | `netgen/layouts-ibexa ^1.4` | `netgen/layouts-ibexa ^2.0`, added by `composer create-project` on PHP 8.4 and later, left out on PHP 8.3 (from `v5.0.3.5`) |
 | Node.js for asset builds | 14 LTS | 18 LTS (`.nvmrc`) | 20 LTS | 20 LTS for `v5.0.2`; 24 LTS from `v5.0.3.1` on (commit `27ff2ca`, on the branch since 2026-08-03) |
 | Status | maintained | maintained | maintained | maintained, newest |
 
@@ -169,7 +169,7 @@ How the two PHP rows relate: Composer accepts a PHP version only if **every** pa
 constraint is the widest statement; a required package can narrow it. On the 2.5 line the skeleton still lists
 `^7.1.3`, but the legacy kernel releases it resolves to need PHP 8.1, so PHP 7 cannot install it. On the 5.x line the
 skeleton says `>=8.3`; up to `v5.0.3.4` every LegacyBridge 5 release needed 8.4, and from `v5.0.3.5` the whole lock
-installs on 8.3. Netgen Layouts 2 itself needs PHP 8.4, so a 5.x project gets it only on PHP 8.4 or later.
+installs on 8.3. Exponential Layouts 2 itself needs PHP 8.4, so a 5.x project gets it only on PHP 8.4 or later.
 [Chapter 2](02-requirements.md) has the details.
 
 The admin paths of 4.6.x and 5.x: the README of 4.6.x names `/adminui/`; the 5.x guides name `/admin/` since commit
@@ -226,7 +226,7 @@ branch heads of every dependency (`minimum-stability` is `dev`). From `v5.0.3.2`
 |---|---|---|
 | `1482686` | the files the Flex recipes create (`bin/`, `public/`, `src/`, `config/`, `templates/`, `translations/`, `.env`, `.env.dev`), as a fresh install of 2026-10-23 wrote them, and `symfony.lock`, which records every recipe as installed; `.env` and `.env.dev` carry the placeholder `ThisTokenIsNotSoSecretChangeIt` instead of generated secrets | [3.4](03-getting-the-code.md#34-composer-create-project-per-line) |
 | `91ebb2f` | `composer.lock`: `create-project` and `composer install` install the tested versions ("Installing dependencies from lock file") and Flex applies no recipe | 3.4, [10.3](10-upgrading-between-lines.md#103-updating-within-a-line) |
-| `65d744f`, `c3f24a6` | the project requires `se7enxweb/site-legacy-bundle` and `se7enxweb/richtext-datatype-bundle`, generates the legacy autoloads before the cache is built, and imports the routes of Netgen Layouts, Tags and Information Collection itself | [4.6](04-installing.md#46-wire-up-the-legacy-kernel) |
+| `65d744f`, `c3f24a6` | the project requires `se7enxweb/site-legacy-bundle` and `se7enxweb/richtext-datatype-bundle`, generates the legacy autoloads before the cache is built, and imports the routes of Exponential Layouts, Tags and Information Collection itself | [4.6](04-installing.md#46-wire-up-the-legacy-kernel) |
 | `9eb0f78`, `6172acd` | the guides name `/admin/` and `/api/ibexa/v2/`, Node.js 24 throughout, `~5.0.3.2`, and the shipped lock files | [4.10](04-installing.md#410-first-login) |
 
 The shipped lock still pins `league/flysystem` 2.x, which `composer audit` reports
@@ -276,9 +276,9 @@ project ([chapter 3](03-getting-the-code.md#34-composer-create-project-per-line)
 
 | Your situation | Line |
 |---|---|
-| A new project that should run on current PHP and Symfony for the longest time | **5.x** (PHP 8.3 or later, Netgen Layouts included on PHP 8.4 and later; Node.js 24 to build the branch's assets) |
-| A new project on PHP 8.0 to 8.3, with Netgen Layouts | **4.6.x** (5.x on PHP 8.3 installs without Netgen Layouts) |
-| You run an Ibexa OSS 3.3 style project, or want Symfony 5.4 without Netgen Layouts | **3.x** |
+| A new project that should run on current PHP and Symfony for the longest time | **5.x** (PHP 8.3 or later, Exponential Layouts included on PHP 8.4 and later; Node.js 24 to build the branch's assets) |
+| A new project on PHP 8.0 to 8.3, with Exponential Layouts | **4.6.x** (5.x on PHP 8.3 installs without Exponential Layouts) |
+| You run an Ibexa OSS 3.3 style project, or want Symfony 5.4 without Exponential Layouts | **3.x** |
 | You run a 2.5 style project (`app/`, `web/`, `parameters.yml`), or need the legacy kernel with the smallest new stack | **2.5** |
 | You only need the legacy kernel, no Symfony stack at all | not this product: install [Exponential 6](https://github.com/se7enxweb/exponential/blob/main/doc/install/README.md) |
 | You do not need the legacy kernel at all | not this product: Exponential Platform Nexus |

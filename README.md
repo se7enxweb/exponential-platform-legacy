@@ -282,7 +282,7 @@ For a complete walkthrough of Legacy Bridge installation, configuration, URL rou
 ## Requirements
 
 - PHP 8.3+ (PHP 8.3 or 8.5 recommended)
-- Netgen Layouts 2 (Symfony page building) needs PHP 8.4+: `composer create-project` adds it on PHP 8.4 and later and leaves it out on PHP 8.3 (see [INSTALL.md](INSTALL.md), "Netgen Layouts")
+- Exponential Layouts 2 (Symfony page building) needs PHP 8.4+: `composer create-project` adds it on PHP 8.4 and later and leaves it out on PHP 8.3 (see [INSTALL.md](INSTALL.md), "Exponential Layouts")
 - A web server: Apache 2.4 or Nginx 1.18+
 - A database server: MySQL 8.0+, MariaDB 10.3+, PostgreSQL 14+, or SQLite 3.35+ (dev/testing)
 - Composer 2.x

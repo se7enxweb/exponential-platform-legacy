@@ -3,7 +3,7 @@
 use Netgen\Bundle\ContentBrowserBundle\NetgenContentBrowserBundle;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
-// The Content Browser comes with the optional Netgen Layouts (PHP 8.4 and later).
+// The Content Browser comes with the optional Exponential Layouts (PHP 8.4 and later).
 return static function (RoutingConfigurator $routes): void {
     if (!class_exists(NetgenContentBrowserBundle::class)) {
         return;

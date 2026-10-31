@@ -32,7 +32,7 @@ checklist you can run on a fresh machine.
 
 | | **2.5** | **3.x** | **4.6.x** | **5.x** |
 |---|---|---|---|---|
-| PHP | 8.1 or later (tested 8.1 and 8.2) | 8.1 or later | 8.0 or later | 8.3 or later (Netgen Layouts on 8.4 or later) |
+| PHP | 8.1 or later (tested 8.1 and 8.2) | 8.1 or later | 8.0 or later | 8.3 or later (Exponential Layouts on 8.4 or later) |
 | `memory_limit` (project docs) | 256M, 512M recommended | 256M | 512M | 256M, 512M recommended |
 | MySQL / MariaDB | MySQL 5.7+ / MariaDB 10.0+ | MySQL 8.0+ / MariaDB 10.3+ | MySQL 8.0+ / MariaDB 10.3+ | MySQL 8.0+ / MariaDB 10.3+ |
 | PostgreSQL | 9.5+ | 14+ | 14+ | 14+ |
@@ -54,7 +54,7 @@ states the widest range; required packages narrow it.
 | 2.5 | `^7.1.3 \|\| ^8.1 \|\| ^8.2` | `se7enxweb/exponential ^6.0.12`: the releases it allows, 6.0.12 to 6.0.14, declare `^8.1 \|\| ... \|\| ^8.8` | **8.1** |
 | 3.x | `^8.0` | the same kernel range, through LegacyBridge 3 (`se7enxweb/exponential ^6.0.12`) | **8.1** |
 | 4.6.x | `^7.4 \|\| ^8.0 \|\| ... \|\| ^8.5` | LegacyBridge 4 (`php ^8.0`); the kernel's `dev-main` declares `^8.0 ...` | **8.0** |
-| 5.x | `>=8.3`, lock resolved for 8.3 (`config.platform.php 8.3.0`, from `v5.0.3.5`) | up to `v5.0.3.4`: LegacyBridge 5 (`php ^8.4` up to 5.0.13) and Netgen Layouts 2 (`^8.4`); from `v5.0.3.5` LegacyBridge `^8.3` (5.0.14 and later), and Netgen Layouts is added only on 8.4+ | **8.3** (`v5.0.3.5` and later; 8.4 before), Netgen Layouts **8.4** |
+| 5.x | `>=8.3`, lock resolved for 8.3 (`config.platform.php 8.3.0`, from `v5.0.3.5`) | up to `v5.0.3.4`: LegacyBridge 5 (`php ^8.4` up to 5.0.13) and Exponential Layouts 2 (`^8.4`); from `v5.0.3.5` LegacyBridge `^8.3` (5.0.14 and later), and Exponential Layouts is added only on 8.4+ | **8.3** (`v5.0.3.5` and later; 8.4 before), Exponential Layouts **8.4** |
 
 Notes:
 
@@ -68,8 +68,8 @@ Notes:
   PHP version that is too old.
 - On 5.x, `composer create-project` runs `bin/add-netgen-layouts` at the end. On PHP 8.4 or later it adds Netgen
   Layouts 2 (and sets `config.platform.php` to the running PHP); on PHP 8.3 it adds nothing and the project works
-  without it. `EXP_WITHOUT_NETGEN_LAYOUTS=1` leaves it out on 8.4+ too. A 5.x project that has Netgen Layouts no
-  longer installs on PHP 8.3. See [INSTALL.md](../../INSTALL.md), "Netgen Layouts".
+  without it. `EXP_WITHOUT_NETGEN_LAYOUTS=1` leaves it out on 8.4+ too. A 5.x project that has Exponential Layouts no
+  longer installs on PHP 8.3. See [INSTALL.md](../../INSTALL.md), "Exponential Layouts".
 - Exponential Velocity needs PHP 8.1 or later (its `composer.json`: `php >=8.1`), so on 4.6.x with PHP 8.0 you serve
   the site with Apache or nginx ([chapter 6](06-serving-the-site.md)).
 - The legacy kernel's own view of PHP versions, including what changed between 8.0 and 8.5, is in the Exponential 6
@@ -88,14 +88,14 @@ A typical result on a server prepared for the 4.6.x line, and how to read it:
 
 ```text
 $ php -v
-PHP 8.3.12 (cli) (built: Sep 24 2026 10:12:44) (NTS)       <- 8.3: fine for every line; 5.x then has no Netgen Layouts
+PHP 8.3.12 (cli) (built: Sep 24 2026 10:12:44) (NTS)       <- 8.3: fine for every line; 5.x then has no Exponential Layouts
 $ php --ini
 Loaded Configuration File:         /etc/php/8.3/cli/php.ini <- the CLI's file; FPM reads /etc/php/8.3/fpm/php.ini
 ```
 
 What goes wrong when the floor is missed: Composer stops before it installs anything, with a message such as
 `se7enxweb/legacy-bridge v5.0.10 requires php ^8.4 -> your php version (8.3.12) does not satisfy that requirement`
-(the 5.x line before `v5.0.3.5`, or a 5.x project with Netgen Layouts on PHP 8.3).
+(the 5.x line before `v5.0.3.5`, or a 5.x project with Exponential Layouts on PHP 8.3).
 That is the check working as intended; install a newer PHP (or choose an older line) rather than overriding it.
 
 ## 2.3 PHP extensions

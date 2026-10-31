@@ -12,7 +12,7 @@ class Kernel extends BaseKernel
     /**
      * Bundles that are registered only when their package is installed.
      *
-     * Netgen Layouts 2 and its Content Browser need PHP 8.4, while the project runs on PHP 8.3 and later.
+     * Exponential Layouts 2 and its Content Browser need PHP 8.4, while the project runs on PHP 8.3 and later.
      * They are therefore not in the project's composer.json; on PHP 8.4 or later they are added with
      * `composer require netgen/layouts-ibexa:^2.0 netgen/layouts-standard:^2.0` (see INSTALL.md), and their
      * lines in config/bundles.php then take effect. Every other bundle in config/bundles.php is required:
