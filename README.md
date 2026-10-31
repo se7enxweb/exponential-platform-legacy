@@ -4,12 +4,12 @@
 [![Symfony](https://img.shields.io/badge/Symfony-5.4%20LTS-000000?logo=symfony&logoColor=white)](https://symfony.com)
 [![Platform](https://img.shields.io/badge/Platform-4.6%20OSS-orange)](https://github.com/se7enxweb)
 [![LegacyBridge](https://img.shields.io/badge/LegacyBridge-4.x-green)](https://github.com/se7enxweb/legacy-bridge)
-[![Netgen Layouts](https://img.shields.io/badge/Netgen%20Layouts-1.4+-blue)](https://github.com/netgen/layouts-core)
+[![Exponential Layouts](https://img.shields.io/badge/Exponential%20Layouts-1.4+-blue)](https://github.com/netgen/layouts-core)
 [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/gpl-2.0)
 [![GitHub issues](https://img.shields.io/github/issues/se7enxweb/exponential-platform-legacy)](https://github.com/se7enxweb/exponential-platform-legacy/issues)
 [![GitHub stars](https://img.shields.io/github/stars/se7enxweb/exponential-platform-legacy?style=social)](https://github.com/se7enxweb/exponential-platform-legacy)
 
-> **Exponential Platform Legacy** is a hybrid-kernel open-source Digital Experience Platform (DXP/CMS) built on the **Exponential (Legacy) 6.x kernel** bridged to Symfony 5.4 LTS via LegacyBridge 4.x. This is the **LegacyBridge (LB)** skeleton release — featuring Netgen Layouts 1.4+ alongside the proven Legacy kernel, with full PHP 8.x compatibility and the Platform v4 new-stack layer running in a single application.
+> **Exponential Platform Legacy** is a hybrid-kernel open-source Digital Experience Platform (DXP/CMS) built on the **Exponential (Legacy) 6.x kernel** bridged to Symfony 5.4 LTS via LegacyBridge 4.x. This is the **LegacyBridge (LB)** skeleton release — featuring Exponential Layouts 1.4+ alongside the proven Legacy kernel, with full PHP 8.x compatibility and the Platform v4 new-stack layer running in a single application.
 
 This is a website skeleton for Exponential Platform Legacy (Stable; Open Source).
 
@@ -48,12 +48,12 @@ This is an independent, 7x + community-driven continuation of the platform. The 
 
 **Exponential Platform Legacy has made it beyond its end of life in 2021 and survived. Current releases are primarily aimed at easing the requirements to support current versions of the PHP language like PHP 8.2, 8.3, 8.4, 8.5, 8.6 and beyond.**
 
-The platform is under active maintenance and targeted improvement. The **4.6.x (Platform v4)** release line is the current last stable verion series of the platform v4 Distrobution. This is first LegacyBridge release to successfully bridge Exponential 6.x (Legacy) to Symfony 5.4 LTS with full PHP 8.x support and Netgen Layouts 1.4+ integration. Ongoing work focuses on:
+The platform is under active maintenance and targeted improvement. The **4.6.x (Platform v4)** release line is the current last stable verion series of the platform v4 Distrobution. This is first LegacyBridge release to successfully bridge Exponential 6.x (Legacy) to Symfony 5.4 LTS with full PHP 8.x support and Exponential Layouts 1.4+ integration. Ongoing work focuses on:
 
 - Continued PHP 8.x compatibility (8.2, 8.3, 8.4, 8.5.4 tested and supported)
 - Exponential (Legacy) kernel patches for PHP 8.x runtime compatibility
 - LegacyBridge 4.x compatibility maintenance for Symfony 5.4 LTS alignment
-- Netgen Layouts 1.4+ integration and improvements
+- Exponential Layouts 1.4+ integration and improvements
 - Dependency upgrades across Composer and Yarn package ecosystems
 - Security patches and vulnerability triage
 - Documentation and developer experience improvements
@@ -85,15 +85,15 @@ Previously before 2022, 7x was called Brookins Consulting — the outspoken lead
 Exponential Platform Legacy runs **two content kernels in the same request cycle**:
 
 - **Legacy Kernel** — Exponential (Legacy) 6.x — the classic, battle-hardened PHP content engine with its native template system, modules, cronjob framework, roles, workflows, and full content model. This is the primary kernel in this release.
-- **New Stack** — Exponential Platform v4 OSS (Symfony 5.4) — accessed via LegacyBridge 4.x, providing REST API, GraphQL, Symfony controllers, Netgen Layouts 1.4+ page building, and the Platform v4 Admin UI alongside the legacy admin.
+- **New Stack** — Exponential Platform v4 OSS (Symfony 5.4) — accessed via LegacyBridge 4.x, providing REST API, GraphQL, Symfony controllers, Exponential Layouts 1.4+ page building, and the Platform v4 Admin UI alongside the legacy admin.
 
 Both kernels share the same database, content repository, and web server entry point. Legacy content is rendered through native Exponential (Legacy) templates (`.tpl`) and Symfony Twig templates simultaneously. The bridge makes incremental migration possible — or simply lets you keep running the proven legacy stack indefinitely.
 
-> **This is the LegacyBridge (LB) release — Platform v4.** It includes Netgen Layouts 1.4+ and the Netgen Site bundle for advanced layout-driven page building on top of this stack.
+> **This is the LegacyBridge (LB) release — Platform v4.** It includes Exponential Layouts 1.4+ and the Netgen Site bundle for advanced layout-driven page building on top of this stack.
 
 ### Recent Improvements to Exponential Platform Legacy
 
-Exponential Platform Legacy 4.6.x (Platform v4) releases run the **Exponential (Legacy) 6.x kernel + LegacyBridge 4.x + Exponential Platform v4 OSS + Symfony 5.4 LTS + Netgen Layouts 1.4+** — providing the classic eZ Publish experience with modern PHP 8.x runtime support.
+Exponential Platform Legacy 4.6.x (Platform v4) releases run the **Exponential (Legacy) 6.x kernel + LegacyBridge 4.x + Exponential Platform v4 OSS + Symfony 5.4 LTS + Exponential Layouts 1.4+** — providing the classic eZ Publish experience with modern PHP 8.x runtime support.
 
 ### What Does Exponential Platform Legacy Provide for End Users Building Websites?
 
@@ -114,7 +114,7 @@ Exponential Platform Legacy is database, platform and browser independent. Becau
 | **CMS Core (legacy)** | Exponential (Legacy) 6.x (`ezpublish_legacy/`) |
 | **CMS Core (new stack)** | Exponential Platform v4 OSS |
 | **Bridge** | LegacyBridge 4.x (`se7enxweb/legacy-bridge`) |
-| **Page Builder** | Netgen Layouts 1.4+ |
+| **Page Builder** | Exponential Layouts 1.4+ |
 | **ORM** | Doctrine ORM 2.x |
 | **Template Engine** | Legacy TPL (legacy) + Twig 3.x (new stack) |
 | **Frontend Build** | Webpack Encore + Yarn 1.x + Node.js 20 LTS |
@@ -255,12 +255,12 @@ symfony server:start
     - WYSIWYG rich-text editor
     - In-site content editing
     - Content geolocation
-    - Netgen Layouts 1.4+ page-building engine (included in this LB release)
+    - Exponential Layouts 1.4+ page-building engine (included in this LB release)
 
 ### Additional Capabilities in the 4.6.x (Platform v4) Series
 
 - **Hybrid Kernel** — Exponential (Legacy) 6.x runs alongside Exponential Platform v4 OSS in a single application via LegacyBridge 4.x
-- **Netgen Layouts 1.4+** — advanced layout-driven page building engine included in this LB release
+- **Exponential Layouts 1.4+** — advanced layout-driven page building engine included in this LB release
 - **GraphQL API** — auto-generated schema per content model via `ezplatform:graphql:generate-schema`
 - **JWT Authentication** — REST API secured by RSA keypairs (`lexik/jwt-authentication-bundle`)
 - **Platform v4 Admin UI** — React-powered editorial interface at `/admin/` alongside the classic Legacy Admin

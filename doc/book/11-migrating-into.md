@@ -194,7 +194,7 @@ legacy kernel finds its shop, workflow, collaboration and notification tables mi
 5. Build the legacy siteaccesses (`legacy_admin` at least) and their settings, then the legacy cron.
 
 Commercial features of the source product (page builder, forms, personalization and the like) have no counterpart in
-either kernel of this distribution. Netgen Layouts, part of the 4.6 and 5 lines, is the page-building option on the
+either kernel of this distribution. Exponential Layouts, part of the 4.6 and 5 lines, is the page-building option on the
 Symfony side; chapter 16.5.9 of the Exponential 6 book compares them.
 
 ## 11.7 What is specific to this distribution

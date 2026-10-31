@@ -1,4 +1,4 @@
-# The Netgen Layouts integration of the Platform admin (its menu entries and the layouts of a content item);
-# the Netgen Layouts routes themselves come from config/routes/netgen_layouts.yaml.
+# The Exponential Layouts integration of the Platform admin (its menu entries and the layouts of a content item);
+# the Exponential Layouts routes themselves come from config/routes/netgen_layouts.yaml.
 netgen_layouts_ibexa:
     resource: "@NetgenLayoutsIbexaBundle/Resources/config/routing.yaml"

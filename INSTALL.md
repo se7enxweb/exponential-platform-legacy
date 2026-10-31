@@ -4,7 +4,7 @@
 > **Platform v4 LegacyBridge (LB)** is the most technically advanced release of
 > Exponential Platform Legacy. It runs **two fully-operational content kernels** in a single
 > application: the Exponential (Legacy) 6.x kernel via LegacyBridge 4.x, alongside the
-> Exponential Platform v4 OSS new stack (Symfony 5.4 LTS). Netgen Layouts 1.4+ and the
+> Exponential Platform v4 OSS new stack (Symfony 5.4 LTS). Exponential Layouts 1.4+ and the
 > Netgen Site bundle are included and active.
 >
 > This guide uses numbered **Git Save Points** throughout. Commit at each one so you can
@@ -66,7 +66,7 @@
 9. [Frontend Assets (Site CSS/JS)](#9-frontend-assets-site-cssjs)
 10. [Admin UI Assets (Platform v4 Admin UI)](#10-admin-ui-assets-platform-v4-admin-ui)
 11. [Legacy Kernel Setup](#11-legacy-kernel-setup)
-12. [Netgen Layouts Setup](#12-netgen-layouts-setup)
+12. [Exponential Layouts Setup](#12-exponential-layouts-setup)
 13. [JWT Authentication (REST API)](#13-jwt-authentication-rest-api)
 14. [Search Index](#14-search-index)
 15. [Image Variations](#15-image-variations)
@@ -305,7 +305,7 @@ Browser Request
       │         ├── Exponential Platform v4 Admin UI (/admin/)
       │         ├── REST API v2 (/api/ezp/v2/)
       │         ├── GraphQL API (/graphql)
-      │         ├── Netgen Layouts 1.4+ (page building engine)
+      │         ├── Exponential Layouts 1.4+ (page building engine)
       │         └── Symfony/Twig site controllers
       │
       └─── LegacyBridge 4.x → Exponential (Legacy) 6.x Kernel
@@ -712,7 +712,7 @@ php bin/console exponential:install exponential-oss
 This single command:
 1. Creates the SQLite `.db` file at `var/data_<environment>.db` (e.g. `var/data_dev.db`)
 2. Imports the seed content (content classes, content objects, users, roles)
-3. Applies the Netgen Layouts schema automatically (no separate migration needed)
+3. Applies the Exponential Layouts schema automatically (no separate migration needed)
 4. Creates the Doctrine ORM tables
 
 The default administrator credentials are:
@@ -1172,12 +1172,12 @@ php bin/console ezpublish:legacy:script bin/php/ezpgenerateautoloads.php
 
 ---
 
-## 12. Netgen Layouts Setup
+## 12. Exponential Layouts Setup
 
-This LegacyBridge edition includes Netgen Layouts 1.4+ and is the required foundation
+This LegacyBridge edition includes Exponential Layouts 1.4+ and is the required foundation
 for layout-driven page building on top of the Legacy kernel.
 
-### Generate GraphQL schema (required by Netgen Layouts)
+### Generate GraphQL schema (required by Exponential Layouts)
 
 ```bash
 php bin/console ezplatform:graphql:generate-schema
@@ -1191,9 +1191,9 @@ Run this after any content type or field type changes.
 php bin/console cache:clear
 ```
 
-### Netgen Layouts Admin UI
+### Exponential Layouts Admin UI
 
-Netgen Layouts is accessible via the Platform v4 Admin UI at `/admin/`.
+Exponential Layouts is accessible via the Platform v4 Admin UI at `/admin/`.
 
 ### Creating your first layout
 
@@ -1202,7 +1202,7 @@ Netgen Layouts is accessible via the Platform v4 Admin UI at `/admin/`.
 3. Create a new layout, assign it to URL conditions
 4. Add blocks from the Block panel and map them to zones
 
-> For full Netgen Layouts documentation see https://docs.netgen.io/projects/layouts/
+> For the documentation of the upstream layouts packages see https://docs.netgen.io/projects/layouts/
 
 ---
 
