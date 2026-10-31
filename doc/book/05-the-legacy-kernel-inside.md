@@ -428,7 +428,7 @@ What it is for, compared with the Admin UI:
 | Roles and policies of legacy modules | yes | the new stack's policies |
 | Workflows, triggers, collaboration, the webshop | yes | no |
 | INI settings, caches, system information, extensions | yes (*Setup*) | partly (system information) |
-| Netgen Layouts (4.6.x, 5.x) | no | yes |
+| Exponential Layouts (4.6.x, 5.x) | no | yes |
 
 Both write the same tables; there is nothing to synchronise. Keep in mind that a content type created in one
 interface uses that kernel's field types: a field type without a matching legacy datatype (or the reverse)

@@ -6,7 +6,7 @@
 
 > **Platform v3** is the foundational pure-platform release: Exponential (Legacy) 6.x kernel +
 > LegacyBridge 3.x + Exponential Platform 3.3 OSS + Symfony 5.4 LTS. No Netgen packages are
-> included. See the v4 LegacyBridge (LB) release for Netgen Layouts 1.4+ integration.
+> included. See the v4 LegacyBridge (LB) release for Exponential Layouts 1.4+ integration.
 >
 > This guide uses numbered **Git Save Points** so developers can commit working checkpoints
 > throughout the installation process and roll back to any known-good state.
@@ -184,7 +184,7 @@ Browser Request
                  REST API v2 (/api/ezp/v2/)
                  GraphQL API
                  Platform Admin UI (/adminui/)
-                 Netgen Layouts (NOT included in Platform v3)
+                 Exponential Layouts (NOT included in Platform v3)
 ```
 
 **Both kernels share the same database.** Doctrine ORM (new stack) and the Legacy database abstraction layer both connect to the same MySQL/MariaDB/PostgreSQL database. The Legacy kernel writes to `ezpublish_legacy/var/` for cache and compiled templates; the new stack uses `var/` for Symfony cache.
@@ -193,7 +193,7 @@ Browser Request
 - Platform v3 uses **Node.js 18 LTS** (v4 uses Node.js 20 LTS)
 - Platform v3 uses **LegacyBridge 3.x** (v4 uses LegacyBridge 4.x)
 - Platform v3 runs **eZ Platform / Exponential Platform 3.3 OSS** (v4 runs Platform 4 OSS)
-- Platform v3 does **not include Netgen Layouts** (v4 includes Netgen Layouts 1.4+)
+- Platform v3 does **not include Exponential Layouts** (v4 includes Exponential Layouts 1.4+)
 - Platform v3 install command: `exponential:install exponential-oss` (v4: `ibexa:install exponential-oss`)
 - Platform v3 `memory_limit` ≥ 256M for web requests and ≥ 512M for the console (v4 ≥ 512M due to dual-kernel overhead)
 

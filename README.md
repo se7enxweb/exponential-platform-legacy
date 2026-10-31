@@ -8,7 +8,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/se7enxweb/exponential-platform-legacy)](https://github.com/se7enxweb/exponential-platform-legacy/issues)
 [![GitHub stars](https://img.shields.io/github/stars/se7enxweb/exponential-platform-legacy?style=social)](https://github.com/se7enxweb/exponential-platform-legacy)
 
-> **Exponential Platform Legacy** is a hybrid-kernel open-source Digital Experience Platform (DXP/CMS) built on the **Exponential (Legacy) 6.x kernel** bridged to Symfony 5.4 LTS via LegacyBridge 3.x. This is the **pure Platform v3 release** — no Netgen Layouts, no nglayouts, no ngsite bundle. It runs the proven Legacy kernel with full PHP 8.x compatibility, sitting alongside the Exponential Platform 3.3 OSS new-stack layer in a single application.
+> **Exponential Platform Legacy** is a hybrid-kernel open-source Digital Experience Platform (DXP/CMS) built on the **Exponential (Legacy) 6.x kernel** bridged to Symfony 5.4 LTS via LegacyBridge 3.x. This is the **pure Platform v3 release** — no Exponential Layouts, no nglayouts, no ngsite bundle. It runs the proven Legacy kernel with full PHP 8.x compatibility, sitting alongside the Exponential Platform 3.3 OSS new-stack layer in a single application.
 
 This is a website skeleton for Exponential Platform Legacy (Stable; Open Source).
 
@@ -89,7 +89,7 @@ Exponential Platform Legacy runs **two content kernels in the same request cycle
 
 Both kernels share the same database, content repository, and web server entry point. Legacy content is rendered through native Exponential (Legacy) templates (`.tpl`) and Symfony Twig templates simultaneously. The bridge makes incremental migration possible — or simply lets you keep running the proven legacy stack indefinitely.
 
-> **This is the pure Platform v3 release.** It does not include the Netgen Suite (no Netgen Layouts, no nglayouts, no ngsite bundle). If you need Netgen Layouts-driven page building on top of this stack, see the Exponential Platform v4 LegacyBridge (LB) release which builds on this foundation.
+> **This is the pure Platform v3 release.** It does not include the Netgen Suite (no Exponential Layouts, no nglayouts, no ngsite bundle). If you need Exponential Layouts-driven page building on top of this stack, see the Exponential Platform v4 LegacyBridge (LB) release which builds on this foundation.
 
 ### Recent Improvements to Exponential Platform Legacy
 
@@ -127,8 +127,8 @@ Exponential Platform Legacy is database, platform and browser independent. Becau
 | **Dependency Mgmt** | Composer 2.x · Yarn 1.x |
 | **Deployment** | Deployer (`deploy.php`) · Docker Compose (`doc/docker/`) |
 
-> **Not included in this release:** Netgen Layouts, Netgen Site bundle, nglayouts, ngsite CLI commands.
-> See the v4 LegacyBridge (LB) release for Netgen Layouts 1.4+ integration.
+> **Not included in this release:** Exponential Layouts, Netgen Site bundle, nglayouts, ngsite CLI commands.
+> See the v4 LegacyBridge (LB) release for Exponential Layouts 1.4+ integration.
 
 ---
 
