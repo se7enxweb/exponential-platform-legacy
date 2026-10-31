@@ -87,7 +87,7 @@ Exponential Platform Legacy runs **two content kernels in the same request cycle
 
 Both kernels share the same database, content repository, and web server entry point. Legacy content is rendered through native Exponential (Legacy) templates (`.tpl`) and Symfony Twig templates simultaneously. The bridge makes incremental migration possible — or simply lets you keep running the proven legacy stack indefinitely.
 
-> **This is the 2.5.0.x LegacyBridge release** — using LegacyBridge 2.x for Symfony 3.4 LTS compatibility. For the latest Symfony 5.4 LTS + Netgen Layouts experience, see the 4.6.x release.
+> **This is the 2.5.0.x LegacyBridge release** — using LegacyBridge 2.x for Symfony 3.4 LTS compatibility. For the latest Symfony 5.4 LTS + Exponential Layouts experience, see the 4.6.x release.
 
 ### What Does Exponential Platform Legacy Provide for End Users Building Websites?
 

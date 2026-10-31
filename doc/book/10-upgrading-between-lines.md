@@ -40,7 +40,7 @@ where the upstream documentation has to be followed instead.
 | Configuration | `app/config/*.yml`, `parameters.yml` | `config/`, `.env`, `.env.local` | `config/` from the Flex recipe, slot `1.2` ([8.9](08-configuration.md#89-where-the-files-are-line-by-line)) | `config/` from the Flex recipe, slot `1.4` |
 | Newest release (2026-10-05) | [`v2.5.0.4`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v2.5.0.4) | [`v3.3.44.8`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v3.3.44.8) | [`v4.6.23.3`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v4.6.23.3) | [`v5.0.3.1`](https://github.com/se7enxweb/exponential-platform-legacy/releases/tag/v5.0.3.1) |
 | Web root | `web/` | `public/` | `public/` | `public/` |
-| Page building | none | none | Netgen Layouts `^1.4` | Netgen Layouts `^2.0` |
+| Page building | none | none | Exponential Layouts `^1.4` | Exponential Layouts `^2.0` |
 | Table names | `ez*` | `ez*` | `ez*` | `ibexa_*`; the legacy kernel reads them through `sevenx_exponential_platform_v5_database_translator` |
 
 The 4.6.x and 5.x branches of this repository hold little more than `composer.json`, the README and the install guide:
@@ -221,9 +221,9 @@ here is what differs for Exponential Platform Legacy.
   That package is not part of the installs these lines produce (no `vendor/ibexa/installer` and no `ibexa-*.sql` file
   in a 4.6 or 5 install checked for this book), so obtain the files from the upstream release you migrate along and
   review them before running them. Table names stay `ez*`.
-- **Netgen Layouts.** 4.6 brings Netgen Layouts 1.4, whose `nglayouts_*` tables do not exist in a 3.3 database. On a
+- **Exponential Layouts.** 4.6 brings Exponential Layouts 1.4, whose `nglayouts_*` tables do not exist in a 3.3 database. On a
   fresh 4.6 install on SQLite the kernel seed creates them (`data/sqlite/nglayouts_cleandata.sql`); on an upgraded
-  database create them with Netgen Layouts' own migrations (see the Netgen Layouts upgrade documentation).
+  database create them with the layouts packages' own migrations (see the upgrade documentation of the upstream layouts packages).
 - **Project layout.** The 4.6 project comes from the Flex recipe: legacy overrides in `src/LegacySettings/override/`,
   siteaccess INI in `src/ezpublish_legacy/app/settings/siteaccess/`, storage in `src/LegacyRoot/var/site/storage`,
   all linked into `ezpublish_legacy/` by `bin/install-legacy-links`. Move your legacy settings there, not into
@@ -268,7 +268,7 @@ here is what differs for Exponential Platform Legacy.
 - **Legacy-only tables.** The upstream script renames the platform's tables; the legacy-only tables keep their `ez*`
   names, and the translator leaves names it does not map alone.
 - **PHP 8.4 and Symfony 7.** Custom Symfony code needs the Symfony 7 changes; PHP must be 8.4 because of the bridge.
-- **Netgen Layouts 2.0** replaces 1.4 (upgrade per Netgen's documentation).
+- **Exponential Layouts 2.0** replaces 1.4 (upgrade per the upgrade documentation of the upstream layouts packages).
 
 ## 10.7 The legacy kernel inside every line
 

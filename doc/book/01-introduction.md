@@ -160,7 +160,7 @@ from the configuration the skeleton or its Symfony Flex recipe installs.
 | Install command | `ezplatform:install clean` (or `exponential-oss`, with kernel 7.5.41 or later) | `exponential:install exponential-oss` | `exponential:install exponential-oss` | `exponential:install exponential-oss` |
 | New-stack admin (siteaccess) | `/admin/` (`admin`) | `/adminui/` (`adminui`) | `/admin/` (`admin`, per the recipe) | `/admin/` (`admin`, per the recipe) |
 | Legacy admin (siteaccess) | `/legacy_admin/` | `/legacy_admin/` | `/legacy_admin/` | `/legacy_admin/` |
-| Netgen Layouts | no | no | `netgen/layouts-ibexa ^1.4` | `netgen/layouts-ibexa ^2.0` |
+| Exponential Layouts | no | no | `netgen/layouts-ibexa ^1.4` | `netgen/layouts-ibexa ^2.0` |
 | Node.js for asset builds | 14 LTS | 18 LTS (`.nvmrc`) | 20 LTS | 20 LTS for `v5.0.2`; 24 LTS from `v5.0.3.1` on (commit `27ff2ca`, on the branch since 2026-08-03) |
 | Status | maintained | maintained | maintained | maintained, newest |
 
@@ -253,8 +253,8 @@ project ([chapter 3](03-getting-the-code.md#34-composer-create-project-per-line)
 | Your situation | Line |
 |---|---|
 | A new project that should run on current PHP and Symfony for the longest time | **5.x** (PHP 8.4 or later; Node.js 24 to build the branch's assets) |
-| A new project on PHP 8.0 to 8.3, with Netgen Layouts | **4.6.x** |
-| You run an Ibexa OSS 3.3 style project, or want Symfony 5.4 without Netgen Layouts | **3.x** |
+| A new project on PHP 8.0 to 8.3, with Exponential Layouts | **4.6.x** |
+| You run an Ibexa OSS 3.3 style project, or want Symfony 5.4 without Exponential Layouts | **3.x** |
 | You run a 2.5 style project (`app/`, `web/`, `parameters.yml`), or need the legacy kernel with the smallest new stack | **2.5** |
 | You only need the legacy kernel, no Symfony stack at all | not this product: install [Exponential 6](https://github.com/se7enxweb/exponential/blob/main/doc/install/README.md) |
 | You do not need the legacy kernel at all | not this product: Exponential Platform Nexus |
