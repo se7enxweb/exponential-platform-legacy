@@ -23,7 +23,7 @@
         "ext-mbstring": "*",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "se7enxweb/oss": "~3.3.0.6",
+        "se7enxweb/oss": "~3.3.0.7",
         "se7enxweb/ezplatform-admin-ui-assets": "^5.3.7",
         "se7enxweb/legacy-bridge": "^3.0.0.35",
         "se7enxweb/symfony": "5.4.x-dev",
@@ -37,7 +37,7 @@
         "twig/twig": "^3.0",
         "twig/intl-extra": "^3.0",
         "se7enxweb/twig": "~3.19.1",
-        "se7enxweb/ezplatform-kernel": "~1.3.43",
+        "se7enxweb/ezplatform-kernel": "~1.3.47",
         "se7enxweb/ezplatform-rest": "~1.3.27",
         "se7enxweb/ezplatform-content-forms": "~1.3.19",
         "se7enxweb/ezplatform-http-cache": "~2.3.19",
@@ -46,7 +46,9 @@
         "se7enxweb/ezmigrationbundle": "^6.0",
         "se7enxweb/ezseobundle": "~3.3",
         "se7enxweb/ez-core-extra-bundle": "3.0.0",
-        "se7enxweb/ezplatform-alloyeditor-element-width": "^2.0"
+        "se7enxweb/ezplatform-alloyeditor-element-width": "^2.0",
+        "se7enxweb/graphql-php": "^0.13.12",
+        "se7enxweb/flysystem": "^1.1.11"
     },
     "require-dev": {
         "symfony/debug-bundle": "5.4.*",
@@ -99,7 +101,11 @@
                     "PKSA-1tmc-rt7x-12w6": "CVE-2026-48806 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.27.0 to the 3.19 line (dynamic mapping keys are checked for __toString() and cast to string after the check).",
                     "PKSA-xx6c-6d96-db2w": "CVE-2026-48807 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.27.0 to the 3.19 line (the sandbox checks the elements of Traversables in join and replace, the in and not in operands, and Stringable Traversables).",
                     "PKSA-fbvq-z33h-r2np": "CVE-2026-48808 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.27.0 to the 3.19 line (the column filter checks the policy directly, so a source-policy sandbox applies).",
-                    "PKSA-8zx5-v2nz-58pb": "CVE-2026-49981 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.27.0 to the 3.19 line (compiled templates check the allow-lists on every render; GitHub advisory for the same issue as CVE-2026-46636)."
+                    "PKSA-8zx5-v2nz-58pb": "CVE-2026-49981 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.27.0 to the 3.19 line (compiled templates check the allow-lists on every render; GitHub advisory for the same issue as CVE-2026-46636).",
+                    "PKSA-w9tt-7782-78jx": "CVE-2026-102601 on league/flysystem: Fixed in se7enxweb/flysystem 1.1.11, which backports the upstream fix to the 1.x line it replaces league/flysystem with (Util::normalizePath() treats a path with malformed UTF-8 as corrupted, as 3.35.3 does).",
+                    "PKSA-xwpn-zs9j-6wy5": "GHSA-r7cg-qjjm-xhqq on webonyx/graphql-php: Fixed in se7enxweb/graphql-php 0.13.12, which backports the upstream fix of 15.32.3 to the 0.13 line it replaces webonyx/graphql-php with (the parser bounds the nesting of selection sets, value literals and type references to 256 levels).",
+                    "PKSA-sf9j-1gs7-xzvx": "GHSA-fc86-6rv6-2jpm on webonyx/graphql-php: Fixed in se7enxweb/graphql-php 0.13.12, which backports the upstream fix of 15.32.2 to the 0.13 line it replaces webonyx/graphql-php with (OverlappingFieldsCanBeMerged stops after 100000 field comparisons per document).",
+                    "PKSA-7h5p-prw9-w5nr": "CVE-2026-40476 on webonyx/graphql-php: Fixed in se7enxweb/graphql-php 0.13.12, which backports the upstream fix of 15.31.5 to the 0.13 line it replaces webonyx/graphql-php with (OverlappingFieldsCanBeMerged compares structurally identical fields once)."
                 }
             }
         },
@@ -121,7 +127,11 @@
                 "PKSA-1tmc-rt7x-12w6": "CVE-2026-48806 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.27.0 to the 3.19 line (dynamic mapping keys are checked for __toString() and cast to string after the check).",
                 "PKSA-xx6c-6d96-db2w": "CVE-2026-48807 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.27.0 to the 3.19 line (the sandbox checks the elements of Traversables in join and replace, the in and not in operands, and Stringable Traversables).",
                 "PKSA-fbvq-z33h-r2np": "CVE-2026-48808 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.27.0 to the 3.19 line (the column filter checks the policy directly, so a source-policy sandbox applies).",
-                "PKSA-8zx5-v2nz-58pb": "CVE-2026-49981 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.27.0 to the 3.19 line (compiled templates check the allow-lists on every render; GitHub advisory for the same issue as CVE-2026-46636)."
+                "PKSA-8zx5-v2nz-58pb": "CVE-2026-49981 on twig/twig: Fixed in se7enxweb/twig 3.19.1, which backports the upstream fix of Twig 3.27.0 to the 3.19 line (compiled templates check the allow-lists on every render; GitHub advisory for the same issue as CVE-2026-46636).",
+                "PKSA-w9tt-7782-78jx": "CVE-2026-102601 on league/flysystem: Fixed in se7enxweb/flysystem 1.1.11, which backports the upstream fix to the 1.x line it replaces league/flysystem with (Util::normalizePath() treats a path with malformed UTF-8 as corrupted, as 3.35.3 does).",
+                "PKSA-xwpn-zs9j-6wy5": "GHSA-r7cg-qjjm-xhqq on webonyx/graphql-php: Fixed in se7enxweb/graphql-php 0.13.12, which backports the upstream fix of 15.32.3 to the 0.13 line it replaces webonyx/graphql-php with (the parser bounds the nesting of selection sets, value literals and type references to 256 levels).",
+                "PKSA-sf9j-1gs7-xzvx": "GHSA-fc86-6rv6-2jpm on webonyx/graphql-php: Fixed in se7enxweb/graphql-php 0.13.12, which backports the upstream fix of 15.32.2 to the 0.13 line it replaces webonyx/graphql-php with (OverlappingFieldsCanBeMerged stops after 100000 field comparisons per document).",
+                "PKSA-7h5p-prw9-w5nr": "CVE-2026-40476 on webonyx/graphql-php: Fixed in se7enxweb/graphql-php 0.13.12, which backports the upstream fix of 15.31.5 to the 0.13 line it replaces webonyx/graphql-php with (OverlappingFieldsCanBeMerged compares structurally identical fields once)."
             }
         }
     },
