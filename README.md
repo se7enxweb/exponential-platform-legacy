@@ -705,5 +705,5 @@ B - GNU General Public License, version 2
 Grants an copyleft open source license with ABSOLUTELY NO WARRANTY. For the full GPL license text, please see:
 https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
-Copyright © 1998 – 2026 7x (se7enx.com). All rights reserved unless otherwise noted.
+Copyright © 1998 – 2026 Exponential Foundation and 7x (se7enx.com). All rights reserved unless otherwise noted.
 Exponential Platform Legacy is Open Source software released under the GNU GPL v2 or any later version.

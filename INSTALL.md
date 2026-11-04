@@ -2961,5 +2961,5 @@ For web server configuration templates see `doc/apache2/` and `doc/nginx/` (if p
 
 ---
 
-Copyright © 1998 – 2026 7x (se7enx.com). All rights reserved unless otherwise noted.
+Copyright © 1998 – 2026 Exponential Foundation and 7x (se7enx.com). All rights reserved unless otherwise noted.
 Exponential Platform Legacy is Open Source software released under the GNU GPL v2 or any later version.
